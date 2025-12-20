@@ -1,7 +1,6 @@
 <script setup>
 import { gsap } from 'gsap'
 import { computed, onMounted, ref } from 'vue'
-import { formatFileSize } from '@/utils/format'
 
 const props = defineProps({
   wallpapers: {
@@ -14,6 +13,7 @@ const emit = defineEmits(['select'])
 
 const containerRef = ref(null)
 const imageLoaded = ref(false)
+const imageError = ref(false)
 
 // 根据日期计算今日壁纸
 const todayWallpaper = computed(() => {
@@ -29,16 +29,11 @@ const todayWallpaper = computed(() => {
   return props.wallpapers[index]
 })
 
-const formattedSize = computed(() => {
+// 今日精选直接使用原图
+const imageUrl = computed(() => {
   if (!todayWallpaper.value)
     return ''
-  return formatFileSize(todayWallpaper.value.size)
-})
-
-const fileFormat = computed(() => {
-  if (!todayWallpaper.value)
-    return ''
-  return todayWallpaper.value.filename.split('.').pop()?.toUpperCase() || ''
+  return todayWallpaper.value.url
 })
 
 function handleClick() {
@@ -48,6 +43,12 @@ function handleClick() {
 }
 
 function handleImageLoad() {
+  imageLoaded.value = true
+  imageError.value = false
+}
+
+function handleImageError() {
+  imageError.value = true
   imageLoaded.value = true
 }
 
@@ -75,46 +76,41 @@ onMounted(() => {
     </div>
 
     <div class="today-pick__content" @click="handleClick">
-      <div class="today-pick__image">
-        <!-- Skeleton -->
-        <div v-if="!imageLoaded" class="image-skeleton">
-          <div class="skeleton-shimmer" />
-        </div>
-
-        <img
-          v-show="imageLoaded"
-          :src="todayWallpaper.thumbnailUrl || todayWallpaper.url"
-          :alt="todayWallpaper.filename"
-          @load="handleImageLoad"
-        >
-
-        <div class="today-pick__overlay">
-          <div class="overlay-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="11" cy="11" r="8" />
-              <path d="M21 21l-4.35-4.35" />
-              <path d="M11 8v6M8 11h6" />
-            </svg>
-          </div>
-          <span>查看大图</span>
-        </div>
+      <!-- Skeleton -->
+      <div v-if="!imageLoaded" class="image-skeleton">
+        <div class="skeleton-shimmer" />
       </div>
 
-      <div class="today-pick__info">
-        <h3 class="today-pick__name">
-          {{ todayWallpaper.filename }}
-        </h3>
-        <div class="today-pick__meta">
-          <span class="meta-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
-            </svg>
-            {{ formattedSize }}
-          </span>
-          <span class="meta-item meta-format">
-            {{ fileFormat }}
-          </span>
+      <!-- Error State -->
+      <div v-if="imageError && imageLoaded" class="image-error">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+          <path d="M12 8v4M12 16h.01" />
+        </svg>
+        <span>加载失败</span>
+      </div>
+
+      <!-- Image -->
+      <img
+        v-show="imageLoaded && !imageError"
+        :src="imageUrl"
+        :alt="todayWallpaper.filename"
+        class="today-pick__image"
+        :class="{ 'is-loaded': imageLoaded }"
+        @load="handleImageLoad"
+        @error="handleImageError"
+      >
+
+      <!-- Overlay on hover -->
+      <div class="today-pick__overlay">
+        <div class="overlay-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35" />
+            <path d="M11 8v6M8 11h6" />
+          </svg>
         </div>
+        <span>查看大图</span>
       </div>
     </div>
   </div>
@@ -158,50 +154,36 @@ onMounted(() => {
 }
 
 .today-pick__content {
-  display: flex;
-  flex-direction: column;
-  background: var(--color-bg-card);
+  position: relative;
+  aspect-ratio: 21 / 9;
   border-radius: $radius-lg;
   overflow: hidden;
   cursor: pointer;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  background: var(--color-bg-hover);
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-
     .today-pick__overlay {
       opacity: 1;
     }
 
-    .today-pick__image img {
-      transform: scale(1.05);
+    .today-pick__image {
+      transform: scale(1.03);
     }
-  }
-
-  @include tablet-up {
-    flex-direction: row;
   }
 }
 
 .today-pick__image {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  background: var(--color-bg-hover);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 
-  @include tablet-up {
-    flex: 1;
-    aspect-ratio: auto;
-    min-height: 200px;
-  }
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s ease;
+  &.is-loaded {
+    opacity: 1;
   }
 }
 
@@ -228,6 +210,26 @@ onMounted(() => {
   }
 }
 
+.image-error {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  color: var(--color-text-muted);
+
+  svg {
+    width: 48px;
+    height: 48px;
+  }
+
+  span {
+    font-size: $font-size-sm;
+  }
+}
+
 .today-pick__overlay {
   position: absolute;
   inset: 0;
@@ -236,7 +238,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   gap: $spacing-sm;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.4);
   color: white;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -245,68 +247,21 @@ onMounted(() => {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 56px;
-    height: 56px;
+    width: 64px;
+    height: 64px;
     background: rgba(255, 255, 255, 0.2);
     border-radius: $radius-full;
     backdrop-filter: blur(8px);
 
     svg {
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
     }
   }
 
   span {
-    font-size: $font-size-sm;
+    font-size: $font-size-md;
     font-weight: $font-weight-medium;
   }
-}
-
-.today-pick__info {
-  padding: $spacing-lg;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  @include tablet-up {
-    width: 280px;
-    flex-shrink: 0;
-  }
-}
-
-.today-pick__name {
-  font-size: $font-size-md;
-  font-weight: $font-weight-semibold;
-  color: var(--color-text-primary);
-  margin-bottom: $spacing-sm;
-  word-break: break-all;
-}
-
-.today-pick__meta {
-  display: flex;
-  align-items: center;
-  gap: $spacing-md;
-  font-size: $font-size-sm;
-  color: var(--color-text-muted);
-}
-
-.meta-item {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-
-  svg {
-    width: 14px;
-    height: 14px;
-  }
-}
-
-.meta-format {
-  padding: 2px 8px;
-  background: var(--color-bg-hover);
-  border-radius: $radius-sm;
-  font-weight: $font-weight-medium;
-  font-size: $font-size-xs;
 }
 </style>

@@ -1,6 +1,6 @@
 <script setup>
 import { gsap } from 'gsap'
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { IMAGE_PROXY } from '@/utils/constants'
 import { formatFileSize, highlightText } from '@/utils/format'
 
@@ -28,36 +28,16 @@ const emit = defineEmits(['click'])
 const cardRef = ref(null)
 const imageLoaded = ref(false)
 const imageError = ref(false)
-const retryCount = ref(0)
-const maxRetries = 1
-const loadTimeout = ref(null)
-const LOAD_TIMEOUT_MS = 8000 // 8秒超时
+const useProxy = ref(false)
 
 // 直接使用 JSON 中的 thumbnailUrl，如果加载失败则使用代理服务
 const thumbnailUrl = computed(() => {
-  if (retryCount.value > 0) {
+  if (useProxy.value) {
+    // 使用代理服务生成缩略图
     return `${IMAGE_PROXY.BASE_URL}?url=${encodeURIComponent(props.wallpaper.url)}&w=${IMAGE_PROXY.THUMB_WIDTH}&q=${IMAGE_PROXY.THUMB_QUALITY}&output=${IMAGE_PROXY.FORMAT}`
   }
   return props.wallpaper.thumbnailUrl || props.wallpaper.url
 })
-
-// 启动加载超时计时器
-function startLoadTimeout() {
-  clearLoadTimeout()
-  loadTimeout.value = setTimeout(() => {
-    // 超时未加载成功，触发重试
-    if (!imageLoaded.value && retryCount.value < maxRetries) {
-      retryCount.value++
-    }
-  }, LOAD_TIMEOUT_MS)
-}
-
-function clearLoadTimeout() {
-  if (loadTimeout.value) {
-    clearTimeout(loadTimeout.value)
-    loadTimeout.value = null
-  }
-}
 
 const formattedSize = computed(() => formatFileSize(props.wallpaper.size))
 const fileFormat = computed(() => {
@@ -90,34 +70,21 @@ onMounted(() => {
       },
     )
   }
-  // 启动加载超时计时器
-  startLoadTimeout()
-})
-
-onUnmounted(() => {
-  clearLoadTimeout()
-})
-
-// 当 retryCount 变化时重启超时计时器
-watch(retryCount, () => {
-  if (retryCount.value > 0 && retryCount.value <= maxRetries) {
-    startLoadTimeout()
-  }
 })
 
 function handleImageLoad() {
-  clearLoadTimeout()
   imageLoaded.value = true
   imageError.value = false
 }
 
 function handleImageError() {
-  clearLoadTimeout()
-  if (retryCount.value < maxRetries) {
-    retryCount.value++
+  // 只有在未使用代理时才尝试代理
+  if (!useProxy.value) {
+    useProxy.value = true
     imageLoaded.value = false
   }
   else {
+    // 代理也失败了，显示错误
     imageError.value = true
     imageLoaded.value = true
   }
@@ -208,11 +175,10 @@ function handleMouseLeave(e) {
 
       <!-- Image -->
       <img
-        v-show="imageLoaded && !imageError"
         :src="thumbnailUrl"
         :alt="wallpaper.filename"
         loading="lazy"
-        :class="{ 'is-loaded': imageLoaded }"
+        :class="{ 'is-loaded': imageLoaded, 'is-error': imageError }"
         @load="handleImageLoad"
         @error="handleImageError"
       >
@@ -283,6 +249,10 @@ function handleMouseLeave(e) {
 
     &.is-loaded {
       opacity: 1;
+    }
+
+    &.is-error {
+      display: none;
     }
   }
 }
