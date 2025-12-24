@@ -407,9 +407,14 @@ function resetFilters() {
   margin-bottom: $spacing-lg;
 
   // 吸顶效果（PC 和移动端通用）
+  position: -webkit-sticky; // iOS Safari 兼容
   position: sticky;
-  top: $header-height; // 固定在导航栏下方
+  top: $header-height; // 固定在导航栏下方（72px）
   z-index: 99; // 低于 AppHeader 的 100
+
+  // 确保 sticky 在各浏览器正常工作
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 
   &.has-filters {
     border-color: var(--color-accent-light);

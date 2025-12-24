@@ -140,8 +140,8 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  // 移动端防止横向滚动
-  overflow-x: hidden;
+  // 移动端防止横向滚动（使用 clip 避免影响 sticky 定位）
+  overflow-x: clip;
 }
 
 body {
@@ -154,8 +154,8 @@ body {
     background-color var(--transition-slow),
     color var(--transition-slow);
   min-height: 100vh;
-  // 移动端防止横向滚动
-  overflow-x: hidden;
+  // 移动端防止横向滚动（使用 clip 避免影响 sticky 定位）
+  overflow-x: clip;
   // 移动端安全区域适配
   padding-bottom: env(safe-area-inset-bottom);
 }
