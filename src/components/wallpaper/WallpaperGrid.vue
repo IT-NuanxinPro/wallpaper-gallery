@@ -72,6 +72,9 @@ const mobileDisplayCount = ref(MOBILE_PAGE_SIZE)
 const isLoadingMore = ref(false)
 const scrollPaused = ref(false) // 滚动加载暂停标记
 
+// 定时器引用集合（用于组件卸载时清理）
+const timers = new Set()
+
 // ========================================
 // 移动端 Flex 瀑布流分列相关
 // ========================================
@@ -177,7 +180,8 @@ function loadMore() {
 
   isLoadingMore.value = true
 
-  setTimeout(() => {
+  const timer = setTimeout(() => {
+    timers.delete(timer)
     const oldCount = mobileDisplayCount.value
     const newCount = Math.min(
       mobileDisplayCount.value + MOBILE_PAGE_SIZE,
@@ -196,6 +200,7 @@ function loadMore() {
 
     isLoadingMore.value = false
   }, 150)
+  timers.add(timer)
 }
 
 // 暂停滚动加载
@@ -487,12 +492,19 @@ onMounted(() => {
     animateCardsIn()
   }
   else {
-    setTimeout(warmupFlip, 500)
+    const timer = setTimeout(() => {
+      timers.delete(timer)
+      warmupFlip()
+    }, 500)
+    timers.add(timer)
   }
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
+  // 清除所有未完成的定时器
+  timers.forEach(timer => clearTimeout(timer))
+  timers.clear()
 })
 
 // 监听 wallpapers 变化（筛选/搜索/分类切换时）
@@ -526,12 +538,14 @@ watch(() => props.wallpapers, async (newVal, oldVal) => {
   // 分类切换/筛选（从有到有）：先隐藏，再显示并执行动画
   showGrid.value = false
 
-  setTimeout(() => {
+  const timer = setTimeout(() => {
+    timers.delete(timer)
     showGrid.value = true
     nextTick(() => {
       animateCardsIn()
     })
   }, 100)
+  timers.add(timer)
 }, { deep: false })
 
 // 处理分页切换（桌面端）
@@ -542,13 +556,15 @@ function handlePageChange(page) {
   // 短暂隐藏后切换页面并播放动画
   showGrid.value = false
 
-  setTimeout(() => {
+  const timer = setTimeout(() => {
+    timers.delete(timer)
     goToPage(page)
     showGrid.value = true
     nextTick(() => {
       animateCardsIn()
     })
   }, 100)
+  timers.add(timer)
 }
 
 // 处理每页条数变化（桌面端）
@@ -558,13 +574,15 @@ function handlePageSizeChange(size) {
 
   showGrid.value = false
 
-  setTimeout(() => {
+  const timer = setTimeout(() => {
+    timers.delete(timer)
     setPageSize(size)
     showGrid.value = true
     nextTick(() => {
       animateCardsIn()
     })
   }, 100)
+  timers.add(timer)
 }
 
 function handleSelect(wallpaper) {

@@ -1,6 +1,6 @@
 <script setup>
 import { gsap } from 'gsap'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useDevice } from '@/composables/useDevice'
 import { IMAGE_PROXY } from '@/utils/constants'
 import { formatFileSize, getDisplayFilename, highlightText } from '@/utils/format'
@@ -39,6 +39,9 @@ const imageLoaded = ref(false)
 const imageError = ref(false)
 const useProxy = ref(false)
 
+// 定时器引用（用于组件卸载时清理）
+let cacheCheckTimer = null
+
 // 直接使用 JSON 中的 thumbnailUrl，如果加载失败则使用代理服务
 const thumbnailUrl = computed(() => {
   if (useProxy.value) {
@@ -51,12 +54,20 @@ const thumbnailUrl = computed(() => {
 // 检查图片是否已在浏览器缓存中
 onMounted(() => {
   // 使用 nextTick 确保 DOM 已渲染
-  setTimeout(() => {
+  cacheCheckTimer = setTimeout(() => {
     if (imageRef.value && imageRef.value.complete && imageRef.value.naturalWidth > 0) {
       // 图片已经加载完成（从缓存中）
       imageLoaded.value = true
     }
   }, 0)
+})
+
+// 组件卸载时清除定时器
+onUnmounted(() => {
+  if (cacheCheckTimer) {
+    clearTimeout(cacheCheckTimer)
+    cacheCheckTimer = null
+  }
 })
 
 const formattedSize = computed(() => formatFileSize(props.wallpaper.size))

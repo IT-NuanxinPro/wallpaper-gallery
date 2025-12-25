@@ -133,13 +133,22 @@ export function useDevice() {
   // 设备变化回调
   const deviceChangeCallbacks = ref([])
 
+  // 定时器引用（用于清理）
+  let deviceCheckTimer = null
+
   function updateWidth() {
     const newWidth = window.innerWidth
     const oldDeviceType = deviceType.value
     windowWidth.value = newWidth
 
+    // 清除之前的定时器
+    if (deviceCheckTimer) {
+      clearTimeout(deviceCheckTimer)
+    }
+
     // 检测设备类型是否变化（在 computed 更新后）
-    setTimeout(() => {
+    deviceCheckTimer = setTimeout(() => {
+      deviceCheckTimer = null
       const newDeviceType = deviceType.value
       if (oldDeviceType !== newDeviceType) {
         // 触发设备变化回调
@@ -171,6 +180,11 @@ export function useDevice() {
 
   onUnmounted(() => {
     window.removeEventListener('resize', updateWidth)
+    // 清除未完成的定时器
+    if (deviceCheckTimer) {
+      clearTimeout(deviceCheckTimer)
+      deviceCheckTimer = null
+    }
   })
 
   return {

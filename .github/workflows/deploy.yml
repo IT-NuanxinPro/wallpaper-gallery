@@ -31,6 +31,34 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Get latest CDN version from nuanXinProPic
+        id: cdn_version
+        run: |
+          # 使用 GitHub API 获取图床仓库的最新 tag
+          LATEST_TAG=$(curl -s "https://api.github.com/repos/IT-NuanxinPro/nuanXinProPic/tags" | jq -r '.[0].name // "v1.0.4"')
+
+          # 如果 API 返回空或错误，使用备用默认值
+          if [ -z "$LATEST_TAG" ] || [ "$LATEST_TAG" == "null" ]; then
+            LATEST_TAG="v1.0.4"
+            echo "⚠️ Failed to get tag from API, using fallback: $LATEST_TAG"
+          else
+            echo "✅ Got latest CDN version: $LATEST_TAG"
+          fi
+
+          echo "version=$LATEST_TAG" >> $GITHUB_OUTPUT
+
+      - name: Update CDN version in constants.js
+        run: |
+          CDN_VERSION="${{ steps.cdn_version.outputs.version }}"
+          echo "📦 Updating CDN_VERSION to: $CDN_VERSION"
+
+          # 使用 sed 替换版本号
+          sed -i "s/export const CDN_VERSION = '[^']*'/export const CDN_VERSION = '$CDN_VERSION'/" src/utils/constants.js
+
+          # 验证替换结果
+          echo "✅ Updated constants.js:"
+          grep "CDN_VERSION" src/utils/constants.js
+
       - name: Checkout nuanXinProPic (wallpaper source)
         uses: actions/checkout@v4
         with:
