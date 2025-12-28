@@ -81,7 +81,7 @@ function goHome() {
           <h2>联系我们</h2>
           <div class="contact-links">
             <a
-              href="https://github.com/IT-NuanxinPro"
+              href="https://github.com/IT-NuanxinPro/wallpaper-gallery"
               target="_blank"
               rel="noopener noreferrer"
               class="contact-link"
