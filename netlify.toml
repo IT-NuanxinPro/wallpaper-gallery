@@ -16,8 +16,8 @@
     echo "Using CDN version: $LATEST_TAG"
     # 替换版本号
     sed -i "s/export const CDN_VERSION = '[^']*'/export const CDN_VERSION = '$LATEST_TAG'/" src/utils/constants.js
-    # 安装依赖并构建
-    pnpm install && pnpm build
+    # 安装依赖并构建（使用 staging 模式加载 .env.staging）
+    pnpm install && pnpm build --mode staging
   """
   # 发布目录
   publish = "dist"
@@ -67,7 +67,7 @@
     LATEST_TAG=$(curl -s "https://api.github.com/repos/IT-NuanxinPro/nuanXinProPic/tags" | grep -o '"name": "[^"]*"' | head -1 | cut -d'"' -f4)
     if [ -z "$LATEST_TAG" ]; then LATEST_TAG="v1.0.5"; fi
     sed -i "s/export const CDN_VERSION = '[^']*'/export const CDN_VERSION = '$LATEST_TAG'/" src/utils/constants.js
-    pnpm install && pnpm build
+    pnpm install && pnpm build --mode staging
   """
 
 [context.deploy-preview.environment]
@@ -80,7 +80,7 @@
     LATEST_TAG=$(curl -s "https://api.github.com/repos/IT-NuanxinPro/nuanXinProPic/tags" | grep -o '"name": "[^"]*"' | head -1 | cut -d'"' -f4)
     if [ -z "$LATEST_TAG" ]; then LATEST_TAG="v1.0.5"; fi
     sed -i "s/export const CDN_VERSION = '[^']*'/export const CDN_VERSION = '$LATEST_TAG'/" src/utils/constants.js
-    pnpm install && pnpm build
+    pnpm install && pnpm build --mode staging
   """
 
 [context.branch-deploy.environment]
