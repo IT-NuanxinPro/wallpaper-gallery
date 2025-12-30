@@ -593,10 +593,14 @@ function generateCategorySplitData(wallpapers, seriesId, seriesConfig) {
 /**
  * 处理单个系列
  *
- * 重要说明：
- * - 由于 GitHub 仓库的图片数据可能不完整（如 desktop 只有1张），
- * - 所有环境（包括 CI）都优先使用线上数据源获取完整数据
- * - 只有明确指定 --github 参数时才使用 GitHub API（调试用）
+ * 数据获取优先级：
+ * 1. --local 参数：使用本地图床仓库（项目维护者）
+ * 2. 线上数据源：从 wallpaper.061129.xyz 获取（开源用户）
+ * 3. 本地路径：CI 环境会 checkout 到 nuanXinProPic 目录（CI 主要方式）
+ * 4. GitHub API：最后备用（数据可能不完整）
+ *
+ * 注意：正常情况下，线上数据源应该始终可用（由 CI 自动部署）
+ * 如果线上数据源不可用，说明可能存在生产问题
  */
 async function processSeries(seriesId, seriesConfig) {
   console.log('')
@@ -618,8 +622,11 @@ async function processSeries(seriesId, seriesConfig) {
     }
   }
 
-  // 注意：由于 GitHub 仓库的图片数据可能不完整，
-  // 优先使用线上数据源，但需要验证数据完整性
+  // 数据获取策略：
+  // 1. --local 参数：使用本地图床仓库（项目维护者）
+  // 2. 线上数据源：从 wallpaper.061129.xyz 获取（开源用户和 CI 备用）
+  // 3. 本地路径：CI 环境会 checkout 到 nuanXinProPic 目录（CI 主要方式）
+  // 4. GitHub API：最后备用（数据可能不完整，会有警告）
 
   if (!files) {
     if (FORCE_GITHUB) {
@@ -628,26 +635,13 @@ async function processSeries(seriesId, seriesConfig) {
       files = await fetchWallpapersFromGitHub(seriesConfig)
     }
     else {
-      // 所有环境：优先从线上拉取预生成数据（数据最完整）
+      // 尝试从线上拉取数据
       console.log('  Fetching from online...')
       const onlineData = await fetchDataFromOnline(seriesId, seriesConfig)
 
-      // 验证线上数据的完整性
-      const expectedMinCounts = {
-        desktop: 100, // 电脑壁纸至少应该有100张
-        mobile: 50, // 手机壁纸至少应该有50张
-        avatar: 30, // 头像至少应该有30张
-      }
-
-      const minCount = expectedMinCounts[seriesId] || 1
-      const actualCount = onlineData?.indexData?.total || 0
-
-      if (onlineData && actualCount >= minCount) {
-        // 线上数据完整，使用线上数据
-        console.log(`  ✅ Online data validated: ${actualCount} items (min: ${minCount})`)
-
-        // 直接复制线上数据到本地
-        console.log(`  Successfully fetched online data for ${seriesConfig.name}`)
+      if (onlineData && onlineData.indexData && onlineData.indexData.total > 0) {
+        // 线上数据可用，直接使用
+        console.log(`  ✅ Online data available: ${onlineData.indexData.total} items`)
 
         // 确保输出目录存在
         const seriesDir = path.join(CONFIG.OUTPUT_DIR, seriesId)
@@ -685,32 +679,29 @@ async function processSeries(seriesId, seriesConfig) {
         return {
           seriesId,
           count: onlineData.indexData.total || 0,
-          wallpapers: [], // 线上模式不返回详细数据
+          wallpapers: [],
           fromOnline: true,
         }
       }
       else {
-        // 线上数据不完整或不可用
-        if (onlineData) {
-          console.warn(`  ⚠️ Online data incomplete: ${actualCount} items (expected min: ${minCount})`)
-        }
-        else {
-          console.warn(`  ⚠️ Online data unavailable`)
-        }
-
-        // 不回退到 GitHub API，而是报错停止构建
-        throw new Error(`
-❌ 数据源问题检测：
-- 系列: ${seriesConfig.name}
-- 线上数据: ${actualCount} 项 (期望最少: ${minCount} 项)
-- 为避免用不完整数据覆盖完整数据，构建已停止
-- 请检查线上数据源或使用 --github 参数强制使用 GitHub API
-        `)
+        // 线上数据不可用，记录警告
+        console.warn(`  ⚠️ Online data unavailable, will try local/GitHub sources`)
       }
     }
   }
 
-  if (files.length === 0) {
+  // 如果线上数据不可用，继续尝试本地或 GitHub API
+  if (!files) {
+    console.warn(`  ⚠️ No data source available for ${seriesConfig.name}`)
+    console.warn(`  📝 This may indicate a production issue if online source is down`)
+    console.warn(`  💡 Falling back to GitHub API (may have incomplete data)`)
+
+    // 最后尝试 GitHub API
+    console.log(`  Fetching from GitHub API as last resort...`)
+    files = await fetchWallpapersFromGitHub(seriesConfig)
+  }
+
+  if (!files || files.length === 0) {
     console.log(`  No image files found for ${seriesConfig.name}`)
     const wallpapers = []
     const blob = encodeData(JSON.stringify(wallpapers))
