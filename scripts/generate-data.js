@@ -15,6 +15,9 @@ import { CHAR_MAP_ENCODE, VERSION_PREFIX } from '../src/utils/codec-config.js'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+// 命令行参数：--local 使用本地图床仓库（仅项目维护者使用）
+const USE_LOCAL = process.argv.includes('--local')
+
 /**
  * 自定义编码（Base64 + 字符映射 + 反转）
  * @param {string} str - 原始字符串
@@ -33,11 +36,16 @@ const CONFIG = {
   GITHUB_REPO: 'nuanXinProPic',
   GITHUB_BRANCH: 'main',
 
-  // 本地图床仓库路径（支持本地开发和 CI 环境）
+  // 本地图床仓库路径（仅 CI 环境使用）
+  // 开源用户无需配置，会自动从线上拉取数据
   LOCAL_REPO_PATHS: [
     path.resolve(__dirname, '../nuanXinProPic'), // CI 环境：项目根目录下
-    path.resolve(__dirname, '../../nuanXinProPic'), // 本地开发：同级目录
+    path.resolve(__dirname, '../../nuanXinProPic'), // 本地开发：同级目录（仅项目维护者使用）
   ],
+
+  // 线上数据源（开源用户使用）
+  // 当本地图床仓库不存在时，直接从线上拉取已生成的 JSON 数据
+  ONLINE_DATA_BASE_URL: 'https://wallpaper.061129.xyz/data',
 
   // 支持的图片格式
   IMAGE_EXTENSIONS: ['.jpg', '.jpeg', '.png', '.gif', '.webp'],
@@ -167,6 +175,50 @@ function extractCategoryFromFilename(filename) {
 
   // 没有分类前缀，返回 '未分类'
   return '未分类'
+}
+
+/**
+ * 从线上拉取已生成的 JSON 数据（开源用户使用）
+ * @param {string} seriesId - 系列ID
+ * @param {object} seriesConfig - 系列配置
+ * @returns {Promise<{indexData: object, categoryData: object}>}
+ */
+async function fetchDataFromOnline(seriesId, seriesConfig) {
+  console.log(`  Fetching from online: ${CONFIG.ONLINE_DATA_BASE_URL}/${seriesId}/`)
+
+  try {
+    // 1. 拉取分类索引
+    const indexUrl = `${CONFIG.ONLINE_DATA_BASE_URL}/${seriesId}/index.json`
+    const indexResponse = await fetch(indexUrl)
+    if (!indexResponse.ok) {
+      throw new Error(`Failed to fetch index: ${indexResponse.status}`)
+    }
+    const indexData = await indexResponse.json()
+
+    // 2. 解析分类列表（需要解密 blob）
+    let categories = []
+    if (indexData.blob) {
+      const { decodeData } = await import('../src/utils/codec.js')
+      const jsonStr = decodeData(indexData.blob)
+      categories = JSON.parse(jsonStr)
+    }
+
+    // 3. 拉取每个分类的数据
+    const categoryData = {}
+    for (const cat of categories) {
+      const categoryUrl = `${CONFIG.ONLINE_DATA_BASE_URL}/${seriesId}/${cat.file}`
+      const catResponse = await fetch(categoryUrl)
+      if (catResponse.ok) {
+        categoryData[cat.name] = await catResponse.json()
+      }
+    }
+
+    return { indexData, categoryData, categories }
+  }
+  catch (e) {
+    console.error(`  Failed to fetch from online:`, e.message)
+    return null
+  }
 }
 
 /**
@@ -542,14 +594,72 @@ async function processSeries(seriesId, seriesConfig) {
 
   let files = null
   let localRepoPath = null
-  const localResult = fetchWallpapersFromLocal(seriesConfig)
 
-  if (localResult) {
-    files = localResult.files
-    localRepoPath = localResult.repoPath
+  // 只有指定 --local 参数时才尝试从本地读取
+  if (USE_LOCAL) {
+    const localResult = fetchWallpapersFromLocal(seriesConfig)
+    if (localResult) {
+      files = localResult.files
+      localRepoPath = localResult.repoPath
+    }
+    else {
+      console.log('  ⚠️ --local specified but local repository not found!')
+    }
   }
-  else {
-    console.log('  Falling back to GitHub API...')
+
+  // 默认从线上拉取（或本地未找到时）
+  if (!files) {
+    console.log('  Fetching from online...')
+    const onlineData = await fetchDataFromOnline(seriesId, seriesConfig)
+
+    if (onlineData) {
+      // 直接复制线上数据到本地
+      console.log(`  Successfully fetched online data for ${seriesConfig.name}`)
+
+      // 确保输出目录存在
+      const seriesDir = path.join(CONFIG.OUTPUT_DIR, seriesId)
+      if (!fs.existsSync(seriesDir)) {
+        fs.mkdirSync(seriesDir, { recursive: true })
+      }
+
+      // 写入索引文件
+      const indexPath = path.join(seriesDir, 'index.json')
+      fs.writeFileSync(indexPath, JSON.stringify(onlineData.indexData, null, 2))
+      console.log(`  Copied: ${seriesId}/index.json`)
+
+      // 写入分类文件
+      for (const [categoryName, categoryData] of Object.entries(onlineData.categoryData)) {
+        const categoryPath = path.join(seriesDir, `${categoryName}.json`)
+        fs.writeFileSync(categoryPath, JSON.stringify(categoryData, null, 2))
+        console.log(`  Copied: ${seriesId}/${categoryName}.json`)
+      }
+
+      // 同时生成传统的单文件（向后兼容）
+      // 从线上拉取传统格式
+      try {
+        const legacyUrl = `${CONFIG.ONLINE_DATA_BASE_URL}/${seriesConfig.outputFile}`
+        const legacyResponse = await fetch(legacyUrl)
+        if (legacyResponse.ok) {
+          const legacyData = await legacyResponse.json()
+          const legacyPath = path.join(CONFIG.OUTPUT_DIR, seriesConfig.outputFile)
+          fs.writeFileSync(legacyPath, JSON.stringify(legacyData, null, 2))
+          console.log(`  Copied: ${seriesConfig.outputFile}`)
+        }
+      }
+      catch (e) {
+        console.warn(`  Failed to fetch legacy file: ${e.message}`)
+      }
+
+      return {
+        seriesId,
+        count: onlineData.indexData.total || 0,
+        wallpapers: [], // 线上模式不返回详细数据
+        fromOnline: true,
+      }
+    }
+
+    // 线上也拉取失败，回退到 GitHub API
+    console.log('  Online fetch failed, falling back to GitHub API...')
     files = await fetchWallpapersFromGitHub(seriesConfig)
   }
 
@@ -677,30 +787,48 @@ async function main() {
     console.log('='.repeat(50))
 
     let totalCount = 0
+    let hasOnlineData = false
     results.forEach((result) => {
       const config = CONFIG.SERIES[result.seriesId]
-      console.log(`${config.name}: ${result.count} items -> ${config.outputFile}`)
+      if (result.fromOnline) {
+        console.log(`${config.name}: ${result.count} items (from online)`)
+        hasOnlineData = true
+      }
+      else {
+        console.log(`${config.name}: ${result.count} items -> ${config.outputFile}`)
+      }
       totalCount += result.count
     })
 
     console.log('-'.repeat(50))
     console.log(`Total: ${totalCount} wallpapers across ${results.length} series`)
     console.log(`Output directory: ${CONFIG.OUTPUT_DIR}`)
+
+    if (hasOnlineData) {
+      console.log('')
+      console.log('📦 Data was fetched from online source.')
+      console.log('   This is normal for open-source users without local image repository.')
+    }
+
     console.log('')
 
-    const formatStats = { jpg: 0, png: 0 }
-    results.forEach((result) => {
-      result.wallpapers.forEach((w) => {
-        if (w.format === 'JPG' || w.format === 'JPEG')
-          formatStats.jpg++
-        else if (w.format === 'PNG')
-          formatStats.png++
+    // 只有本地生成时才统计格式
+    const localResults = results.filter(r => !r.fromOnline)
+    if (localResults.length > 0) {
+      const formatStats = { jpg: 0, png: 0 }
+      localResults.forEach((result) => {
+        result.wallpapers.forEach((w) => {
+          if (w.format === 'JPG' || w.format === 'JPEG')
+            formatStats.jpg++
+          else if (w.format === 'PNG')
+            formatStats.png++
+        })
       })
-    })
 
-    console.log('Format Statistics (All Series):')
-    console.log(`  JPG: ${formatStats.jpg}`)
-    console.log(`  PNG: ${formatStats.png}`)
+      console.log('Format Statistics (All Series):')
+      console.log(`  JPG: ${formatStats.jpg}`)
+      console.log(`  PNG: ${formatStats.png}`)
+    }
   }
   catch (error) {
     console.error('Error generating wallpaper data:', error)
