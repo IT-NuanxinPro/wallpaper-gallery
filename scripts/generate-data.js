@@ -17,6 +17,8 @@ const __dirname = path.dirname(__filename)
 
 // 命令行参数：--local 使用本地图床仓库（仅项目维护者使用）
 const USE_LOCAL = process.argv.includes('--local')
+// 命令行参数：--github 强制使用 GitHub API（用于 CI 或调试）
+const FORCE_GITHUB = process.argv.includes('--github')
 
 /**
  * 自定义编码（Base64 + 字符映射 + 反转）
@@ -180,7 +182,6 @@ function extractCategoryFromFilename(filename) {
 /**
  * 从线上拉取已生成的 JSON 数据（开源用户使用）
  * @param {string} seriesId - 系列ID
- * @param {object} _seriesConfig - 系列配置（保留用于未来扩展）
  * @returns {Promise<{indexData: object, categoryData: object}>}
  */
 async function fetchDataFromOnline(seriesId) {
@@ -591,6 +592,11 @@ function generateCategorySplitData(wallpapers, seriesId, seriesConfig) {
 
 /**
  * 处理单个系列
+ *
+ * 重要说明：
+ * - 由于 GitHub 仓库的图片数据可能不完整（如 desktop 只有1张），
+ * - 所有环境（包括 CI）都优先使用线上数据源获取完整数据
+ * - 只有明确指定 --github 参数时才使用 GitHub API（调试用）
  */
 async function processSeries(seriesId, seriesConfig) {
   console.log('')
@@ -612,60 +618,96 @@ async function processSeries(seriesId, seriesConfig) {
     }
   }
 
-  // 默认从线上拉取（或本地未找到时）
+  // 注意：由于 GitHub 仓库的图片数据可能不完整，
+  // 优先使用线上数据源，但需要验证数据完整性
+
   if (!files) {
-    console.log('  Fetching from online...')
-    const onlineData = await fetchDataFromOnline(seriesId, seriesConfig)
+    if (FORCE_GITHUB) {
+      // 强制模式：直接使用 GitHub API（调试用）
+      console.log('  --github flag detected, fetching from GitHub API...')
+      files = await fetchWallpapersFromGitHub(seriesConfig)
+    }
+    else {
+      // 所有环境：优先从线上拉取预生成数据（数据最完整）
+      console.log('  Fetching from online...')
+      const onlineData = await fetchDataFromOnline(seriesId, seriesConfig)
 
-    if (onlineData) {
-      // 直接复制线上数据到本地
-      console.log(`  Successfully fetched online data for ${seriesConfig.name}`)
-
-      // 确保输出目录存在
-      const seriesDir = path.join(CONFIG.OUTPUT_DIR, seriesId)
-      if (!fs.existsSync(seriesDir)) {
-        fs.mkdirSync(seriesDir, { recursive: true })
+      // 验证线上数据的完整性
+      const expectedMinCounts = {
+        desktop: 100, // 电脑壁纸至少应该有100张
+        mobile: 50, // 手机壁纸至少应该有50张
+        avatar: 30, // 头像至少应该有30张
       }
 
-      // 写入索引文件
-      const indexPath = path.join(seriesDir, 'index.json')
-      fs.writeFileSync(indexPath, JSON.stringify(onlineData.indexData, null, 2))
-      console.log(`  Copied: ${seriesId}/index.json`)
+      const minCount = expectedMinCounts[seriesId] || 1
+      const actualCount = onlineData?.indexData?.total || 0
 
-      // 写入分类文件
-      for (const [categoryName, categoryData] of Object.entries(onlineData.categoryData)) {
-        const categoryPath = path.join(seriesDir, `${categoryName}.json`)
-        fs.writeFileSync(categoryPath, JSON.stringify(categoryData, null, 2))
-        console.log(`  Copied: ${seriesId}/${categoryName}.json`)
-      }
+      if (onlineData && actualCount >= minCount) {
+        // 线上数据完整，使用线上数据
+        console.log(`  ✅ Online data validated: ${actualCount} items (min: ${minCount})`)
 
-      // 同时生成传统的单文件（向后兼容）
-      // 从线上拉取传统格式
-      try {
-        const legacyUrl = `${CONFIG.ONLINE_DATA_BASE_URL}/${seriesConfig.outputFile}`
-        const legacyResponse = await fetch(legacyUrl)
-        if (legacyResponse.ok) {
-          const legacyData = await legacyResponse.json()
-          const legacyPath = path.join(CONFIG.OUTPUT_DIR, seriesConfig.outputFile)
-          fs.writeFileSync(legacyPath, JSON.stringify(legacyData, null, 2))
-          console.log(`  Copied: ${seriesConfig.outputFile}`)
+        // 直接复制线上数据到本地
+        console.log(`  Successfully fetched online data for ${seriesConfig.name}`)
+
+        // 确保输出目录存在
+        const seriesDir = path.join(CONFIG.OUTPUT_DIR, seriesId)
+        if (!fs.existsSync(seriesDir)) {
+          fs.mkdirSync(seriesDir, { recursive: true })
+        }
+
+        // 写入索引文件
+        const indexPath = path.join(seriesDir, 'index.json')
+        fs.writeFileSync(indexPath, JSON.stringify(onlineData.indexData, null, 2))
+        console.log(`  Copied: ${seriesId}/index.json`)
+
+        // 写入分类文件
+        for (const [categoryName, categoryData] of Object.entries(onlineData.categoryData)) {
+          const categoryPath = path.join(seriesDir, `${categoryName}.json`)
+          fs.writeFileSync(categoryPath, JSON.stringify(categoryData, null, 2))
+          console.log(`  Copied: ${seriesId}/${categoryName}.json`)
+        }
+
+        // 同时生成传统的单文件（向后兼容）
+        try {
+          const legacyUrl = `${CONFIG.ONLINE_DATA_BASE_URL}/${seriesConfig.outputFile}`
+          const legacyResponse = await fetch(legacyUrl)
+          if (legacyResponse.ok) {
+            const legacyData = await legacyResponse.json()
+            const legacyPath = path.join(CONFIG.OUTPUT_DIR, seriesConfig.outputFile)
+            fs.writeFileSync(legacyPath, JSON.stringify(legacyData, null, 2))
+            console.log(`  Copied: ${seriesConfig.outputFile}`)
+          }
+        }
+        catch (e) {
+          console.warn(`  Failed to fetch legacy file: ${e.message}`)
+        }
+
+        return {
+          seriesId,
+          count: onlineData.indexData.total || 0,
+          wallpapers: [], // 线上模式不返回详细数据
+          fromOnline: true,
         }
       }
-      catch (e) {
-        console.warn(`  Failed to fetch legacy file: ${e.message}`)
-      }
+      else {
+        // 线上数据不完整或不可用
+        if (onlineData) {
+          console.warn(`  ⚠️ Online data incomplete: ${actualCount} items (expected min: ${minCount})`)
+        }
+        else {
+          console.warn(`  ⚠️ Online data unavailable`)
+        }
 
-      return {
-        seriesId,
-        count: onlineData.indexData.total || 0,
-        wallpapers: [], // 线上模式不返回详细数据
-        fromOnline: true,
+        // 不回退到 GitHub API，而是报错停止构建
+        throw new Error(`
+❌ 数据源问题检测：
+- 系列: ${seriesConfig.name}
+- 线上数据: ${actualCount} 项 (期望最少: ${minCount} 项)
+- 为避免用不完整数据覆盖完整数据，构建已停止
+- 请检查线上数据源或使用 --github 参数强制使用 GitHub API
+        `)
       }
     }
-
-    // 线上也拉取失败，回退到 GitHub API
-    console.log('  Online fetch failed, falling back to GitHub API...')
-    files = await fetchWallpapersFromGitHub(seriesConfig)
   }
 
   if (files.length === 0) {

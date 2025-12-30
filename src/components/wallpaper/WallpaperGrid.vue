@@ -446,25 +446,31 @@ function animateCardsIn() {
   nextTick(() => {
     const cards = gridRef.value?.querySelectorAll('.wallpaper-card')
     if (cards && cards.length > 0) {
-      // 统一使用向上弹出的入场动画
+      // 在动画开始前，确保容器布局稳定
+      if (wrapperRef.value) {
+        // 强制重新计算布局，避免跳动
+        // eslint-disable-next-line no-unused-expressions
+        wrapperRef.value.offsetHeight
+      }
+
+      // 轻量级入场动画：只使用 opacity 淡入，避免布局跳动
       gsap.fromTo(
         cards,
         {
           opacity: 0,
-          y: 20,
-          scale: 0.98,
         },
         {
           opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.35,
+          duration: 0.25,
           stagger: {
-            amount: 0.25,
+            amount: 0.15,
             from: 'start',
           },
-          ease: 'power2.out',
-          onComplete: warmupFlip,
+          ease: 'power1.out',
+          onComplete: () => {
+            gsap.set(cards, { clearProps: 'opacity' })
+            warmupFlip()
+          },
         },
       )
     }
@@ -528,16 +534,27 @@ watch(() => props.wallpapers, async (newVal, oldVal) => {
     return
   }
 
-  // 分类切换/筛选（从有到有）：先隐藏，再显示并执行动画
+  // 分类切换/筛选（从有到有）：优化切换流程，减少布局跳动
+  // 先记录当前容器高度，避免高度突变
+  let currentHeight = 0
+  if (wrapperRef.value) {
+    currentHeight = wrapperRef.value.offsetHeight
+    wrapperRef.value.style.minHeight = `${currentHeight}px`
+  }
+
   showGrid.value = false
 
   const timer = setTimeout(() => {
     timers.delete(timer)
     showGrid.value = true
     nextTick(() => {
+      // 动画开始前清除固定高度，让容器自然调整
+      if (wrapperRef.value) {
+        wrapperRef.value.style.minHeight = ''
+      }
       animateCardsIn()
     })
-  }, 100)
+  }, 80) // 减少延迟时间，让切换更流畅
   timers.add(timer)
 }, { deep: false })
 
@@ -760,6 +777,10 @@ const skeletonCount = computed(() => isMobile.value ? 6 : 12)
 .wallpaper-grid-wrapper {
   min-height: 400px;
   overflow-x: hidden; // 防止动画时出现横向滚动条
+  // 添加 will-change 提示浏览器优化动画性能
+  will-change: min-height;
+  // 使用 GPU 加速，减少重绘
+  transform: translateZ(0);
 }
 
 // ========================================
@@ -906,6 +927,10 @@ const skeletonCount = computed(() => isMobile.value ? 6 : 12)
   grid-template-columns: repeat(1, 1fr);
   gap: var(--grid-gap);
   transition: opacity 0.15s ease;
+  // 优化网格性能，减少重排
+  contain: layout style;
+  // 使用 GPU 加速
+  transform: translateZ(0);
 
   // 移动端更紧凑的间距
   @include mobile-only {
@@ -914,6 +939,8 @@ const skeletonCount = computed(() => isMobile.value ? 6 : 12)
 
   &.is-hidden {
     opacity: 0;
+    // 隐藏时保持布局，避免高度跳动
+    visibility: hidden;
   }
 
   // 动画进行中禁用 hover 效果，避免干扰
