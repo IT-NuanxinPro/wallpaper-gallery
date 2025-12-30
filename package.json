@@ -9,7 +9,6 @@
     "build:vercel": "node scripts/vercel-build.js",
     "preview": "vite preview",
     "generate": "node scripts/generate-data.js",
-    "generate:local": "node scripts/generate-data.js --local",
     "generate:github": "node scripts/generate-data.js --github",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

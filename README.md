@@ -118,7 +118,7 @@ pnpm preview
 如果你想使用自己的图床：
 1. 修改 `src/utils/constants.js` 中的 CDN 配置
 2. 修改 `scripts/generate-data.js` 中的 `ONLINE_DATA_BASE_URL`
-3. 运行 `pnpm generate --local` 使用本地图床仓库
+3. 将你的图床仓库 clone 到项目同级或父级目录，命名为 `nuanXinProPic`
 
 ## 📁 项目结构
 

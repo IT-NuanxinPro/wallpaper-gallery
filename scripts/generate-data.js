@@ -15,9 +15,7 @@ import { CHAR_MAP_ENCODE, VERSION_PREFIX } from '../src/utils/codec-config.js'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-// 命令行参数：--local 使用本地图床仓库（仅项目维护者使用）
-const USE_LOCAL = process.argv.includes('--local')
-// 命令行参数：--github 强制使用 GitHub API（用于 CI 或调试）
+// 命令行参数：--github 强制使用 GitHub API（用于调试）
 const FORCE_GITHUB = process.argv.includes('--github')
 
 /**
@@ -594,13 +592,11 @@ function generateCategorySplitData(wallpapers, seriesId, seriesConfig) {
  * 处理单个系列
  *
  * 数据获取优先级：
- * 1. --local 参数：使用本地图床仓库（项目维护者）
+ * 1. 本地图床仓库：优先检查（项目维护者或 CI 环境 checkout）
  * 2. 线上数据源：从 wallpaper.061129.xyz 获取（开源用户）
- * 3. 本地路径：CI 环境会 checkout 到 nuanXinProPic 目录（CI 主要方式）
- * 4. GitHub API：最后备用（数据可能不完整）
+ * 3. GitHub API：最后备用（数据可能不完整）
  *
- * 注意：正常情况下，线上数据源应该始终可用（由 CI 自动部署）
- * 如果线上数据源不可用，说明可能存在生产问题
+ * 注意：CI 环境会自动 checkout nuanXinProPic 仓库到本地
  */
 async function processSeries(seriesId, seriesConfig) {
   console.log('')
@@ -610,23 +606,17 @@ async function processSeries(seriesId, seriesConfig) {
   let files = null
   let localRepoPath = null
 
-  // 只有指定 --local 参数时才尝试从本地读取
-  if (USE_LOCAL) {
-    const localResult = fetchWallpapersFromLocal(seriesConfig)
-    if (localResult) {
-      files = localResult.files
-      localRepoPath = localResult.repoPath
-    }
-    else {
-      console.log('  ⚠️ --local specified but local repository not found!')
-    }
+  // 优先尝试从本地图床仓库读取（项目维护者使用 --local，CI 环境自动检测）
+  const localResult = fetchWallpapersFromLocal(seriesConfig)
+  if (localResult) {
+    files = localResult.files
+    localRepoPath = localResult.repoPath
   }
 
   // 数据获取策略：
-  // 1. --local 参数：使用本地图床仓库（项目维护者）
-  // 2. 线上数据源：从 wallpaper.061129.xyz 获取（开源用户和 CI 备用）
-  // 3. 本地路径：CI 环境会 checkout 到 nuanXinProPic 目录（CI 主要方式）
-  // 4. GitHub API：最后备用（数据可能不完整，会有警告）
+  // 1. 本地图床仓库：优先使用（项目维护者 --local 或 CI checkout）
+  // 2. 线上数据源：从 wallpaper.061129.xyz 获取（开源用户）
+  // 3. GitHub API：最后备用（数据可能不完整，会有警告）
 
   if (!files) {
     if (FORCE_GITHUB) {
