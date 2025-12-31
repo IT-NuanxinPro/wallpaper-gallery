@@ -42,7 +42,7 @@ export default defineConfig({
         'src/utils/codec.js',
         'src/utils/constants.js',
         'src/utils/format.js',
-        'src/utils/anti-debug.js',
+        // 'src/utils/anti-debug.js', // 已禁用反调试，无需混淆
         'src/composables/useWallpapers.js', // 数据加载逻辑和 URL 拼接
       ],
     }),

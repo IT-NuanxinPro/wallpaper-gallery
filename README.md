@@ -95,13 +95,30 @@ pnpm preview
 
 ### 📦 开源用户说明
 
-如果你是 fork 本项目的开源用户，运行 `pnpm generate` 时会自动从线上拉取已生成的壁纸数据，无需配置本地图床仓库。
+如果你是 fork 本项目的开源用户：
+
+#### 正常使用（推荐）
+
+运行 `pnpm generate` 或 `pnpm build` 时会自动从线上拉取已生成的壁纸数据。
 
 数据来源：`https://wallpaper.061129.xyz/data/`
 
+**数据完整性保证**：
+- ✅ 线上数据由 GitHub Actions 自动部署，始终保持最新
+- ✅ 包含完整数据
+- ✅ 无需任何额外配置
+
+**如果线上数据源不可用**：
+- ⚠️ 这通常意味着生产环境出现问题
+- 脚本会回退到 GitHub API（数据可能不完整）
+- 建议等待线上数据源恢复后再构建
+
+#### 使用自己的图床
+
 如果你想使用自己的图床：
 1. 修改 `src/utils/constants.js` 中的 CDN 配置
-2. 修改 `scripts/generate-data.js` 中的 `ONLINE_DATA_BASE_URL` 或配置本地图床仓库路径
+2. 修改 `scripts/generate-data.js` 中的 `ONLINE_DATA_BASE_URL`
+3. 将你的图床仓库 clone 到项目同级或父级目录，命名为 `nuanXinProPic`
 
 ## 📁 项目结构
 

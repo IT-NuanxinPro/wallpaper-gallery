@@ -15,8 +15,8 @@ import { CHAR_MAP_ENCODE, VERSION_PREFIX } from '../src/utils/codec-config.js'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-// 命令行参数：--local 使用本地图床仓库（仅项目维护者使用）
-const USE_LOCAL = process.argv.includes('--local')
+// 命令行参数：--github 强制使用 GitHub API（用于调试）
+const FORCE_GITHUB = process.argv.includes('--github')
 
 /**
  * 自定义编码（Base64 + 字符映射 + 反转）
@@ -180,7 +180,6 @@ function extractCategoryFromFilename(filename) {
 /**
  * 从线上拉取已生成的 JSON 数据（开源用户使用）
  * @param {string} seriesId - 系列ID
- * @param {object} _seriesConfig - 系列配置（保留用于未来扩展）
  * @returns {Promise<{indexData: object, categoryData: object}>}
  */
 async function fetchDataFromOnline(seriesId) {
@@ -591,6 +590,13 @@ function generateCategorySplitData(wallpapers, seriesId, seriesConfig) {
 
 /**
  * 处理单个系列
+ *
+ * 数据获取优先级：
+ * 1. 本地图床仓库：优先检查（项目维护者或 CI 环境 checkout）
+ * 2. 线上数据源：从 wallpaper.061129.xyz 获取（开源用户）
+ * 3. GitHub API：最后备用（数据可能不完整）
+ *
+ * 注意：CI 环境会自动 checkout nuanXinProPic 仓库到本地
  */
 async function processSeries(seriesId, seriesConfig) {
   console.log('')
@@ -600,75 +606,92 @@ async function processSeries(seriesId, seriesConfig) {
   let files = null
   let localRepoPath = null
 
-  // 只有指定 --local 参数时才尝试从本地读取
-  if (USE_LOCAL) {
-    const localResult = fetchWallpapersFromLocal(seriesConfig)
-    if (localResult) {
-      files = localResult.files
-      localRepoPath = localResult.repoPath
+  // 优先尝试从本地图床仓库读取（项目维护者使用 --local，CI 环境自动检测）
+  const localResult = fetchWallpapersFromLocal(seriesConfig)
+  if (localResult) {
+    files = localResult.files
+    localRepoPath = localResult.repoPath
+  }
+
+  // 数据获取策略：
+  // 1. 本地图床仓库：优先使用（项目维护者 --local 或 CI checkout）
+  // 2. 线上数据源：从 wallpaper.061129.xyz 获取（开源用户）
+  // 3. GitHub API：最后备用（数据可能不完整，会有警告）
+
+  if (!files) {
+    if (FORCE_GITHUB) {
+      // 强制模式：直接使用 GitHub API（调试用）
+      console.log('  --github flag detected, fetching from GitHub API...')
+      files = await fetchWallpapersFromGitHub(seriesConfig)
     }
     else {
-      console.log('  ⚠️ --local specified but local repository not found!')
+      // 尝试从线上拉取数据
+      console.log('  Fetching from online...')
+      const onlineData = await fetchDataFromOnline(seriesId, seriesConfig)
+
+      if (onlineData && onlineData.indexData && onlineData.indexData.total > 0) {
+        // 线上数据可用，直接使用
+        console.log(`  ✅ Online data available: ${onlineData.indexData.total} items`)
+
+        // 确保输出目录存在
+        const seriesDir = path.join(CONFIG.OUTPUT_DIR, seriesId)
+        if (!fs.existsSync(seriesDir)) {
+          fs.mkdirSync(seriesDir, { recursive: true })
+        }
+
+        // 写入索引文件
+        const indexPath = path.join(seriesDir, 'index.json')
+        fs.writeFileSync(indexPath, JSON.stringify(onlineData.indexData, null, 2))
+        console.log(`  Copied: ${seriesId}/index.json`)
+
+        // 写入分类文件
+        for (const [categoryName, categoryData] of Object.entries(onlineData.categoryData)) {
+          const categoryPath = path.join(seriesDir, `${categoryName}.json`)
+          fs.writeFileSync(categoryPath, JSON.stringify(categoryData, null, 2))
+          console.log(`  Copied: ${seriesId}/${categoryName}.json`)
+        }
+
+        // 同时生成传统的单文件（向后兼容）
+        try {
+          const legacyUrl = `${CONFIG.ONLINE_DATA_BASE_URL}/${seriesConfig.outputFile}`
+          const legacyResponse = await fetch(legacyUrl)
+          if (legacyResponse.ok) {
+            const legacyData = await legacyResponse.json()
+            const legacyPath = path.join(CONFIG.OUTPUT_DIR, seriesConfig.outputFile)
+            fs.writeFileSync(legacyPath, JSON.stringify(legacyData, null, 2))
+            console.log(`  Copied: ${seriesConfig.outputFile}`)
+          }
+        }
+        catch (e) {
+          console.warn(`  Failed to fetch legacy file: ${e.message}`)
+        }
+
+        return {
+          seriesId,
+          count: onlineData.indexData.total || 0,
+          wallpapers: [],
+          fromOnline: true,
+        }
+      }
+      else {
+        // 线上数据不可用，记录警告
+        console.warn(`  ⚠️ Online data unavailable, will try local/GitHub sources`)
+      }
     }
   }
 
-  // 默认从线上拉取（或本地未找到时）
+  // 如果线上数据不可用，继续尝试本地或 GitHub API
   if (!files) {
-    console.log('  Fetching from online...')
-    const onlineData = await fetchDataFromOnline(seriesId, seriesConfig)
+    console.warn(`  ⚠️ No data source available for ${seriesConfig.name}`)
+    console.warn(`  📝 This may indicate a production issue if online source is down`)
+    console.warn(`  💡 Falling back to GitHub API (may have incomplete data)`)
 
-    if (onlineData) {
-      // 直接复制线上数据到本地
-      console.log(`  Successfully fetched online data for ${seriesConfig.name}`)
-
-      // 确保输出目录存在
-      const seriesDir = path.join(CONFIG.OUTPUT_DIR, seriesId)
-      if (!fs.existsSync(seriesDir)) {
-        fs.mkdirSync(seriesDir, { recursive: true })
-      }
-
-      // 写入索引文件
-      const indexPath = path.join(seriesDir, 'index.json')
-      fs.writeFileSync(indexPath, JSON.stringify(onlineData.indexData, null, 2))
-      console.log(`  Copied: ${seriesId}/index.json`)
-
-      // 写入分类文件
-      for (const [categoryName, categoryData] of Object.entries(onlineData.categoryData)) {
-        const categoryPath = path.join(seriesDir, `${categoryName}.json`)
-        fs.writeFileSync(categoryPath, JSON.stringify(categoryData, null, 2))
-        console.log(`  Copied: ${seriesId}/${categoryName}.json`)
-      }
-
-      // 同时生成传统的单文件（向后兼容）
-      // 从线上拉取传统格式
-      try {
-        const legacyUrl = `${CONFIG.ONLINE_DATA_BASE_URL}/${seriesConfig.outputFile}`
-        const legacyResponse = await fetch(legacyUrl)
-        if (legacyResponse.ok) {
-          const legacyData = await legacyResponse.json()
-          const legacyPath = path.join(CONFIG.OUTPUT_DIR, seriesConfig.outputFile)
-          fs.writeFileSync(legacyPath, JSON.stringify(legacyData, null, 2))
-          console.log(`  Copied: ${seriesConfig.outputFile}`)
-        }
-      }
-      catch (e) {
-        console.warn(`  Failed to fetch legacy file: ${e.message}`)
-      }
-
-      return {
-        seriesId,
-        count: onlineData.indexData.total || 0,
-        wallpapers: [], // 线上模式不返回详细数据
-        fromOnline: true,
-      }
-    }
-
-    // 线上也拉取失败，回退到 GitHub API
-    console.log('  Online fetch failed, falling back to GitHub API...')
+    // 最后尝试 GitHub API
+    console.log(`  Fetching from GitHub API as last resort...`)
     files = await fetchWallpapersFromGitHub(seriesConfig)
   }
 
-  if (files.length === 0) {
+  if (!files || files.length === 0) {
     console.log(`  No image files found for ${seriesConfig.name}`)
     const wallpapers = []
     const blob = encodeData(JSON.stringify(wallpapers))
