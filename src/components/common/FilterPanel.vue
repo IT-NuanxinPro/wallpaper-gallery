@@ -394,10 +394,11 @@ function resetFilters() {
         v-model:show="showFilterPopup"
         position="bottom"
         round
-        :style="{ maxHeight: '60%' }"
         class="filter-popup"
         :teleport="null"
         :close-on-click-overlay="true"
+        :lock-scroll="true"
+        safe-area-inset-bottom
       >
         <div class="popup-content">
           <!-- 弹窗头部 -->
@@ -827,6 +828,7 @@ function resetFilters() {
   justify-content: space-between;
   padding: 16px;
   border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
 }
 
 .popup-title {
@@ -863,8 +865,6 @@ function resetFilters() {
 
 .popup-body {
   padding: 16px;
-  max-height: 50vh;
-  overflow-y: auto;
 }
 
 .filter-group {
@@ -934,7 +934,9 @@ function resetFilters() {
 
 .popup-footer {
   padding: 16px;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
   border-top: 1px solid var(--color-border);
+  background: var(--color-bg-primary);
 }
 
 .confirm-btn {
