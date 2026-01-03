@@ -256,8 +256,9 @@ export const useFilterStore = defineStore('filter', () => {
   /**
    * 根据系列设置默认排序
    */
-  function setDefaultSortBySeries(series) {
-    const defaultSort = ['mobile', 'avatar'].includes(series) ? 'popular' : 'newest'
+  function setDefaultSortBySeries(_series) {
+    // 所有系列默认使用最新优先
+    const defaultSort = 'newest'
     sortBy.value = defaultSort
   }
 
