@@ -5,6 +5,7 @@
 import { spawn } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
+import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import puppeteer from 'puppeteer'
 
@@ -99,4 +100,11 @@ async function prerender() {
   console.log('\n✨ Prerender complete!')
 }
 
-prerender().catch(console.error)
+prerender()
+  .then(() => {
+    process.exit(0)
+  })
+  .catch((error) => {
+    console.error(error)
+    process.exit(1)
+  })
