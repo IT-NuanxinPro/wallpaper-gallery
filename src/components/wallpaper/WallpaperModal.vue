@@ -2,6 +2,7 @@
 import { gsap } from 'gsap'
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
+import BingWallpaperInfo from '@/components/wallpaper/BingWallpaperInfo.vue'
 import ImageCropModal from '@/components/wallpaper/ImageCropModal.vue'
 import { useDevice } from '@/composables/useDevice'
 import { useWallpaperType } from '@/composables/useWallpaperType'
@@ -295,6 +296,9 @@ const categoryDisplay = computed(() => {
   return category
 })
 
+// Bing 壁纸判断（详细信息由 BingWallpaperInfo 组件处理）
+const isBingWallpaper = computed(() => props.wallpaper?.isBing === true)
+
 // 原图分辨率信息（如果 JSON 数据中有分辨率但标签可能过时，使用 getResolutionLabel 重新计算）
 const originalResolution = computed(() => {
   if (!props.wallpaper?.resolution) {
@@ -518,11 +522,18 @@ onUnmounted(() => {
           <!-- 图片加载完成后显示真实信息 -->
           <template v-else>
             <div class="info-header">
-              <h3 class="info-title">
+              <!-- Bing 壁纸信息（使用独立组件） -->
+              <BingWallpaperInfo
+                v-if="isBingWallpaper"
+                :wallpaper="wallpaper"
+                :compact="useCompactInfo"
+              />
+              <!-- 普通壁纸文件名 -->
+              <h3 v-if="!isBingWallpaper" class="info-title">
                 {{ displayFilename }}
               </h3>
-              <!-- 分类信息 -->
-              <div v-if="categoryDisplay" class="info-category">
+              <!-- 分类信息（普通壁纸） -->
+              <div v-if="categoryDisplay && !isBingWallpaper" class="info-category">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
                   <polyline points="9 22 9 12 15 12 15 22" />
@@ -533,7 +544,7 @@ onUnmounted(() => {
                 <!-- 紧凑布局显示原图清晰度，PC端显示预览图清晰度 -->
                 <span v-if="useCompactInfo && originalResolution" class="tag" :class="[`tag--${originalResolution.type || 'success'}`]">{{ originalResolution.label }}</span>
                 <span v-else class="tag" :class="[`tag--${resolution.type || 'success'}`]">{{ resolution.label }}</span>
-                <span class="tag tag--secondary">{{ fileExt }}</span>
+                <span v-if="!isBingWallpaper" class="tag tag--secondary">{{ fileExt }}</span>
                 <!-- 浏览量和下载量 -->
                 <span v-if="viewCount > 0" class="tag tag--view">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -552,7 +563,7 @@ onUnmounted(() => {
             </div>
 
             <!-- 移动端：原图信息卡片（突出显示高清质量） -->
-            <div v-if="isMobile && originalResolution" class="mobile-original-card">
+            <div v-if="isMobile && originalResolution && !isBingWallpaper" class="mobile-original-card">
               <div class="mobile-card-header">
                 <span class="mobile-card-label">原图信息</span>
                 <span class="mobile-resolution-tag" :class="[`tag--${originalResolution.type || 'success'}`]">
@@ -617,7 +628,7 @@ onUnmounted(() => {
             </div>
 
             <!-- 原图信息卡片（仅水平布局且有预览图时显示，突出原图质量吸引下载） -->
-            <div v-if="useHorizontalLayout && hasPreview && originalResolution" class="original-info-card">
+            <div v-if="useHorizontalLayout && hasPreview && originalResolution && !isBingWallpaper" class="original-info-card">
               <div class="original-info-header">
                 <span class="original-label">原图</span>
                 <span class="original-resolution-tag" :class="[`tag--${originalResolution.type || 'success'}`]">

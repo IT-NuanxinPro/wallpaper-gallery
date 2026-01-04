@@ -65,11 +65,11 @@ $container-max-width: 1440px;
 $grid-gap: 24px;
 
 // 响应式断点（与 JS useDevice 保持一致）
-$breakpoint-xs: 576px;   // 小屏手机
-$breakpoint-sm: 768px;   // 大屏手机/小平板（移动端/平板分界线）
-$breakpoint-md: 1024px;  // 平板/小型桌面（平板/PC端分界线）
-$breakpoint-lg: 1200px;  // 大型桌面
-$breakpoint-xl: 1440px;  // 超大桌面
+$breakpoint-xs: 576px; // 小屏手机
+$breakpoint-sm: 768px; // 大屏手机/小平板（移动端/平板分界线）
+$breakpoint-md: 1024px; // 平板/小型桌面（平板/PC端分界线）
+$breakpoint-lg: 1200px; // 大型桌面
+$breakpoint-xl: 1440px; // 超大桌面
 
 // 响应式 mixin
 @mixin respond-to($breakpoint) {

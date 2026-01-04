@@ -1,5 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue'
+import BingDatePicker from '@/components/common/BingDatePicker.vue'
 import CategoryDropdown from '@/components/common/CategoryDropdown.vue'
 import MobileCategoryDrawer from '@/components/common/MobileCategoryDrawer.vue'
 import { useDevice } from '@/composables/useDevice'
@@ -44,6 +45,16 @@ const props = defineProps({
   loading: {
     type: Boolean,
     default: false,
+  },
+  // 是否隐藏格式筛选（用于 Bing 等格式固定的系列）
+  hideFormatFilter: {
+    type: Boolean,
+    default: false,
+  },
+  // 当前系列 ID（用于判断是否显示 Bing 日期选择器）
+  currentSeries: {
+    type: String,
+    default: '',
   },
 })
 
@@ -274,8 +285,17 @@ function resetFilters() {
 
       <div class="filter-divider" />
 
-      <!-- Category Filter (自定义下拉) -->
-      <div class="filter-item">
+      <!-- Bing 日期选择器 -->
+      <div v-if="currentSeries === 'bing'" class="filter-item">
+        <span class="filter-label">日期</span>
+        <BingDatePicker
+          :model-value="categoryFilter"
+          @update:model-value="handleCategoryUpdate"
+        />
+      </div>
+
+      <!-- 其他系列的分类筛选器 -->
+      <div v-else class="filter-item">
         <span class="filter-label">分类</span>
         <CategoryDropdown
           :category-options="categoryOptions"
@@ -287,7 +307,7 @@ function resetFilters() {
       </div>
 
       <!-- Format Filter -->
-      <div class="filter-item">
+      <div v-if="!hideFormatFilter" class="filter-item">
         <span class="filter-label">格式</span>
         <el-select
           :model-value="formatFilter"
@@ -419,7 +439,7 @@ function resetFilters() {
           <!-- 筛选选项 -->
           <div class="popup-body">
             <!-- 格式 -->
-            <div class="filter-group">
+            <div v-if="!hideFormatFilter" class="filter-group">
               <h3 class="group-title">
                 格式
               </h3>

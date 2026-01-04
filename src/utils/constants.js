@@ -21,7 +21,7 @@ const CDN_BASE = `${_cdnParts.p}${_cdnParts.h}${_cdnParts.g}${_cdnParts.r}`
 // const _cdnParts = { p: 'https:/', h: '/raw.githubusercontent.com', g: '/IT-NuanxinPro', r: '/nuanXinProPic/main' }
 
 // ========================================
-// 三大系列配置
+// 四大系列配置
 // ========================================
 export const SERIES_CONFIG = {
   desktop: {
@@ -66,13 +66,34 @@ export const SERIES_CONFIG = {
     categoryBaseUrl: `${import.meta.env.BASE_URL}data/avatar`,
     aspectRatio: '1/1',
   },
+  bing: {
+    id: 'bing',
+    name: '每日Bing',
+    icon: 'calendar',
+    // Bing 使用独立目录结构：bing/{年}/{月}/{日期}.jpg
+    // 缩略图/预览图通过 Bing CDN + urlbase 动态拼接
+    bingCdnBase: 'https://cn.bing.com',
+    // 本地 4K 原图基础路径
+    imageBaseUrl: `${CDN_BASE}/bing`,
+    // 元数据 API
+    indexUrl: `${import.meta.env.BASE_URL}data/bing/index.json`,
+    latestUrl: `${import.meta.env.BASE_URL}data/bing/latest.json`,
+    yearBaseUrl: `${import.meta.env.BASE_URL}data/bing`,
+    aspectRatio: '16/9',
+    isDaily: true,
+    hasMetadata: true,
+    // Bing 壁纸格式固定为 JPG，隐藏格式筛选
+    hideFormatFilter: true,
+    // Bing 仅 PC 端显示
+    pcOnly: true,
+  },
 }
 
-// 设备可见的系列（PC端显示所有系列，平板显示所有系列，移动端显示mobile+avatar）
+// 设备可见的系列（PC端显示所有系列，平板显示所有系列，移动端不显示 Bing）
 export const DEVICE_SERIES = {
-  desktop: ['desktop', 'mobile', 'avatar'], // PC端可见所有系列
-  tablet: ['desktop', 'mobile', 'avatar'], // 平板可见所有系列（横屏看桌面壁纸，竖屏看手机壁纸）
-  mobile: ['mobile', 'avatar'], // 移动端只显示手机壁纸和头像
+  desktop: ['desktop', 'bing', 'mobile', 'avatar'], // PC端可见所有系列
+  tablet: ['desktop', 'bing', 'mobile', 'avatar'], // 平板可见所有系列
+  mobile: ['mobile', 'avatar'], // 移动端只显示手机壁纸和头像（Bing 仅 PC 端）
 }
 
 // 默认系列（根据设备类型）
@@ -83,7 +104,7 @@ export const DEFAULT_SERIES = {
 }
 
 // 所有系列ID列表
-export const ALL_SERIES = ['desktop', 'mobile', 'avatar']
+export const ALL_SERIES = ['desktop', 'bing', 'mobile', 'avatar']
 
 // ========================================
 // 图片代理服务配置（备用方案，如本地缩略图不可用时使用）

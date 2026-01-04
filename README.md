@@ -61,7 +61,7 @@
 | --- | --- |
 | 框架 | Vue 3.5 (Composition API + script setup) |
 | 构建工具 | Vite 7 |
-| UI 组件 | Element Plus (PC端) + Vant (移动端) |
+| UI 组件 | Element Plus (PC端 + Bing 日期选择) + Vant (移动端) |
 | 动画 | GSAP + Flip 插件 |
 | 图片裁剪 | Cropper.js |
 | 样式 | Sass + postcss-pxtorem (移动端适配) |
@@ -148,7 +148,7 @@ wallpaper-gallery/
 └── index.html
 ```
 
-## 📱 三大系列
+## 📱 四大系列
 
 | 系列 | 路由 | 设备可见性 | 宽高比 |
 | --- | --- | --- | --- |

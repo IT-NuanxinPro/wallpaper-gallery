@@ -20,7 +20,7 @@ import { usePopularityStore } from '@/stores/popularity'
 import { useSeriesStore } from '@/stores/series'
 import { useWallpaperStore } from '@/stores/wallpaper'
 // Constants
-import { DEVICE_SERIES } from '@/utils/constants'
+import { DEVICE_SERIES, SERIES_CONFIG } from '@/utils/constants'
 
 const route = useRoute()
 const router = useRouter()
@@ -48,6 +48,9 @@ const currentSeries = computed(() => seriesStore.currentSeries)
 
 // 是否使用竖屏弹窗
 const usePortraitModal = computed(() => ['mobile', 'avatar'].includes(currentSeries.value))
+
+// 是否隐藏格式筛选（Bing 系列格式固定为 JPG）
+const hideFormatFilter = computed(() => SERIES_CONFIG[currentSeries.value]?.hideFormatFilter === true)
 
 // 整体加载状态
 const loading = computed(() => isLoading.value || wallpaperStore.loading || popularityStore.loading)
@@ -240,6 +243,8 @@ onMounted(async () => {
         :result-count="resultCount"
         :total-count="wallpaperStore.displayTotal"
         :loading="loading"
+        :hide-format-filter="hideFormatFilter"
+        :current-series="currentSeries"
         @reset="handleReset"
       />
 

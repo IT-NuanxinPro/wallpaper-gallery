@@ -2,7 +2,7 @@
 // 格式化工具函数
 // ========================================
 
-import { CDN_VERSION, RESOLUTION_THRESHOLDS } from '@/utils/constants'
+import { CDN_VERSION, RESOLUTION_THRESHOLDS, SERIES_CONFIG } from '@/utils/constants'
 
 // URL 构建器（运行时动态拼接，防止静态分析提取完整 URL）
 const _urlParts = {
@@ -234,4 +234,74 @@ export async function downloadFile(url, filename, delay = 300) {
     // 降级方案：直接打开链接
     window.open(url, '_blank')
   }
+}
+
+// ========================================
+// Bing 壁纸专用函数
+// ========================================
+
+/**
+ * 构建 Bing 缩略图 URL
+ * @param {string} urlbase - Bing urlbase，如 /th?id=OHR.xxx_EN-US123
+ * @returns {string} 缩略图 URL（400x240）
+ */
+export function buildBingThumbnailUrl(urlbase) {
+  if (!urlbase)
+    return ''
+  const bingCdnBase = SERIES_CONFIG.bing?.bingCdnBase || 'https://www.bing.com'
+  return `${bingCdnBase}${urlbase}_400x240.jpg`
+}
+
+/**
+ * 构建 Bing 预览图 URL
+ * @param {string} urlbase - Bing urlbase，如 /th?id=OHR.xxx_EN-US123
+ * @returns {string} 预览图 URL（1920x1080）
+ */
+export function buildBingPreviewUrl(urlbase) {
+  if (!urlbase)
+    return ''
+  const bingCdnBase = SERIES_CONFIG.bing?.bingCdnBase || 'https://www.bing.com'
+  return `${bingCdnBase}${urlbase}_1920x1080.jpg`
+}
+
+/**
+ * 构建 Bing UHD 原图 URL（直接使用 Bing CDN）
+ * Bing 图片链接永久有效，无需本地存储
+ * @param {string} urlbase - Bing urlbase，如 /th?id=OHR.xxx_ZH-CN123
+ * @returns {string} UHD 原图 URL
+ */
+export function buildBingUHDUrl(urlbase) {
+  if (!urlbase)
+    return ''
+  const bingCdnBase = SERIES_CONFIG.bing?.bingCdnBase || 'https://cn.bing.com'
+  return `${bingCdnBase}${urlbase}_UHD.jpg`
+}
+
+/**
+ * 格式化 Bing 壁纸日期显示
+ * @param {string} date - 日期字符串，如 2025-01-01
+ * @returns {string} 格式化后的日期，如 1月1日
+ */
+export function formatBingDate(date) {
+  if (!date)
+    return ''
+  const d = new Date(date)
+  const month = d.getMonth() + 1
+  const day = d.getDate()
+  return `${month}月${day}日`
+}
+
+/**
+ * 格式化 Bing 壁纸完整日期显示
+ * @param {string} date - 日期字符串，如 2025-01-01
+ * @returns {string} 格式化后的日期，如 2025年1月1日
+ */
+export function formatBingFullDate(date) {
+  if (!date)
+    return ''
+  const d = new Date(date)
+  const year = d.getFullYear()
+  const month = d.getMonth() + 1
+  const day = d.getDate()
+  return `${year}年${month}月${day}日`
 }

@@ -5,13 +5,16 @@ import { useWallpaperStore } from '@/stores/wallpaper'
 const currentYear = new Date().getFullYear()
 const wallpaperStore = useWallpaperStore()
 const { statistics } = storeToRefs(wallpaperStore)
+
+// 开发环境显示统计，生产环境隐藏
+const isDev = import.meta.env.DEV
 </script>
 
 <template>
   <footer class="app-footer">
     <div class="footer-container">
-      <!-- 统计信息 -->
-      <div v-if="statistics.total > 0" class="footer-stats">
+      <!-- 统计信息（仅开发环境显示） -->
+      <div v-if="isDev && statistics.total > 0" class="footer-stats">
         <div class="stats-title">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M18 20V10M12 20V4M6 20v-6" />

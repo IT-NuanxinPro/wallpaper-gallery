@@ -199,6 +199,62 @@ textarea {
 ul,
 ol {
   list-style: none;
+
+  // Element Plus DatePicker
+  .el-date-picker {
+    --el-datepicker-border-color: #{$color-border-dark};
+    background-color: #{$color-bg-card-dark} !important;
+    border-color: #{$color-border-dark} !important;
+  }
+
+  .el-picker-panel__body {
+    background-color: #{$color-bg-card-dark} !important;
+  }
+
+  .el-date-picker__header {
+    border-bottom-color: #{$color-border-dark} !important;
+  }
+
+  .el-date-table td.available:hover {
+    color: #{$color-accent-dark} !important;
+  }
+
+  .el-date-table td.current:not(.disabled) span {
+    background-color: #{$color-accent-dark} !important;
+    color: white !important;
+  }
+
+  .el-date-table td.today span {
+    color: #{$color-accent-dark} !important;
+    font-weight: bold;
+  }
+
+  .el-month-table td.current:not(.disabled) .cell {
+    color: #{$color-accent-dark} !important;
+  }
+
+  .el-month-table td .cell:hover {
+    color: #{$color-accent-dark} !important;
+  }
+
+  .el-month-table td.today .cell {
+    color: #{$color-accent-dark} !important;
+    font-weight: bold;
+  }
+
+  // DatePicker 输入框
+  .el-input__wrapper {
+    background-color: #{$color-bg-secondary-dark} !important;
+    box-shadow: 0 0 0 1px #{$color-border-dark} inset !important;
+
+    &:hover {
+      box-shadow: 0 0 0 1px #{$color-text-muted-dark} inset !important;
+    }
+
+    &.is-focus {
+      box-shadow: 0 0 0 1px #{$color-accent-dark} inset !important;
+    }
+  }
 }
 
 // ========================================

@@ -3,7 +3,7 @@ import { gsap } from 'gsap'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useDevice } from '@/composables/useDevice'
 import { IMAGE_PROXY } from '@/utils/constants'
-import { formatFileSize, formatNumber, formatRelativeTime, getDisplayFilename, highlightText } from '@/utils/format'
+import { formatBingDate, formatFileSize, formatNumber, formatRelativeTime, getDisplayFilename, highlightText } from '@/utils/format'
 
 const props = defineProps({
   wallpaper: {
@@ -116,6 +116,23 @@ const categoryDisplay = computed(() => {
   if (subcategory)
     return `${category} / ${subcategory}`
   return category
+})
+
+// Bing 壁纸特有属性
+const isBingWallpaper = computed(() => props.wallpaper?.isBing === true)
+const bingTitle = computed(() => props.wallpaper?.title || '')
+const bingDate = computed(() => {
+  if (!props.wallpaper?.date)
+    return ''
+  return formatBingDate(props.wallpaper.date)
+})
+const bingCopyright = computed(() => {
+  if (!props.wallpaper?.copyright)
+    return ''
+  // 简化版权信息，只显示主要内容
+  const copyright = props.wallpaper.copyright
+  const parenIndex = copyright.indexOf('(')
+  return parenIndex > 0 ? copyright.substring(0, parenIndex).trim() : copyright
 })
 
 // 计算卡片图片样式 - 动态宽高比
@@ -278,12 +295,23 @@ function handleMouseLeave(e) {
       >
 
       <!-- 分类标签（移动端网格/瀑布流视图显示在图片上） -->
-      <div v-if="categoryDisplay && isMobile && (viewMode === 'grid' || viewMode === 'masonry')" class="card-category-badge">
+      <div v-if="categoryDisplay && isMobile && (viewMode === 'grid' || viewMode === 'masonry') && !isBingWallpaper" class="card-category-badge">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
           <polyline points="9 22 9 12 15 12 15 22" />
         </svg>
         <span>{{ categoryDisplay }}</span>
+      </div>
+
+      <!-- Bing 壁纸日期标签（移动端显示在图片上） -->
+      <div v-if="isBingWallpaper && isMobile && (viewMode === 'grid' || viewMode === 'masonry')" class="card-bing-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+        </svg>
+        <span>{{ bingDate }}</span>
       </div>
 
       <!-- Overlay on hover (仅 PC 端显示) -->
@@ -303,45 +331,77 @@ function handleMouseLeave(e) {
 
     <!-- Card Info -->
     <div class="card-info">
-      <!-- 第一行：文件名 -->
-      <p class="card-filename" :title="displayFilename">
-        <template v-for="(part, idx) in highlightedFilename" :key="idx">
-          <span v-if="part.highlight" class="highlight">{{ part.text }}</span>
-          <span v-else>{{ part.text }}</span>
-        </template>
-      </p>
-      <!-- 分类信息 -->
-      <div v-if="categoryDisplay" class="card-category">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-          <polyline points="9 22 9 12 15 12 15 22" />
-        </svg>
-        <span>{{ categoryDisplay }}</span>
-      </div>
-      <!-- 第二行：文件大小、访问量、下载量 -->
-      <div class="card-meta">
-        <span class="meta-item">{{ formattedSize }}</span>
-        <!-- 访问量 -->
-        <span v-if="viewCount > 0" class="meta-item meta-views">
+      <!-- Bing 壁纸专用信息展示 -->
+      <template v-if="isBingWallpaper">
+        <!-- Bing 标题 -->
+        <p class="card-filename card-bing-title" :title="bingTitle">
+          {{ bingTitle }}
+        </p>
+        <!-- Bing 日期和版权 -->
+        <div class="card-bing-meta">
+          <span class="bing-date">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+            </svg>
+            {{ bingDate }}
+          </span>
+          <span class="bing-resolution">4K</span>
+        </div>
+        <!-- 版权信息 -->
+        <div v-if="bingCopyright" class="card-bing-copyright" :title="wallpaper.copyright">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-            <circle cx="12" cy="12" r="3" />
+            <circle cx="12" cy="12" r="10" />
+            <path d="M14.83 14.83a4 4 0 1 1 0-5.66" />
           </svg>
-          {{ formatNumber(viewCount) }}
-        </span>
-        <!-- 下载次数 -->
-        <span v-if="downloadCount > 0" class="meta-item meta-downloads">
+          <span>{{ bingCopyright }}</span>
+        </div>
+      </template>
+
+      <!-- 普通壁纸信息展示 -->
+      <template v-else>
+        <!-- 第一行：文件名 -->
+        <p class="card-filename" :title="displayFilename">
+          <template v-for="(part, idx) in highlightedFilename" :key="idx">
+            <span v-if="part.highlight" class="highlight">{{ part.text }}</span>
+            <span v-else>{{ part.text }}</span>
+          </template>
+        </p>
+        <!-- 分类信息 -->
+        <div v-if="categoryDisplay" class="card-category">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
           </svg>
-          {{ formatNumber(downloadCount) }}
-        </span>
-      </div>
-      <!-- 第三行：上传时间、格式标签 -->
-      <div class="card-meta-secondary">
-        <span class="meta-item meta-time">{{ relativeTime }}</span>
-        <span class="meta-item meta-format">{{ fileFormat }}</span>
-      </div>
+          <span>{{ categoryDisplay }}</span>
+        </div>
+        <!-- 第二行：文件大小、访问量、下载量 -->
+        <div class="card-meta">
+          <span class="meta-item">{{ formattedSize }}</span>
+          <!-- 访问量 -->
+          <span v-if="viewCount > 0" class="meta-item meta-views">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            {{ formatNumber(viewCount) }}
+          </span>
+          <!-- 下载次数 -->
+          <span v-if="downloadCount > 0" class="meta-item meta-downloads">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+            </svg>
+            {{ formatNumber(downloadCount) }}
+          </span>
+        </div>
+        <!-- 第三行：上传时间、格式标签 -->
+        <div class="card-meta-secondary">
+          <span class="meta-item meta-time">{{ relativeTime }}</span>
+          <span class="meta-item meta-format">{{ fileFormat }}</span>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -711,6 +771,98 @@ function handleMouseLeave(e) {
       gap: $spacing-md;
       font-size: $font-size-xs;
     }
+  }
+}
+
+// ========================================
+// Bing 壁纸专用样式
+// ========================================
+
+// Bing 日期标签（移动端图片上）
+.card-bing-badge {
+  position: absolute;
+  bottom: $spacing-xs;
+  left: $spacing-xs;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: linear-gradient(135deg, #0078d4, #106ebe);
+  color: white;
+  font-size: 11px;
+  font-weight: $font-weight-semibold;
+  border-radius: $radius-sm;
+  box-shadow: 0 2px 8px rgba(0, 120, 212, 0.3);
+
+  svg {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+// Bing 标题样式
+.card-bing-title {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: $spacing-xs;
+  line-height: 1.4;
+}
+
+// Bing 元信息（日期 + 分辨率）
+.card-bing-meta {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-xs;
+  font-size: $font-size-xs;
+  color: var(--color-text-secondary);
+
+  .bing-date {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #0078d4;
+    font-weight: $font-weight-medium;
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  .bing-resolution {
+    padding: 2px 8px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    font-size: 10px;
+    font-weight: $font-weight-bold;
+    border-radius: $radius-full;
+  }
+}
+
+// Bing 版权信息
+.card-bing-copyright {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: $font-size-xs;
+  color: var(--color-text-muted);
+
+  svg {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+  }
+
+  span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 </style>

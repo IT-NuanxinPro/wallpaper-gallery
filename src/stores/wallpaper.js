@@ -7,7 +7,7 @@ import { computed, ref } from 'vue'
 import { isWorkerAvailable, workerDecodeAndParse } from '@/composables/useWorker'
 import { decodeData } from '@/utils/codec'
 import { SERIES_CONFIG } from '@/utils/constants'
-import { buildImageUrl } from '@/utils/format'
+import { buildBingPreviewUrl, buildBingThumbnailUrl, buildBingUHDUrl, buildImageUrl } from '@/utils/format'
 
 export const useWallpaperStore = defineStore('wallpaper', () => {
   // ========================================
@@ -212,6 +212,51 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
     }
   }
 
+  /**
+   * 转换 Bing 壁纸数据为标准格式
+   * @param {object} bingItem - Bing 壁纸元数据
+   * @returns {object} 标准壁纸格式
+   */
+  function transformBingWallpaper(bingItem) {
+    // UHD 原图 URL（直接使用 Bing CDN）
+    const uhdUrl = buildBingUHDUrl(bingItem.urlbase)
+
+    return {
+      id: `bing-${bingItem.date}`,
+      filename: `bing-${bingItem.date}.jpg`,
+      // Bing 壁纸按日期分类
+      category: bingItem.date.substring(0, 7), // 年-月，如 2025-01
+      // 所有图片都使用 Bing CDN
+      url: uhdUrl,
+      downloadUrl: uhdUrl,
+      thumbnailUrl: buildBingThumbnailUrl(bingItem.urlbase),
+      previewUrl: buildBingPreviewUrl(bingItem.urlbase),
+      // Bing 特有字段
+      date: bingItem.date,
+      title: bingItem.title,
+      copyright: bingItem.copyright,
+      copyrightlink: bingItem.copyrightlink,
+      quiz: bingItem.quiz,
+      urlbase: bingItem.urlbase,
+      hsh: bingItem.hsh,
+      // 标准字段（Bing 不提供文件大小，UHD 图片约 1-3MB）
+      size: 0,
+      format: 'JPG',
+      createdAt: `${bingItem.date}T00:00:00Z`,
+      // Bing UHD 壁纸分辨率（通常为 3840x2160 或更高）
+      resolution: {
+        width: 3840,
+        height: 2160,
+        label: '4K UHD',
+        type: 'success',
+      },
+      // 标记为 Bing 系列
+      isBing: true,
+      // 搜索标签
+      tags: [bingItem.title, bingItem.date.substring(0, 7)],
+    }
+  }
+
   // ========================================
   // Actions
   // ========================================
@@ -374,6 +419,160 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
   }
 
   /**
+   * 初始化 Bing 每日壁纸系列
+   * Bing 系列使用年度数据文件结构，不同于其他系列的分类结构
+   */
+  async function initBingSeries(seriesId, forceRefresh = false) {
+    // 如果已加载相同系列且有数据，跳过
+    if (!forceRefresh && currentLoadedSeries.value === seriesId && wallpapers.value.length > 0) {
+      return
+    }
+
+    // 立即清空旧数据
+    wallpapers.value = []
+
+    loading.value = true
+    error.value = null
+    errorType.value = null
+    currentLoadedSeries.value = seriesId
+    loadedCategories.value = new Set()
+    isBackgroundLoading.value = false
+    initialLoadedCount.value = 0
+    expectedTotal.value = 0
+
+    const seriesConfig = SERIES_CONFIG[seriesId]
+
+    try {
+      // 1. 加载 Bing 索引文件
+      const indexUrl = seriesConfig.indexUrl
+      const indexResponse = await fetchWithRetry(indexUrl)
+      const indexData = await indexResponse.json()
+
+      // 记录预期总数
+      expectedTotal.value = indexData.total || 0
+
+      // 2. 首屏优化：先加载最近数据 (latest.json)
+      let initialWallpapers = []
+      try {
+        const latestUrl = seriesConfig.latestUrl
+        const latestResponse = await fetchWithRetry(latestUrl)
+        const latestData = await latestResponse.json()
+
+        if (latestData.items && Array.isArray(latestData.items)) {
+          initialWallpapers = latestData.items.map((item, index) =>
+            transformBingWallpaper(item, index),
+          )
+        }
+      }
+      catch (e) {
+        console.warn('Failed to load latest.json, will load from year data:', e)
+      }
+
+      // 3. 立即显示最近数据
+      if (initialWallpapers.length > 0) {
+        wallpapers.value = initialWallpapers
+        initialLoadedCount.value = initialWallpapers.length
+        // 标记已加载的日期
+        initialWallpapers.forEach((w) => {
+          loadedCategories.value.add(w.date)
+        })
+      }
+
+      // 4. 清除错误状态
+      error.value = null
+      errorType.value = null
+
+      // 5. 后台加载所有年度数据
+      if (indexData.years && Array.isArray(indexData.years) && indexData.years.length > 0) {
+        isBackgroundLoading.value = true
+        loadBingYearDataSilently(seriesId, indexData.years)
+      }
+      else {
+        // 没有年度数据，预期总数为实际数量
+        expectedTotal.value = wallpapers.value.length
+      }
+    }
+    catch (e) {
+      console.error(`Failed to init Bing series:`, e)
+      const errType = classifyError(e)
+      errorType.value = errType
+      error.value = getErrorMessage(e, errType, 'Bing 每日壁纸')
+      wallpapers.value = []
+    }
+    finally {
+      loading.value = false
+    }
+  }
+
+  /**
+   * 后台加载 Bing 年度数据（静默模式，收集完整数据后一次性更新）
+   */
+  async function loadBingYearDataSilently(seriesId, years) {
+    const seriesConfig = SERIES_CONFIG[seriesId]
+    const allWallpapers = []
+
+    try {
+      // 按年份降序加载（最新的先加载）
+      const sortedYears = [...years].sort((a, b) => b.year - a.year)
+
+      for (const yearInfo of sortedYears) {
+        // 检查系列是否已切换
+        if (currentLoadedSeries.value !== seriesId) {
+          return
+        }
+
+        try {
+          const yearUrl = `${seriesConfig.yearBaseUrl}/${yearInfo.file}`
+          const yearResponse = await fetchWithRetry(yearUrl)
+          const yearData = await yearResponse.json()
+
+          if (yearData.items && Array.isArray(yearData.items)) {
+            // 过滤已加载的数据（避免重复）
+            const newItems = yearData.items.filter(
+              item => !loadedCategories.value.has(item.date),
+            )
+
+            // 转换数据格式
+            const transformedItems = newItems.map((item, index) =>
+              transformBingWallpaper(item, allWallpapers.length + index),
+            )
+
+            allWallpapers.push(...transformedItems)
+
+            // 标记已加载
+            newItems.forEach((item) => {
+              loadedCategories.value.add(item.date)
+            })
+          }
+
+          // 批次间暂停
+          await delay(100)
+        }
+        catch (e) {
+          console.warn(`Failed to load year data ${yearInfo.file}:`, e)
+        }
+      }
+
+      // 所有年度数据加载完成，一次性更新
+      if (currentLoadedSeries.value === seriesId && allWallpapers.length > 0) {
+        isBackgroundLoading.value = false
+        // 合并数据并按日期降序排序
+        const merged = [...wallpapers.value, ...allWallpapers]
+        merged.sort((a, b) => b.date.localeCompare(a.date))
+        wallpapers.value = merged
+        initialLoadedCount.value = wallpapers.value.length
+      }
+      else {
+        isBackgroundLoading.value = false
+      }
+    }
+    catch (e) {
+      console.error('Background loading Bing data failed:', e)
+      isBackgroundLoading.value = false
+    }
+  }
+
+  /**
    * 初始化系列（首屏优化：先加载前3个分类，后台加载剩余分类）
    * 确保数据完整且不会出现数字递增的问题
    */
@@ -383,9 +582,15 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
       return
     }
 
+    // 检查是否为 Bing 每日系列
+    const seriesConfig = SERIES_CONFIG[seriesId]
+    if (seriesConfig?.isDaily) {
+      return initBingSeries(seriesId, forceRefresh)
+    }
+
     // 立即清空旧数据，避免切换系列时显示旧图片
     wallpapers.value = []
-    
+
     loading.value = true
     error.value = null
     errorType.value = null

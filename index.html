@@ -173,82 +173,80 @@
 
     <!-- 主题初始化脚本（在页面渲染前立即应用，避免闪烁） -->
     <script>
-      (function() {
+      ;(function () {
         // 主题模式常量
         const THEME_MODES = {
           LIGHT: 'light',
           DARK: 'dark',
           SYSTEM: 'system',
-          AUTO: 'auto'
-        };
+          AUTO: 'auto',
+        }
         const THEMES = {
           LIGHT: 'light',
-          DARK: 'dark'
-        };
+          DARK: 'dark',
+        }
 
         // 根据时间判断应该使用的主题（6:00-18:00 浅色，其他深色）
         function getThemeByTime() {
-          const hour = new Date().getHours();
-          return (hour >= 6 && hour < 18) ? THEMES.LIGHT : THEMES.DARK;
+          const hour = new Date().getHours()
+          return hour >= 6 && hour < 18 ? THEMES.LIGHT : THEMES.DARK
         }
 
         // 根据系统偏好判断主题
         function getThemeBySystem() {
           if (typeof window !== 'undefined' && window.matchMedia) {
-            return window.matchMedia('(prefers-color-scheme: dark)').matches
-              ? THEMES.DARK
-              : THEMES.LIGHT;
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? THEMES.DARK : THEMES.LIGHT
           }
-          return THEMES.LIGHT;
+          return THEMES.LIGHT
         }
 
         // 根据模式计算实际主题
         function computeTheme(mode) {
           switch (mode) {
             case THEME_MODES.LIGHT:
-              return THEMES.LIGHT;
+              return THEMES.LIGHT
             case THEME_MODES.DARK:
-              return THEMES.DARK;
+              return THEMES.DARK
             case THEME_MODES.SYSTEM:
-              return getThemeBySystem();
+              return getThemeBySystem()
             case THEME_MODES.AUTO:
-              return getThemeByTime();
+              return getThemeByTime()
             default:
-              return getThemeBySystem();
+              return getThemeBySystem()
           }
         }
 
         // 读取用户保存的主题模式
-        let savedMode = null;
+        let savedMode = null
         try {
-          savedMode = localStorage.getItem('wallpaper-gallery-theme-mode');
+          savedMode = localStorage.getItem('wallpaper-gallery-theme-mode')
         } catch (e) {
           // localStorage 可能不可用（如隐私模式）
         }
 
         // 确定主题模式（默认跟随系统）
-        const themeMode = (savedMode && Object.values(THEME_MODES).includes(savedMode))
-          ? savedMode
-          : THEME_MODES.SYSTEM;
+        const themeMode = savedMode && Object.values(THEME_MODES).includes(savedMode) ? savedMode : THEME_MODES.SYSTEM
 
         // 计算并应用主题
-        const theme = computeTheme(themeMode);
-        document.documentElement.setAttribute('data-theme', theme);
-      })();
+        const theme = computeTheme(themeMode)
+        document.documentElement.setAttribute('data-theme', theme)
+      })()
     </script>
 
     <!-- GitHub Pages SPA 路由恢复脚本 -->
     <script>
-      (function(l) {
-        if (l.search[1] === '/' ) {
-          var decoded = l.search.slice(1).split('&').map(function(s) { 
-            return s.replace(/~and~/g, '&')
-          }).join('?');
-          window.history.replaceState(null, null,
-            l.pathname.slice(0, -1) + decoded + l.hash
-          );
+      ;(function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search
+            .slice(1)
+            .split('&')
+            .map(function (s) {
+              return s.replace(/~and~/g, '&')
+            })
+            .join('?')
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash)
         }
-      }(window.location))
+      })(window.location)
     </script>
   </head>
   <body>

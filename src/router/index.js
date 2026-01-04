@@ -23,6 +23,16 @@ const routes = [
       series: 'desktop',
     },
   },
+  // Bing 每日壁纸
+  {
+    path: '/bing',
+    name: 'Bing',
+    component: () => import('@/views/Home.vue'),
+    meta: {
+      title: 'Bing 每日壁纸 - Wallpaper Gallery',
+      series: 'bing',
+    },
+  },
   // 手机壁纸
   {
     path: '/mobile',
