@@ -3,7 +3,7 @@ import { isMobileDevice } from '@/composables/useDevice'
 import { DEVICE_SERIES } from '@/utils/constants'
 
 // ========================================
-// 路由配置
+// 路由配置（使用标准懒加载，骨架屏由 App.vue Suspense 处理）
 // ========================================
 const routes = [
   // 首页 - 根据设备类型自动选择系列
@@ -13,7 +13,7 @@ const routes = [
     component: () => import('@/views/Home.vue'),
     meta: { title: 'Wallpaper Gallery - 精选高清壁纸' },
   },
-  // 电脑壁纸
+  // 电脑壁纸（横屏 16:10）
   {
     path: '/desktop',
     name: 'Desktop',
@@ -21,9 +21,10 @@ const routes = [
     meta: {
       title: '电脑壁纸 - Wallpaper Gallery',
       series: 'desktop',
+      aspectType: 'landscape',
     },
   },
-  // Bing 每日壁纸
+  // Bing 每日壁纸（横屏 16:9）
   {
     path: '/bing',
     name: 'Bing',
@@ -31,9 +32,10 @@ const routes = [
     meta: {
       title: 'Bing 每日壁纸 - Wallpaper Gallery',
       series: 'bing',
+      aspectType: 'landscape',
     },
   },
-  // 手机壁纸
+  // 手机壁纸（竖屏 9:16）
   {
     path: '/mobile',
     name: 'Mobile',
@@ -41,9 +43,10 @@ const routes = [
     meta: {
       title: '手机壁纸 - Wallpaper Gallery',
       series: 'mobile',
+      aspectType: 'portrait',
     },
   },
-  // 头像
+  // 头像（正方形 1:1）
   {
     path: '/avatar',
     name: 'Avatar',
@@ -51,6 +54,7 @@ const routes = [
     meta: {
       title: '头像 - Wallpaper Gallery',
       series: 'avatar',
+      aspectType: 'square',
     },
   },
   // 关于页面
@@ -92,11 +96,17 @@ let lastNavigationTime = 0
 const MAX_NAVIGATIONS_PER_SECOND = 5 // 每秒最大导航次数
 const NAVIGATION_RESET_TIME = 1000 // 重置计数器的时间间隔
 
+// 缓存设备类型（单次会话内设备类型不变，避免重复检测）
+let cachedDeviceType = null
+
 /**
- * 获取当前设备类型
+ * 获取当前设备类型（带缓存）
  */
 function getDeviceType() {
-  return isMobileDevice() ? 'mobile' : 'desktop'
+  if (cachedDeviceType === null) {
+    cachedDeviceType = isMobileDevice() ? 'mobile' : 'desktop'
+  }
+  return cachedDeviceType
 }
 
 /**
@@ -108,26 +118,28 @@ function isSeriesAvailableForDevice(series, deviceType) {
 }
 
 /**
- * 获取用户应该看到的默认系列
+ * 获取用户应该看到的默认系列（优化版：减少 localStorage 读取次数）
  * 优先级：用户明确选择（如果对当前设备可用）> 设备类型推荐
  */
 function getRecommendedSeries() {
   const deviceType = getDeviceType()
   const defaultSeries = deviceType === 'mobile' ? 'mobile' : 'desktop'
 
-  // 1. 检查用户是否有明确的选择记录
+  // 一次性读取用户选择，优先使用明确选择
   const userChoice = localStorage.getItem(STORAGE_KEY_USER_CHOICE)
   if (userChoice && isSeriesAvailableForDevice(userChoice, deviceType)) {
     return userChoice
   }
 
-  // 2. 检查是否有保存的系列偏好
-  const savedSeries = localStorage.getItem(STORAGE_KEY_SERIES)
-  if (savedSeries && isSeriesAvailableForDevice(savedSeries, deviceType)) {
-    return savedSeries
+  // 检查保存的系列偏好（仅当无明确选择时）
+  if (!userChoice) {
+    const savedSeries = localStorage.getItem(STORAGE_KEY_SERIES)
+    if (savedSeries && isSeriesAvailableForDevice(savedSeries, deviceType)) {
+      return savedSeries
+    }
   }
 
-  // 3. 使用设备默认系列
+  // 使用设备默认系列
   return defaultSeries
 }
 
@@ -189,15 +201,21 @@ router.beforeEach((to, from, next) => {
         return
       }
     }
-
-    // 系列可用，保存用户选择
-    localStorage.setItem(STORAGE_KEY_SERIES, targetSeries)
-    if (from.name) {
-      recordUserChoice(targetSeries)
-    }
   }
 
   next()
+})
+
+// 路由后置守卫：记录用户选择（非阻塞，不影响导航性能）
+router.afterEach((to, from) => {
+  if (to.meta?.series) {
+    // 保存当前系列偏好
+    localStorage.setItem(STORAGE_KEY_SERIES, to.meta.series)
+    // 如果是用户主动导航（有来源页面），记录为明确选择
+    if (from.name) {
+      recordUserChoice(to.meta.series)
+    }
+  }
 })
 
 export default router

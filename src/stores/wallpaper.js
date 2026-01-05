@@ -505,11 +505,10 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
   }
 
   /**
-   * 后台加载 Bing 年度数据（静默模式，收集完整数据后一次性更新）
+   * 后台加载 Bing 年度数据（渐进式更新，每加载完一个年份立即追加显示）
    */
   async function loadBingYearDataSilently(seriesId, years) {
     const seriesConfig = SERIES_CONFIG[seriesId]
-    const allWallpapers = []
 
     try {
       // 按年份降序加载（最新的先加载）
@@ -532,38 +531,41 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
               item => !loadedCategories.value.has(item.date),
             )
 
-            // 转换数据格式
-            const transformedItems = newItems.map((item, index) =>
-              transformBingWallpaper(item, allWallpapers.length + index),
-            )
+            if (newItems.length > 0) {
+              // 转换数据格式
+              const transformedItems = newItems.map((item, index) =>
+                transformBingWallpaper(item, wallpapers.value.length + index),
+              )
 
-            allWallpapers.push(...transformedItems)
+              // 标记已加载
+              newItems.forEach((item) => {
+                loadedCategories.value.add(item.date)
+              })
 
-            // 标记已加载
-            newItems.forEach((item) => {
-              loadedCategories.value.add(item.date)
-            })
+              // 再次检查系列是否已切换（在更新前）
+              if (currentLoadedSeries.value !== seriesId) {
+                return
+              }
+
+              // 渐进式更新：立即追加并排序
+              const merged = [...wallpapers.value, ...transformedItems]
+              merged.sort((a, b) => b.date.localeCompare(a.date))
+              wallpapers.value = merged
+            }
           }
 
-          // 批次间暂停
-          await delay(100)
+          // 批次间暂停，让 UI 有时间响应
+          await delay(50)
         }
         catch (e) {
           console.warn(`Failed to load year data ${yearInfo.file}:`, e)
         }
       }
 
-      // 所有年度数据加载完成，一次性更新
-      if (currentLoadedSeries.value === seriesId && allWallpapers.length > 0) {
+      // 所有年度数据加载完成
+      if (currentLoadedSeries.value === seriesId) {
         isBackgroundLoading.value = false
-        // 合并数据并按日期降序排序
-        const merged = [...wallpapers.value, ...allWallpapers]
-        merged.sort((a, b) => b.date.localeCompare(a.date))
-        wallpapers.value = merged
         initialLoadedCount.value = wallpapers.value.length
-      }
-      else {
-        isBackgroundLoading.value = false
       }
     }
     catch (e) {
