@@ -31,10 +31,12 @@ const mousePos = ref({ x: 0, y: 0 })
 // 定时器
 let autoPlayTimer = null
 let particleAnimationId = null
+const pendingTimers = new Set() // 追踪所有待清理的定时器
 
 // 星空粒子
 let stars = []
 let shootingStars = []
+let starfieldResizeHandler = null
 
 // 配置
 const CONFIG = {
@@ -150,9 +152,11 @@ function goToSlide(index) {
     return
 
   isAnimating.value = true
-  setTimeout(() => {
+  const timer = setTimeout(() => {
     isAnimating.value = false
+    pendingTimers.delete(timer)
   }, 400)
+  pendingTimers.add(timer)
   currentIndex.value = ((index % total) + total) % total
 }
 
@@ -253,7 +257,8 @@ function initStarfield() {
     canvas.height = container.offsetHeight
   }
   resize()
-  window.addEventListener('resize', resize)
+  starfieldResizeHandler = resize
+  window.addEventListener('resize', starfieldResizeHandler)
 
   // 创建星星
   stars = Array.from({ length: 150 }, () => ({
@@ -351,6 +356,10 @@ function destroyStarfield() {
     cancelAnimationFrame(particleAnimationId)
     particleAnimationId = null
   }
+  if (starfieldResizeHandler) {
+    window.removeEventListener('resize', starfieldResizeHandler)
+    starfieldResizeHandler = null
+  }
 }
 
 // 监听 series 变化，立即清空状态（避免显示旧图片）
@@ -376,29 +385,40 @@ watch(carouselList, (newList) => {
     nextTick(() => {
       initStarfield()
       // 延迟触发入场动画，让卡片从中心展开
-      setTimeout(() => {
+      const entranceTimer = setTimeout(() => {
         isEntranceReady.value = true
+        pendingTimers.delete(entranceTimer)
         // 入场动画完成后再启动自动播放
-        setTimeout(() => {
+        const autoPlayDelayTimer = setTimeout(() => {
           startAutoPlay()
+          pendingTimers.delete(autoPlayDelayTimer)
         }, 600)
+        pendingTimers.add(autoPlayDelayTimer)
       }, 100)
+      pendingTimers.add(entranceTimer)
     })
   }
 }, { immediate: true })
 
+// 键盘导航处理函数
+function handleKeydown(e) {
+  if (e.key === 'ArrowLeft')
+    prevSlide()
+  else if (e.key === 'ArrowRight')
+    nextSlide()
+}
+
 onMounted(() => {
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft')
-      prevSlide()
-    else if (e.key === 'ArrowRight')
-      nextSlide()
-  })
+  window.addEventListener('keydown', handleKeydown)
 })
 
 onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
   stopAutoPlay()
   destroyStarfield()
+  // 清理所有待处理的定时器
+  pendingTimers.forEach(timer => clearTimeout(timer))
+  pendingTimers.clear()
 })
 </script>
 

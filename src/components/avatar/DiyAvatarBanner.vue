@@ -1,15 +1,25 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { trackDiyAvatarClick } from '@/utils/analytics'
 
 const isVisible = ref(false)
 const isHovered = ref(false)
+let entranceTimer = null // 入场动画定时器
 
 // 动画入场
 onMounted(() => {
-  setTimeout(() => {
+  entranceTimer = setTimeout(() => {
     isVisible.value = true
+    entranceTimer = null
   }, 300)
+})
+
+// 组件卸载时清理定时器
+onUnmounted(() => {
+  if (entranceTimer) {
+    clearTimeout(entranceTimer)
+    entranceTimer = null
+  }
 })
 
 function handleClick() {

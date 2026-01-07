@@ -1,9 +1,10 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 
 const STORAGE_KEY = 'announcement_banner_closed_v1'
 const isVisible = ref(false)
 const isClosing = ref(false)
+let closeTimer = null // 关闭动画定时器
 
 onMounted(() => {
   // 检查用户是否之前关闭过横幅
@@ -13,11 +14,20 @@ onMounted(() => {
   }
 })
 
+// 组件卸载时清理定时器
+onUnmounted(() => {
+  if (closeTimer) {
+    clearTimeout(closeTimer)
+    closeTimer = null
+  }
+})
+
 function closeBanner() {
   // 先播放关闭动画
   isClosing.value = true
   // 动画结束后隐藏并保存状态
-  setTimeout(() => {
+  closeTimer = setTimeout(() => {
+    closeTimer = null
     isVisible.value = false
     localStorage.setItem(STORAGE_KEY, 'true')
   }, 300)

@@ -6,7 +6,7 @@
  */
 import { Autoplay, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/vue'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useDevice } from '@/composables/useDevice'
 
 // Swiper 样式
@@ -47,6 +47,9 @@ const carouselImageLoaded = ref({})
 
 // 排行榜图片加载状态 Map
 const rankingImageLoaded = ref({})
+
+// 定时器集合（用于清理）
+const timers = new Set()
 
 // Swiper 配置
 const swiperModules = [Autoplay, Pagination]
@@ -105,9 +108,11 @@ const rankingList = computed(() => {
 watch(rankingList, (newList) => {
   if (newList.length > 0) {
     rankingAnimated.value = false
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       rankingAnimated.value = true
+      timers.delete(timer)
     }, 100)
+    timers.add(timer)
   }
 }, { immediate: true })
 
@@ -131,10 +136,18 @@ watch(rankingList, (newList, oldList) => {
 
 onMounted(() => {
   if (rankingList.value.length > 0) {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       rankingAnimated.value = true
+      timers.delete(timer)
     }, 300)
+    timers.add(timer)
   }
+})
+
+// 组件卸载时清理所有定时器
+onUnmounted(() => {
+  timers.forEach(timer => clearTimeout(timer))
+  timers.clear()
 })
 
 // Swiper 初始化回调

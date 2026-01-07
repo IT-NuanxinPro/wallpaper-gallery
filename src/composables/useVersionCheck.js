@@ -23,6 +23,7 @@ const newVersionInfo = ref(null)
 const isChecking = ref(false)
 
 let checkTimer = null
+let initialDelayTimer = null // 首次延迟定时器
 let initialized = false
 
 /**
@@ -151,7 +152,8 @@ function startPeriodicCheck() {
     return
 
   // 启动后延迟 30 秒首次检查（避免影响首屏加载）
-  setTimeout(() => {
+  initialDelayTimer = setTimeout(() => {
+    initialDelayTimer = null
     checkForUpdates()
 
     // 然后定期检查
@@ -163,6 +165,10 @@ function startPeriodicCheck() {
  * 停止定时检查
  */
 function stopPeriodicCheck() {
+  if (initialDelayTimer) {
+    clearTimeout(initialDelayTimer)
+    initialDelayTimer = null
+  }
   if (checkTimer) {
     clearInterval(checkTimer)
     checkTimer = null
