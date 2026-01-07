@@ -491,8 +491,10 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener('keydown', handleKeydown)
   destroyCropper()
+  // 清理预览更新定时器
   if (previewUpdateTimer.value) {
     clearTimeout(previewUpdateTimer.value)
+    previewUpdateTimer.value = null
   }
 })
 </script>

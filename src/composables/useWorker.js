@@ -27,6 +27,10 @@ function getWorker() {
       const pending = pendingMessages.get(id)
       if (pending) {
         pendingMessages.delete(id)
+        // 清理超时定时器
+        if (pending.timeout) {
+          clearTimeout(pending.timeout)
+        }
         if (success) {
           pending.resolve(result)
         }
@@ -52,16 +56,20 @@ function sendMessage(type, data) {
     const id = ++messageId
     const worker = getWorker()
 
-    pendingMessages.set(id, { resolve, reject })
-    worker.postMessage({ type, id, data })
-
-    // 超时处理（10秒）
-    setTimeout(() => {
+    // 存储定时器引用
+    const timeoutTimer = setTimeout(() => {
       if (pendingMessages.has(id)) {
         pendingMessages.delete(id)
         reject(new Error('Worker timeout'))
       }
     }, 10000)
+
+    pendingMessages.set(id, {
+      resolve,
+      reject,
+      timeout: timeoutTimer, // 存储定时器
+    })
+    worker.postMessage({ type, id, data })
   })
 }
 
@@ -169,6 +177,12 @@ export function terminateWorker() {
   if (workerInstance) {
     workerInstance.terminate()
     workerInstance = null
+    // 清理所有待处理的定时器
+    pendingMessages.forEach((pending) => {
+      if (pending.timeout) {
+        clearTimeout(pending.timeout)
+      }
+    })
     pendingMessages.clear()
   }
 }

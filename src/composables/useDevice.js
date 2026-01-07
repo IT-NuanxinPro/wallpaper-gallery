@@ -210,6 +210,8 @@ export function useDevice() {
       clearTimeout(deviceCheckTimer)
       deviceCheckTimer = null
     }
+    // 清空设备变化回调数组
+    deviceChangeCallbacks.value = []
   })
 
   return {

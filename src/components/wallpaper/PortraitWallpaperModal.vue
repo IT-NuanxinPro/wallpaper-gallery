@@ -62,6 +62,9 @@ const downloadCount = ref(0)
 // 访问量
 const viewCount = ref(0)
 
+// 真机模式定时器（用于清理）
+let deviceModeTimer = null
+
 // 获取下载次数
 async function fetchDownloadCount() {
   if (!props.wallpaper || !isSupabaseConfigured()) {
@@ -321,12 +324,18 @@ async function toggleDeviceMode() {
     await nextTick()
     animateDeviceModeIn()
 
+    // 清理旧定时器并设置新定时器
+    if (deviceModeTimer) {
+      clearTimeout(deviceModeTimer)
+      deviceModeTimer = null
+    }
     // 5秒后自动隐藏控制按钮（延长显示时间，让用户看到退出提示）
-    setTimeout(() => {
+    deviceModeTimer = setTimeout(() => {
       if (isDeviceMode.value) {
         showControls.value = false
         document.body.classList.remove('show-controls')
       }
+      deviceModeTimer = null
     }, 5000)
   }
 }
@@ -460,7 +469,15 @@ onUnmounted(() => {
   document.removeEventListener('keydown', handleKeydown)
   document.body.classList.remove('modal-open')
   document.body.classList.remove('device-mode')
+  document.body.classList.remove('show-controls')
   document.body.style.top = ''
+
+  // 清理真机模式定时器
+  if (deviceModeTimer) {
+    clearTimeout(deviceModeTimer)
+    deviceModeTimer = null
+  }
+
   if (savedScrollY.value > 0) {
     window.scrollTo({ top: savedScrollY.value, behavior: 'instant' })
   }
