@@ -1027,7 +1027,7 @@ function resetFilters() {
     position: fixed;
     left: 0;
     right: 0;
-    top: $header-height; // 72px，紧贴导航栏下方
+    top: calc($header-height + env(safe-area-inset-top, 0px));
     border-radius: 0; // 移除圆角，与导航栏融合
     border-left: none;
     border-right: none;

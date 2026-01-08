@@ -83,7 +83,7 @@ defineExpose({
 
 .pwa-install-prompt {
   position: fixed;
-  bottom: 80px;
+  bottom: calc(80px + env(safe-area-inset-bottom, 0px));
   left: 50%;
   transform: translateX(-50%);
   z-index: 9999;
@@ -96,7 +96,7 @@ defineExpose({
   padding: 16px;
 
   @media (min-width: 1024px) {
-    bottom: 24px;
+    bottom: calc(24px + env(safe-area-inset-bottom, 0px));
     right: 24px;
     left: auto;
     transform: none;

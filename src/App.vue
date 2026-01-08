@@ -78,6 +78,6 @@ onMounted(() => {
 
 .main-content {
   flex: 1;
-  padding-top: $header-height;
+  padding-top: calc(var(--header-height) + env(safe-area-inset-top, 0px));
 }
 </style>

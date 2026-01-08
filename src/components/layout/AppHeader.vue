@@ -508,6 +508,12 @@ function closeSearch() {
   border-bottom: 1px solid var(--color-border);
   backdrop-filter: blur(10px);
   transition: all var(--transition-normal);
+  // PWA 安全区域适配 - 状态栏高度
+  padding-top: env(safe-area-inset-top, 0px);
+  // 深色模式下确保顶部颜色与状态栏匹配
+  [data-theme='dark'] & {
+    border-top: 1px solid var(--color-bg-secondary);
+  }
 }
 
 .header-container {
