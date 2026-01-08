@@ -47,7 +47,7 @@ function handleError() {
 }
 
 // 长按开始
-function handleTouchStart(e) {
+function handleTouchStart() {
   longPressTimer = setTimeout(() => {
     handleLongPress()
   }, longPressDelay)
@@ -64,7 +64,7 @@ async function handleLongPress() {
   try {
     // 检查是否在原生平台
     const isNative = typeof window !== 'undefined' && window.Capacitor && window.Capacitor.isNativePlatform()
-    
+
     if (isNative) {
       // 原生平台：使用 Capacitor Clipboard 插件
       try {
