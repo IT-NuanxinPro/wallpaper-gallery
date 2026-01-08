@@ -64,6 +64,13 @@ const routes = [
     component: () => import('@/views/About.vue'),
     meta: { title: '关于我们 - Wallpaper Gallery' },
   },
+  // Android 下载页面
+  {
+    path: '/download',
+    name: 'Download',
+    component: () => import('@/views/DownloadPage.vue'),
+    meta: { title: '下载 App - Wallpaper Gallery', hideHeader: true },
+  },
   // 404 重定向到首页
   {
     path: '/:pathMatch(.*)*',

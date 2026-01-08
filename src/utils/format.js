@@ -201,7 +201,100 @@ export function getDisplayFilename(filename) {
 }
 
 /**
- * 下载文件（带防护机制）
+ * 检测是否在 Capacitor 原生环境中运行
+ * @returns {boolean}
+ */
+function isNativePlatform() {
+  return typeof window !== 'undefined' && window.Capacitor && window.Capacitor.isNativePlatform()
+}
+
+/**
+ * 将 Blob 转换为 Base64
+ * @param {Blob} blob
+ * @returns {Promise<string>}
+ */
+function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      const base64 = reader.result.split(',')[1]
+      resolve(base64)
+    }
+    reader.onerror = reject
+    reader.readAsDataURL(blob)
+  })
+}
+
+/**
+ * 显示 Toast 提示
+ */
+async function showToast(message, type = 'success') {
+  try {
+    const { useToast } = await import('@/composables/useToast')
+    const toast = useToast()
+    if (type === 'success') {
+      toast.success(message)
+    }
+    else if (type === 'error') {
+      toast.error(message)
+    }
+    else {
+      toast.info(message)
+    }
+  }
+  catch (e) {
+    console.warn('[showToast] Toast 显示失败:', e)
+  }
+}
+
+/**
+ * 在原生平台保存文件到相册
+ * @param {Blob} blob - 文件 Blob
+ * @param {string} filename - 文件名
+ */
+async function saveFileNative(blob, filename) {
+  console.log('[saveFileNative] 开始保存:', filename)
+
+  try {
+    const { Filesystem, Directory } = await import('@capacitor/filesystem')
+    const base64Data = await blobToBase64(blob)
+    console.log('[saveFileNative] Base64 转换完成, 长度:', base64Data.length)
+
+    // 直接保存到 Documents 目录（稳定可靠）
+    await Filesystem.writeFile({
+      path: `WallpaperGallery/${filename}`,
+      data: base64Data,
+      directory: Directory.Documents,
+      recursive: true,
+    })
+
+    console.log('[saveFileNative] 保存成功!')
+    await showToast('已保存到 Documents/WallpaperGallery', 'success')
+  }
+  catch (error) {
+    console.error('[saveFileNative] 保存失败:', error)
+    await showToast('保存失败，请检查存储权限', 'error')
+  }
+}
+
+/**
+ * 在 Web 平台下载文件
+ * @param {Blob} blob - 文件 Blob
+ * @param {string} filename - 文件名
+ */
+function saveFileWeb(blob, filename) {
+  const blobUrl = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = blobUrl
+  link.download = filename
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  URL.revokeObjectURL(blobUrl)
+}
+
+/**
+ * 下载文件（带防护机制，支持 Web 和原生平台）
  * @param {string} url - 文件 URL
  * @param {string} filename - 保存的文件名
  * @param {number} delay - 延迟时间（毫秒），默认 300ms
@@ -211,52 +304,79 @@ export async function downloadFile(url, filename, delay = 300) {
   await new Promise(resolve => setTimeout(resolve, delay))
 
   try {
-    // 动态重建 URL（如果是 CDN 链接）
+    // 动态重建 URL
     let finalUrl = url
-    if (url.includes('@main')) {
+
+    // 原生平台优先使用 GitHub Raw CDN（国内更稳定）
+    if (isNativePlatform()) {
+      finalUrl = buildRawImageUrl(url)
+    }
+    else if (url.includes('@main')) {
       const path = extractPathFromUrl(url)
       finalUrl = buildImageUrl(path)
     }
 
-    const response = await fetch(finalUrl)
+    console.log('[downloadFile] 开始下载:', finalUrl)
 
-    // 如果 CDN 返回 403 或 404，回退到 GitHub Raw CDN
-    if (!response.ok || response.status === 403 || response.status === 404) {
-      console.warn('[downloadFile] CDN 失败，回退到 GitHub Raw CDN:', response.status)
-      finalUrl = buildRawImageUrl(finalUrl)
-      const fallbackResponse = await fetch(finalUrl)
+    // 添加超时控制 - 60秒
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 60000)
 
-      if (!fallbackResponse.ok) {
-        throw new Error(`GitHub Raw CDN 失败: ${fallbackResponse.status}`)
+    let response = await fetch(finalUrl, { signal: controller.signal })
+    clearTimeout(timeoutId)
+
+    // 如果失败，尝试备用 CDN
+    if (!response.ok) {
+      console.warn('[downloadFile] 主 CDN 失败，尝试备用:', response.status)
+
+      // 切换 CDN
+      if (finalUrl.includes('raw.githubusercontent.com')) {
+        const path = extractPathFromUrl(url)
+        finalUrl = buildImageUrl(path)
+      }
+      else {
+        finalUrl = buildRawImageUrl(url)
       }
 
-      const blob = await fallbackResponse.blob()
-      const blobUrl = URL.createObjectURL(blob)
+      console.log('[downloadFile] 备用 CDN:', finalUrl)
 
-      const link = document.createElement('a')
-      link.href = blobUrl
-      link.download = filename
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      URL.revokeObjectURL(blobUrl)
+      const controller2 = new AbortController()
+      const timeoutId2 = setTimeout(() => controller2.abort(), 60000)
+      response = await fetch(finalUrl, { signal: controller2.signal })
+      clearTimeout(timeoutId2)
+
+      if (!response.ok) {
+        throw new Error(`下载失败: ${response.status}`)
+      }
+    }
+
+    const blob = await response.blob()
+    console.log('[downloadFile] 下载完成，大小:', blob.size)
+
+    // 根据平台选择保存方式
+    if (isNativePlatform()) {
+      await saveFileNative(blob, filename)
     }
     else {
-      const blob = await response.blob()
-      const blobUrl = URL.createObjectURL(blob)
-
-      const link = document.createElement('a')
-      link.href = blobUrl
-      link.download = filename
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      URL.revokeObjectURL(blobUrl)
+      saveFileWeb(blob, filename)
     }
   }
-  catch {
-    // 降级方案：直接打开链接
-    window.open(url, '_blank')
+  catch (error) {
+    console.error('[downloadFile] 下载失败:', error.name, error.message)
+    // 降级方案
+    if (isNativePlatform()) {
+      // 原生环境：显示错误提示
+      if (error.name === 'AbortError') {
+        await showToast('下载超时，请检查网络连接', 'error')
+      }
+      else {
+        await showToast('下载失败，请稍后重试', 'error')
+      }
+    }
+    else {
+      // Web 环境：直接打开链接
+      window.open(url, '_blank')
+    }
   }
 }
 
@@ -272,7 +392,8 @@ export function buildRawImageUrl(cdnUrl) {
   if (match) {
     const version = match[1]
     const path = match[2]
-    return `https://raw.githubusercontent.com/IT-NuanxinPro/nuanXinProPic/${version}${path}`
+    // 使用 ghproxy 镜像加速（国内可访问）
+    return `https://ghproxy.net/https://raw.githubusercontent.com/IT-NuanxinPro/nuanXinProPic/${version}${path}`
   }
   return cdnUrl
 }

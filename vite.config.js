@@ -15,6 +15,8 @@ import { obfuscatePlugin } from './build/vite-plugin-obfuscate.js'
 
 // 是否生产环境
 const isProduction = process.env.NODE_ENV === 'production'
+// 是否禁用 CDN（Android 打包时使用）
+const disableCDN = process.env.DISABLE_CDN === 'true'
 
 // CDN 配置
 const cdn = {
@@ -36,7 +38,7 @@ function cdnPlugin() {
     transformIndexHtml: {
       order: 'post', // 在 Vite 注入脚本之后执行
       handler(html) {
-        if (!isProduction)
+        if (!isProduction || disableCDN)
           return html
 
         // 移除 Import Map（生产环境使用 UMD 全局变量）
@@ -192,7 +194,7 @@ export default defineConfig({
     }),
     // 生产环境：使用 externalGlobals 将外部依赖转换为全局变量
     // enforce: 'post' 确保在 auto-import 之后执行
-    isProduction && {
+    (isProduction && !disableCDN) && {
       ...externalGlobals({
         'vue': 'Vue',
         'vue-demi': 'VueDemi',
@@ -239,8 +241,8 @@ export default defineConfig({
     // 使用 esbuild 压缩（更快）
     minify: 'esbuild',
     rollupOptions: {
-      // 排除不需要打包的依赖（使用 CDN）- 仅生产环境
-      external: isProduction ? ['vue', 'vue-demi', 'vue-router'] : [],
+      // 排除不需要打包的依赖（使用 CDN）- 仅生产环境且未禁用 CDN
+      external: (isProduction && !disableCDN) ? ['vue', 'vue-demi', 'vue-router'] : [],
       output: {
         // 指定全局变量名（对应 CDN 中的全局变量）
         globals: {

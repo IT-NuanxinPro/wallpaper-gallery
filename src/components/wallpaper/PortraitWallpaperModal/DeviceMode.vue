@@ -91,8 +91,8 @@ function onAfterLeave() {
   // 退出按钮
   &__exit {
     position: fixed;
-    top: 20px;
-    left: 20px;
+    top: calc(20px + env(safe-area-inset-top, 0px));
+    left: calc(20px + env(safe-area-inset-left, 0px));
     height: 40px;
     padding: 0 16px;
     border-radius: 20px;
@@ -131,8 +131,8 @@ function onAfterLeave() {
     }
 
     @include mobile-only {
-      top: 15px;
-      left: 15px;
+      top: calc(15px + env(safe-area-inset-top, 0px));
+      left: calc(15px + env(safe-area-inset-left, 0px));
       height: 36px;
       padding: 0 12px;
       font-size: 13px;

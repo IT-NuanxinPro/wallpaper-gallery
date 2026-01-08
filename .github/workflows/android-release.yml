@@ -1,0 +1,103 @@
+name: Android Release
+
+on:
+  push:
+    tags:
+      - 'android-v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build web assets (without CDN)
+        run: DISABLE_CDN=true pnpm build
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android/app/wallpaper-gallery.keystore
+
+      - name: Create keystore.properties
+        run: |
+          cat > android/keystore.properties << EOF
+          storeFile=wallpaper-gallery.keystore
+          storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyAlias=wallpaper
+          keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}
+          EOF
+
+      - name: Build Release APK
+        working-directory: android
+        run: ./gradlew assembleRelease
+
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/android-v}" >> $GITHUB_OUTPUT
+
+      - name: Rename APK
+        run: |
+          mv android/app/build/outputs/apk/release/*.apk Wallpaper-Gallery-v${{ steps.get_version.outputs.VERSION }}.apk
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: Wallpaper-Gallery-v${{ steps.get_version.outputs.VERSION }}.apk
+          name: Android v${{ steps.get_version.outputs.VERSION }}
+          body: |
+            ## Wallpaper Gallery Android v${{ steps.get_version.outputs.VERSION }}
+            
+            ### 下载
+            点击下方 APK 文件下载安装
+            
+            ### 更新内容
+            - 请查看 commit 记录
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update app-version.json
+        run: |
+          cat > public/app-version.json << EOF
+          {
+            "version": "${{ steps.get_version.outputs.VERSION }}",
+            "versionCode": $(date +%Y%m%d),
+            "downloadUrl": "https://github.com/${{ github.repository }}/releases/download/android-v${{ steps.get_version.outputs.VERSION }}/Wallpaper-Gallery-v${{ steps.get_version.outputs.VERSION }}.apk",
+            "changelog": "版本 ${{ steps.get_version.outputs.VERSION }} 发布",
+            "releaseDate": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          }
+          EOF
+
+      - name: Commit app-version.json
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add public/app-version.json
+          git commit -m "chore: update app-version.json to v${{ steps.get_version.outputs.VERSION }}" || exit 0
+          git push origin HEAD:main

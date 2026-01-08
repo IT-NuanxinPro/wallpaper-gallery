@@ -33,3 +33,7 @@ public
 .code-workspace
 SEO提交流程.md
 AGENTS.md
+
+# Android 签名配置
+android/keystore.properties
+android/app/*.keystore

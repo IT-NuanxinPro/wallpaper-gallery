@@ -502,8 +502,8 @@ onUnmounted(() => {
 // 移动端：悬浮球形式，固定在右上角
 .phone-frame__size-selector--floating {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: calc(20px + env(safe-area-inset-top, 0px));
+  right: calc(20px + env(safe-area-inset-right, 0px));
   display: flex !important; // 确保显示
   flex-direction: column;
   align-items: flex-end;
