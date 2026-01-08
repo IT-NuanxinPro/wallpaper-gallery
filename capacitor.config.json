@@ -1,0 +1,22 @@
+{
+  "appId": "com.wallpaper.gallery",
+  "appName": "Wallpaper Gallery",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "buildOptions": {
+      "keystorePath": "$ANDROID_KEYSTORE_PATH",
+      "keystoreAlias": "$ANDROID_KEYSTORE_ALIAS"
+    },
+    "allowMixedContent": true,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": true
+  },
+  "plugins": {
+    "CapacitorHttp": {
+      "enabled": true
+    }
+  }
+}
