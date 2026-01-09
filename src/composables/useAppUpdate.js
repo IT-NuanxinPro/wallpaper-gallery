@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 
+// eslint-disable-next-line no-undef
 const APP_VERSION = __APP_VERSION__ || '1.0.0'
 
 /**
@@ -30,8 +31,10 @@ export function useAppUpdate() {
     for (let i = 0; i < Math.max(currentParts.length, latestParts.length); i++) {
       const c = currentParts[i] || 0
       const l = latestParts[i] || 0
-      if (l > c) return true
-      if (l < c) return false
+      if (l > c)
+        return true
+      if (l < c)
+        return false
     }
     return false
   }
@@ -41,11 +44,13 @@ export function useAppUpdate() {
    */
   async function checkUpdate() {
     // 仅在原生平台检查
-    if (!isNativePlatform()) return false
+    if (!isNativePlatform())
+      return false
 
     try {
-      const response = await fetch('/app-version.json?' + Date.now())
-      if (!response.ok) return false
+      const response = await fetch(`/app-version.json?${Date.now()}`)
+      if (!response.ok)
+        return false
 
       const data = await response.json()
       latestVersion.value = data.version

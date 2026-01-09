@@ -33,7 +33,8 @@ watch(() => props.show, (val) => {
         emit('update:show', false)
       }, props.duration)
     }
-  } else {
+  }
+  else {
     visible.value = false
   }
 }, { immediate: true })

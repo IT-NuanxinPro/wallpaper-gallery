@@ -312,6 +312,7 @@ onUnmounted(() => {
 
   &.is-device-mode {
     padding: 0;
+    padding-top: calc(env(safe-area-inset-top, 0px) + 16px); // 添加顶部安全区域 + 额外间距
     align-items: flex-start;
     background: #ffffff;
     backdrop-filter: none;
@@ -341,9 +342,9 @@ onUnmounted(() => {
     &.is-device-mode {
       width: 100vw;
       max-width: 100%;
-      height: 100vh;
-      min-height: 100vh;
-      max-height: 100vh;
+      height: calc(100vh - env(safe-area-inset-top, 0px) - 16px); // 减去安全区域和额外间距
+      min-height: calc(100vh - env(safe-area-inset-top, 0px) - 16px);
+      max-height: calc(100vh - env(safe-area-inset-top, 0px) - 16px);
       border-radius: 0;
       box-shadow: none;
       background: transparent;

@@ -16,7 +16,8 @@ let container = null
  * 创建 Toast 实例
  */
 function createToastInstance() {
-  if (toastInstance) return
+  if (toastInstance)
+    return
 
   container = document.createElement('div')
   container.id = 'app-toast-container'
@@ -25,10 +26,10 @@ function createToastInstance() {
   toastInstance = createApp({
     setup() {
       return () => h(AppToast, {
-        show: toastState.value.show,
-        message: toastState.value.message,
-        type: toastState.value.type,
-        duration: toastState.value.duration,
+        'show': toastState.value.show,
+        'message': toastState.value.message,
+        'type': toastState.value.type,
+        'duration': toastState.value.duration,
         'onUpdate:show': (val) => {
           toastState.value.show = val
         },

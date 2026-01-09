@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue'
+import { isMobileOrTabletDevice } from '@/composables/useDevice'
 
 const appInfo = ref({
   version: '',
@@ -35,6 +36,21 @@ async function handleDownload() {
 
   downloading.value = true
   try {
+    // 移动端直接使用 window.location.href，不通过 blob
+    // 因为移动浏览器不支持通过 JavaScript 触发的 download 属性
+    if (isMobileOrTabletDevice()) {
+      // 移动端：直接打开下载链接
+      // 使用 location.href 而不是 window.open，确保在 PWA 中也能正常工作
+      window.location.href = appInfo.value.downloadUrl
+
+      // 延迟重置状态，给浏览器时间处理下载
+      setTimeout(() => {
+        downloading.value = false
+      }, 1000)
+      return
+    }
+
+    // 桌面端：使用 blob 方式下载（支持自定义文件名）
     const response = await fetch(appInfo.value.downloadUrl)
     if (!response.ok)
       throw new Error('下载失败')
@@ -48,12 +64,12 @@ async function handleDownload() {
     link.click()
     document.body.removeChild(link)
     URL.revokeObjectURL(url)
+    downloading.value = false
   }
-  catch {
+  catch (error) {
+    console.error('下载失败:', error)
     // 降级：直接跳转下载
-    window.open(appInfo.value.downloadUrl, '_blank')
-  }
-  finally {
+    window.location.href = appInfo.value.downloadUrl
     downloading.value = false
   }
 }

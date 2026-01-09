@@ -1,13 +1,12 @@
 <script setup>
 /**
  * 弹窗内容区域（普通模式）
- * 包含图片展示、加载状态、错误处理、长按复制
+ * 包含图片展示、加载状态、错误处理
  */
-import { onUnmounted, ref } from 'vue'
+import { ref } from 'vue'
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
-import { useToast } from '@/composables/useToast'
 
-const props = defineProps({
+defineProps({
   src: {
     type: String,
     required: true,
@@ -24,13 +23,8 @@ const props = defineProps({
 
 const emit = defineEmits(['load', 'error'])
 
-const toast = useToast()
 const isLoaded = ref(false)
 const hasError = ref(false)
-
-// 长按相关
-let longPressTimer = null
-const longPressDelay = 500
 
 function handleLoad(e) {
   isLoaded.value = true
@@ -45,65 +39,6 @@ function handleError() {
   isLoaded.value = true
   emit('error')
 }
-
-// 长按开始
-function handleTouchStart() {
-  longPressTimer = setTimeout(() => {
-    handleLongPress()
-  }, longPressDelay)
-}
-
-// 长按结束
-function handleTouchEnd() {
-  clearTimeout(longPressTimer)
-  longPressTimer = null
-}
-
-// 长按处理 - 复制图片
-async function handleLongPress() {
-  try {
-    // 检查是否在原生平台
-    const isNative = typeof window !== 'undefined' && window.Capacitor && window.Capacitor.isNativePlatform()
-
-    if (isNative) {
-      // 原生平台：使用 Capacitor Clipboard 插件
-      try {
-        const { Clipboard } = await import('@capacitor/clipboard')
-        // Capacitor Clipboard 只支持文本，图片需要用其他方式
-        // 复制图片 URL 作为替代
-        await Clipboard.write({
-          url: props.src,
-        })
-        toast.success('图片链接已复制')
-      }
-      catch {
-        // 如果 Clipboard 插件不可用，提示用户
-        toast.info('长按保存图片到相册')
-      }
-    }
-    else {
-      // Web 平台：使用 Clipboard API
-      const response = await fetch(props.src)
-      const blob = await response.blob()
-
-      if (navigator.clipboard && window.ClipboardItem) {
-        const item = new ClipboardItem({ [blob.type]: blob })
-        await navigator.clipboard.write([item])
-        toast.success('图片已复制到剪贴板')
-      }
-      else {
-        toast.warning('当前浏览器不支持复制图片')
-      }
-    }
-  }
-  catch {
-    toast.error('复制失败')
-  }
-}
-
-onUnmounted(() => {
-  clearTimeout(longPressTimer)
-})
 
 // 暴露状态给父组件
 defineExpose({ isLoaded, hasError })
@@ -139,10 +74,6 @@ defineExpose({ isLoaded, hasError })
         :class="{ 'is-avatar': isAvatar }"
         @load="handleLoad"
         @error="handleError"
-        @touchstart.passive="handleTouchStart"
-        @touchend="handleTouchEnd"
-        @touchcancel="handleTouchEnd"
-        @contextmenu.prevent="handleLongPress"
       >
     </Transition>
   </div>

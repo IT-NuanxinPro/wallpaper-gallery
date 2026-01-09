@@ -1,17 +1,28 @@
 name: Android Release
 
 on:
+  # Tag 触发（推荐）
   push:
     tags:
       - 'android-v*'
 
+  # 手动触发（可选指定版本）
+  workflow_dispatch:
+    inputs:
+      version:
+        description: '版本号 (如 1.0.2)，留空则从 package.json 读取'
+        required: false
+        type: string
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout code
+      - name: Checkout android branch
         uses: actions/checkout@v4
+        with:
+          ref: android  # 始终从 android 分支构建
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -58,9 +69,21 @@ jobs:
         working-directory: android
         run: ./gradlew assembleRelease
 
-      - name: Get version from tag
+      - name: Get version
         id: get_version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/android-v}" >> $GITHUB_OUTPUT
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ inputs.version }}" ]; then
+            # 手动触发时使用输入的版本
+            VERSION="${{ inputs.version }}"
+          elif [[ "$GITHUB_REF" == refs/tags/android-v* ]]; then
+            # Tag 触发时从 tag 提取版本
+            VERSION="${GITHUB_REF#refs/tags/android-v}"
+          else
+            # 从 package.json 读取版本
+            VERSION=$(node -p "require('./package.json').version")
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "📦 Build version: $VERSION"
 
       - name: Rename APK
         run: |
@@ -69,14 +92,15 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: android-v${{ steps.get_version.outputs.VERSION }}
           files: Wallpaper-Gallery-v${{ steps.get_version.outputs.VERSION }}.apk
           name: Android v${{ steps.get_version.outputs.VERSION }}
           body: |
             ## Wallpaper Gallery Android v${{ steps.get_version.outputs.VERSION }}
-            
+
             ### 下载
             点击下方 APK 文件下载安装
-            
+
             ### 更新内容
             - 请查看 commit 记录
         env:
@@ -84,20 +108,21 @@ jobs:
 
       - name: Update app-version.json
         run: |
+          mkdir -p public
           cat > public/app-version.json << EOF
           {
             "version": "${{ steps.get_version.outputs.VERSION }}",
-            "versionCode": $(date +%Y%m%d),
+            "versionCode": $(node -p "const v='${{ steps.get_version.outputs.VERSION }}'.split('.'); v[0]*10000+v[1]*100+Number(v[2])"),
             "downloadUrl": "https://github.com/${{ github.repository }}/releases/download/android-v${{ steps.get_version.outputs.VERSION }}/Wallpaper-Gallery-v${{ steps.get_version.outputs.VERSION }}.apk",
             "changelog": "版本 ${{ steps.get_version.outputs.VERSION }} 发布",
             "releaseDate": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           }
           EOF
 
-      - name: Commit app-version.json
+      - name: Commit app-version.json to android branch
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add public/app-version.json
-          git commit -m "chore: update app-version.json to v${{ steps.get_version.outputs.VERSION }}" || exit 0
-          git push origin HEAD:main
+          git diff --cached --quiet || git commit -m "chore: update app-version.json to v${{ steps.get_version.outputs.VERSION }}"
+          git push origin HEAD:android

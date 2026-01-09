@@ -715,6 +715,11 @@ onUnmounted(() => {
   @include desktop-up {
     padding: $spacing-lg;
   }
+
+  @include mobile-only {
+    padding-top: calc($spacing-sm + env(safe-area-inset-top, 0px)); // 移动端添加顶部安全区域
+    padding-bottom: calc($spacing-sm + env(safe-area-inset-bottom, 0px)); // 移动端添加底部安全区域
+  }
 }
 
 .modal-content {
@@ -733,6 +738,11 @@ onUnmounted(() => {
   @include tablet-only {
     max-width: 90vw;
     max-height: 90vh;
+  }
+
+  // 移动端：考虑安全区域
+  @include mobile-only {
+    max-height: calc(95vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
   }
 
   // 水平布局模式（桌面端，或平板横屏时由 JS 动态添加）
@@ -761,6 +771,11 @@ onUnmounted(() => {
   border-radius: $radius-full;
   color: white;
   transition: all var(--transition-fast);
+
+  @include mobile-only {
+    top: calc($spacing-md + env(safe-area-inset-top, 0px)); // 移动端添加安全区域
+    right: calc($spacing-md + env(safe-area-inset-right, 0px));
+  }
 
   &:hover {
     background: rgba(0, 0, 0, 0.7);
@@ -810,6 +825,8 @@ onUnmounted(() => {
   @include mobile-only {
     width: 40px;
     height: 40px;
+    top: calc(50% + env(safe-area-inset-top, 0px) / 2); // 考虑安全区域调整垂直居中
+    transform: translateY(calc(-50% - env(safe-area-inset-top, 0px) / 2));
 
     svg {
       width: 20px;

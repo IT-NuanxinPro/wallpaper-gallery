@@ -8,5 +8,11 @@ project(':capacitor-community-media').projectDir = new File('../node_modules/.pn
 include ':capacitor-clipboard'
 project(':capacitor-clipboard').projectDir = new File('../node_modules/.pnpm/@capacitor+clipboard@8.0.0_@capacitor+core@8.0.0/node_modules/@capacitor/clipboard/android')
 
+include ':capacitor-file-transfer'
+project(':capacitor-file-transfer').projectDir = new File('../node_modules/.pnpm/@capacitor+file-transfer@2.0.2_@capacitor+core@8.0.0/node_modules/@capacitor/file-transfer/android')
+
 include ':capacitor-filesystem'
 project(':capacitor-filesystem').projectDir = new File('../node_modules/.pnpm/@capacitor+filesystem@8.0.0_@capacitor+core@8.0.0/node_modules/@capacitor/filesystem/android')
+
+include ':capacitor-toast'
+project(':capacitor-toast').projectDir = new File('../node_modules/.pnpm/@capacitor+toast@8.0.0_@capacitor+core@8.0.0/node_modules/@capacitor/toast/android')

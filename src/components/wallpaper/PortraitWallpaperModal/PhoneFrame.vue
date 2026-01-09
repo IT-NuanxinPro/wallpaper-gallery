@@ -502,8 +502,9 @@ onUnmounted(() => {
 // 移动端：悬浮球形式，固定在右上角
 .phone-frame__size-selector--floating {
   position: fixed;
-  top: calc(20px + env(safe-area-inset-top, 0px));
-  right: calc(20px + env(safe-area-inset-right, 0px));
+  // 增加安全距离：基础间距从 35px 增加到 50px，加上安全区域，确保不覆盖状态栏
+  top: calc(50px + env(safe-area-inset-top, 0px));
+  right: calc(30px + env(safe-area-inset-right, 0px));
   display: flex !important; // 确保显示
   flex-direction: column;
   align-items: flex-end;
