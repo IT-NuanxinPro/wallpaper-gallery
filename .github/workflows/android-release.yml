@@ -42,6 +42,15 @@ jobs:
       - name: Build web assets (without CDN)
         run: DISABLE_CDN=true pnpm build
 
+      - name: Debug - Check generated data
+        run: |
+          echo "=== Checking public/data directory ==="
+          ls -la public/data/ || echo "public/data not found"
+          ls -la public/data/mobile/ || echo "public/data/mobile not found"
+          ls -la public/data/desktop/ || echo "public/data/desktop not found"
+          ls -la dist/data/ || echo "dist/data not found"
+          ls -la dist/data/mobile/ || echo "dist/data/mobile not found"
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
