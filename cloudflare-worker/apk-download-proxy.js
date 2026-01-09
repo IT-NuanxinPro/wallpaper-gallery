@@ -10,7 +10,8 @@
  * - CORS 预检请求支持
  *
  * URL 格式：
- * - 简化版：/v1.0.0/Wallpaper-Gallery-v1.0.0.apk
+ * - 简化版（推荐）：/android-v1.0.0/Wallpaper-Gallery-v1.0.0.apk
+ * - 任意版本号：/v1.0.0/xxx.apk, /1.0.0/xxx.apk
  * - 完整版：/IT-NuanxinPro/wallpaper-gallery/releases/download/v1.0.0/Wallpaper-Gallery-v1.0.0.apk
  */
 
@@ -29,7 +30,6 @@ addEventListener('fetch', (event) => {
 
 async function handleRequest(request) {
   const url = new URL(request.url)
-  const pathParts = url.pathname.split('/').filter(Boolean)
 
   // 处理 OPTIONS 预检请求（CORS）
   if (request.method === 'OPTIONS') {
@@ -44,23 +44,31 @@ async function handleRequest(request) {
     })
   }
 
-  let githubUrl
-  let filename
+  const path = url.pathname
+  let githubUrl, filename
 
-  // 格式 1：完整路径 /user/repo/releases/download/version/filename.apk
-  if (pathParts.length >= 5) {
-    const [user, repo, releasesType, version, ...filenameParts] = pathParts
-    filename = filenameParts.join('/')
-    githubUrl = `${GITHUB_BASE_URL}${user}/${repo}/${releasesType}/${version}/${filename}`
+  // 格式 1：完整版路径，必须包含 "/releases/download/"
+  if (path.includes('/releases/download/')) {
+    const cleanPath = path.startsWith('/') ? path.slice(1) : path
+    githubUrl = `${GITHUB_BASE_URL}${cleanPath}`
+    const parts = cleanPath.split('/')
+    filename = parts[parts.length - 1]
   }
-  // 格式 2：简化路径 /v1.0.0/Wallpaper-Gallery-v1.0.0.apk
-  else if (pathParts.length >= 2) {
-    const [version, ...filenameParts] = pathParts
-    filename = filenameParts.join('/')
-    githubUrl = `${GITHUB_BASE_URL}${DEFAULT_REPO.user}/${DEFAULT_REPO.repo}/releases/download/${version}/${filename}`
-  }
+  // 格式 2：简化版路径，任意版本号格式
   else {
-    return new Response('Invalid URL format. Use:\n- /version/filename.apk\n- /user/repo/releases/download/version/filename.apk', {
+    const parts = path.split('/').filter(p => p)
+    if (parts.length >= 2 && parts[parts.length - 1].endsWith('.apk')) {
+      // 最后一个部分是文件名
+      filename = parts[parts.length - 1]
+      // 剩下的所有部分拼成版本号（支持任意格式：v1.0.0, android-v1.0.0, 1.0.0 等）
+      const version = parts.slice(0, -1).join('/')
+      githubUrl = `${GITHUB_BASE_URL}${DEFAULT_REPO.user}/${DEFAULT_REPO.repo}/releases/download/${version}/${filename}`
+    }
+  }
+
+  // 验证 URL 是否构建成功
+  if (!githubUrl || !filename) {
+    return new Response(`Invalid URL format. Use:\n- /version/filename.apk\n- /user/repo/releases/download/version/filename.apk\n\nReceived: ${path}`, {
       status: 400,
       headers: { 'Content-Type': 'text/plain' },
     })
@@ -70,17 +78,14 @@ async function handleRequest(request) {
   const response = await fetch(githubUrl, {
     method: request.method,
     headers: {
-      ...request.headers,
       'User-Agent': 'Cloudflare-Worker-Proxy/1.0',
-      'Accept': 'application/vnd.github.v3+json',
-      'Origin': 'https://github.com',
-      'Referer': 'https://github.com',
+      'Accept': '*/*',
     },
     redirect: 'follow',
   })
 
   if (!response.ok) {
-    return new Response(`GitHub API Error: ${response.status} ${response.statusText}`, {
+    return new Response(`GitHub API Error: ${response.status} ${response.statusText}\nURL: ${githubUrl}`, {
       status: response.status,
       headers: { 'Content-Type': 'text/plain' },
     })
@@ -91,8 +96,6 @@ async function handleRequest(request) {
 
   // 添加 CDN 缓存头
   newResponse.headers.set('Cache-Control', `public, max-age=${CACHE_TTL}`)
-  newResponse.headers.set('CDN-Cache-Control', `public, max-age=${CACHE_TTL}`)
-  newResponse.headers.set('Cloudflare-CDN-Cache-Control', `public, max-age=${CACHE_TTL}`)
 
   // 添加 CORS 头（允许跨域）
   newResponse.headers.set('Access-Control-Allow-Origin', '*')
