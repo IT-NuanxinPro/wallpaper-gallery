@@ -1,7 +1,9 @@
 {
-  "version": "1.0.1",
-  "versionCode": 10001,
-  "downloadUrl": "https://github.com/IT-NuanxinPro/wallpaper-gallery/releases/download/android-v1.0.1/Wallpaper-Gallery-v1.0.1.apk",
-  "changelog": "版本 1.0.1 发布",
-  "releaseDate": "2026-01-09T07:18:30Z"
+  "version": "1.0.2",
+  "versionCode": 10002,
+  "buildTime": "2026-01-09",
+  "downloadUrl": "https://download-wallpaper.061129.xyz/android-v1.0.2/Wallpaper-Gallery-v1.0.2.apk",
+  "changelog": "版本 1.0.2\n- 优化 APK 下载速度\n- 修复版本号显示问题\n- 优化应用稳定性",
+  "releaseDate": "2026-01-09T16:00:00Z",
+  "forceUpdate": false
 }
