@@ -1,7 +1,7 @@
 {
   "name": "wallpaper-gallery",
   "type": "module",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -16,16 +16,13 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "prepare": "husky",
-
     "version:sync": "node scripts/sync-version.js",
     "version:patch": "node scripts/sync-version.js --bump patch",
     "version:minor": "node scripts/sync-version.js --bump minor",
     "version:major": "node scripts/sync-version.js --bump major",
-
     "cap:build": "DISABLE_CDN=true pnpm build",
     "cap:sync": "npx cap sync android",
     "cap:open": "npx cap open android",
-
     "android:dev": "pnpm cap:build && pnpm cap:sync && npx cap run android",
     "android:debug": "pnpm cap:build && pnpm cap:sync && cd android && ./gradlew assembleDebug && cd ..",
     "android:release": "pnpm version:sync && pnpm cap:build && pnpm cap:sync && cd android && ./gradlew assembleRelease && cd ..",
