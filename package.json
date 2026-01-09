@@ -1,7 +1,7 @@
 {
   "name": "wallpaper-gallery",
   "type": "module",
-  "version": "1.3.4",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -15,9 +15,25 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "prepare": "husky"
+    "prepare": "husky",
+    "version:sync": "node scripts/sync-version.js",
+    "version:patch": "node scripts/sync-version.js --bump patch",
+    "version:minor": "node scripts/sync-version.js --bump minor",
+    "version:major": "node scripts/sync-version.js --bump major",
+    "cap:build": "DISABLE_CDN=true pnpm build",
+    "cap:sync": "npx cap sync android",
+    "cap:open": "npx cap open android",
+    "android:dev": "pnpm cap:build && pnpm cap:sync && npx cap run android",
+    "android:debug": "pnpm cap:build && pnpm cap:sync && cd android && ./gradlew assembleDebug && cd ..",
+    "android:release": "pnpm version:sync && pnpm cap:build && pnpm cap:sync && cd android && ./gradlew assembleRelease && cd ..",
+    "android:release:clean": "pnpm version:sync && pnpm cap:build && pnpm cap:sync && cd android && ./gradlew clean assembleRelease && cd .."
   },
   "dependencies": {
+    "@capacitor-community/media": "^9.0.0",
+    "@capacitor/clipboard": "^8.0.0",
+    "@capacitor/file-transfer": "^2.0.2",
+    "@capacitor/filesystem": "^8.0.0",
+    "@capacitor/toast": "^8.0.0",
     "@vant/auto-import-resolver": "^1.3.0",
     "cropperjs": "^1.6.2",
     "element-plus": "^2.13.0",
@@ -30,6 +46,9 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^6.7.1",
+    "@capacitor/android": "^8.0.0",
+    "@capacitor/cli": "^8.0.0",
+    "@capacitor/core": "^8.0.0",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vitest/coverage-v8": "^4.0.16",
     "eslint": "^9.39.2",
@@ -45,6 +64,7 @@
     "unplugin-vue-components": "^30.0.0",
     "vite": "^7.2.4",
     "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-pwa": "^1.2.0",
     "vitest": "^4.0.16"
   },
   "lint-staged": {
