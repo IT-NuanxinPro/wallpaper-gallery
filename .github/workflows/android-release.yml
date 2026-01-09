@@ -26,16 +26,27 @@ jobs:
         with:
           ref: android  # 始终从 android 分支构建
 
-      - name: Checkout image repository for data generation
+      - name: Checkout nuanXinProPic (wallpaper source)
         uses: actions/checkout@v4
         with:
           repository: IT-NuanxinPro/nuanXinProPic
           path: nuanXinProPic
-          sparse-checkout: |
-            wallpaper
-            thumbnail
-            bing/meta
-          sparse-checkout-cone-mode: false
+          fetch-depth: 1
+
+      - name: Restore file timestamps from backup
+        run: |
+          cd nuanXinProPic
+          if [ -f "timestamps-backup-all.txt" ]; then
+            echo "✅ Found timestamps-backup-all.txt, restoring..."
+            chmod +x scripts/restore-timestamps.sh
+            BACKUP_FILE=timestamps-backup-all.txt ./scripts/restore-timestamps.sh
+          elif [ -f "timestamps-backup.txt" ]; then
+            echo "✅ Found timestamps-backup.txt, restoring..."
+            chmod +x scripts/restore-timestamps.sh
+            ./scripts/restore-timestamps.sh
+          else
+            echo "⚠️ No timestamps backup file found"
+          fi
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
