@@ -1,0 +1,15 @@
+# robots.txt for Wallpaper Gallery
+# 允许所有搜索引擎抓取
+
+User-agent: *
+Allow: /
+
+# Sitemap 位置
+Sitemap: https://wallpaper.061129.xyz/sitemap.xml
+
+# 禁止抓取的路径（如果有）
+# Disallow: /admin/
+# Disallow: /private/
+
+# 爬虫访问频率（可选）
+# Crawl-delay: 1

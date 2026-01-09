@@ -1,0 +1,82 @@
+{
+  "name": "Wallpaper Gallery",
+  "short_name": "Wallpaper",
+  "description": "精选高清4K壁纸，涵盖动漫、风景、人像、游戏等多种分类，免费下载，支持电脑壁纸、手机壁纸和头像",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8f9fa",
+  "theme_color": "#6366f1",
+  "orientation": "any",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["wallpapers", "photos", "lifestyle"],
+  "screenshots": [
+    {
+      "src": "/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshot-narrow.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "电脑壁纸",
+      "short_name": "电脑",
+      "description": "浏览电脑壁纸",
+      "url": "/desktop",
+      "icons": [{ "src": "/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "手机壁纸",
+      "short_name": "手机",
+      "description": "浏览手机壁纸",
+      "url": "/mobile",
+      "icons": [{ "src": "/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Bing壁纸",
+      "short_name": "Bing",
+      "description": "浏览Bing每日壁纸",
+      "url": "/bing",
+      "icons": [{ "src": "/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "头像",
+      "short_name": "头像",
+      "description": "浏览精选头像",
+      "url": "/avatar",
+      "icons": [{ "src": "/icon-96.png", "sizes": "96x96" }]
+    }
+  ]
+}
