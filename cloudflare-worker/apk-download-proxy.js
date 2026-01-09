@@ -7,10 +7,20 @@
  * - 支持断点续传（Range 请求）
  * - 自动添加缓存头
  * - 错误重试机制
+ *
+ * URL 格式：
+ * - 简化版：/v1.0.0/Wallpaper-Gallery-v1.0.0.apk
+ * - 完整版：/IT-NuanxinPro/wallpaper-gallery/releases/download/v1.0.0/Wallpaper-Gallery-v1.0.0.apk
  */
 
 const CACHE_TTL = 86400 // 24 小时缓存（单位：秒）
 const GITHUB_BASE_URL = 'https://github.com/'
+
+// 硬编码的仓库信息（简化版 URL）
+const DEFAULT_REPO = {
+  user: 'IT-NuanxinPro',
+  repo: 'wallpaper-gallery',
+}
 
 addEventListener('fetch', (event) => {
   event.respondWith(handleRequest(event.request))
@@ -18,22 +28,29 @@ addEventListener('fetch', (event) => {
 
 async function handleRequest(request) {
   const url = new URL(request.url)
-
-  // 解析路径格式：/user/repo/releases/download/version/filename.apk
   const pathParts = url.pathname.split('/').filter(Boolean)
 
-  if (pathParts.length < 5) {
-    return new Response('Invalid URL format. Expected: /user/repo/releases/download/version/filename.apk', {
+  let githubUrl
+  let filename
+
+  // 格式 1：完整路径 /user/repo/releases/download/version/filename.apk
+  if (pathParts.length >= 5) {
+    const [user, repo, releasesType, version, ...filenameParts] = pathParts
+    filename = filenameParts.join('/')
+    githubUrl = `${GITHUB_BASE_URL}${user}/${repo}/${releasesType}/${version}/${filename}`
+  }
+  // 格式 2：简化路径 /v1.0.0/Wallpaper-Gallery-v1.0.0.apk
+  else if (pathParts.length >= 2) {
+    const [version, ...filenameParts] = pathParts
+    filename = filenameParts.join('/')
+    githubUrl = `${GITHUB_BASE_URL}${DEFAULT_REPO.user}/${DEFAULT_REPO.repo}/releases/download/${version}/${filename}`
+  }
+  else {
+    return new Response('Invalid URL format. Use:\n- /version/filename.apk\n- /user/repo/releases/download/version/filename.apk', {
       status: 400,
       headers: { 'Content-Type': 'text/plain' },
     })
   }
-
-  const [user, repo, releasesType, version, ...filenameParts] = pathParts
-  const filename = filenameParts.join('/')
-
-  // 构建完整的 GitHub Releases URL
-  const githubUrl = `${GITHUB_BASE_URL}${user}/${repo}/${releasesType}/${version}/${filename}`
 
   // 转发请求
   const response = await fetch(githubUrl, {

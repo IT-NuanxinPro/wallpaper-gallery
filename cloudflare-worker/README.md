@@ -138,14 +138,23 @@ git push origin main
 
 ### URL 格式
 
-**使用自定义域名：**
+**简化版（推荐）：**
 ```
 https://download.wallpaper.061129.xyz/{version}/{filename.apk}
 ```
 
+**完整版（也支持）：**
+```
+https://download.wallpaper.061129.xyz/{user}/{repo}/releases/download/{version}/{filename.apk}
+```
+
 **示例：**
 ```
+# 简化版
 https://download.wallpaper.061129.xyz/v1.0.0/Wallpaper-Gallery-v1.0.0.apk
+
+# 完整版
+https://download.wallpaper.061129.xyz/IT-NuanxinPro/wallpaper-gallery/releases/download/v1.0.0/Wallpaper-Gallery-v1.0.0.apk
 ```
 
 ### 缓存策略
