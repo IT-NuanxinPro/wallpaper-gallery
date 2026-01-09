@@ -7,6 +7,7 @@
  * - 支持断点续传（Range 请求）
  * - 自动添加缓存头
  * - 错误重试机制
+ * - CORS 预检请求支持
  *
  * URL 格式：
  * - 简化版：/v1.0.0/Wallpaper-Gallery-v1.0.0.apk
@@ -29,6 +30,19 @@ addEventListener('fetch', (event) => {
 async function handleRequest(request) {
   const url = new URL(request.url)
   const pathParts = url.pathname.split('/').filter(Boolean)
+
+  // 处理 OPTIONS 预检请求（CORS）
+  if (request.method === 'OPTIONS') {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
+        'Access-Control-Allow-Headers': 'Range, Content-Type, Content-Disposition',
+        'Access-Control-Max-Age': '86400',
+      },
+    })
+  }
 
   let githubUrl
   let filename
@@ -83,7 +97,7 @@ async function handleRequest(request) {
   // 添加 CORS 头（允许跨域）
   newResponse.headers.set('Access-Control-Allow-Origin', '*')
   newResponse.headers.set('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS')
-  newResponse.headers.set('Access-Control-Allow-Headers', 'Range, Content-Type')
+  newResponse.headers.set('Access-Control-Allow-Headers', 'Range, Content-Type, Content-Disposition')
 
   // 添加文件下载头
   if (filename.endsWith('.apk')) {
