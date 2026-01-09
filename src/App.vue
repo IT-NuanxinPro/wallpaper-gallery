@@ -4,12 +4,14 @@ import { ElConfigProvider } from 'element-plus'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import AppUpdateDialog from '@/components/common/feedback/AppUpdateDialog.vue'
 import UpdateNotification from '@/components/common/feedback/UpdateNotification.vue'
 import PWAInstallPrompt from '@/components/common/ui/PWAInstallPrompt.vue'
 // import AppFooter from '@/components/layout/AppFooter.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import GridSkeleton from '@/components/wallpaper/WallpaperGrid/GridSkeleton.vue'
 
+import { useAppUpdate } from '@/composables/useAppUpdate'
 import { useTheme } from '@/composables/useTheme'
 import { useVersionCheck } from '@/composables/useVersionCheck'
 
@@ -21,8 +23,11 @@ const AppSplash = Capacitor.isNativePlatform()
 // Theme
 const { initTheme } = useTheme()
 
-// Version check (启动版本检测)
+// Version check (Web/PWA 更新检测)
 useVersionCheck()
+
+// App update check (原生 App 更新检测)
+const { checkUpdate: checkAppUpdate } = useAppUpdate()
 
 // Route
 const route = useRoute()
@@ -44,6 +49,11 @@ function onSplashComplete() {
 // Initialize
 onMounted(() => {
   initTheme()
+
+  // 仅在原生平台检查 App 更新
+  if (Capacitor.isNativePlatform()) {
+    checkAppUpdate()
+  }
 })
 </script>
 
@@ -74,8 +84,11 @@ onMounted(() => {
 
       <!-- <AppFooter /> -->
 
-      <!-- 版本更新提示 -->
+      <!-- 版本更新提示 (Web/PWA) -->
       <UpdateNotification v-if="!hideHeader" />
+
+      <!-- App 更新提示 (原生 App) -->
+      <AppUpdateDialog v-if="!hideHeader" />
 
       <!-- PWA 安装提示 -->
       <PWAInstallPrompt v-if="!hideHeader" />
