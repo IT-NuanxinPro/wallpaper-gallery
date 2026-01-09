@@ -26,6 +26,17 @@ jobs:
         with:
           ref: android  # 始终从 android 分支构建
 
+      - name: Checkout image repository for data generation
+        uses: actions/checkout@v4
+        with:
+          repository: IT-NuanxinPro/nuanXinProPic
+          path: nuanXinProPic
+          sparse-checkout: |
+            wallpaper
+            thumbnail
+            bing/meta
+          sparse-checkout-cone-mode: false
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
