@@ -148,16 +148,16 @@ jobs:
         run: |
           echo "🧹 Purging Cloudflare cache..."
 
-          # 清除关键文件缓存（index.html 和 version.json）
+          # 清除所有缓存（确保 /data/ 目录的 JSON 也被清除）
           RESPONSE=$(curl -s -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache" \
             -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
             -H "Content-Type: application/json" \
-            --data '{"files":["https://wallpaper.061129.xyz/","https://wallpaper.061129.xyz/index.html","https://wallpaper.061129.xyz/version.json"]}')
+            --data '{"purge_everything":true}')
 
           # 检查响应
           SUCCESS=$(echo "$RESPONSE" | jq -r '.success')
           if [ "$SUCCESS" = "true" ]; then
-            echo "✅ Successfully purged version.json cache"
+            echo "✅ Successfully purged all Cloudflare cache"
           else
             echo "⚠️ Cache purge response: $RESPONSE"
           fi
