@@ -8,6 +8,16 @@ import process from 'node:process'
  */
 
 /**
+ * 获取北京时间字符串
+ */
+function getBeijingTime() {
+  const now = new Date()
+  // UTC+8
+  const beijingTime = new Date(now.getTime() + 8 * 60 * 60 * 1000)
+  return beijingTime.toISOString().replace('Z', '+08:00')
+}
+
+/**
  * 版本插件
  * @param {object} options 配置选项
  * @param {string} options.version - 应用版本号
@@ -18,7 +28,7 @@ import process from 'node:process'
 export function versionPlugin(options = {}) {
   const {
     version = '1.0.0',
-    buildTime = new Date().toISOString(),
+    buildTime = getBeijingTime(),
     outputPath = 'public/version.json',
   } = options
 
