@@ -33,6 +33,15 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Save original commit message
+        id: commit_msg
+        run: |
+          # 保存原始提交信息（在版本递增之前）
+          COMMIT_MSG=$(git log -1 --pretty=format:"%B")
+          echo "commit_msg<<EOF" >> $GITHUB_OUTPUT
+          echo "$COMMIT_MSG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Auto-increment version
         id: version
         run: |
@@ -177,8 +186,8 @@ jobs:
           if git rev-parse "$VERSION" >/dev/null 2>&1; then
             echo "⚠️ Tag $VERSION already exists, skipping"
           else
-            # 获取最新提交信息
-            COMMIT_MSG=$(git log -1 --pretty=format:"%s")
+            # 使用之前保存的原始提交信息
+            COMMIT_MSG="${{ steps.commit_msg.outputs.commit_msg }}"
             
             # 创建并推送 tag
             git tag -a "$VERSION" -m "$COMMIT_MSG"
