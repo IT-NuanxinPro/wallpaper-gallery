@@ -216,53 +216,47 @@ export function getDisplayFilename(filename) {
  * @param {string} filename - 保存的文件名
  */
 export async function downloadFile(url, filename) {
-  try {
-    // 动态重建 URL（如果是 CDN 链接）
-    let finalUrl = url
-    if (url.includes('@main')) {
-      const path = extractPathFromUrl(url)
-      finalUrl = buildImageUrl(path)
-    }
-
-    const response = await fetch(finalUrl)
-
-    // 如果 CDN 返回 403 或 404，回退到 GitHub Raw CDN
-    if (!response.ok || response.status === 403 || response.status === 404) {
-      console.warn('[downloadFile] CDN 失败，回退到 GitHub Raw CDN:', response.status)
-      finalUrl = buildRawImageUrl(finalUrl)
-      const fallbackResponse = await fetch(finalUrl)
-
-      if (!fallbackResponse.ok) {
-        throw new Error(`GitHub Raw CDN 失败: ${fallbackResponse.status}`)
-      }
-
-      const blob = await fallbackResponse.blob()
-      const blobUrl = URL.createObjectURL(blob)
-
-      const link = document.createElement('a')
-      link.href = blobUrl
-      link.download = filename
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      URL.revokeObjectURL(blobUrl)
-    }
-    else {
-      const blob = await response.blob()
-      const blobUrl = URL.createObjectURL(blob)
-
-      const link = document.createElement('a')
-      link.href = blobUrl
-      link.download = filename
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      URL.revokeObjectURL(blobUrl)
-    }
+  // 动态重建 URL（如果是 CDN 链接）
+  let finalUrl = url
+  if (url.includes('@main')) {
+    const path = extractPathFromUrl(url)
+    finalUrl = buildImageUrl(path)
   }
-  catch {
-    // 降级方案：直接打开链接
-    window.open(url, '_blank')
+
+  const response = await fetch(finalUrl)
+
+  // 如果 CDN 返回 403 或 404，回退到 GitHub Raw CDN
+  if (!response.ok || response.status === 403 || response.status === 404) {
+    console.warn('[downloadFile] CDN 失败，回退到 GitHub Raw CDN:', response.status)
+    finalUrl = buildRawImageUrl(finalUrl)
+    const fallbackResponse = await fetch(finalUrl)
+
+    if (!fallbackResponse.ok) {
+      throw new Error(`GitHub Raw CDN 失败: ${fallbackResponse.status}`)
+    }
+
+    const blob = await fallbackResponse.blob()
+    const blobUrl = URL.createObjectURL(blob)
+
+    const link = document.createElement('a')
+    link.href = blobUrl
+    link.download = filename
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(blobUrl)
+  }
+  else {
+    const blob = await response.blob()
+    const blobUrl = URL.createObjectURL(blob)
+
+    const link = document.createElement('a')
+    link.href = blobUrl
+    link.download = filename
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(blobUrl)
   }
 }
 

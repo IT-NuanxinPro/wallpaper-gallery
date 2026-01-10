@@ -13,9 +13,8 @@ on:
   workflow_dispatch:
 
 # 设置 GITHUB_TOKEN 权限
-# 设置 GITHUB_TOKEN 权限
 permissions:
-  contents: read
+  contents: write  # 需要写权限来更新 package.json 版本号
   pages: write
   id-token: write
 
@@ -31,6 +30,46 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Save original commit message
+        id: commit_msg
+        run: |
+          # 保存原始提交信息（在版本递增之前）
+          COMMIT_MSG=$(git log -1 --pretty=format:"%B")
+          echo "commit_msg<<EOF" >> $GITHUB_OUTPUT
+          echo "$COMMIT_MSG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Auto-increment version
+        id: version
+        run: |
+          # 读取当前版本
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "📦 Current version: $CURRENT_VERSION"
+
+          # 解析版本号 (major.minor.patch)
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
+
+          # 递增 patch 版本
+          NEW_PATCH=$((PATCH + 1))
+          NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+          echo "🚀 New version: $NEW_VERSION"
+
+          # 更新 package.json
+          node -e "
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf-8'));
+            pkg.version = '$NEW_VERSION';
+            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+          "
+
+          # 验证更新
+          echo "✅ Updated package.json:"
+          grep '"version"' package.json
+
+          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
 
       - name: Get latest CDN version from nuanXinProPic
         id: cdn_version
@@ -122,6 +161,48 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Commit version update
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          # 检查是否有变更
+          if git diff --quiet package.json; then
+            echo "📦 No version changes to commit"
+          else
+            git add package.json
+            git commit -m "chore: bump version to ${{ steps.version.outputs.version }} [skip ci]"
+            git push
+            echo "✅ Version ${{ steps.version.outputs.version }} committed"
+          fi
+
+      - name: Create Git tag and Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="v${{ steps.version.outputs.version }}"
+          
+          # 检查 tag 是否已存在
+          if git rev-parse "$VERSION" >/dev/null 2>&1; then
+            echo "⚠️ Tag $VERSION already exists, skipping"
+          else
+            # 使用之前保存的原始提交信息
+            COMMIT_MSG="${{ steps.commit_msg.outputs.commit_msg }}"
+            
+            # 创建并推送 tag
+            git tag -a "$VERSION" -m "$COMMIT_MSG"
+            git push origin "$VERSION"
+            echo "✅ Created and pushed tag: $VERSION"
+            
+            # 使用 GitHub CLI 创建 release
+            gh release create "$VERSION" \
+              --title "$VERSION" \
+              --notes "$COMMIT_MSG" \
+              --latest
+            
+            echo "✅ Created release: $VERSION"
+          fi
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
@@ -148,16 +229,16 @@ jobs:
         run: |
           echo "🧹 Purging Cloudflare cache..."
 
-          # 清除关键文件缓存（index.html 和 version.json）
+          # 清除所有缓存（确保 /data/ 目录的 JSON 也被清除）
           RESPONSE=$(curl -s -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache" \
             -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
             -H "Content-Type: application/json" \
-            --data '{"files":["https://wallpaper.061129.xyz/","https://wallpaper.061129.xyz/index.html","https://wallpaper.061129.xyz/version.json"]}')
+            --data '{"purge_everything":true}')
 
           # 检查响应
           SUCCESS=$(echo "$RESPONSE" | jq -r '.success')
           if [ "$SUCCESS" = "true" ]; then
-            echo "✅ Successfully purged version.json cache"
+            echo "✅ Successfully purged all Cloudflare cache"
           else
             echo "⚠️ Cache purge response: $RESPONSE"
           fi

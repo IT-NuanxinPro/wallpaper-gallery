@@ -14,7 +14,7 @@ const CURRENT_VERSION = __APP_VERSION__ || '0.0.0'
 const BUILD_TIME = __BUILD_TIME__ || ''
 
 // 配置
-const CHECK_INTERVAL = 5 * 60 * 1000 // 5分钟检查一次
+const CHECK_INTERVAL = 30 * 60 * 1000 // 30分钟检查一次
 const VERSION_URL = `${import.meta.env.BASE_URL}version.json`
 
 // 全局状态（单例）
@@ -101,6 +101,8 @@ async function checkForUpdates() {
         buildTime: serverVersion.buildTime,
       }
       console.log(`[VersionCheck] 发现新版本: ${CURRENT_VERSION} → ${serverVersion.version}`)
+      // 发现新版本后停止轮询，节省资源
+      stopPeriodicCheck()
     }
   }
   catch (error) {
