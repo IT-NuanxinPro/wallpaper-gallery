@@ -188,7 +188,7 @@ jobs:
             
             # 使用 GitHub CLI 创建 release
             gh release create "$VERSION" \
-              --title "壁纸画廊 $VERSION" \
+              --title "$VERSION" \
               --notes "发布时间: $BEIJING_TIME (北京时间) | CDN版本: $CDN_VERSION | 同步最新壁纸数据" \
               --latest
             
