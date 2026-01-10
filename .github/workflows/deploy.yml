@@ -172,24 +172,23 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION="v${{ steps.version.outputs.version }}"
-          CDN_VERSION="${{ steps.cdn_version.outputs.version }}"
           
           # 检查 tag 是否已存在
           if git rev-parse "$VERSION" >/dev/null 2>&1; then
             echo "⚠️ Tag $VERSION already exists, skipping"
           else
+            # 获取最新提交信息
+            COMMIT_MSG=$(git log -1 --pretty=format:"%s")
+            
             # 创建并推送 tag
-            git tag -a "$VERSION" -m "Release $VERSION - CDN: $CDN_VERSION"
+            git tag -a "$VERSION" -m "$COMMIT_MSG"
             git push origin "$VERSION"
             echo "✅ Created and pushed tag: $VERSION"
-            
-            # 获取北京时间
-            BEIJING_TIME=$(TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M:%S')
             
             # 使用 GitHub CLI 创建 release
             gh release create "$VERSION" \
               --title "$VERSION" \
-              --notes "发布时间: $BEIJING_TIME (北京时间) | CDN版本: $CDN_VERSION | 同步最新壁纸数据" \
+              --notes "$COMMIT_MSG" \
               --latest
             
             echo "✅ Created release: $VERSION"

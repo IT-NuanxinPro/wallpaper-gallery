@@ -4,40 +4,7 @@
 
 ## 📁 插件列表
 
-### 1. vite-plugin-cdn.js
-
-**功能**: 在生产环境构建时注入 CDN 脚本,并移除 Import Map
-
-**用途**:
-- 将 Vue、Vue Router 等依赖从 CDN 加载,减小打包体积
-- 自动移除开发环境的 Import Map
-- 在正确位置注入 CDN 脚本
-
-**使用**:
-```javascript
-import { cdnPlugin } from './build/vite-plugin-cdn.js'
-
-export default defineConfig({
-  plugins: [
-    cdnPlugin({
-      css: [],
-      js: [
-        'https://unpkg.com/vue@3.5.24/dist/vue.global.prod.js',
-        'https://unpkg.com/vue-router@4.6.4/dist/vue-router.global.prod.js',
-      ],
-    }),
-  ],
-})
-```
-
-**默认 CDN**:
-- Vue 3.5.24
-- Vue Demi 0.14.10
-- Vue Router 4.6.4
-
----
-
-### 2. vite-plugin-version.js
+### 1. vite-plugin-version.js
 
 **功能**: 在构建时自动更新 `public/version.json` 文件
 
@@ -70,7 +37,7 @@ export default defineConfig({
 
 ---
 
-### 3. vite-plugin-obfuscate.js
+### 2. vite-plugin-obfuscate.js
 
 **功能**: 对敏感文件进行代码混淆
 
