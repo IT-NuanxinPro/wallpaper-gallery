@@ -10,7 +10,9 @@ const cdn = {
   css: [],
   js: [
     'https://unpkg.com/vue@3.5.24/dist/vue.global.prod.js',
+    'https://unpkg.com/vue-demi@0.14.10/lib/index.iife.js',
     'https://unpkg.com/vue-router@4.6.4/dist/vue-router.global.prod.js',
+    'https://cdn.jsdelivr.net/npm/pinia@3.0.4/dist/pinia.iife.min.js',
   ],
 }
 

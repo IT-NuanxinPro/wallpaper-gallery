@@ -62,7 +62,9 @@ export default defineConfig({
     isProduction && {
       ...externalGlobals({
         'vue': 'Vue',
+        'vue-demi': 'VueDemi',
         'vue-router': 'VueRouter',
+        'pinia': 'Pinia',
       }),
       enforce: 'post',
     },
@@ -106,12 +108,14 @@ export default defineConfig({
     minify: 'esbuild',
     rollupOptions: {
       // 排除不需要打包的依赖（使用 CDN）- 仅生产环境
-      external: isProduction ? ['vue', 'vue-router'] : [],
+      external: isProduction ? ['vue', 'vue-demi', 'vue-router', 'pinia'] : [],
       output: {
         // 指定全局变量名（对应 CDN 中的全局变量）
         globals: {
           'vue': 'Vue',
+          'vue-demi': 'VueDemi',
           'vue-router': 'VueRouter',
+          'pinia': 'Pinia',
         },
         manualChunks: {
           // 保留这些库的分包配置（不使用 CDN）
