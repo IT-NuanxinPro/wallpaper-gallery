@@ -186,23 +186,10 @@ jobs:
             # 获取北京时间
             BEIJING_TIME=$(TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M:%S')
             
-            # 创建 Release
-            RELEASE_BODY="## 🎉 壁纸画廊 $VERSION
-
-📅 发布时间: $BEIJING_TIME (北京时间)
-🖼️ CDN 版本: $CDN_VERSION
-
-### 更新内容
-- 同步最新壁纸数据
-- 自动构建部署
-
----
-*此版本由 GitHub Actions 自动发布*"
-
             # 使用 GitHub CLI 创建 release
             gh release create "$VERSION" \
               --title "壁纸画廊 $VERSION" \
-              --notes "$RELEASE_BODY" \
+              --notes "发布时间: $BEIJING_TIME (北京时间) | CDN版本: $CDN_VERSION | 同步最新壁纸数据" \
               --latest
             
             echo "✅ Created release: $VERSION"
