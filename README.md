@@ -10,7 +10,6 @@
 - **四大系列** - 电脑壁纸、手机壁纸、头像、每日 Bing 壁纸
 - **每日 Bing 壁纸** - 从 2019年6月至今约 2400+ 张必应精选壁纸
   - 按年度分片加载，性能优异
-  - 月份选择器快速定位
   - 直连 Bing CDN，无需额外存储
 - **智能裁剪** - PC 端电脑壁纸智能裁剪功能
   - 自动适配当前屏幕分辨率
@@ -19,12 +18,16 @@
   - 实时预览 + 沉浸式全屏预览
   - 原图质量输出选项
 - **真机显示模式** - 手机壁纸和头像系列专属
-  - 模拟 iPhone 外观（Dynamic Island、状态栏、Home 指示器）
+  - 手机壁纸：模拟 iPhone 14 Pro 外观（Dynamic Island 灵动岛动画、状态栏、Home 指示器）
+  - 头像系列：简洁 iPhone 框架（无灵动岛，突出头像展示）
   - 电脑端和手机端统一支持
   - 流畅的进入动画（GSAP 硬件加速）
 - **竖屏壁纸弹窗** - 移动端专属竖屏壁纸预览体验
+  - 高级感渐变设计（紫蓝渐变 #667eea → #764ba2）
+  - 头像弹窗支持圆形/方形切换
+  - 滚动锁定防止穿透
 - **智能搜索** - 实时搜索建议、关键词高亮、回车确认搜索
-- **多种排序** - 按时间、大小、名称排序
+- **多种排序** - 按时间、热门、大小、名称排序
 - **动态分类** - 自动从壁纸数据中提取分类，按数量排序
 - **格式筛选** - 按 JPG/PNG 格式筛选
 - **分辨率筛选** - 仅电脑壁纸系列支持，按 16K/8K/5K+/4K+/4K/2K/超清/高清/标清精确筛选
@@ -42,10 +45,12 @@
 - **全屏浏览** - 沉浸式全屏浏览模式，ESC 退出
 - **移动端无限滚动** - 滚动到底部自动加载更多
 - **今日精选** - 每日随机推荐精选壁纸（仅电脑壁纸系列）
-- **3D 热门轮播** - 首页 3D 卡片轮播展示热门壁纸
+- **3D 热门轮播** - 首页 3D 卡片轮播展示热门壁纸（下线）
+- **分页条数切换** - 支持 10/20/30/50 条每页，实时切换
 
 ### 💫 用户体验
 
+- **高级感 UI 设计** - 紫蓝渐变主题色（#667eea → #764ba2）、丝滑动画
 - **版本检测与更新提示** - 自动检测新版本，优雅的底部提示栏
 - **智能设备检测** - 综合 User Agent、触摸支持、屏幕尺寸判断设备类型
 - **主题切换** - 深色/浅色/跟随系统/定时自动切换
@@ -56,8 +61,18 @@
   - 顶部搜索弹窗
   - 侧边导航抽屉
   - 手势滑动切换视图
+  - 移除 backdrop-filter 提升滚动性能
+  - 滚动锁定防止弹窗穿透
 - **用户偏好记忆** - 记住用户的系列选择、排序方式、视图模式
 - **本地缩略图** - 预生成 WebP 缩略图，首页加载更快
+
+### 📊 数据统计
+
+- **浏览量统计** - 记录每张壁纸的浏览次数
+- **下载量统计** - 记录每张壁纸的下载次数
+- **热门排序** - 基于浏览量的热门壁纸排序
+- **热门轮播** - 首页展示最受欢迎的壁纸
+- **Supabase 后端** - 使用 Supabase 存储统计数据，支持原子递增
 
 ### 🧭 路由与导航
 
@@ -78,6 +93,7 @@
 | 样式 | Sass + postcss-pxtorem (移动端适配) |
 | 路由 | Vue Router 4 |
 | 状态管理 | Pinia |
+| 数据统计 | Supabase (PostgreSQL) |
 | 部署 | GitHub Pages (生产) / Vercel (测试) |
 | CDN 加速 | Cloudflare + jsDelivr |
 | 统计分析 | Cloudflare Web Analytics + Umami |
@@ -121,11 +137,18 @@ pnpm build
 pnpm preview
 ```
 
-### 📦 开源用户说明
+## 📦 Fork 部署指南
 
-如果你是 fork 本项目的开源用户：
+如果你是 Fork 本项目的用户，请参阅 **[Fork 部署指南](docs/Fork部署指南.md)**，包含：
 
-#### 正常使用（推荐）
+- ✅ 环境变量配置
+- ✅ Supabase 数据库配置（可选，用于统计功能）
+- ✅ GitHub Actions Secrets 配置
+- ✅ 网站分析配置（Umami / Cloudflare）
+- ✅ 自定义图床配置
+- ✅ 常见问题解答
+
+### 快速使用（无需配置）
 
 运行 `pnpm generate` 或 `pnpm build` 时会自动从线上拉取已生成的壁纸数据。
 
@@ -136,34 +159,27 @@ pnpm preview
 - ✅ 包含完整数据
 - ✅ 无需任何额外配置
 
-**如果线上数据源不可用**：
-- ⚠️ 这通常意味着生产环境出现问题
-- 脚本会回退到 GitHub API（数据可能不完整）
-- 建议等待线上数据源恢复后再构建
-
-#### 使用自己的图床
-
-如果你想使用自己的图床：
-
-1. 修改 `src/utils/constants.js` 中的 CDN 配置（替换为你的图床地址）
-2. 修改 `scripts/generate-data.js` 中的 `ONLINE_DATA_BASE_URL`
-3. 将你的图床仓库 clone 到项目同级或父级目录，目录结构需与本项目兼容
-
 ## 📁 项目结构
 
 ```text
 wallpaper-gallery/
 ├── .github/workflows/    # GitHub Actions 配置
+│   ├── deploy.yml        # 自动构建部署
+│   └── export-stats.yml  # 统计数据导出
 ├── public/
 │   └── data/             # 壁纸数据 JSON（构建时生成）
 │       ├── desktop/      # 电脑壁纸分类数据
 │       ├── mobile/       # 手机壁纸分类数据
 │       ├── avatar/       # 头像分类数据
-│       └── bing/         # 每日 Bing 壁纸数据
+│       ├── bing/         # 每日 Bing 壁纸数据
+│       └── stats/        # 热门统计数据
 ├── scripts/
-│   └── generate-data.js  # 数据生成脚本（含 cdnTag 生成）
-├── build/
-│   └── vite-plugin-obfuscate.js # 自定义混淆插件
+│   ├── generate-data.js  # 数据生成脚本（含 cdnTag 生成）
+│   ├── export-stats.js   # 统计数据导出脚本
+│   └── supabase-migration.sql  # 数据库迁移脚本
+├── docs/
+│   ├── Fork部署指南.md   # Fork 用户部署指南
+│   └── ...               # 其他文档
 ├── src/
 │   ├── assets/styles/    # 全局样式（Sass）
 │   ├── components/       # Vue 组件
@@ -178,9 +194,12 @@ wallpaper-gallery/
 │   │       ├── PortraitWallpaperModal/  # 竖屏壁纸弹窗（手机/头像系列）
 │   │       ├── WallpaperGrid/           # 壁纸网格（含骨架屏）
 │   │       └── WallpaperModal/          # 横屏壁纸弹窗（电脑/Bing系列）
-│   ├── composables/      # 组合式函数
+│   ├── composables/      # 组合式函数（useScrollLock 等）
+│   ├── services/         # 服务层（统计服务等）
+│   ├── stores/           # Pinia 状态管理
 │   ├── router/           # Vue Router 路由配置
 │   ├── views/            # 页面视图组件
+│   │   └── demo/         # Demo 演示页面（IPhoneDemo、MacBookDemo）
 │   └── utils/            # 工具函数和常量
 └── index.html
 ```
@@ -230,6 +249,9 @@ wallpaper-gallery/
 - **Cloudflare 缓存** - 部署后自动清除缓存，确保用户及时获取更新
 - **Web Worker** - 大数据解码在 Worker 线程执行，避免阻塞主线程
 - **分类按需加载** - 首屏只加载前3个分类，剩余分类后台加载
+- **移动端性能优化** - 移除 backdrop-filter 模糊效果，提升滚动流畅度
+- **路由守卫精简** - 从 ~80 行简化到 ~30 行，减少不必要的计算
+- **内存泄漏修复** - ImageCropModal 完善资源清理机制
 
 ## 📊 SEO 优化
 

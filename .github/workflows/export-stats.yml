@@ -1,0 +1,47 @@
+name: Export Stats
+
+on:
+  # 每天北京时间凌晨 1:30 执行（UTC 17:30），在图床同步后、deploy 之前
+  schedule:
+    - cron: '30 17 * * *'
+  # 支持手动触发
+  workflow_dispatch:
+
+jobs:
+  export-stats:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Export stats from Supabase
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: node scripts/export-stats.js
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          git add public/data/stats/
+          if git diff --staged --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push if changed
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "chore: update stats data"
+          git push

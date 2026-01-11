@@ -1,7 +1,7 @@
 {
   "name": "wallpaper-gallery",
   "type": "module",
-  "version": "1.7.5",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "dev": "vite",

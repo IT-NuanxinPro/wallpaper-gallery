@@ -32,7 +32,7 @@ const versionDisplay = computed(() => {
         <!-- 内容区域 -->
         <div class="card-content">
           <!-- 图标 -->
-          <div class="update-icon">
+          <!-- <div class="update-icon">
             <div class="icon-circle">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 2L12 12M12 12L8 8M12 12L16 8" stroke-linecap="round" stroke-linejoin="round" />
@@ -40,7 +40,7 @@ const versionDisplay = computed(() => {
               </svg>
             </div>
             <div class="icon-pulse" />
-          </div>
+          </div> -->
 
           <!-- 文字信息 -->
           <div class="update-info">

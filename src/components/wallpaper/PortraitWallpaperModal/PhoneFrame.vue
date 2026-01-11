@@ -295,6 +295,7 @@ const KEY_MIGRATION = {
 }
 
 const currentTime = ref('00:14')
+let timeInterval = null
 
 function updateTime() {
   const now = new Date()
@@ -303,12 +304,46 @@ function updateTime() {
   currentTime.value = `${hours}:${minutes}`
 }
 
-let timeInterval = null
-
-onMounted(() => {
+// 启动时钟定时器
+function startTimeTimer() {
+  if (timeInterval) return
   updateTime()
   timeInterval = setInterval(updateTime, 1000)
+}
 
+// 停止时钟定时器
+function stopTimeTimer() {
+  if (timeInterval) {
+    clearInterval(timeInterval)
+    timeInterval = null
+  }
+}
+
+// 使用 Intersection Observer 实现懒启动
+let observer = null
+
+function setupVisibilityObserver(el) {
+  if (!el || observer) return
+
+  observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          startTimeTimer()
+        } else {
+          stopTimeTimer()
+        }
+      })
+    },
+    { threshold: 0.1 }
+  )
+  observer.observe(el)
+}
+
+// 组件根元素引用
+const phoneFrameRef = ref(null)
+
+onMounted(() => {
   // LocalStorage 兼容性：初始化时检查并迁移旧键值
   const storedSize = localStorage.getItem(STORAGE_KEY)
   if (storedSize && KEY_MIGRATION[storedSize]) {
@@ -321,6 +356,11 @@ onMounted(() => {
 
   // 初始化展开状态（仅移动端）
   nextTick(() => {
+    // 设置可见性监听（懒启动时钟）
+    if (phoneFrameRef.value) {
+      setupVisibilityObserver(phoneFrameRef.value)
+    }
+
     // PC端下拉框不需要初始化动画
     if (isDesktop.value) {
       return
@@ -365,8 +405,12 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  if (timeInterval) {
-    clearInterval(timeInterval)
+  // 停止时钟定时器
+  stopTimeTimer()
+  // 清理 Intersection Observer
+  if (observer) {
+    observer.disconnect()
+    observer = null
   }
   // 清理 GSAP 动画
   if (expandAnimation) {
@@ -378,7 +422,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="phone-frame" :class="{ 'phone-frame--dark': isDark }">
+  <div ref="phoneFrameRef" class="phone-frame" :class="{ 'phone-frame--dark': isDark }">
     <!-- 移动端：悬浮球形式，使用 Teleport 移到 body 避免受祖先元素 transform 影响 -->
     <Teleport v-if="!isDesktop && props.showSizeSelector" to="body">
       <div

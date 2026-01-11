@@ -4,9 +4,7 @@ import { Flip } from 'gsap/Flip'
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
-// import Pagination from '@/components/common/Pagination.vue' // 注释：改用滚动加载模式
 import { useDevice } from '@/composables/useDevice'
-// import { usePagination } from '@/composables/usePagination' // 注释：改用滚动加载模式
 import { useViewMode } from '@/composables/useViewMode'
 import { useWallpaperType } from '@/composables/useWallpaperType'
 import WallpaperCard from '../WallpaperCard.vue'

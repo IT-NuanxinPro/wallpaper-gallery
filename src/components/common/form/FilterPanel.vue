@@ -76,9 +76,33 @@ const showCategoryDrawer = ref(false) // 分类选择抽屉
 const tempSortBy = ref(props.sortBy)
 const tempFormatFilter = ref(props.formatFilter)
 
+// 获取当前年月（用于 Bing 系列默认值判断）
+function getCurrentYearMonth() {
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  return `${year}-${month}`
+}
+
 // 是否有激活的筛选条件
 const hasActiveFilters = computed(() => {
-  return props.formatFilter !== 'all' || props.resolutionFilter !== 'all' || props.categoryFilter !== 'all' || props.subcategoryFilter !== 'all' || props.sortBy !== 'newest'
+  if (props.formatFilter !== 'all')
+    return true
+  if (props.resolutionFilter !== 'all')
+    return true
+  if (props.subcategoryFilter !== 'all')
+    return true
+  if (props.sortBy !== 'newest')
+    return true
+
+  // Bing 系列：当前年月是默认值，不算激活
+  if (props.currentSeries === 'bing') {
+    const defaultMonth = getCurrentYearMonth()
+    return props.categoryFilter !== defaultMonth
+  }
+
+  // 其他系列：all 是默认值
+  return props.categoryFilter !== 'all'
 })
 
 // 视图模式滑动指示器位置
@@ -228,7 +252,7 @@ function resetFilters() {
         </template>
         <template v-else>
           共 <AnimatedNumber :value="resultCount" class="count-value" /> 张壁纸
-          <span v-if="resultCount !== totalCount" class="filtered-hint">
+          <span v-if="hasActiveFilters && resultCount !== totalCount" class="filtered-hint">
             (筛选自 <AnimatedNumber :value="totalCount" :duration="0.4" /> 张)
           </span>
         </template>
@@ -442,80 +466,77 @@ function resetFilters() {
     />
 
     <!-- 移动端筛选弹窗（格式+排序） -->
-    <Teleport to="body">
-      <van-popup
-        v-model:show="showFilterPopup"
-        position="bottom"
-        round
-        class="filter-popup"
-        :teleport="null"
-        :close-on-click-overlay="true"
-        :lock-scroll="true"
-        :duration="0.3"
-        safe-area-inset-bottom
-      >
-        <div class="popup-content">
-          <!-- 弹窗头部 -->
-          <div class="popup-header">
-            <button class="popup-reset" @click="resetFilters">
-              重置
-            </button>
-            <span class="popup-title">筛选</span>
-            <button class="popup-close" @click="closeFilterPopup">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M18 6L6 18M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
+    <van-popup
+      v-model:show="showFilterPopup"
+      position="bottom"
+      round
+      class="filter-popup-dark"
+      :close-on-click-overlay="true"
+      :lock-scroll="true"
+      :duration="0.3"
+      safe-area-inset-bottom
+    >
+      <div class="popup-content">
+        <!-- 弹窗头部 -->
+        <div class="popup-header">
+          <button class="popup-reset" @click="resetFilters">
+            重置
+          </button>
+          <span class="popup-title">筛选</span>
+          <button class="popup-close" @click="closeFilterPopup">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
 
-          <!-- 筛选选项 -->
-          <div class="popup-body">
-            <!-- 格式 -->
-            <div v-if="!hideFormatFilter" class="filter-group">
-              <h3 class="group-title">
-                格式
-              </h3>
-              <div class="option-grid">
-                <button
-                  v-for="option in FORMAT_OPTIONS"
-                  :key="option.value"
-                  class="option-btn"
-                  :class="{ 'is-active': tempFormatFilter === option.value }"
-                  @click="tempFormatFilter = option.value"
-                >
-                  {{ option.label }}
-                </button>
-              </div>
-            </div>
-
-            <!-- 排序 -->
-            <div class="filter-group">
-              <h3 class="group-title">
-                排序
-              </h3>
-              <div class="option-grid">
-                <button
-                  v-for="option in SORT_OPTIONS"
-                  :key="option.value"
-                  class="option-btn"
-                  :class="{ 'is-active': tempSortBy === option.value }"
-                  @click="tempSortBy = option.value"
-                >
-                  {{ option.label }}
-                </button>
-              </div>
+        <!-- 筛选选项 -->
+        <div class="popup-body">
+          <!-- 格式 -->
+          <div v-if="!hideFormatFilter" class="filter-group">
+            <h3 class="group-title">
+              格式
+            </h3>
+            <div class="option-grid">
+              <button
+                v-for="option in FORMAT_OPTIONS"
+                :key="option.value"
+                class="option-btn"
+                :class="{ 'is-active': tempFormatFilter === option.value }"
+                @click="tempFormatFilter = option.value"
+              >
+                {{ option.label }}
+              </button>
             </div>
           </div>
 
-          <!-- 确认按钮 -->
-          <div class="popup-footer">
-            <button class="confirm-btn" @click="applyFilters">
-              确认筛选
-            </button>
+          <!-- 排序 -->
+          <div class="filter-group">
+            <h3 class="group-title">
+              排序
+            </h3>
+            <div class="option-grid">
+              <button
+                v-for="option in SORT_OPTIONS"
+                :key="option.value"
+                class="option-btn"
+                :class="{ 'is-active': tempSortBy === option.value }"
+                @click="tempSortBy = option.value"
+              >
+                {{ option.label }}
+              </button>
+            </div>
           </div>
         </div>
-      </van-popup>
-    </Teleport>
+
+        <!-- 确认按钮 -->
+        <div class="popup-footer">
+          <button class="confirm-btn" @click="applyFilters">
+            确认筛选
+          </button>
+        </div>
+      </div>
+    </van-popup>
   </div>
 </template>
 
@@ -976,20 +997,10 @@ function resetFilters() {
 }
 
 // 弹窗样式
-.filter-popup {
-  :deep(.van-popup) {
-    background: rgba(255, 255, 255, 0.95);
-
-    [data-theme='dark'] & {
-      background: rgba(15, 23, 42, 0.98);
-    }
-  }
-}
-
 .popup-content {
   display: flex;
   flex-direction: column;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.95);
 }
 
 .popup-header {
@@ -1215,6 +1226,45 @@ function resetFilters() {
 
   .filter-right-mobile {
     flex-shrink: 0;
+  }
+}
+</style>
+
+<!-- 全局样式：用于 Teleport 到 body 的弹窗暗色模式 -->
+<style lang="scss">
+// 移动端筛选弹窗样式（van-popup 被 teleport 到 body，需要全局样式）
+.van-popup.filter-popup-dark {
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+
+[data-theme='dark'] .van-popup.filter-popup-dark {
+  background: rgba(15, 23, 42, 0.98) !important;
+
+  .popup-content {
+    background: transparent;
+  }
+
+  .popup-header {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .popup-close {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .option-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.08);
+
+    &.is-active {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-color: transparent;
+    }
+  }
+
+  .popup-footer {
+    border-top-color: rgba(255, 255, 255, 0.08);
   }
 }
 </style>

@@ -75,7 +75,7 @@ const filteredWallpapers = computed(() =>
 const resultCount = computed(() => filteredWallpapers.value.length)
 
 // 是否有激活的筛选条件
-const hasActiveFilters = computed(() => filterStore.hasActiveFilters())
+const hasActiveFilters = computed(() => filterStore.hasActiveFilters(currentSeries.value))
 
 // ========================================
 // Modal Management
@@ -120,12 +120,6 @@ async function loadSeriesData(series) {
   isLoading.value = true
 
   try {
-    // 重置分类筛选（不同系列的分类不同）
-    filterStore.categoryFilter = 'all'
-    filterStore.subcategoryFilter = 'all'
-    filterStore.resolutionFilter = 'all'
-    filterStore.clearCategoryCache()
-
     // 设置默认排序方式
     filterStore.setDefaultSortBySeries(series)
 
@@ -145,7 +139,7 @@ async function loadSeriesData(series) {
 // ========================================
 
 function handleReset() {
-  filterStore.resetFilters(filterStore.sortBy)
+  filterStore.resetFilters(filterStore.sortBy, currentSeries.value)
 }
 
 function handleReload() {

@@ -6,12 +6,14 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useDevice } from '@/composables/useDevice'
 import { useWallpaperType } from '@/composables/useWallpaperType'
+import { usePopularityStore } from '@/stores/popularity'
 import { trackWallpaperDownload, trackWallpaperPreview } from '@/utils/analytics'
 import { downloadFile } from '@/utils/format'
-import { getWallpaperDownloadCount, getWallpaperViewCount, isSupabaseConfigured, recordDownload, recordView } from '@/utils/supabase'
+import { recordDownload, recordView } from '@/utils/supabase'
 
-import { useDeviceMode } from './composables/useDeviceMode'
+import AvatarDesktopModal from './AvatarDesktopModal.vue'
 import AvatarMobileModal from './AvatarMobileModal.vue'
+import { useDeviceMode } from './composables/useDeviceMode'
 import DesktopModal from './DesktopModal.vue'
 import DeviceMode from './DeviceMode.vue'
 import MobileModal from './MobileModal.vue'
@@ -35,9 +37,13 @@ const emit = defineEmits(['close'])
 const { currentSeries } = useWallpaperType()
 const { isMobile, isDesktop } = useDevice()
 const deviceMode = useDeviceMode()
+const popularityStore = usePopularityStore()
 
 // PC端使用独立的桌面弹窗
 const useDesktopModal = computed(() => isDesktop.value && currentSeries.value === 'mobile')
+
+// PC端头像使用独立的头像桌面弹窗
+const useAvatarDesktopModal = computed(() => isDesktop.value && currentSeries.value === 'avatar')
 
 // 移动端手机壁纸使用独立的移动端弹窗
 const useMobileModal = computed(() => isMobile.value && currentSeries.value === 'mobile')
@@ -52,9 +58,20 @@ const contentRef = ref(null)
 const imageDimensions = ref({ width: 0, height: 0 })
 const imageLoaded = ref(false)
 const downloading = ref(false)
-const downloadCount = ref(0)
-const viewCount = ref(0)
 const savedScrollY = ref(0)
+
+// 统计数据（从 popularityStore 获取，支持乐观更新）
+const downloadCount = computed(() => {
+  if (!props.wallpaper)
+    return 0
+  return popularityStore.getDownloadCount(props.wallpaper.filename)
+})
+
+const viewCount = computed(() => {
+  if (!props.wallpaper)
+    return 0
+  return popularityStore.getViewCount(props.wallpaper.filename)
+})
 
 // 弹窗显示状态（用于 Transition 控制）
 const isVisible = ref(false)
@@ -65,11 +82,11 @@ const isAvatarSeries = computed(() => currentSeries.value === 'avatar')
 
 // 监听 isOpen 变化
 watch(() => props.isOpen, async (isOpen) => {
-  // 如果使用独立的弹窗组件（DesktopModal、MobileModal 或 AvatarMobileModal），不在这里处理
-  if (useDesktopModal.value || useMobileModal.value || useAvatarMobileModal.value) {
+  // 如果使用独立的弹窗组件，不在这里处理
+  if (useDesktopModal.value || useAvatarDesktopModal.value || useMobileModal.value || useAvatarMobileModal.value) {
     return
   }
-  
+
   if (isOpen && props.wallpaper) {
     handleOpen()
   }
@@ -81,9 +98,7 @@ watch(() => props.isOpen, async (isOpen) => {
 // 监听壁纸变化
 watch(() => props.wallpaper, () => {
   resetState()
-  if (props.isOpen && props.wallpaper) {
-    fetchStats()
-  }
+  // 统计数据现在是 computed，从 popularityStore 自动获取
 })
 
 // 打开弹窗
@@ -91,7 +106,8 @@ function handleOpen() {
   // 追踪和统计
   trackWallpaperPreview(props.wallpaper)
   recordView(props.wallpaper, currentSeries.value)
-  fetchStats()
+  // 乐观更新本地统计（立即反映到 UI）
+  popularityStore.incrementLocalView(props.wallpaper.filename)
 
   // 锁定背景滚动
   savedScrollY.value = window.scrollY || window.pageYOffset
@@ -158,6 +174,8 @@ async function handleDownload() {
     await downloadFile(props.wallpaper.url, props.wallpaper.filename)
     trackWallpaperDownload(props.wallpaper, currentSeries.value)
     recordDownload(props.wallpaper, currentSeries.value)
+    // 乐观更新本地统计（立即反映到 UI）
+    popularityStore.incrementLocalDownload(props.wallpaper.filename)
   }
   finally {
     downloading.value = false
@@ -175,35 +193,11 @@ function handleImageError() {
   imageLoaded.value = true
 }
 
-// 获取统计数据
-async function fetchStats() {
-  if (!props.wallpaper || !isSupabaseConfigured()) {
-    downloadCount.value = 0
-    viewCount.value = 0
-    return
-  }
-
-  try {
-    const [dc, vc] = await Promise.all([
-      getWallpaperDownloadCount(props.wallpaper.filename, currentSeries.value),
-      getWallpaperViewCount(props.wallpaper.filename, currentSeries.value),
-    ])
-    downloadCount.value = dc
-    viewCount.value = vc
-  }
-  catch (error) {
-    console.error('获取统计数据失败:', error)
-    downloadCount.value = 0
-    viewCount.value = 0
-  }
-}
-
 // 重置状态
 function resetState() {
   imageLoaded.value = false
   imageDimensions.value = { width: 0, height: 0 }
-  downloadCount.value = 0
-  viewCount.value = 0
+  // 统计数据现在是 computed，无需手动重置
 
   // 如果在真机模式，强制退出
   if (deviceMode.isDeviceMode.value) {
@@ -232,9 +226,9 @@ onMounted(() => {
 
 onUnmounted(() => {
   document.removeEventListener('keydown', handleKeydown)
-  
+
   // 只有当不使用独立弹窗组件时才清理滚动状态
-  if (!useDesktopModal.value && !useMobileModal.value && !useAvatarMobileModal.value) {
+  if (!useDesktopModal.value && !useAvatarDesktopModal.value && !useMobileModal.value && !useAvatarMobileModal.value) {
     document.body.classList.remove('modal-open')
     document.body.style.top = ''
 
@@ -249,6 +243,14 @@ onUnmounted(() => {
   <!-- PC端手机壁纸使用独立的桌面弹窗 -->
   <DesktopModal
     v-if="useDesktopModal"
+    :wallpaper="wallpaper"
+    :is-open="isOpen"
+    @close="emit('close')"
+  />
+
+  <!-- PC端头像使用独立的头像桌面弹窗 -->
+  <AvatarDesktopModal
+    v-else-if="useAvatarDesktopModal"
     :wallpaper="wallpaper"
     :is-open="isOpen"
     @close="emit('close')"

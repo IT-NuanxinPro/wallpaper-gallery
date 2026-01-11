@@ -151,8 +151,12 @@ export const useFilterStore = defineStore('filter', () => {
 
   /**
    * 应用筛选条件
+   * @param {Array} wallpapers - 壁纸列表
+   * @param {object} options - 选项
+   * @param {boolean} options.skipCategoryFilter - 是否跳过分类筛选（筛选模式下使用）
    */
-  function applyFilters(wallpapers) {
+  function applyFilters(wallpapers, options = {}) {
+    const { skipCategoryFilter = false } = options
     let result = [...wallpapers]
 
     // 搜索过滤
@@ -186,8 +190,8 @@ export const useFilterStore = defineStore('filter', () => {
       })
     }
 
-    // 一级分类过滤
-    if (categoryFilter.value !== 'all') {
+    // 一级分类过滤（筛选模式下跳过，因为数据已经是该分类的）
+    if (!skipCategoryFilter && categoryFilter.value !== 'all') {
       result = result.filter(w =>
         w.category === categoryFilter.value,
       )
@@ -237,9 +241,12 @@ export const useFilterStore = defineStore('filter', () => {
 
   /**
    * 获取筛选和排序后的结果（组合函数）
+   * @param {Array} wallpapers - 壁纸列表
+   * @param {object} options - 选项
+   * @param {boolean} options.skipCategoryFilter - 是否跳过分类筛选（筛选模式下使用）
    */
-  function getFilteredAndSorted(wallpapers) {
-    const filtered = applyFilters(wallpapers)
+  function getFilteredAndSorted(wallpapers, options = {}) {
+    const filtered = applyFilters(wallpapers, options)
     return applySort(filtered)
   }
 
@@ -248,36 +255,97 @@ export const useFilterStore = defineStore('filter', () => {
   // ========================================
 
   /**
-   * 检查是否有激活的筛选条件
+   * 获取当前年月字符串（用于 Bing 系列默认值判断）
    */
-  function hasActiveFilters() {
-    return debouncedQuery.value
-      || formatFilter.value !== 'all'
-      || resolutionFilter.value !== 'all'
-      || categoryFilter.value !== 'all'
-      || subcategoryFilter.value !== 'all'
+  function getCurrentYearMonth() {
+    const now = new Date()
+    const year = now.getFullYear()
+    const month = String(now.getMonth() + 1).padStart(2, '0')
+    return `${year}-${month}`
+  }
+
+  /**
+   * 检查是否有激活的筛选条件
+   * @param {string} currentSeries - 当前系列（可选，用于判断 Bing 系列默认值）
+   */
+  function hasActiveFilters(currentSeries = '') {
+    if (debouncedQuery.value)
+      return true
+    if (formatFilter.value !== 'all')
+      return true
+    if (resolutionFilter.value !== 'all')
+      return true
+    if (subcategoryFilter.value !== 'all')
+      return true
+
+    // Bing 系列：当前年月是默认值，不算激活
+    if (currentSeries === 'bing') {
+      const defaultMonth = getCurrentYearMonth()
+      if (categoryFilter.value !== defaultMonth) {
+        return true
+      }
+    }
+    else {
+      // 其他系列：all 是默认值
+      if (categoryFilter.value !== 'all') {
+        return true
+      }
+    }
+
+    return false
   }
 
   /**
    * 重置所有筛选条件
+   * @param {string} defaultSort - 默认排序
+   * @param {string} currentSeries - 当前系列（可选，用于设置 Bing 系列默认值）
    */
-  function resetFilters(defaultSort = 'newest') {
+  function resetFilters(defaultSort = 'newest', currentSeries = '') {
     searchQuery.value = ''
     debouncedQuery.value = ''
     formatFilter.value = 'all'
     resolutionFilter.value = 'all'
-    categoryFilter.value = 'all'
     subcategoryFilter.value = 'all'
     sortBy.value = defaultSort
+
+    // Bing 系列重置为当前年月
+    if (currentSeries === 'bing') {
+      categoryFilter.value = getCurrentYearMonth()
+    }
+    else {
+      categoryFilter.value = 'all'
+    }
   }
 
   /**
-   * 根据系列设置默认排序
+   * 根据系列设置默认排序和筛选
    */
-  function setDefaultSortBySeries(_series) {
+  function setDefaultSortBySeries(series) {
     // 所有系列默认使用最新优先
     const defaultSort = 'newest'
     sortBy.value = defaultSort
+
+    // Bing 系列默认加载当前年月（不从 localStorage 恢复）
+    if (series === 'bing') {
+      const now = new Date()
+      const year = now.getFullYear()
+      const month = String(now.getMonth() + 1).padStart(2, '0')
+      categoryFilter.value = `${year}-${month}`
+      // 清除 localStorage 中的分类，避免下次恢复旧值
+      localStorage.removeItem(STORAGE_KEYS.CATEGORY)
+    }
+    else {
+      // 其他系列从 localStorage 恢复或使用默认值
+      const savedCategory = localStorage.getItem(STORAGE_KEYS.CATEGORY)
+      // 如果保存的是日期格式（Bing 的），则重置为 all
+      if (savedCategory && /^\d{4}-\d{2}$/.test(savedCategory)) {
+        categoryFilter.value = 'all'
+      }
+      else {
+        categoryFilter.value = savedCategory || 'all'
+      }
+    }
+    subcategoryFilter.value = 'all'
   }
 
   /**

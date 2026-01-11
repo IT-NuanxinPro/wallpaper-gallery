@@ -54,27 +54,19 @@ const displayText = computed(() => {
 // 是否有选中
 const hasSelection = computed(() => props.categoryFilter !== 'all')
 
-// 锁定/解锁背景滚动
-function lockScroll() {
-  document.body.style.overflow = 'hidden'
-}
-
-function unlockScroll() {
-  document.body.style.overflow = ''
-}
+// PC 端不需要锁定滚动，下拉框通过 position: absolute 定位
+// 移除 lockScroll/unlockScroll，避免与 sticky 定位冲突
 
 // 打开下拉框
 function openDropdown() {
   // 打开时，悬停状态设为当前选中的分类
   hoveredCategory.value = props.categoryFilter
   isOpen.value = true
-  lockScroll()
 }
 
 // 关闭下拉框
 function closeDropdown() {
   isOpen.value = false
-  unlockScroll()
 }
 
 // 切换下拉框
@@ -127,8 +119,6 @@ onMounted(() => {
 
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside)
-  // 确保组件卸载时解锁滚动
-  unlockScroll()
 })
 </script>
 
@@ -167,7 +157,6 @@ onUnmounted(() => {
                 @click="handleCategoryClick(option)"
               >
                 <span class="item-label">{{ option.label }}</span>
-                <span v-if="option.count" class="item-count">{{ option.count }}</span>
                 <svg
                   v-if="option.subcategories?.length > 0"
                   class="item-arrow"
@@ -206,7 +195,6 @@ onUnmounted(() => {
                   @click="handleSubcategoryClick(sub.name)"
                 >
                   <span class="item-label">{{ sub.name }}</span>
-                  <span class="item-count">{{ sub.count }}</span>
                 </button>
               </div>
             </div>

@@ -446,6 +446,16 @@ ol {
   z-index: 2002 !important;
 }
 
+// 移动端筛选弹窗深色模式（全局样式，因为 Teleport 到 body）
+.filter-popup.is-dark,
+.van-popup.filter-popup.is-dark {
+  background: rgba(15, 23, 42, 0.98) !important;
+}
+
+.popup-content.is-dark {
+  background: rgba(15, 23, 42, 0.98) !important;
+}
+
 // ========================================
 // 弹窗背景滚动锁定
 // ========================================
@@ -966,6 +976,15 @@ body.device-mode {
 
     .el-input__inner {
       color: rgba(255, 255, 255, 0.9) !important;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.5) !important;
+      }
+    }
+
+    .el-input__prefix,
+    .el-input__suffix {
+      color: rgba(255, 255, 255, 0.5) !important;
     }
   }
 }
