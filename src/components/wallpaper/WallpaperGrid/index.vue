@@ -4,9 +4,8 @@ import { Flip } from 'gsap/Flip'
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
-// import Pagination from '@/components/common/Pagination.vue' // 注释：改用滚动加载模式
+import Pagination from '@/components/common/navigation/Pagination.vue'
 import { useDevice } from '@/composables/useDevice'
-// import { usePagination } from '@/composables/usePagination' // 注释：改用滚动加载模式
 import { useViewMode } from '@/composables/useViewMode'
 import { useWallpaperType } from '@/composables/useWallpaperType'
 import WallpaperCard from '../WallpaperCard.vue'
@@ -39,9 +38,37 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  // ========================================
+  // 分页相关 props（新增）
+  // ========================================
+  // 当前页码
+  currentPage: {
+    type: Number,
+    default: 1,
+  },
+  // 总页数
+  totalPages: {
+    type: Number,
+    default: 0,
+  },
+  // 每页数量
+  pageSize: {
+    type: Number,
+    default: 30,
+  },
+  // 是否还有下一页
+  hasNextPage: {
+    type: Boolean,
+    default: false,
+  },
+  // 系列总数（用于分页组件显示）
+  expectedTotal: {
+    type: Number,
+    default: 0,
+  },
 })
 
-const emit = defineEmits(['select', 'resetFilters'])
+const emit = defineEmits(['select', 'resetFilters', 'pageChange', 'loadNextPage', 'sizeChange'])
 
 // 注册 GSAP Flip 插件
 gsap.registerPlugin(Flip)
@@ -92,28 +119,26 @@ const effectiveViewMode = computed(() => {
 })
 
 // ========================================
-// 滚动加载相关（移动端和桌面端统一使用）
+// 滚动加载相关（移动端使用服务端分页）
 // ========================================
-const PAGE_SIZE = 20
-const displayCount = ref(PAGE_SIZE)
 const isLoadingMore = ref(false)
 const scrollPaused = ref(false) // 滚动加载暂停标记
 
 // 定时器引用集合（用于组件卸载时清理）
 const timers = new Set()
 
-// 显示的项目
-const displayedItems = computed(() => {
-  return props.wallpapers.slice(0, displayCount.value)
-})
+// 显示的项目（直接使用 props.wallpapers，因为已是分页数据）
+const displayedItems = computed(() => props.wallpapers)
 
-// 是否还有更多数据可加载
-const hasMoreData = computed(() => {
-  return displayCount.value < props.wallpapers.length
-})
+// 是否还有更多数据可加载（移动端使用）
+const hasMoreData = computed(() => props.hasNextPage)
 
-// 滚动加载处理（移动端和桌面端统一使用）
+// 滚动加载处理（仅移动端使用）
 function handleScroll() {
+  // PC端不触发无限滚动
+  if (!isMobileOrTablet.value)
+    return
+
   if (scrollPaused.value || isLoadingMore.value || !hasMoreData.value)
     return
 
@@ -127,23 +152,22 @@ function handleScroll() {
   }
 }
 
-// 加载更多
-function loadMore() {
+// 加载更多（移动端无限滚动）
+async function loadMore() {
   if (isLoadingMore.value || !hasMoreData.value)
     return
 
   isLoadingMore.value = true
 
-  const timer = setTimeout(() => {
-    timers.delete(timer)
-    const newCount = Math.min(
-      displayCount.value + PAGE_SIZE,
-      props.wallpapers.length,
-    )
-    displayCount.value = newCount
+  try {
+    // 触发父组件加载下一页
+    emit('loadNextPage')
+    // 等待一小段时间让状态更新
+    await new Promise(resolve => setTimeout(resolve, 300))
+  }
+  finally {
     isLoadingMore.value = false
-  }, 150)
-  timers.add(timer)
+  }
 }
 
 // 暂停滚动加载
@@ -487,7 +511,7 @@ onUnmounted(() => {
   }
 })
 
-// 监听 wallpapers 变化（筛选/搜索/分类切换时）
+// 监听 wallpapers 变化（筛选/搜索/分类切换/翻页时）
 // 使用标记防止重复动画
 let animationPending = false
 
@@ -497,23 +521,19 @@ watch(() => props.wallpapers, async (newVal, oldVal) => {
     return
   }
 
-  // 如果是后台数据追加（长度增加但前面的元素不变），不触发重置
-  const isBackgroundAppend = oldVal
+  // 如果是移动端数据追加（长度增加但前面的元素不变），不触发动画重置
+  const isDataAppend = oldVal
     && oldVal.length > 0
     && newVal
     && newVal.length > oldVal.length
-    && oldVal.length >= PAGE_SIZE
     && newVal[0]?.id === oldVal[0]?.id
 
-  // 后台追加数据时，不需要重置显示数量
-  if (isBackgroundAppend) {
+  // 数据追加时，不需要动画
+  if (isDataAppend) {
     return
   }
 
   animationPending = true
-
-  // 重置显示数量（仅在非后台追加时）
-  displayCount.value = PAGE_SIZE
 
   // 首次加载（从无到有）
   if (!oldVal || oldVal.length === 0) {
@@ -551,44 +571,47 @@ watch(() => props.wallpapers, async (newVal, oldVal) => {
 }, { deep: false })
 
 // ========================================
-// 分页处理（已弃用，改用滚动加载）
+// PC 端分页处理
 // ========================================
-// // 处理分页切换（桌面端）
-// function handlePageChange(page) {
-//   // 滚动到顶部
-//   window.scrollTo({ top: 0, behavior: 'smooth' })
-//
-//   // 短暂隐藏后切换页面并播放动画
-//   showGrid.value = false
-//
-//   const timer = setTimeout(() => {
-//     timers.delete(timer)
-//     goToPage(page)
-//     showGrid.value = true
-//     nextTick(() => {
-//       animateCardsIn()
-//     })
-//   }, 100)
-//   timers.add(timer)
-// }
-//
-// // 处理每页条数变化（桌面端）
-// function handlePageSizeChange(size) {
-//   // 滚动到顶部
-//   window.scrollTo({ top: 0, behavior: 'smooth' })
-//
-//   showGrid.value = false
-//
-//   const timer = setTimeout(() => {
-//     timers.delete(timer)
-//     setPageSize(size)
-//     showGrid.value = true
-//     nextTick(() => {
-//       animateCardsIn()
-//     })
-//   }, 100)
-//   timers.add(timer)
-// }
+// 处理分页切换（桌面端）
+function handlePageChange(page) {
+  // 滚动到顶部
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+
+  // 短暂隐藏后切换页面并播放动画
+  showGrid.value = false
+
+  const timer = setTimeout(() => {
+    timers.delete(timer)
+    // 通知父组件切换页码
+    emit('pageChange', page)
+    showGrid.value = true
+    nextTick(() => {
+      animateCardsIn()
+    })
+  }, 100)
+  timers.add(timer)
+}
+
+// 处理每页条数变化
+function handleSizeChange(size) {
+  // 滚动到顶部
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+
+  // 短暂隐藏后切换并播放动画
+  showGrid.value = false
+
+  const timer = setTimeout(() => {
+    timers.delete(timer)
+    // 通知父组件切换每页条数
+    emit('sizeChange', size)
+    showGrid.value = true
+    nextTick(() => {
+      animateCardsIn()
+    })
+  }, 100)
+  timers.add(timer)
+}
 
 function handleSelect(wallpaper) {
   emit('select', wallpaper)
@@ -707,24 +730,29 @@ const skeletonCount = computed(() => isMobile.value ? 6 : 12)
         />
       </div>
 
-      <!-- 加载中提示（滚动加载） -->
-      <div v-if="isLoadingMore" class="mobile-load-more">
+      <!-- 移动端：加载中提示（无限滚动） -->
+      <div v-if="isMobileOrTablet && isLoadingMore" class="mobile-load-more">
         <div class="loading-more">
           <LoadingSpinner size="sm" />
           <span>加载中...</span>
         </div>
       </div>
 
-      <!-- 桌面端：分页（已弃用，改用滚动加载） -->
-      <!-- <Pagination
-        v-if="!isMobile && !isAnimating"
+      <!-- 移动端：已加载全部提示 -->
+      <div v-if="isMobileOrTablet && !hasMoreData && wallpapers.length > 0" class="mobile-load-end">
+        <span>已加载全部 {{ wallpapers.length }} 张壁纸</span>
+      </div>
+
+      <!-- PC端：分页组件 -->
+      <Pagination
+        v-if="!isMobileOrTablet && totalPages > 1 && !isAnimating"
         :current="currentPage"
-        :total="wallpapers.length"
+        :total="expectedTotal"
         :page-size="pageSize"
-        :page-sizes="PAGE_SIZES"
+        :page-sizes="[10, 20, 30, 50]"
         @change="handlePageChange"
-        @size-change="handlePageSizeChange"
-      /> -->
+        @size-change="handleSizeChange"
+      />
     </template>
   </div>
 </template>
@@ -850,6 +878,13 @@ const skeletonCount = computed(() => isMobile.value ? 6 : 12)
   align-items: center;
   justify-content: center;
   gap: $spacing-sm;
+  color: var(--color-text-muted);
+  font-size: $font-size-sm;
+}
+
+.mobile-load-end {
+  padding: $spacing-lg 0;
+  text-align: center;
   color: var(--color-text-muted);
   font-size: $font-size-sm;
 }

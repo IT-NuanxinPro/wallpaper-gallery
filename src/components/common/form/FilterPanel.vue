@@ -47,6 +47,11 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
+  // 当前页显示数量（用于分页模式）
+  pageCount: {
+    type: Number,
+    default: 0,
+  },
   loading: {
     type: Boolean,
     default: false,
@@ -76,9 +81,27 @@ const showCategoryDrawer = ref(false) // 分类选择抽屉
 const tempSortBy = ref(props.sortBy)
 const tempFormatFilter = ref(props.formatFilter)
 
+// 获取当前月份
+function getCurrentMonth() {
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  return `${year}-${month}`
+}
+
 // 是否有激活的筛选条件
 const hasActiveFilters = computed(() => {
-  return props.formatFilter !== 'all' || props.resolutionFilter !== 'all' || props.categoryFilter !== 'all' || props.subcategoryFilter !== 'all' || props.sortBy !== 'newest'
+  // Bing 系列：当前月份是默认值，不算激活
+  const isBingSeries = props.currentSeries === 'bing'
+  const categoryIsDefault = isBingSeries
+    ? props.categoryFilter === getCurrentMonth()
+    : props.categoryFilter === 'all'
+
+  return props.formatFilter !== 'all'
+    || props.resolutionFilter !== 'all'
+    || !categoryIsDefault
+    || props.subcategoryFilter !== 'all'
+    || props.sortBy !== 'newest'
 })
 
 // 视图模式滑动指示器位置
@@ -170,8 +193,10 @@ function handleReset() {
   emit('update:sortBy', 'newest')
   emit('update:formatFilter', 'all')
   emit('update:resolutionFilter', 'all')
-  emit('update:categoryFilter', 'all')
   emit('update:subcategoryFilter', 'all')
+  // Bing 系列重置到当前月份，其他系列重置到全部
+  const isBingSeries = props.currentSeries === 'bing'
+  emit('update:categoryFilter', isBingSeries ? getCurrentMonth() : 'all')
   emit('reset')
 }
 
@@ -227,9 +252,9 @@ function resetFilters() {
           加载中...
         </template>
         <template v-else>
-          共 <AnimatedNumber :value="resultCount" class="count-value" /> 张壁纸
-          <span v-if="resultCount !== totalCount" class="filtered-hint">
-            (筛选自 <AnimatedNumber :value="totalCount" :duration="0.4" /> 张)
+          当前 <AnimatedNumber :value="pageCount || resultCount" class="count-value" /> 张
+          <span v-if="totalCount > 0" class="filtered-hint">
+            / 共 <AnimatedNumber :value="totalCount" :duration="0.4" /> 张
           </span>
         </template>
       </span>

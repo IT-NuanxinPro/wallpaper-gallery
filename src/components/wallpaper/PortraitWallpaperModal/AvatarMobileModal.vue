@@ -4,9 +4,10 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import { useScrollLock } from '@/composables/useScrollLock'
 import { useWallpaperType } from '@/composables/useWallpaperType'
+import { usePopularityStore } from '@/stores/popularity'
 import { trackWallpaperDownload, trackWallpaperPreview } from '@/utils/analytics'
 import { downloadFile, formatDate, formatFileSize, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/format'
-import { getWallpaperDownloadCount, getWallpaperViewCount, isSupabaseConfigured, recordDownload, recordView } from '@/utils/supabase'
+import { recordDownload, recordView } from '@/utils/supabase'
 
 const props = defineProps({
   wallpaper: { type: Object, default: null },
@@ -17,15 +18,27 @@ const emit = defineEmits(['close'])
 
 const { currentSeries } = useWallpaperType()
 const scrollLock = useScrollLock()
+const popularityStore = usePopularityStore()
 
 // 状态
 const isVisible = ref(false)
 const imageLoaded = ref(false)
 const downloading = ref(false)
-const downloadCount = ref(0)
-const viewCount = ref(0)
 const imageDimensions = ref({ width: 0, height: 0 })
 const isSquare = ref(false) // 头像形状：false=圆形，true=方形
+
+// 统计数据（从 popularityStore 获取，支持乐观更新）
+const downloadCount = computed(() => {
+  if (!props.wallpaper)
+    return 0
+  return popularityStore.getDownloadCount(props.wallpaper.filename)
+})
+
+const viewCount = computed(() => {
+  if (!props.wallpaper)
+    return 0
+  return popularityStore.getViewCount(props.wallpaper.filename)
+})
 
 // 计算属性
 const displayFilename = computed(() =>
@@ -72,14 +85,14 @@ watch(() => props.isOpen, (open) => {
 // 监听壁纸变化
 watch(() => props.wallpaper, () => {
   resetState()
-  if (props.isOpen && props.wallpaper)
-    fetchStats()
+  // 统计数据现在是 computed，从 popularityStore 自动获取
 })
 
 function openModal() {
   trackWallpaperPreview(props.wallpaper)
   recordView(props.wallpaper, currentSeries.value)
-  fetchStats()
+  // 乐观更新本地统计（立即反映到 UI）
+  popularityStore.incrementLocalView(props.wallpaper.filename)
   scrollLock.lock()
   isVisible.value = true
 }
@@ -101,6 +114,8 @@ async function handleDownload() {
     await downloadFile(props.wallpaper.url, props.wallpaper.filename)
     trackWallpaperDownload(props.wallpaper, currentSeries.value)
     recordDownload(props.wallpaper, currentSeries.value)
+    // 乐观更新本地统计（立即反映到 UI）
+    popularityStore.incrementLocalDownload(props.wallpaper.filename)
   }
   finally {
     downloading.value = false
@@ -115,31 +130,10 @@ function handleImageLoad(e) {
   }
 }
 
-async function fetchStats() {
-  if (!props.wallpaper || !isSupabaseConfigured()) {
-    downloadCount.value = 0
-    viewCount.value = 0
-    return
-  }
-  try {
-    const [dc, vc] = await Promise.all([
-      getWallpaperDownloadCount(props.wallpaper.filename, currentSeries.value),
-      getWallpaperViewCount(props.wallpaper.filename, currentSeries.value),
-    ])
-    downloadCount.value = dc
-    viewCount.value = vc
-  }
-  catch {
-    downloadCount.value = 0
-    viewCount.value = 0
-  }
-}
-
 function resetState() {
   imageLoaded.value = false
   imageDimensions.value = { width: 0, height: 0 }
-  downloadCount.value = 0
-  viewCount.value = 0
+  // 统计数据现在是 computed，无需手动重置
 }
 
 function handleKeydown(e) {

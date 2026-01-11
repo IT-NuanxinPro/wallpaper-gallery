@@ -59,12 +59,23 @@ const frameSize = computed(() => {
 
 function onAfterEnter() {
   emit('afterEnter')
+  // 启动时钟更新（仅在可见时运行）
+  updateTime()
+  if (timeTimer)
+    clearInterval(timeTimer)
+  timeTimer = setInterval(updateTime, 1000)
+  // 启动灵动岛动画
   setTimeout(autoExpandIsland, 1500)
   islandTimer = setInterval(autoExpandIsland, 8000)
 }
 
 function onAfterLeave() {
   emit('afterLeave')
+  // 清理所有定时器
+  if (timeTimer) {
+    clearInterval(timeTimer)
+    timeTimer = null
+  }
   if (islandTimer) {
     clearInterval(islandTimer)
     islandTimer = null
@@ -73,8 +84,7 @@ function onAfterLeave() {
 }
 
 onMounted(() => {
-  updateTime()
-  timeTimer = setInterval(updateTime, 1000)
+  // 注意：时钟定时器在 visible 变为 true 时启动，避免组件挂载但不可见时浪费资源
 })
 
 onUnmounted(() => {

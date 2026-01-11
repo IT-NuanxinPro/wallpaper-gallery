@@ -4,7 +4,7 @@ import { computed, ref, watch } from 'vue'
 const props = defineProps({
   modelValue: {
     type: String,
-    default: 'all', // 'all' 或 'YYYY-MM' 格式
+    default: null, // null 或 YYYY-MM 格式，由父组件控制
   },
   // 可选的日期范围
   minDate: {

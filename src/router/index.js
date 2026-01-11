@@ -112,7 +112,8 @@ const STORAGE_KEY = 'wallpaper-gallery-current-series'
 // 缓存设备类型
 let deviceType = null
 function getDeviceType() {
-  if (!deviceType) deviceType = isMobileDevice() ? 'mobile' : 'desktop'
+  if (!deviceType)
+    deviceType = isMobileDevice() ? 'mobile' : 'desktop'
   return deviceType
 }
 
@@ -121,13 +122,15 @@ function getDefaultSeries() {
   const device = getDeviceType()
   const available = DEVICE_SERIES[device]
   const saved = localStorage.getItem(STORAGE_KEY)
-  if (saved && available.includes(saved)) return saved
+  if (saved && available.includes(saved))
+    return saved
   return device === 'mobile' ? 'mobile' : 'desktop'
 }
 
 // 路由守卫
 router.beforeEach((to, from, next) => {
-  if (to.meta.title) document.title = to.meta.title
+  if (to.meta.title)
+    document.title = to.meta.title
 
   // 首页重定向到默认系列
   if (to.path === '/') {
@@ -149,7 +152,8 @@ router.beforeEach((to, from, next) => {
 
 // 记录用户选择
 router.afterEach((to) => {
-  if (to.meta?.series) localStorage.setItem(STORAGE_KEY, to.meta.series)
+  if (to.meta?.series)
+    localStorage.setItem(STORAGE_KEY, to.meta.series)
 })
 
 export default router

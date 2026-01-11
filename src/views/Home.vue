@@ -66,12 +66,73 @@ const subcategoryOptions = computed(() =>
   filterStore.createSubcategoryOptions(categoryOptions.value),
 )
 
-// 筛选和排序后的壁纸列表
-const filteredWallpapers = computed(() =>
-  filterStore.getFilteredAndSorted(wallpaperStore.wallpapers),
-)
+// 是否需要客户端分页（Bing 系列或筛选模式）
+const needsClientPagination = computed(() => {
+  return wallpaperStore.isFilterMode || SERIES_CONFIG[currentSeries.value]?.isDaily
+})
 
-// 结果数量
+// 筛选和排序后的壁纸列表
+// 客户端分页模式：对全量数据筛选
+// 服务端分页模式：对当前页数据筛选
+const filteredWallpapers = computed(() => {
+  const options = {
+    skipCategoryFilter: wallpaperStore.isFilterMode,
+  }
+
+  if (needsClientPagination.value) {
+    // 客户端分页：对全量数据进行筛选
+    // Bing 系列使用 wallpapers（存储全量数据）
+    // 筛选模式使用 filterModeAllData
+    const sourceData = wallpaperStore.isFilterMode
+      ? wallpaperStore.filterModeAllData
+      : wallpaperStore.wallpapers
+    return filterStore.getFilteredAndSorted(sourceData, options)
+  }
+
+  // 服务端分页：对当前页数据筛选
+  return filterStore.getFilteredAndSorted(wallpaperStore.wallpapers, options)
+})
+
+// 分页后的数据（客户端分页模式下进行分页）
+const paginatedWallpapers = computed(() => {
+  if (!needsClientPagination.value) {
+    // 服务端分页：直接返回筛选后的当前页数据
+    return filteredWallpapers.value
+  }
+
+  // 客户端分页：对筛选后的全量数据进行分页
+  // 移动端需要显示从第1页到当前页的所有数据（无限滚动）
+  // PC端只显示当前页
+  if (isMobileDevice()) {
+    // 移动端：返回从第1页到当前页的所有数据
+    const endIdx = wallpaperStore.currentPage * wallpaperStore.pageSize
+    return filteredWallpapers.value.slice(0, endIdx)
+  }
+  else {
+    // PC端：只返回当前页数据
+    const startIdx = (wallpaperStore.currentPage - 1) * wallpaperStore.pageSize
+    const endIdx = startIdx + wallpaperStore.pageSize
+    return filteredWallpapers.value.slice(startIdx, endIdx)
+  }
+})
+
+// 总页数（客户端分页模式下基于筛选后的数据计算）
+const effectiveTotalPages = computed(() => {
+  if (!needsClientPagination.value) {
+    return wallpaperStore.totalPages
+  }
+  return Math.ceil(filteredWallpapers.value.length / wallpaperStore.pageSize) || 1
+})
+
+// 总数（客户端分页模式下基于筛选后的数据）
+const effectiveTotal = computed(() => {
+  if (!needsClientPagination.value) {
+    return wallpaperStore.expectedTotal
+  }
+  return filteredWallpapers.value.length
+})
+
+// 结果数量（筛选后的总数）
 const resultCount = computed(() => filteredWallpapers.value.length)
 
 // 是否有激活的筛选条件
@@ -111,7 +172,18 @@ function handleNextWallpaper() {
 // ========================================
 
 /**
+ * 获取当前月份（YYYY-MM 格式）
+ */
+function getCurrentMonth() {
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  return `${year}-${month}`
+}
+
+/**
  * 加载系列数据（防止重复加载）
+ * 系列切换时清空所有筛选条件，走各自系列的默认逻辑
  */
 async function loadSeriesData(series) {
   if (!series || isLoading.value)
@@ -120,20 +192,30 @@ async function loadSeriesData(series) {
   isLoading.value = true
 
   try {
-    // 重置分类筛选（不同系列的分类不同）
-    filterStore.categoryFilter = 'all'
+    // 系列切换时，清空所有筛选条件
     filterStore.subcategoryFilter = 'all'
+    filterStore.formatFilter = 'all'
     filterStore.resolutionFilter = 'all'
     filterStore.clearCategoryCache()
-
-    // 设置默认排序方式
     filterStore.setDefaultSortBySeries(series)
 
-    // 并行加载壁纸数据和热门数据
+    const isBingSeries = SERIES_CONFIG[series]?.isDaily
+
+    // 先加载数据
     await Promise.all([
-      wallpaperStore.initSeries(series),
+      wallpaperStore.initSeriesPaginated(series),
       popularityStore.fetchPopularityData(series),
     ])
+
+    // 数据加载完成后，设置分类筛选的默认值
+    // Bing 系列：当前月份（从 store 同步）
+    // 其他系列：全部分类
+    if (isBingSeries) {
+      filterStore.categoryFilter = wallpaperStore.currentFilterCategory || getCurrentMonth()
+    }
+    else {
+      filterStore.categoryFilter = 'all'
+    }
   }
   finally {
     isLoading.value = false
@@ -145,16 +227,105 @@ async function loadSeriesData(series) {
 // ========================================
 
 function handleReset() {
-  filterStore.resetFilters(filterStore.sortBy)
+  // 重置所有筛选条件到各系列的默认值
+  const isBingSeries = SERIES_CONFIG[currentSeries.value]?.isDaily
+
+  // 清空其他筛选条件
+  filterStore.subcategoryFilter = 'all'
+  filterStore.formatFilter = 'all'
+  filterStore.resolutionFilter = 'all'
+
+  if (isBingSeries) {
+    // Bing 系列：重置到当前月份
+    const currentMonth = getCurrentMonth()
+    filterStore.categoryFilter = currentMonth
+    // watch 会自动调用 switchToFilterMode
+  }
+  else {
+    // 其他系列：重置到全部分类
+    filterStore.categoryFilter = 'all'
+    // watch 会自动调用 exitFilterMode
+  }
 }
 
 function handleReload() {
-  wallpaperStore.initSeries(currentSeries.value, true)
+  wallpaperStore.initSeriesPaginated(currentSeries.value, true)
+}
+
+// ========================================
+// Pagination Actions
+// ========================================
+
+/**
+ * PC 端分页切换（支持客户端分页模式）
+ */
+function handlePageChange(page) {
+  if (needsClientPagination.value) {
+    // 客户端分页：直接更新页码，paginatedWallpapers 会自动计算
+    wallpaperStore.currentPage = page
+  }
+  else {
+    wallpaperStore.goToPage(page)
+  }
+}
+
+/**
+ * 移动端加载下一页（支持客户端分页模式）
+ */
+function handleLoadNextPage() {
+  if (needsClientPagination.value) {
+    // 客户端分页：直接更新页码
+    if (wallpaperStore.currentPage < effectiveTotalPages.value) {
+      wallpaperStore.currentPage++
+    }
+  }
+  else {
+    wallpaperStore.loadNextPage()
+  }
+}
+
+/**
+ * 切换每页显示条数
+ */
+function handleSizeChange(size) {
+  // 计算当前第一条数据的索引，尽量保持位置
+  const firstItemIndex = (wallpaperStore.currentPage - 1) * wallpaperStore.pageSize
+  // 更新 pageSize
+  wallpaperStore.pageSize = size
+  // 计算新的页码
+  const newPage = Math.floor(firstItemIndex / size) + 1
+  wallpaperStore.currentPage = Math.max(1, Math.min(newPage, effectiveTotalPages.value))
 }
 
 // ========================================
 // Lifecycle & Watchers
 // ========================================
+
+// 监听分类筛选变化，切换数据源
+watch(() => filterStore.categoryFilter, async (newCategory, oldCategory) => {
+  if (!isInitialized.value || newCategory === oldCategory) {
+    return
+  }
+
+  const isBingSeries = SERIES_CONFIG[currentSeries.value]?.isDaily
+
+  if (newCategory === 'all') {
+    if (isBingSeries) {
+      // Bing 系列选择"全部月份"时，显示全量数据（带分页）
+      await wallpaperStore.switchToFilterMode('all')
+    }
+    else {
+      // 其他系列选择"全部"时，退出筛选模式，恢复分页数据
+      if (wallpaperStore.isFilterMode) {
+        await wallpaperStore.exitFilterMode()
+      }
+    }
+  }
+  else {
+    // 选择具体分类/月份时，切换到筛选模式
+    await wallpaperStore.switchToFilterMode(newCategory)
+  }
+})
 
 // 监听路由变化，切换系列（仅在初始化后生效）
 watch(() => route.meta?.series, (newSeries, oldSeries) => {
@@ -173,6 +344,16 @@ watch(currentSeries, async (newSeries, oldSeries) => {
     await loadSeriesData(newSeries)
   }
 })
+
+// 监听筛选条件变化，重置页码（筛选模式下）
+watch(
+  () => [filterStore.formatFilter, filterStore.resolutionFilter, filterStore.sortBy],
+  () => {
+    if (wallpaperStore.isFilterMode && wallpaperStore.currentPage !== 1) {
+      wallpaperStore.currentPage = 1
+    }
+  },
+)
 
 // 初始化（只执行一次）
 onMounted(async () => {
@@ -226,7 +407,8 @@ onMounted(async () => {
         :category-options="categoryOptions"
         :subcategory-options="subcategoryOptions"
         :result-count="resultCount"
-        :total-count="wallpaperStore.displayTotal"
+        :total-count="effectiveTotal"
+        :page-count="paginatedWallpapers.length"
         :loading="loading"
         :hide-format-filter="hideFormatFilter"
         :current-series="currentSeries"
@@ -249,14 +431,22 @@ onMounted(async () => {
       <!-- Wallpaper Grid -->
       <WallpaperGrid
         v-else
-        :wallpapers="filteredWallpapers"
+        :wallpapers="paginatedWallpapers"
         :loading="loading"
         :search-query="filterStore.searchQuery"
-        :total-count="wallpaperStore.displayTotal"
+        :total-count="effectiveTotal"
         :has-filters="hasActiveFilters"
         :popularity-data="popularityStore.allTimeData"
+        :current-page="wallpaperStore.currentPage"
+        :total-pages="effectiveTotalPages"
+        :page-size="wallpaperStore.pageSize"
+        :has-next-page="wallpaperStore.currentPage < effectiveTotalPages"
+        :expected-total="effectiveTotal"
         @select="handleSelectWallpaper"
         @reset-filters="handleReset"
+        @page-change="handlePageChange"
+        @load-next-page="handleLoadNextPage"
+        @size-change="handleSizeChange"
       />
     </div>
 

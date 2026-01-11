@@ -151,8 +151,12 @@ export const useFilterStore = defineStore('filter', () => {
 
   /**
    * 应用筛选条件
+   * @param {Array} wallpapers - 壁纸列表
+   * @param {Object} options - 选项
+   * @param {boolean} options.skipCategoryFilter - 是否跳过分类筛选（筛选模式下使用）
    */
-  function applyFilters(wallpapers) {
+  function applyFilters(wallpapers, options = {}) {
+    const { skipCategoryFilter = false } = options
     let result = [...wallpapers]
 
     // 搜索过滤
@@ -186,8 +190,8 @@ export const useFilterStore = defineStore('filter', () => {
       })
     }
 
-    // 一级分类过滤
-    if (categoryFilter.value !== 'all') {
+    // 一级分类过滤（筛选模式下跳过，因为数据已经是该分类的）
+    if (!skipCategoryFilter && categoryFilter.value !== 'all') {
       result = result.filter(w =>
         w.category === categoryFilter.value,
       )
@@ -237,9 +241,12 @@ export const useFilterStore = defineStore('filter', () => {
 
   /**
    * 获取筛选和排序后的结果（组合函数）
+   * @param {Array} wallpapers - 壁纸列表
+   * @param {Object} options - 选项
+   * @param {boolean} options.skipCategoryFilter - 是否跳过分类筛选（筛选模式下使用）
    */
-  function getFilteredAndSorted(wallpapers) {
-    const filtered = applyFilters(wallpapers)
+  function getFilteredAndSorted(wallpapers, options = {}) {
+    const filtered = applyFilters(wallpapers, options)
     return applySort(filtered)
   }
 

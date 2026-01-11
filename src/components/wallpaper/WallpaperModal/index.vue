@@ -4,9 +4,10 @@ import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import { useDevice } from '@/composables/useDevice'
 import { useWallpaperType } from '@/composables/useWallpaperType'
+import { usePopularityStore } from '@/stores/popularity'
 import { trackWallpaperDownload, trackWallpaperPreview } from '@/utils/analytics'
 import { downloadFile, formatDate, formatFileSize, formatRelativeTime, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/format'
-import { getWallpaperDownloadCount, getWallpaperViewCount, isSupabaseConfigured, recordDownload, recordView } from '@/utils/supabase'
+import { recordDownload, recordView } from '@/utils/supabase'
 import ImageCropModal from '../ImageCropModal.vue'
 import BingWallpaperInfo from './BingWallpaperInfo.vue'
 import DesktopModal from './DesktopModal.vue'
@@ -29,6 +30,9 @@ const { isMobile, isTablet, isDesktop, isLandscape, isPortrait } = useDevice()
 
 // 获取当前系列
 const { currentSeries } = useWallpaperType()
+
+// 热门数据 Store
+const popularityStore = usePopularityStore()
 
 // PC端桌面壁纸和每日Bing使用独立的桌面弹窗（带 MacBook 预览）
 const useDesktopModal = computed(() => isDesktop.value && (currentSeries.value === 'desktop' || currentSeries.value === 'bing'))
@@ -85,13 +89,19 @@ const originalLoaded = ref(false)
 const showOriginal = ref(false)
 const loadingOriginal = ref(false)
 
-// 下载次数
-const downloadCount = ref(0)
-const loadingDownloadCount = ref(false)
+// 下载次数（从 popularityStore 获取，支持乐观更新）
+const downloadCount = computed(() => {
+  if (!props.wallpaper)
+    return 0
+  return popularityStore.getDownloadCount(props.wallpaper.filename)
+})
 
-// 访问量
-const viewCount = ref(0)
-const loadingViewCount = ref(false)
+// 访问量（从 popularityStore 获取，支持乐观更新）
+const viewCount = computed(() => {
+  if (!props.wallpaper)
+    return 0
+  return popularityStore.getViewCount(props.wallpaper.filename)
+})
 
 // 是否有预览图（仅 desktop 系列）
 const hasPreview = computed(() => !!props.wallpaper?.previewUrl)
@@ -121,11 +131,10 @@ watch(() => props.isOpen, async (isOpen) => {
     // 追踪壁纸预览事件
     if (props.wallpaper) {
       trackWallpaperPreview(props.wallpaper)
-      // 记录到 Supabase 统计
+      // 记录到 Supabase 统计（异步 RPC）
       recordView(props.wallpaper, currentSeries.value)
-      // 获取下载次数和访问量
-      fetchDownloadCount()
-      fetchViewCount()
+      // 乐观更新本地统计（立即反映到 UI）
+      popularityStore.incrementLocalView(props.wallpaper.filename)
     }
 
     // 保存当前滚动位置
@@ -222,56 +231,8 @@ watch(() => props.wallpaper, () => {
   originalLoaded.value = false
   showOriginal.value = false
   loadingOriginal.value = false
-  // 重置下载次数
-  downloadCount.value = 0
-  // 重置访问量
-  viewCount.value = 0
-  // 如果弹窗已打开，重新获取下载次数和访问量
-  if (props.isOpen && props.wallpaper) {
-    fetchDownloadCount()
-    fetchViewCount()
-  }
+  // 统计数据现在是 computed，从 popularityStore 自动获取，无需手动重置
 })
-
-// 获取下载次数
-async function fetchDownloadCount() {
-  if (!props.wallpaper || !isSupabaseConfigured()) {
-    downloadCount.value = 0
-    return
-  }
-
-  loadingDownloadCount.value = true
-  try {
-    downloadCount.value = await getWallpaperDownloadCount(props.wallpaper.filename, currentSeries.value)
-  }
-  catch (error) {
-    console.error('获取下载次数失败:', error)
-    downloadCount.value = 0
-  }
-  finally {
-    loadingDownloadCount.value = false
-  }
-}
-
-// 获取访问量
-async function fetchViewCount() {
-  if (!props.wallpaper || !isSupabaseConfigured()) {
-    viewCount.value = 0
-    return
-  }
-
-  loadingViewCount.value = true
-  try {
-    viewCount.value = await getWallpaperViewCount(props.wallpaper.filename, currentSeries.value)
-  }
-  catch (error) {
-    console.error('获取访问量失败:', error)
-    viewCount.value = 0
-  }
-  finally {
-    loadingViewCount.value = false
-  }
-}
 
 // 分辨率信息 - 显示当前加载图片的分辨率（预览图或原图）
 const resolution = computed(() => {
@@ -388,8 +349,10 @@ async function handleDownload() {
     await downloadFile(props.wallpaper.url, props.wallpaper.filename)
     // 追踪下载事件,包含系列信息
     trackWallpaperDownload(props.wallpaper, currentSeries.value)
-    // 记录到 Supabase 统计
+    // 记录到 Supabase 统计（异步 RPC）
     recordDownload(props.wallpaper, currentSeries.value)
+    // 乐观更新本地统计（立即反映到 UI）
+    popularityStore.incrementLocalDownload(props.wallpaper.filename)
   }
   finally {
     downloading.value = false

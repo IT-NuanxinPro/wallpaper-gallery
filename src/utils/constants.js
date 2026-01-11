@@ -87,6 +87,8 @@ export const SERIES_CONFIG = {
     latestUrl: `${import.meta.env.BASE_URL}data/bing/latest.json${DATA_CACHE_BUSTER}`,
     // 年度数据目录（动态拼接时需手动添加版本参数）
     yearBaseUrl: `${import.meta.env.BASE_URL}data/bing`,
+    // 分页数据目录（与其他系列保持一致）
+    categoryBaseUrl: `${import.meta.env.BASE_URL}data/bing`,
     aspectRatio: '16/9',
     isDaily: true,
     hasMetadata: true,

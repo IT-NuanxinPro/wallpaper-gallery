@@ -641,6 +641,9 @@ function generateCategorySplitData(wallpapers, seriesId, seriesConfig) {
 
   categories.sort((a, b) => b.count - a.count)
 
+  // 生成分页数据
+  const paginationInfo = generatePaginatedData(wallpapers, seriesId, seriesConfig)
+
   const categoriesBlob = encodeData(JSON.stringify(categories))
 
   const indexData = {
@@ -649,8 +652,13 @@ function generateCategorySplitData(wallpapers, seriesId, seriesConfig) {
     seriesName: seriesConfig.name,
     total: wallpapers.length,
     categoryCount: categories.length,
+    // 分页信息
+    pageSize: paginationInfo.pageSize,
+    totalPages: paginationInfo.totalPages,
+    pages: paginationInfo.pages,
+    // 分类信息（加密）
     blob: categoriesBlob,
-    schema: 2,
+    schema: 3, // 升级 schema 版本
     env: process.env.NODE_ENV || 'production',
   }
 
@@ -679,6 +687,60 @@ function generateCategorySplitData(wallpapers, seriesId, seriesConfig) {
 }
 
 /**
+ * 生成分页数据（用于前端按页加载）
+ * @param {Array} wallpapers - 壁纸列表（已排序）
+ * @param {string} seriesId - 系列ID
+ * @param {object} seriesConfig - 系列配置
+ * @param {number} pageSize - 每页数量，默认 30
+ */
+function generatePaginatedData(wallpapers, seriesId, seriesConfig, pageSize = 30) {
+  const seriesDir = path.join(CONFIG.OUTPUT_DIR, seriesId)
+  if (!fs.existsSync(seriesDir)) {
+    fs.mkdirSync(seriesDir, { recursive: true })
+  }
+
+  const totalPages = Math.ceil(wallpapers.length / pageSize)
+  const pages = []
+
+  // 生成每一页的 JSON 文件
+  for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+    const startIdx = (pageNum - 1) * pageSize
+    const endIdx = Math.min(startIdx + pageSize, wallpapers.length)
+    const pageItems = wallpapers.slice(startIdx, endIdx)
+
+    const pageFileName = `page-${pageNum}.json`
+    const blob = encodeData(JSON.stringify(pageItems))
+
+    const pageData = {
+      generatedAt: new Date().toISOString(),
+      series: seriesId,
+      page: pageNum,
+      pageSize,
+      total: pageItems.length,
+      blob,
+      schema: 2,
+    }
+
+    const pagePath = path.join(seriesDir, pageFileName)
+    fs.writeFileSync(pagePath, JSON.stringify(pageData, null, 2))
+
+    pages.push({
+      page: pageNum,
+      file: pageFileName,
+      count: pageItems.length,
+    })
+  }
+
+  console.log(`  Generated: ${totalPages} page files (page-1.json ~ page-${totalPages}.json)`)
+
+  return {
+    pageSize,
+    totalPages,
+    pages,
+  }
+}
+
+/**
  * 处理单个系列
  *
  * 数据获取优先级：
@@ -690,8 +752,97 @@ function generateCategorySplitData(wallpapers, seriesId, seriesConfig) {
  */
 
 /**
- * 处理每日 Bing 壁纸系列（纯元数据模式）
- * 从本地图床仓库或线上数据源复制 JSON 元数据文件
+ * 转换 Bing 元数据为前端需要的壁纸格式
+ * @param {object} bingItem - Bing 原始元数据
+ * @returns {object} 标准壁纸格式
+ */
+function transformBingItemForPage(bingItem) {
+  // 构建 Bing CDN URL
+  const urlbase = bingItem.urlbase
+  const uhdUrl = `https://www.bing.com${urlbase}_UHD.jpg`
+  const previewUrl = `https://www.bing.com${urlbase}_1920x1080.jpg`
+  const thumbnailUrl = `https://www.bing.com${urlbase}_800x480.jpg`
+
+  return {
+    id: `bing-${bingItem.date}`,
+    filename: `bing-${bingItem.date}.jpg`,
+    category: bingItem.date.substring(0, 7), // 年-月
+    url: uhdUrl,
+    downloadUrl: uhdUrl,
+    thumbnailUrl,
+    previewUrl,
+    date: bingItem.date,
+    title: bingItem.title,
+    copyright: bingItem.copyright,
+    copyrightlink: bingItem.copyrightlink,
+    quiz: bingItem.quiz,
+    urlbase: bingItem.urlbase,
+    hsh: bingItem.hsh,
+    size: 0,
+    format: 'JPG',
+    createdAt: `${bingItem.date}T00:00:00Z`,
+    resolution: {
+      width: 3840,
+      height: 2160,
+      label: '4K UHD',
+      type: 'success',
+    },
+    isBing: true,
+    tags: [bingItem.title, bingItem.date.substring(0, 7)],
+  }
+}
+
+/**
+ * 为 Bing 生成分页数据
+ * @param {Array} allItems - 所有 Bing 壁纸数据
+ * @param {string} bingOutputDir - 输出目录
+ * @param {number} pageSize - 每页数量
+ */
+function generateBingPaginatedData(allItems, bingOutputDir, pageSize = 30) {
+  const totalPages = Math.ceil(allItems.length / pageSize)
+  const pages = []
+
+  // 生成每一页的 JSON 文件
+  for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+    const startIdx = (pageNum - 1) * pageSize
+    const endIdx = Math.min(startIdx + pageSize, allItems.length)
+    const pageItems = allItems.slice(startIdx, endIdx)
+
+    const pageFileName = `page-${pageNum}.json`
+    const blob = encodeData(JSON.stringify(pageItems))
+
+    const pageData = {
+      generatedAt: new Date().toISOString(),
+      series: 'bing',
+      page: pageNum,
+      pageSize,
+      total: pageItems.length,
+      blob,
+      schema: 2,
+    }
+
+    const pagePath = path.join(bingOutputDir, pageFileName)
+    fs.writeFileSync(pagePath, JSON.stringify(pageData, null, 2))
+
+    pages.push({
+      page: pageNum,
+      file: pageFileName,
+      count: pageItems.length,
+    })
+  }
+
+  console.log(`  Generated: ${totalPages} page files (page-1.json ~ page-${totalPages}.json)`)
+
+  return {
+    pageSize,
+    totalPages,
+    pages,
+  }
+}
+
+/**
+ * 处理每日 Bing 壁纸系列（纯元数据模式 + 分页生成）
+ * 从本地图床仓库或线上数据源复制 JSON 元数据文件，并生成分页数据
  */
 async function processBingSeries(seriesId, seriesConfig) {
   console.log('')
@@ -705,7 +856,10 @@ async function processBingSeries(seriesId, seriesConfig) {
     fs.mkdirSync(bingOutputDir, { recursive: true })
   }
 
-  // 1. 优先尝试从本地图床仓库复制
+  let allBingItems = []
+  let indexData = null
+
+  // 1. 优先尝试从本地图床仓库读取
   for (const repoPath of CONFIG.LOCAL_REPO_PATHS) {
     if (fs.existsSync(repoPath)) {
       const bingSrcDir = path.join(repoPath, seriesConfig.metadataDir)
@@ -713,9 +867,8 @@ async function processBingSeries(seriesId, seriesConfig) {
       if (fs.existsSync(bingSrcDir)) {
         console.log(`  Found local Bing metadata: ${bingSrcDir}`)
 
-        // 复制所有 JSON 文件
+        // 复制所有 JSON 文件并读取数据
         const files = fs.readdirSync(bingSrcDir).filter(f => f.endsWith('.json'))
-        let totalItems = 0
 
         for (const file of files) {
           const srcPath = path.join(bingSrcDir, file)
@@ -723,79 +876,132 @@ async function processBingSeries(seriesId, seriesConfig) {
           fs.copyFileSync(srcPath, destPath)
           console.log(`  Copied: ${file}`)
 
-          // 统计总数
+          // 读取 index.json
           if (file === 'index.json') {
             try {
-              const indexData = JSON.parse(fs.readFileSync(srcPath, 'utf-8'))
-              totalItems = indexData.total || 0
+              indexData = JSON.parse(fs.readFileSync(srcPath, 'utf-8'))
             }
             catch {
               // 忽略解析错误
             }
           }
+
+          // 读取年度数据文件
+          if (file.match(/^\d{4}\.json$/)) {
+            try {
+              const yearData = JSON.parse(fs.readFileSync(srcPath, 'utf-8'))
+              if (yearData.items && Array.isArray(yearData.items)) {
+                allBingItems.push(...yearData.items)
+              }
+            }
+            catch {
+              console.log(`  ⚠️ Failed to parse ${file}`)
+            }
+          }
         }
 
         console.log(`  ✅ Copied ${files.length} files from local repository`)
-        return { seriesId, count: totalItems, wallpapers: [], fromLocal: true }
+        break
       }
     }
   }
 
-  // 2. 从线上拉取
-  console.log('  Fetching Bing data from online...')
+  // 2. 如果本地没有，从线上拉取
+  if (allBingItems.length === 0) {
+    console.log('  Fetching Bing data from online...')
 
-  try {
-    // 获取 index.json
-    const indexUrl = `${CONFIG.ONLINE_DATA_BASE_URL}/bing/index.json`
-    const indexResponse = await fetch(indexUrl)
-
-    if (!indexResponse.ok) {
-      throw new Error(`Failed to fetch ${indexUrl}`)
-    }
-
-    const indexData = await indexResponse.json()
-    fs.writeFileSync(path.join(bingOutputDir, 'index.json'), JSON.stringify(indexData, null, 2))
-    console.log('  Downloaded: index.json')
-
-    // 获取 latest.json
     try {
-      const latestUrl = `${CONFIG.ONLINE_DATA_BASE_URL}/bing/latest.json`
-      const latestResponse = await fetch(latestUrl)
-      if (latestResponse.ok) {
-        const latestData = await latestResponse.json()
-        fs.writeFileSync(path.join(bingOutputDir, 'latest.json'), JSON.stringify(latestData, null, 2))
-        console.log('  Downloaded: latest.json')
-      }
-    }
-    catch {
-      console.log('  ⚠️ latest.json not available')
-    }
+      // 获取 index.json
+      const indexUrl = `${CONFIG.ONLINE_DATA_BASE_URL}/bing/index.json`
+      const indexResponse = await fetch(indexUrl)
 
-    // 获取年度数据文件
-    if (indexData.years && Array.isArray(indexData.years)) {
-      for (const yearInfo of indexData.years) {
-        try {
-          const yearUrl = `${CONFIG.ONLINE_DATA_BASE_URL}/bing/${yearInfo.file}`
-          const yearResponse = await fetch(yearUrl)
-          if (yearResponse.ok) {
-            const yearData = await yearResponse.json()
-            fs.writeFileSync(path.join(bingOutputDir, yearInfo.file), JSON.stringify(yearData, null, 2))
-            console.log(`  Downloaded: ${yearInfo.file}`)
+      if (!indexResponse.ok) {
+        throw new Error(`Failed to fetch ${indexUrl}`)
+      }
+
+      indexData = await indexResponse.json()
+      fs.writeFileSync(path.join(bingOutputDir, 'index.json'), JSON.stringify(indexData, null, 2))
+      console.log('  Downloaded: index.json')
+
+      // 获取 latest.json
+      try {
+        const latestUrl = `${CONFIG.ONLINE_DATA_BASE_URL}/bing/latest.json`
+        const latestResponse = await fetch(latestUrl)
+        if (latestResponse.ok) {
+          const latestData = await latestResponse.json()
+          fs.writeFileSync(path.join(bingOutputDir, 'latest.json'), JSON.stringify(latestData, null, 2))
+          console.log('  Downloaded: latest.json')
+        }
+      }
+      catch {
+        console.log('  ⚠️ latest.json not available')
+      }
+
+      // 获取年度数据文件
+      if (indexData.years && Array.isArray(indexData.years)) {
+        for (const yearInfo of indexData.years) {
+          try {
+            const yearUrl = `${CONFIG.ONLINE_DATA_BASE_URL}/bing/${yearInfo.file}`
+            const yearResponse = await fetch(yearUrl)
+            if (yearResponse.ok) {
+              const yearData = await yearResponse.json()
+              fs.writeFileSync(path.join(bingOutputDir, yearInfo.file), JSON.stringify(yearData, null, 2))
+              console.log(`  Downloaded: ${yearInfo.file}`)
+
+              // 收集数据
+              if (yearData.items && Array.isArray(yearData.items)) {
+                allBingItems.push(...yearData.items)
+              }
+            }
+          }
+          catch {
+            console.log(`  ⚠️ Failed to download ${yearInfo.file}`)
           }
         }
-        catch {
-          console.log(`  ⚠️ Failed to download ${yearInfo.file}`)
-        }
       }
     }
+    catch (e) {
+      console.log(`  ❌ Failed to fetch Bing data: ${e.message}`)
+      return { seriesId, count: 0, wallpapers: [], fromOnline: false }
+    }
+  }
 
-    console.log(`  ✅ Downloaded Bing data: ${indexData.total || 0} items`)
-    return { seriesId, count: indexData.total || 0, wallpapers: [], fromOnline: true }
+  // 3. 生成分页数据
+  if (allBingItems.length > 0) {
+    console.log('')
+    console.log('  Generating paginated data for Bing...')
+
+    // 按日期降序排序（最新的在前）
+    allBingItems.sort((a, b) => b.date.localeCompare(a.date))
+
+    // 转换为前端格式
+    const transformedItems = allBingItems.map((item, index) =>
+      transformBingItemForPage(item, index),
+    )
+
+    // 生成分页文件
+    const paginationInfo = generateBingPaginatedData(transformedItems, bingOutputDir)
+
+    // 4. 更新 index.json 添加分页信息
+    if (indexData) {
+      indexData.pageSize = paginationInfo.pageSize
+      indexData.totalPages = paginationInfo.totalPages
+      indexData.pages = paginationInfo.pages
+      indexData.schema = 3 // 升级 schema 版本
+
+      fs.writeFileSync(
+        path.join(bingOutputDir, 'index.json'),
+        JSON.stringify(indexData, null, 2),
+      )
+      console.log('  Updated: index.json with pagination info')
+    }
+
+    console.log(`  ✅ Bing data processed: ${allBingItems.length} items, ${paginationInfo.totalPages} pages`)
+    return { seriesId, count: allBingItems.length, wallpapers: transformedItems, fromLocal: true }
   }
-  catch (e) {
-    console.log(`  ❌ Failed to fetch Bing data: ${e.message}`)
-    return { seriesId, count: 0, wallpapers: [], fromOnline: false }
-  }
+
+  console.log(`  ✅ Bing data: ${indexData?.total || 0} items`)
+  return { seriesId, count: indexData?.total || 0, wallpapers: [], fromOnline: true }
 }
 
 async function processSeries(seriesId, seriesConfig) {

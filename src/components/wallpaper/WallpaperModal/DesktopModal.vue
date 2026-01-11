@@ -8,9 +8,10 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import { useWallpaperType } from '@/composables/useWallpaperType'
+import { usePopularityStore } from '@/stores/popularity'
 import { trackWallpaperDownload, trackWallpaperPreview } from '@/utils/analytics'
 import { downloadFile, formatDate, formatFileSize, formatRelativeTime, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/format'
-import { getWallpaperDownloadCount, getWallpaperViewCount, isSupabaseConfigured, recordDownload, recordView } from '@/utils/supabase'
+import { recordDownload, recordView } from '@/utils/supabase'
 
 const props = defineProps({
   wallpaper: {
@@ -26,15 +27,27 @@ const props = defineProps({
 const emit = defineEmits(['close', 'openCrop'])
 
 const { currentSeries } = useWallpaperType()
+const popularityStore = usePopularityStore()
 
 // 状态
 const isVisible = ref(false)
 const imageLoaded = ref(false)
 const shellLoaded = ref(false)
 const downloading = ref(false)
-const downloadCount = ref(0)
-const viewCount = ref(0)
 const imageDimensions = ref({ width: 0, height: 0 })
+
+// 统计数据（从 popularityStore 获取，支持乐观更新）
+const downloadCount = computed(() => {
+  if (!props.wallpaper)
+    return 0
+  return popularityStore.getDownloadCount(props.wallpaper.filename)
+})
+
+const viewCount = computed(() => {
+  if (!props.wallpaper)
+    return 0
+  return popularityStore.getViewCount(props.wallpaper.filename)
+})
 
 // 悬浮状态
 const isHovered = ref(false)
@@ -85,13 +98,15 @@ const formattedSize = computed(() =>
 
 // Bing 壁纸使用 date 字段，普通壁纸使用 createdAt
 const formattedDate = computed(() => {
-  if (!props.wallpaper) return ''
+  if (!props.wallpaper)
+    return ''
   const dateValue = props.wallpaper.date || props.wallpaper.createdAt
   return formatDate(dateValue)
 })
 
 const relativeTime = computed(() => {
-  if (!props.wallpaper) return ''
+  if (!props.wallpaper)
+    return ''
   const dateValue = props.wallpaper.date || props.wallpaper.createdAt
   return formatRelativeTime(dateValue)
 })
@@ -118,22 +133,32 @@ watch(() => props.isOpen, async (isOpen) => {
 
 watch(() => props.wallpaper, () => {
   resetState()
-  if (props.isOpen && props.wallpaper) {
-    fetchStats()
-  }
+  // 统计数据现在是 computed，从 popularityStore 自动获取
 })
 
 function handleOpen() {
   trackWallpaperPreview(props.wallpaper)
   recordView(props.wallpaper, currentSeries.value)
-  fetchStats()
+  // 乐观更新本地统计（立即反映到 UI）
+  popularityStore.incrementLocalView(props.wallpaper.filename)
 
   // 滚动锁定由父组件处理，这里只需要显示弹窗
   isVisible.value = true
+
+  // 启动时钟更新（仅在弹窗打开时运行）
+  updateTime()
+  if (timeTimer)
+    clearInterval(timeTimer)
+  timeTimer = setInterval(updateTime, 1000)
 }
 
 function handleClose() {
   isVisible.value = false
+  // 清理定时器
+  if (timeTimer) {
+    clearInterval(timeTimer)
+    timeTimer = null
+  }
 }
 
 function onModalAfterLeave() {
@@ -150,6 +175,8 @@ async function handleDownload() {
     await downloadFile(props.wallpaper.url, props.wallpaper.filename)
     trackWallpaperDownload(props.wallpaper, currentSeries.value)
     recordDownload(props.wallpaper, currentSeries.value)
+    // 乐观更新本地统计（立即反映到 UI）
+    popularityStore.incrementLocalDownload(props.wallpaper.filename)
   }
   finally {
     downloading.value = false
@@ -172,31 +199,10 @@ function handleOpenCrop() {
   emit('openCrop')
 }
 
-async function fetchStats() {
-  if (!props.wallpaper || !isSupabaseConfigured()) {
-    downloadCount.value = 0
-    viewCount.value = 0
-    return
-  }
-
-  try {
-    const [dc, vc] = await Promise.all([
-      getWallpaperDownloadCount(props.wallpaper.filename, currentSeries.value),
-      getWallpaperViewCount(props.wallpaper.filename, currentSeries.value),
-    ])
-    downloadCount.value = dc
-    viewCount.value = vc
-  }
-  catch (error) {
-    console.error('获取统计数据失败:', error)
-  }
-}
-
 function resetState() {
   imageLoaded.value = false
   imageDimensions.value = { width: 0, height: 0 }
-  downloadCount.value = 0
-  viewCount.value = 0
+  // 统计数据现在是 computed，无需手动重置
 }
 
 function handleKeydown(e) {
@@ -211,8 +217,7 @@ function handleKeydown(e) {
 
 onMounted(() => {
   document.addEventListener('keydown', handleKeydown)
-  updateTime()
-  timeTimer = setInterval(updateTime, 1000)
+  // 注意：时钟定时器在 handleOpen 中启动，避免组件挂载但弹窗未打开时浪费资源
 })
 
 onUnmounted(() => {
