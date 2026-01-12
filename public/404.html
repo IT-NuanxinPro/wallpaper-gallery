@@ -4,21 +4,12 @@
   <meta charset="utf-8">
   <title>Wallpaper Gallery</title>
   <script>
-    // GitHub Pages SPA 重定向方案
-    // 将路径转换为查询参数，然后重定向到首页
-    // 首页的 JS 会解析查询参数并恢复原始路由
-    var pathSegmentsToKeep = 0; // 如果部署在子目录，这里改成 1
-
-    var l = window.location;
-    l.replace(
-      l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-      l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
-      l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-      (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-      l.hash
-    );
+    // GitHub Pages SPA fallback
+    // 将路径保存到 sessionStorage，然后跳转到首页
+    // index.html 会读取并恢复路由
+    sessionStorage.setItem('redirect', location.pathname + location.search);
+    location.replace('/');
   </script>
 </head>
-<body>
-</body>
+<body></body>
 </html>

@@ -1,5 +1,7 @@
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
+
+import { useScrollLock } from '@/composables/useScrollLock'
 
 const props = defineProps({
   show: {
@@ -26,9 +28,17 @@ const emit = defineEmits(['update:show', 'update:categoryFilter', 'update:subcat
 const tempCategory = ref(props.categoryFilter)
 const tempSubcategory = ref(props.subcategoryFilter)
 
+// 使用滚动锁定 composable
+const scrollLock = useScrollLock()
+
 // 同步外部值
-watch(() => props.show, (val) => {
+watch(() => props.show, async (val) => {
   if (val) {
+    // 延迟锁定滚动，让动画先开始，避免 position: fixed 导致的重排卡顿
+    await nextTick()
+    requestAnimationFrame(() => {
+      scrollLock.lock()
+    })
     // 如果当前是"全部"，默认选中第一个分类
     if (props.categoryFilter === 'all') {
       const firstCategory = props.categoryOptions.find(opt => opt.value !== 'all')
@@ -38,6 +48,10 @@ watch(() => props.show, (val) => {
       tempCategory.value = props.categoryFilter
     }
     tempSubcategory.value = props.subcategoryFilter
+  }
+  else {
+    // 解锁滚动
+    scrollLock.unlock()
   }
 })
 
@@ -179,6 +193,8 @@ function closeDrawer() {
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
   z-index: 1000;
+  // 防止触摸穿透
+  touch-action: none;
 }
 
 .category-drawer {
@@ -187,84 +203,130 @@ function closeDrawer() {
   right: 0;
   bottom: 0;
   max-height: 70vh;
-  background: var(--color-bg-primary);
-  border-radius: 16px 16px 0 0;
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 20px 20px 0 0;
   z-index: 1001;
   display: grid;
-  grid-template-rows: auto 1fr auto; // 头部 自动，主体 自适应，底部 自动
+  grid-template-rows: auto 1fr auto;
   overflow: hidden;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+  touch-action: pan-y;
+  overscroll-behavior: contain;
+
+  [data-theme='dark'] & {
+    background: rgba(15, 23, 42, 0.98);
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.4);
+  }
 }
 
 .drawer-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 16px;
-  border-bottom: 1px solid var(--color-border);
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   flex-shrink: 0;
+
+  [data-theme='dark'] & {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+  }
 }
 
 .header-title {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
   color: var(--color-text-primary);
 }
 
 .header-btn {
-  padding: 6px 12px;
+  padding: 8px 14px;
   font-size: 14px;
+  font-weight: 500;
   background: transparent;
   color: var(--color-text-muted);
+  transition: all 250ms;
 
-  &.reset-btn:active {
-    color: var(--color-accent);
+  &.reset-btn {
+    color: #667eea;
+
+    &:active {
+      opacity: 0.7;
+    }
   }
 
   &.close-btn {
-    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+
+    [data-theme='dark'] & {
+      background: rgba(15, 23, 42, 0.6);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
 
     svg {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
+    }
+
+    &:active {
+      background: rgba(102, 126, 234, 0.15);
+      color: #667eea;
     }
   }
 }
 
 .drawer-body {
   display: flex;
-  min-height: 0; // 允许子元素正确缩小
+  min-height: 0;
   overflow: hidden;
 }
 
 // 左侧一级分类
 .category-list {
-  width: 100px;
+  width: 110px;
   flex-shrink: 0;
-  background: var(--color-bg-secondary);
+  background: rgba(0, 0, 0, 0.03);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  max-height: calc(70vh - 120px); // 减去头部和底部的高度
+  max-height: calc(70vh - 130px);
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+
+  [data-theme='dark'] & {
+    background: rgba(0, 0, 0, 0.2);
+    border-right-color: rgba(255, 255, 255, 0.08);
+  }
 }
 
 .category-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 12px;
+  padding: 16px 14px;
   font-size: 14px;
   color: var(--color-text-secondary);
   border-left: 3px solid transparent;
-  transition: all 0.2s ease;
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
 
   &.is-active {
-    background: var(--color-bg-primary);
-    color: var(--color-accent);
-    font-weight: 500;
-    border-left-color: var(--color-accent);
+    background: rgba(255, 255, 255, 0.8);
+    color: #667eea;
+    font-weight: 600;
+    border-left-color: #667eea;
+
+    [data-theme='dark'] & {
+      background: rgba(102, 126, 234, 0.15);
+    }
   }
 
   &:active {
-    background: var(--color-bg-hover);
+    background: rgba(102, 126, 234, 0.08);
   }
 }
 
@@ -284,41 +346,51 @@ function closeDrawer() {
 // 右侧二级分类
 .subcategory-panel {
   flex: 1;
-  padding: 12px;
+  padding: 16px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  max-height: calc(70vh - 120px); // 减去头部和底部的高度
+  max-height: calc(70vh - 130px);
 }
 
 .subcategory-header {
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: 600;
   color: var(--color-text-muted);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 
   span {
-    color: var(--color-accent);
-    font-weight: 500;
+    color: #667eea;
   }
 }
 
 .subcategory-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 }
 
 .subcategory-btn {
-  padding: 8px 14px;
+  padding: 10px 16px;
   font-size: 13px;
   color: var(--color-text-secondary);
-  background: var(--color-bg-hover);
-  border-radius: 6px;
-  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  [data-theme='dark'] & {
+    background: rgba(15, 23, 42, 0.8);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
 
   &.is-active {
-    color: var(--color-accent);
-    background: var(--color-accent-light);
-    font-weight: 500;
+    color: white;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: transparent;
+    font-weight: 600;
+    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.4);
   }
 
   &:active {
@@ -345,7 +417,7 @@ function closeDrawer() {
     width: 48px;
     height: 48px;
     margin-bottom: 12px;
-    opacity: 0.5;
+    opacity: 0.4;
   }
 
   p {
@@ -354,26 +426,35 @@ function closeDrawer() {
 }
 
 .drawer-footer {
-  padding: 12px 16px;
-  padding-bottom: max(12px, env(safe-area-inset-bottom));
-  border-top: 1px solid var(--color-border);
-  background: var(--color-bg-primary);
+  padding: 16px 20px;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+
+  [data-theme='dark'] & {
+    border-top-color: rgba(255, 255, 255, 0.08);
+  }
 }
 
 .confirm-btn {
   width: 100%;
-  padding: 14px;
+  padding: 16px;
   font-size: 16px;
   font-weight: 600;
   color: white;
-  background: var(--color-accent);
-  border-radius: 10px;
-  transition: all 0.2s ease;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+    transform: translateY(-1px);
+  }
 
   &:active {
     transform: scale(0.98);
-    opacity: 0.9;
+    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
   }
 }
 

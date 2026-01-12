@@ -4,9 +4,7 @@ import { Flip } from 'gsap/Flip'
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
-// import Pagination from '@/components/common/Pagination.vue' // 注释：改用滚动加载模式
 import { useDevice } from '@/composables/useDevice'
-// import { usePagination } from '@/composables/usePagination' // 注释：改用滚动加载模式
 import { useViewMode } from '@/composables/useViewMode'
 import { useWallpaperType } from '@/composables/useWallpaperType'
 import WallpaperCard from '../WallpaperCard.vue'
@@ -476,6 +474,15 @@ onUnmounted(() => {
   // 清除所有未完成的定时器
   timers.forEach(timer => clearTimeout(timer))
   timers.clear()
+
+  // 清理所有 GSAP 动画，防止内存泄漏
+  gsap.killTweensOf('.wallpaper-card')
+  if (gridRef.value) {
+    const cards = gridRef.value.querySelectorAll('.wallpaper-card')
+    if (cards.length > 0) {
+      gsap.killTweensOf(cards)
+    }
+  }
 })
 
 // 监听 wallpapers 变化（筛选/搜索/分类切换时）

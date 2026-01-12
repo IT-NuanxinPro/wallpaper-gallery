@@ -56,7 +56,9 @@ const showCustomInput = ref(false)
 const customWidth = ref('')
 const customHeight = ref('')
 const previewUpdateTimer = ref(null)
+const previewRAF = ref(null) // requestAnimationFrame ID
 const actualImageUrl = ref('') // 实际使用的图片 URL（可能回退到 GitHub Raw）
+const imageNaturalSize = ref({ width: 0, height: 0 }) // 图片原始尺寸
 
 // 获取用户屏幕分辨率
 const screenResolution = ref({
@@ -95,6 +97,27 @@ const currentPreset = computed(() =>
   ratioPresets.value.find(p => p.id === selectedRatio.value) || ratioPresets.value[0],
 )
 
+// 计算当前比例显示文本
+const currentRatioDisplay = computed(() => {
+  if (selectedRatio.value === 'free' || selectedRatio.value === 'custom') {
+    // 自由比例时，计算实际比例
+    if (cropInfo.value.width > 0 && cropInfo.value.height > 0) {
+      const gcd = (a, b) => b === 0 ? a : gcd(b, a % b)
+      const divisor = gcd(cropInfo.value.width, cropInfo.value.height)
+      const ratioW = Math.round(cropInfo.value.width / divisor)
+      const ratioH = Math.round(cropInfo.value.height / divisor)
+      // 如果比例数字太大，简化显示
+      if (ratioW > 100 || ratioH > 100) {
+        const ratio = (cropInfo.value.width / cropInfo.value.height).toFixed(2)
+        return ratio
+      }
+      return `${ratioW}:${ratioH}`
+    }
+    return '自由'
+  }
+  return currentPreset.value?.name || ''
+})
+
 // 处理大文件：使用 jsDelivr CDN，如果失败则回退到 GitHub Raw
 const croppedImageUrl = computed(() => actualImageUrl.value || props.imageUrl)
 
@@ -108,9 +131,9 @@ function initCropper() {
 
   cropper.value = new Cropper(imageRef.value, {
     aspectRatio,
-    viewMode: 1,
+    viewMode: 1, // viewMode 1: 限制裁剪框不超出图片
     dragMode: 'move',
-    autoCropArea: 0.85,
+    autoCropArea: 1, // 最大化初始裁剪区域
     restore: false,
     guides: true,
     center: true,
@@ -123,6 +146,8 @@ function initCropper() {
     minContainerHeight: 200,
     checkCrossOrigin: false, // 跳过跨域检查
     checkOrientation: false, // 跳过 EXIF 方向检查，提升性能
+    background: false, // 关闭背景网格，更简洁
+    responsive: true, // 响应式
     ready() {
       // 记录初始缩放比例
       const canvasData = cropper.value.getCanvasData()
@@ -156,35 +181,36 @@ function destroyCropper() {
   }
 }
 
-// 节流更新预览（增加延迟提升性能）
+// 节流更新预览 - 使用 requestAnimationFrame 实现丝滑更新
 function debouncedUpdatePreview() {
-  if (previewUpdateTimer.value) {
-    clearTimeout(previewUpdateTimer.value)
+  // 取消之前的 RAF
+  if (previewRAF.value) {
+    cancelAnimationFrame(previewRAF.value)
   }
-  previewUpdateTimer.value = setTimeout(() => {
+  // 使用 RAF 确保在下一帧渲染
+  previewRAF.value = requestAnimationFrame(() => {
     updatePreview()
-  }, 120) // 增加延迟，减少频繁重绘
+  })
 }
 
-// 更新实时预览 - 优化性能版本
+// 更新实时预览 - 高性能版本
 function updatePreview() {
   if (!cropper.value || !previewCanvasRef.value)
     return
 
   try {
-    // 使用适中分辨率，平衡清晰度与性能
+    // 提高预览分辨率，保证清晰度
     const previewCanvas = cropper.value.getCroppedCanvas({
-      maxWidth: 600,
-      maxHeight: 340,
+      maxWidth: 1200,
+      maxHeight: 800,
       imageSmoothingEnabled: true,
-      imageSmoothingQuality: 'medium', // 中等质量，提升性能
+      imageSmoothingQuality: 'high', // 高质量
     })
 
     if (previewCanvas) {
-      const ctx = previewCanvasRef.value.getContext('2d')
-      // 预览区域尺寸
-      const containerWidth = previewCanvasRef.value.offsetWidth || 600
-      const containerHeight = 180
+      const ctx = previewCanvasRef.value.getContext('2d', { alpha: false })
+      const containerWidth = previewCanvasRef.value.offsetWidth || 800
+      const containerHeight = previewCanvasRef.value.offsetHeight || 220
 
       // 计算缩放比例保持比例
       const scale = Math.min(
@@ -197,14 +223,21 @@ function updatePreview() {
       const offsetY = (containerHeight - drawHeight) / 2
 
       // 使用设备像素比提高清晰度
-      const dpr = window.devicePixelRatio || 1
-      previewCanvasRef.value.width = containerWidth * dpr
-      previewCanvasRef.value.height = containerHeight * dpr
-      previewCanvasRef.value.style.width = `${containerWidth}px`
-      previewCanvasRef.value.style.height = `${containerHeight}px`
-      ctx.scale(dpr, dpr)
+      const dpr = Math.min(window.devicePixelRatio || 1, 2) // 限制最大 2x
+      const canvasWidth = containerWidth * dpr
+      const canvasHeight = containerHeight * dpr
 
-      ctx.fillStyle = '#0a0a0a'
+      // 只在尺寸变化时重设 canvas
+      if (previewCanvasRef.value.width !== canvasWidth || previewCanvasRef.value.height !== canvasHeight) {
+        previewCanvasRef.value.width = canvasWidth
+        previewCanvasRef.value.height = canvasHeight
+        previewCanvasRef.value.style.width = `${containerWidth}px`
+        previewCanvasRef.value.style.height = `${containerHeight}px`
+      }
+
+      // 清除并绘制
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      ctx.fillStyle = '#0a0a12'
       ctx.fillRect(0, 0, containerWidth, containerHeight)
       ctx.imageSmoothingEnabled = true
       ctx.imageSmoothingQuality = 'high'
@@ -312,6 +345,13 @@ function closeImmersivePreview() {
 // 图片加载完成
 function handleImageLoad() {
   imageLoaded.value = true
+  // 记录图片原始尺寸
+  if (imageRef.value) {
+    imageNaturalSize.value = {
+      width: imageRef.value.naturalWidth,
+      height: imageRef.value.naturalHeight,
+    }
+  }
   nextTick(() => {
     initCropper()
   })
@@ -467,9 +507,24 @@ watch(() => props.isOpen, async (isOpen) => {
   }
   else {
     destroyCropper()
+    // 清理预览更新定时器
     if (previewUpdateTimer.value) {
       clearTimeout(previewUpdateTimer.value)
+      previewUpdateTimer.value = null
     }
+    // 清理 RAF
+    if (previewRAF.value) {
+      cancelAnimationFrame(previewRAF.value)
+      previewRAF.value = null
+    }
+    // 清理沉浸式预览
+    if (immersiveImageUrl.value) {
+      immersiveImageUrl.value = ''
+    }
+    isImmersivePreview.value = false
+    // 重置图片 URL
+    actualImageUrl.value = ''
+    imageNaturalSize.value = { width: 0, height: 0 }
   }
 })
 
@@ -507,11 +562,22 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener('keydown', handleKeydown)
   destroyCropper()
-  // 清理预览更新定时器
+  // 清理预览更新定时器和 RAF
   if (previewUpdateTimer.value) {
     clearTimeout(previewUpdateTimer.value)
     previewUpdateTimer.value = null
   }
+  if (previewRAF.value) {
+    cancelAnimationFrame(previewRAF.value)
+    previewRAF.value = null
+  }
+  // 清理沉浸式预览
+  if (immersiveImageUrl.value) {
+    immersiveImageUrl.value = ''
+  }
+  // 重置状态
+  actualImageUrl.value = ''
+  imageNaturalSize.value = { width: 0, height: 0 }
 })
 </script>
 
@@ -534,11 +600,7 @@ onUnmounted(() => {
               </svg>
               智能裁剪
             </h2>
-            <button class="close-btn" @click="handleClose">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M18 6L6 18M6 6l12 12" />
-              </svg>
-            </button>
+            <div class="header-spacer" />
           </div>
 
           <!-- Main Content -->
@@ -547,6 +609,13 @@ onUnmounted(() => {
             <div class="crop-left">
               <!-- 裁剪区域 -->
               <div class="crop-area">
+                <!-- 实时尺寸标注 -->
+                <div v-if="cropInfo.width > 0" class="crop-size-badge">
+                  <span class="size-dimensions">{{ cropInfo.width }} × {{ cropInfo.height }}</span>
+                  <span class="size-divider">|</span>
+                  <span class="size-ratio">{{ currentRatioDisplay }}</span>
+                </div>
+
                 <div v-if="!imageLoaded" class="crop-loading">
                   <LoadingSpinner size="lg" />
                   <p>正在加载原图...</p>
@@ -718,8 +787,8 @@ onUnmounted(() => {
                     <span class="toggle-thumb" />
                   </span>
                   <span class="toggle-label">
-                    <span class="label-text">原图质量</span>
-                    <span class="label-hint">不压缩，文件更大</span>
+                    <span class="label-text">超高分辨率</span>
+                    <span class="label-hint">最大 16K，适合大屏显示器</span>
                   </span>
                 </label>
               </div>
@@ -740,9 +809,6 @@ onUnmounted(() => {
 
               <!-- 操作按钮 -->
               <div class="panel-actions">
-                <button class="action-btn action-btn--secondary" @click="handleClose">
-                  取消
-                </button>
                 <button
                   class="action-btn action-btn--primary"
                   :disabled="!imageLoaded || imageError || isProcessing"
@@ -816,21 +882,29 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.92);
-  backdrop-filter: blur(20px);
+  background: linear-gradient(
+    135deg,
+    rgba(26, 26, 46, 0.95) 0%,
+    rgba(22, 33, 62, 0.95) 50%,
+    rgba(15, 52, 96, 0.95) 100%
+  );
+  backdrop-filter: blur(24px);
 }
 
 .crop-modal-content {
   display: flex;
   flex-direction: column;
-  width: 95vw;
-  max-width: 1400px;
+  width: 1100px; // 固定宽度，更紧凑
+  max-width: 94vw;
   height: 92vh;
   max-height: 900px;
-  background: var(--color-bg-card);
-  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  box-shadow:
+    0 25px 60px -12px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 // Header
@@ -838,9 +912,9 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 20px;
-  background: var(--color-bg-primary);
-  border-bottom: 1px solid var(--color-border);
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   flex-shrink: 0;
 }
 
@@ -849,19 +923,23 @@ onUnmounted(() => {
   align-items: center;
   gap: 6px;
   padding: 6px 12px;
-  font-size: 13px;
-  color: var(--color-text-secondary);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 8px;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
-    color: var(--color-text-primary);
-    background: var(--color-bg-hover);
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.12);
+    transform: translateX(-2px);
   }
 
   svg {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
   }
 }
 
@@ -869,36 +947,21 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
-  color: var(--color-text-primary);
-
-  svg {
-    width: 20px;
-    height: 20px;
-    color: var(--color-accent);
-  }
-}
-
-.close-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  color: var(--color-text-secondary);
-  border-radius: 8px;
-  transition: all 0.2s ease;
-
-  &:hover {
-    color: #ef4444;
-    background: rgba(239, 68, 68, 0.1);
-  }
+  color: #fff;
+  letter-spacing: -0.3px;
 
   svg {
     width: 18px;
     height: 18px;
+    color: #667eea;
+    filter: drop-shadow(0 0 6px rgba(102, 126, 234, 0.4));
   }
+}
+
+.header-spacer {
+  width: 70px; // 与返回按钮宽度大致相同，保持标题居中
 }
 
 // Main
@@ -915,10 +978,10 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   min-width: 0;
-  background: #0a0a0a;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.6) 0%, rgba(15, 23, 42, 0.4) 100%);
 }
 
-// Crop Area
+// Crop Area - 占据主要空间
 .crop-area {
   flex: 1;
   display: flex;
@@ -926,8 +989,47 @@ onUnmounted(() => {
   justify-content: center;
   position: relative;
   overflow: hidden;
-  min-height: 300px;
-  will-change: contents; // 提示浏览器优化渲染
+  min-height: 0;
+  will-change: contents;
+  padding: 8px; // 最小内边距，最大化裁剪区域
+  background: rgba(0, 0, 0, 0.15);
+}
+
+// 实时尺寸标注
+.crop-size-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: 'SF Mono', Monaco, 'Consolas', monospace;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+  .size-dimensions {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.3px;
+  }
+
+  .size-divider {
+    color: rgba(255, 255, 255, 0.3);
+    font-weight: 300;
+  }
+
+  .size-ratio {
+    font-size: 14px;
+    font-weight: 600;
+    color: #667eea;
+  }
 }
 
 .crop-loading,
@@ -936,22 +1038,23 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  color: var(--color-text-muted);
+  gap: 16px;
+  color: rgba(255, 255, 255, 0.5);
 
   p {
-    font-size: 13px;
+    font-size: 14px;
     margin: 0;
   }
 
   .loading-hint {
-    font-size: 11px;
-    opacity: 0.6;
+    font-size: 12px;
+    opacity: 0.5;
   }
 
   svg {
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
+    opacity: 0.6;
   }
 }
 
@@ -961,35 +1064,36 @@ onUnmounted(() => {
   max-height: 100%;
 }
 
-// 预览区域
+// 预览区域 - 更大的预览
 .preview-section {
   flex-shrink: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: #0f0f0f;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.2);
+  height: 260px; // 增大预览区域
 }
 
 .preview-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 6px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .preview-title {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  color: var(--color-text-secondary);
+  color: rgba(255, 255, 255, 0.6);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
 
   svg {
     width: 14px;
     height: 14px;
-    color: var(--color-accent);
+    color: #667eea;
   }
 }
 
@@ -1001,9 +1105,12 @@ onUnmounted(() => {
 
 .preview-size {
   font-size: 12px;
-  font-weight: 600;
-  color: var(--color-accent);
+  font-weight: 700;
+  color: #667eea;
   font-family: 'SF Mono', Monaco, monospace;
+  padding: 3px 8px;
+  background: rgba(102, 126, 234, 0.1);
+  border-radius: 5px;
 }
 
 .preview-fullscreen-btn {
@@ -1012,36 +1119,42 @@ onUnmounted(() => {
   gap: 6px;
   padding: 6px 12px;
   font-size: 11px;
-  color: var(--color-text-secondary);
-  background: rgba(255, 255, 255, 0.06);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 6px;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   svg {
-    width: 14px;
-    height: 14px;
+    width: 13px;
+    height: 13px;
   }
 
   &:hover:not(:disabled) {
-    color: var(--color-text-primary);
+    color: #fff;
     background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.15);
   }
 
   &:disabled {
-    opacity: 0.4;
+    opacity: 0.35;
     cursor: not-allowed;
   }
 }
 
 .preview-canvas-wrapper {
-  padding: 12px 16px 16px;
+  padding: 8px 16px 12px;
+  height: calc(100% - 30px); // 减去 header 高度
+  box-sizing: border-box;
 }
 
 .preview-canvas {
   width: 100%;
-  height: 180px;
-  border-radius: 8px;
-  background: #0a0a0a;
+  height: 100%; // 填满容器
+  border-radius: 10px;
+  background: #0a0a12; // 深色背景
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 // Panel
@@ -1049,24 +1162,34 @@ onUnmounted(() => {
   width: 280px;
   display: flex;
   flex-direction: column;
-  background: var(--color-bg-card);
-  border-left: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
   overflow-y: auto;
   flex-shrink: 0;
 
+  // 自定义滚动条 - 深色主题
   &::-webkit-scrollbar {
-    width: 4px;
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: var(--color-border);
-    border-radius: 2px;
+    background: rgba(102, 126, 234, 0.3);
+    border-radius: 3px;
+
+    &:hover {
+      background: rgba(102, 126, 234, 0.5);
+    }
   }
 }
 
 .panel-section {
   padding: 14px 16px;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   flex-shrink: 0;
 
   &--tools {
@@ -1088,17 +1211,17 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--color-text-primary);
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.8);
   margin-bottom: 10px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
 
   svg {
-    width: 14px;
-    height: 14px;
-    color: var(--color-accent);
+    width: 13px;
+    height: 13px;
+    color: #667eea;
   }
 }
 
@@ -1106,7 +1229,7 @@ onUnmounted(() => {
 .ratio-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 5px;
+  gap: 6px;
 }
 
 .ratio-btn {
@@ -1114,52 +1237,59 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: flex-start;
   gap: 1px;
-  padding: 7px 9px;
-  background: var(--color-bg-hover);
-  border-radius: 6px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
   text-align: left;
-  transition: all 0.15s ease;
-  border: 1.5px solid transparent;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
-    background: var(--color-bg-primary);
-    border-color: var(--color-border);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.1);
   }
 
   &--active {
-    background: rgba(99, 102, 241, 0.15);
-    border-color: var(--color-accent);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+    border-color: rgba(102, 126, 234, 0.4);
+    box-shadow: 0 0 12px rgba(102, 126, 234, 0.15);
 
     .ratio-name {
-      color: var(--color-accent);
+      color: #667eea;
+    }
+
+    .ratio-desc {
+      color: rgba(102, 126, 234, 0.8);
     }
   }
 
   &--highlight {
     grid-column: span 2;
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
-    padding: 9px 11px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(16, 185, 129, 0.08) 100%);
+    border-color: rgba(102, 126, 234, 0.2);
+    padding: 10px 12px;
 
     &.ratio-btn--active {
-      background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%);
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%);
+      border-color: rgba(102, 126, 234, 0.5);
     }
 
     .ratio-desc {
-      color: var(--color-accent);
-      font-weight: 500;
+      color: #667eea;
+      font-weight: 600;
     }
   }
 }
 
 .ratio-name {
   font-size: 12px;
-  font-weight: 600;
-  color: var(--color-text-primary);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .ratio-desc {
   font-size: 9px;
-  color: var(--color-text-muted);
+  color: rgba(255, 255, 255, 0.4);
 }
 
 // Custom Input
@@ -1169,26 +1299,29 @@ onUnmounted(() => {
   gap: 6px;
   width: 100%;
   padding: 8px 10px;
-  margin-top: 6px;
+  margin-top: 8px;
   font-size: 11px;
-  color: var(--color-text-secondary);
-  background: var(--color-bg-hover);
-  border-radius: 6px;
-  transition: all 0.2s ease;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   svg {
     width: 12px;
     height: 12px;
-    transition: transform 0.2s ease;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   &:hover {
-    background: var(--color-bg-primary);
-    color: var(--color-text-primary);
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.1);
   }
 
   &--active {
-    color: var(--color-accent);
+    color: #667eea;
+    border-color: rgba(102, 126, 234, 0.3);
 
     svg {
       transform: rotate(45deg);
@@ -1198,10 +1331,10 @@ onUnmounted(() => {
 
 .custom-input-card {
   margin-top: 8px;
-  padding: 8px;
-  background: var(--color-bg-primary);
-  border-radius: 6px;
-  border: 1px solid var(--color-border);
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .custom-inputs {
@@ -1211,41 +1344,47 @@ onUnmounted(() => {
 
   input {
     width: 50px;
-    padding: 5px 8px;
+    padding: 6px 8px;
     font-size: 12px;
-    color: var(--color-text-primary);
-    background: var(--color-bg-hover);
-    border: 1px solid var(--color-border);
-    border-radius: 4px;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
     outline: none;
     text-align: center;
+    transition: all 0.2s ease;
 
     &:focus {
-      border-color: var(--color-accent);
+      border-color: #667eea;
+      box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.15);
     }
 
     &::placeholder {
-      color: var(--color-text-muted);
+      color: rgba(255, 255, 255, 0.3);
     }
   }
 }
 
 .input-divider {
-  color: var(--color-text-muted);
-  font-weight: 600;
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 700;
+  font-size: 12px;
 }
 
 .apply-btn {
-  padding: 5px 10px;
+  padding: 6px 12px;
   font-size: 11px;
   font-weight: 600;
   color: white;
-  background: var(--color-accent);
-  border-radius: 4px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 6px;
   margin-left: auto;
+  transition: all 0.2s ease;
 
   &:hover {
-    background: var(--color-accent-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
   }
 }
 
@@ -1262,19 +1401,21 @@ onUnmounted(() => {
   justify-content: center;
   width: 30px;
   height: 30px;
-  color: var(--color-text-secondary);
-  background: var(--color-bg-hover);
-  border-radius: 6px;
-  transition: all 0.15s ease;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
   svg {
-    width: 16px;
-    height: 16px;
+    width: 15px;
+    height: 15px;
   }
 
   &:hover {
-    color: var(--color-text-primary);
-    background: var(--color-bg-primary);
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
   }
 
   &:active {
@@ -1292,36 +1433,40 @@ onUnmounted(() => {
 .zoom-track {
   flex: 1;
   height: 4px;
-  background: var(--color-bg-hover);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 2px;
   overflow: hidden;
 }
 
 .zoom-fill {
   height: 100%;
-  background: var(--color-accent);
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
   border-radius: 2px;
   transition: width 0.15s ease;
 }
 
 .zoom-value {
   font-size: 11px;
-  font-weight: 600;
-  color: var(--color-text-primary);
+  font-weight: 700;
+  color: #fff;
   font-family: 'SF Mono', Monaco, monospace;
-  min-width: 36px;
+  min-width: 38px;
   text-align: right;
 }
 
 .zoom-reset-btn {
   padding: 5px 8px;
   font-size: 10px;
-  color: var(--color-accent);
-  background: rgba(99, 102, 241, 0.1);
-  border-radius: 4px;
+  font-weight: 600;
+  color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  border-radius: 5px;
+  transition: all 0.2s ease;
 
   &:hover {
-    background: rgba(99, 102, 241, 0.2);
+    background: rgba(102, 126, 234, 0.2);
+    border-color: rgba(102, 126, 234, 0.3);
   }
 }
 
@@ -1331,15 +1476,25 @@ onUnmounted(() => {
   align-items: center;
   gap: 10px;
   cursor: pointer;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
 
   input {
     display: none;
 
     &:checked + .toggle-track {
-      background: var(--color-accent);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 
       .toggle-thumb {
-        transform: translateX(16px);
+        transform: translateX(14px);
       }
     }
   }
@@ -1347,24 +1502,24 @@ onUnmounted(() => {
 
 .toggle-track {
   position: relative;
-  width: 36px;
+  width: 34px;
   height: 20px;
-  background: var(--color-bg-hover);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
-  transition: background 0.2s ease;
+  transition: background 0.25s ease;
   flex-shrink: 0;
 }
 
 .toggle-thumb {
   position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 16px;
-  height: 16px;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
   background: white;
   border-radius: 50%;
-  transition: transform 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .toggle-label {
@@ -1375,12 +1530,13 @@ onUnmounted(() => {
 
 .label-text {
   font-size: 12px;
-  color: var(--color-text-primary);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .label-hint {
   font-size: 10px;
-  color: var(--color-text-muted);
+  color: rgba(255, 255, 255, 0.4);
 }
 
 // Size Info
@@ -1394,34 +1550,34 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6px 10px;
-  background: var(--color-bg-hover);
-  border-radius: 6px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
 }
 
 .size-label {
   font-size: 11px;
-  color: var(--color-text-muted);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .size-value {
   font-size: 12px;
-  font-weight: 600;
-  color: var(--color-text-primary);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
   font-family: 'SF Mono', Monaco, monospace;
 
   &.highlight {
-    color: var(--color-accent);
+    color: #667eea;
   }
 }
 
 // Actions
 .panel-actions {
   display: flex;
-  gap: 8px;
   padding: 14px 16px;
-  background: var(--color-bg-primary);
-  border-top: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.03);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
   flex-shrink: 0;
 }
 
@@ -1429,42 +1585,36 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 10px 14px;
-  font-size: 12px;
+  gap: 8px;
+  padding: 12px 20px;
+  font-size: 13px;
   font-weight: 600;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  border-radius: 10px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  &--secondary {
-    flex: 0.35;
-    color: var(--color-text-secondary);
-    background: var(--color-bg-hover);
-
-    &:hover {
-      background: var(--color-bg-primary);
-      color: var(--color-text-primary);
-    }
+    width: 18px;
+    height: 18px;
   }
 
   &--primary {
-    flex: 0.65;
+    flex: 1;
     color: white;
-    background: linear-gradient(135deg, var(--color-accent) 0%, #8b5cf6 100%);
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.35);
 
     &:hover:not(:disabled) {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.45);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
     }
 
     &:disabled {
-      opacity: 0.5;
+      opacity: 0.45;
       cursor: not-allowed;
       transform: none;
       box-shadow: none;
@@ -1489,53 +1639,71 @@ onUnmounted(() => {
   max-width: 95vw;
   max-height: 90vh;
   object-fit: contain;
-  border-radius: 8px;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  border-radius: 12px;
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 .immersive-hint {
-  margin-top: 20px;
-  padding: 10px 20px;
+  margin-top: 24px;
+  padding: 12px 24px;
   font-size: 13px;
   color: rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
 }
 
 // Cropper Styles
 :deep(.cropper-container) {
   width: 100% !important;
   height: 100% !important;
+  background: transparent !important;
+}
+
+:deep(.cropper-wrap-box),
+:deep(.cropper-canvas),
+:deep(.cropper-drag-box),
+:deep(.cropper-crop-box) {
+  // 确保裁剪区域填满容器
+}
+
+:deep(.cropper-bg) {
+  background-image: none !important; // 移除默认网格背景
 }
 
 :deep(.cropper-view-box) {
-  outline: 2px solid var(--color-accent);
-  outline-color: rgba(99, 102, 241, 0.9);
+  outline: 2px solid #667eea;
+  outline-offset: -1px;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
 }
 
 :deep(.cropper-line) {
-  background-color: var(--color-accent);
+  background-color: #667eea;
+  opacity: 0.8;
 }
 
 :deep(.cropper-point) {
-  width: 10px;
-  height: 10px;
-  background-color: var(--color-accent);
+  width: 12px;
+  height: 12px;
+  background-color: #667eea;
   border-radius: 50%;
   opacity: 1;
+  box-shadow: 0 0 8px rgba(102, 126, 234, 0.5);
 }
 
 :deep(.cropper-point.point-se) {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
 }
 
 :deep(.cropper-dashed) {
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.35);
 }
 
 :deep(.cropper-modal) {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 :deep(.cropper-face) {

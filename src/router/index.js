@@ -24,13 +24,13 @@ const routes = [
       aspectType: 'landscape',
     },
   },
-  // Bing 每日壁纸（横屏 16:9）
+  // 每日 Bing 壁纸（横屏 16:9）
   {
     path: '/bing',
     name: 'Bing',
     component: () => import('@/views/Home.vue'),
     meta: {
-      title: 'Bing 每日壁纸 - Wallpaper Gallery',
+      title: '每日 Bing 壁纸 - Wallpaper Gallery',
       series: 'bing',
       aspectType: 'landscape',
     },
@@ -71,6 +71,20 @@ const routes = [
     component: () => import('@/views/DownloadPage.vue'),
     meta: { title: '下载 App - Wallpaper Gallery', hideHeader: true },
   },
+  // iPhone 真机预览 Demo
+  {
+    path: '/iphone-demo',
+    name: 'IPhoneDemo',
+    component: () => import('@/views/demo/IPhoneDemo.vue'),
+    meta: { title: 'iPhone 真机预览 Demo', hideHeader: true },
+  },
+  // MacBook 真机预览 Demo
+  {
+    path: '/macbook-demo',
+    name: 'MacBookDemo',
+    component: () => import('@/views/demo/MacBookDemo.vue'),
+    meta: { title: 'MacBook Pro 真机预览 Demo', hideHeader: true },
+  },
   // 404 重定向到首页
   {
     path: '/:pathMatch(.*)*',
@@ -90,139 +104,56 @@ const router = createRouter({
 })
 
 // ========================================
-// 路由守卫配置
+// 路由守卫配置（简化版）
 // ========================================
 
-// 存储键常量
-const STORAGE_KEY_SERIES = 'wallpaper-gallery-current-series'
-const STORAGE_KEY_USER_CHOICE = 'wallpaper-gallery-user-explicit-choice'
+const STORAGE_KEY = 'wallpaper-gallery-current-series'
 
-// 导航计数，用于循环检测
-let navigationCount = 0
-let lastNavigationTime = 0
-const MAX_NAVIGATIONS_PER_SECOND = 5 // 每秒最大导航次数
-const NAVIGATION_RESET_TIME = 1000 // 重置计数器的时间间隔
-
-// 缓存设备类型（单次会话内设备类型不变，避免重复检测）
-let cachedDeviceType = null
-
-/**
- * 获取当前设备类型（带缓存）
- */
+// 缓存设备类型
+let deviceType = null
 function getDeviceType() {
-  if (cachedDeviceType === null) {
-    cachedDeviceType = isMobileDevice() ? 'mobile' : 'desktop'
-  }
-  return cachedDeviceType
+  if (!deviceType)
+    deviceType = isMobileDevice() ? 'mobile' : 'desktop'
+  return deviceType
 }
 
-/**
- * 检查系列是否对当前设备可用
- */
-function isSeriesAvailableForDevice(series, deviceType) {
-  const available = DEVICE_SERIES[deviceType] || DEVICE_SERIES.desktop
-  return available.includes(series)
-}
-
-/**
- * 获取用户应该看到的默认系列（优化版：减少 localStorage 读取次数）
- * 优先级：用户明确选择（如果对当前设备可用）> 设备类型推荐
- */
-function getRecommendedSeries() {
-  const deviceType = getDeviceType()
-  const defaultSeries = deviceType === 'mobile' ? 'mobile' : 'desktop'
-
-  // 一次性读取用户选择，优先使用明确选择
-  const userChoice = localStorage.getItem(STORAGE_KEY_USER_CHOICE)
-  if (userChoice && isSeriesAvailableForDevice(userChoice, deviceType)) {
-    return userChoice
-  }
-
-  // 检查保存的系列偏好（仅当无明确选择时）
-  if (!userChoice) {
-    const savedSeries = localStorage.getItem(STORAGE_KEY_SERIES)
-    if (savedSeries && isSeriesAvailableForDevice(savedSeries, deviceType)) {
-      return savedSeries
-    }
-  }
-
-  // 使用设备默认系列
-  return defaultSeries
-}
-
-/**
- * 记录用户的明确选择
- * 当用户主动点击导航时调用
- */
-export function recordUserChoice(series) {
-  localStorage.setItem(STORAGE_KEY_USER_CHOICE, series)
-  localStorage.setItem(STORAGE_KEY_SERIES, series)
-}
-
-/**
- * 清除用户选择记录（用于重置）
- */
-export function clearUserChoice() {
-  localStorage.removeItem(STORAGE_KEY_USER_CHOICE)
+// 获取默认系列
+function getDefaultSeries() {
+  const device = getDeviceType()
+  const available = DEVICE_SERIES[device]
+  const saved = localStorage.getItem(STORAGE_KEY)
+  if (saved && available.includes(saved))
+    return saved
+  return device === 'mobile' ? 'mobile' : 'desktop'
 }
 
 // 路由守卫
 router.beforeEach((to, from, next) => {
-  // 1. 更新页面标题
-  if (to.meta.title) {
+  if (to.meta.title)
     document.title = to.meta.title
-  }
 
-  // 2. 循环检测：检查短时间内的导航次数
-  const now = Date.now()
-  if (now - lastNavigationTime > NAVIGATION_RESET_TIME) {
-    navigationCount = 0
-  }
-  lastNavigationTime = now
-  navigationCount++
-
-  if (navigationCount > MAX_NAVIGATIONS_PER_SECOND) {
-    console.warn('[Router] 检测到可能的导航循环，跳过重定向')
-    next()
-    return
-  }
-
-  // 3. 首页智能重定向（优先处理，避免渲染空状态）
+  // 首页重定向到默认系列
   if (to.path === '/') {
-    const recommendedSeries = getRecommendedSeries()
-    next({ path: `/${recommendedSeries}`, replace: true })
+    next({ path: `/${getDefaultSeries()}`, replace: true })
     return
   }
 
-  // 4. 设备兼容性检查：目标系列是否对当前设备可用
+  // 检查系列是否对当前设备可用（如手机访问 /bing）
   if (to.meta?.series) {
-    const deviceType = getDeviceType()
-    const targetSeries = to.meta.series
-
-    // 如果目标系列对当前设备不可用，重定向到推荐系列
-    if (!isSeriesAvailableForDevice(targetSeries, deviceType)) {
-      const recommendedSeries = getRecommendedSeries()
-      // 避免重定向到相同路径
-      if (`/${recommendedSeries}` !== to.path) {
-        next({ path: `/${recommendedSeries}`, replace: true })
-        return
-      }
+    const available = DEVICE_SERIES[getDeviceType()]
+    if (!available.includes(to.meta.series)) {
+      next({ path: `/${getDefaultSeries()}`, replace: true })
+      return
     }
   }
 
   next()
 })
 
-// 路由后置守卫：记录用户选择（非阻塞，不影响导航性能）
-router.afterEach((to, from) => {
-  if (to.meta?.series) {
-    // 保存当前系列偏好
-    localStorage.setItem(STORAGE_KEY_SERIES, to.meta.series)
-    // 如果是用户主动导航（有来源页面），记录为明确选择
-    if (from.name) {
-      recordUserChoice(to.meta.series)
-    }
-  }
+// 记录用户选择
+router.afterEach((to) => {
+  if (to.meta?.series)
+    localStorage.setItem(STORAGE_KEY, to.meta.series)
 })
 
 export default router

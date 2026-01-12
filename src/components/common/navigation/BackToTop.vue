@@ -73,50 +73,70 @@ function handleClick() {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
-  background: var(--color-accent);
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: $radius-full;
   color: white;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
-  transition: all 0.3s ease;
+  box-shadow:
+    0 4px 20px rgba(102, 126, 234, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform, opacity;
+  border: none;
+  outline: none;
+
+  // 光晕效果
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: $radius-full;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
 
   svg {
     width: 22px;
     height: 22px;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
   }
 
   &:hover {
-    background: var(--color-accent-hover);
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+    transform: translateY(-4px) scale(1.05);
+    box-shadow:
+      0 8px 30px rgba(102, 126, 234, 0.5),
+      0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+
+    &::before {
+      opacity: 1;
+    }
   }
 
   &:active {
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(0.98);
   }
 
   @include mobile-only {
     right: 16px;
-    // 移动端底部适配安全区域
     bottom: calc(16px + env(safe-area-inset-bottom, 0px));
     width: 48px;
     height: 48px;
-    // 增强移动端阴影效果
     box-shadow:
-      0 4px 12px rgba(99, 102, 241, 0.4),
-      0 0 0 3px rgba(99, 102, 241, 0.1);
+      0 4px 16px rgba(102, 126, 234, 0.45),
+      0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 
     svg {
-      width: 22px;
-      height: 22px;
+      width: 20px;
+      height: 20px;
     }
 
     &:active {
       transform: scale(0.92);
-      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+      box-shadow: 0 2px 10px rgba(102, 126, 234, 0.35);
     }
   }
 }

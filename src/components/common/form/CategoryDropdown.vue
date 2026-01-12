@@ -54,6 +54,9 @@ const displayText = computed(() => {
 // 是否有选中
 const hasSelection = computed(() => props.categoryFilter !== 'all')
 
+// PC 端不需要锁定滚动，下拉框通过 position: absolute 定位
+// 移除 lockScroll/unlockScroll，避免与 sticky 定位冲突
+
 // 打开下拉框
 function openDropdown() {
   // 打开时，悬停状态设为当前选中的分类
@@ -154,7 +157,6 @@ onUnmounted(() => {
                 @click="handleCategoryClick(option)"
               >
                 <span class="item-label">{{ option.label }}</span>
-                <span v-if="option.count" class="item-count">{{ option.count }}</span>
                 <svg
                   v-if="option.subcategories?.length > 0"
                   class="item-arrow"
@@ -193,7 +195,6 @@ onUnmounted(() => {
                   @click="handleSubcategoryClick(sub.name)"
                 >
                   <span class="item-label">{{ sub.name }}</span>
-                  <span class="item-count">{{ sub.count }}</span>
                 </button>
               </div>
             </div>
@@ -215,40 +216,46 @@ onUnmounted(() => {
   z-index: 100;
 }
 
-// 触发器按钮 - 适配深色模式
+// 触发器按钮 - 与 Element Plus 风格一致
 .dropdown-trigger {
   display: flex;
   align-items: center;
   gap: $spacing-sm;
-  padding: 0 11px;
+  padding: 0 14px;
   width: 160px;
-  height: 32px;
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: 4px;
+  height: 38px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
   font-size: 14px;
   color: var(--color-text-primary);
   cursor: pointer;
-  transition:
-    border-color 0.15s ease,
-    box-shadow 0.15s ease;
-  will-change: border-color;
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  [data-theme='dark'] & {
+    background: rgba(15, 23, 42, 0.6);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
 
   &:hover {
-    border-color: var(--color-border-hover, var(--color-border));
+    border-color: rgba(102, 126, 234, 0.4);
   }
 
   &.is-open {
-    border-color: var(--color-accent);
-    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+    border-color: rgba(102, 126, 234, 0.6);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 
     .trigger-arrow {
       transform: rotate(180deg);
+      color: #667eea;
     }
   }
 
   &.has-selection {
-    color: var(--color-text-primary);
+    color: #667eea;
+    font-weight: 500;
   }
 }
 
@@ -264,30 +271,39 @@ onUnmounted(() => {
   width: 14px;
   height: 14px;
   color: var(--color-text-muted);
-  transition: transform 0.2s ease;
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
 }
 
-// 下拉面板 - 适配深色模式，固定宽度避免抖动
+// 下拉面板 - 毛玻璃高级感
 .dropdown-panel {
   position: absolute;
-  top: calc(100% + 4px);
+  top: calc(100% + 8px);
   left: 0;
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
   overflow: hidden;
   z-index: 1000;
-  // 性能优化
   will-change: transform, opacity;
   contain: layout style;
-  // 固定宽度，避免内容变化导致抖动
-  width: 380px;
+  width: 400px;
 
-  // 没有二级分类时，只显示左侧
+  [data-theme='dark'] & {
+    background: rgba(15, 23, 42, 0.95);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow:
+      0 10px 40px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  }
+
   &.single-column {
-    width: 180px;
+    width: 200px;
 
     .primary-list {
       border-right: none;
@@ -297,10 +313,10 @@ onUnmounted(() => {
 
 .panel-content {
   display: flex;
-  max-height: 360px;
+  max-height: 380px;
 }
 
-// 分类列表 - 适配深色模式，固定宽度
+// 分类列表 - 毛玻璃风格
 .category-list {
   display: flex;
   flex-direction: column;
@@ -308,32 +324,41 @@ onUnmounted(() => {
   &.primary-list {
     width: 180px;
     flex-shrink: 0;
-    border-right: 1px solid var(--color-border);
-    background: var(--color-bg-secondary);
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.02);
+
+    [data-theme='dark'] & {
+      border-right-color: rgba(255, 255, 255, 0.06);
+      background: rgba(0, 0, 0, 0.15);
+    }
   }
 
   &.secondary-list {
-    width: 200px;
+    width: 220px;
     flex-shrink: 0;
-    background: var(--color-bg-card);
+    background: transparent;
   }
 }
 
 .list-header {
-  padding: 10px 16px;
-  font-size: 12px;
-  font-weight: 600;
+  padding: 14px 18px;
+  font-size: 11px;
+  font-weight: 700;
   color: var(--color-text-muted);
-  border-bottom: 1px solid var(--color-border);
-  background: var(--color-bg-hover);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+  [data-theme='dark'] & {
+    border-bottom-color: rgba(255, 255, 255, 0.06);
+  }
 }
 
 .list-items {
   flex: 1;
   overflow-y: auto;
-  padding: 6px;
+  padding: 8px;
 
-  // 自定义滚动条
   &::-webkit-scrollbar {
     width: 6px;
   }
@@ -343,34 +368,60 @@ onUnmounted(() => {
   }
 
   &::-webkit-scrollbar-thumb {
-    background: var(--color-border);
+    background: rgba(102, 126, 234, 0.2);
     border-radius: 3px;
+
+    &:hover {
+      background: rgba(102, 126, 234, 0.3);
+    }
   }
 }
 
-// 分类项 - 适配深色模式
+// 分类项 - 高级感设计
 .category-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   width: 100%;
-  padding: 10px 16px;
+  padding: 12px 14px;
   font-size: 14px;
   color: var(--color-text-secondary);
   background: transparent;
-  border-radius: 4px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition:
+    background 200ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 2px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 
   &:hover {
-    background: var(--color-bg-hover);
+    background: rgba(102, 126, 234, 0.08);
     color: var(--color-text-primary);
+
+    .item-arrow {
+      transform: translateX(2px);
+      color: #667eea;
+    }
   }
 
   &.is-active {
-    background: var(--color-accent-light);
-    color: var(--color-accent);
-    font-weight: 500;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.35);
+
+    .item-count {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    .item-arrow {
+      color: white;
+    }
   }
 
   &.has-children .item-label {
@@ -388,14 +439,15 @@ onUnmounted(() => {
 
 .item-count {
   font-size: 12px;
+  font-weight: 500;
   color: var(--color-text-muted);
-  background: var(--color-bg-hover);
-  padding: 2px 8px;
-  border-radius: 10px;
+  background: rgba(102, 126, 234, 0.1);
+  padding: 3px 10px;
+  border-radius: 12px;
+  transition: all 200ms;
 
-  .is-active & {
-    background: var(--color-accent-light);
-    color: var(--color-accent);
+  [data-theme='dark'] & {
+    background: rgba(102, 126, 234, 0.2);
   }
 }
 
@@ -404,6 +456,7 @@ onUnmounted(() => {
   height: 14px;
   color: var(--color-text-muted);
   flex-shrink: 0;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 // 遮罩层
@@ -411,19 +464,19 @@ onUnmounted(() => {
   position: fixed;
   inset: 0;
   z-index: 99;
+  background: transparent;
 }
 
 // ========================================
-// 动画效果 - 优化性能，减少卡顿
+// 动画效果 - 丝滑无跳动
 // ========================================
 
-// 下拉面板动画 - 使用 transform 提升性能
 .dropdown-enter-active {
-  animation: dropdownIn 0.15s ease-out;
+  animation: dropdownIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dropdown-leave-active {
-  animation: dropdownOut 0.1s ease-in;
+  animation: dropdownOut 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes dropdownIn {
@@ -448,13 +501,12 @@ onUnmounted(() => {
   }
 }
 
-// 右侧面板滑入动画 - 简化动画减少卡顿
 .slide-right-enter-active {
-  animation: slideRightIn 0.15s ease-out;
+  animation: slideRightIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .slide-right-leave-active {
-  animation: slideRightOut 0.1s ease-in;
+  animation: slideRightOut 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes slideRightIn {
@@ -479,7 +531,6 @@ onUnmounted(() => {
   }
 }
 
-// 遮罩层淡入淡出
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.2s ease;

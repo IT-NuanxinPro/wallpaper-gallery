@@ -104,11 +104,7 @@ const placeholderText = computed(() => {
     size="default"
     style="width: 160px"
     format="YYYY年MM月"
+    popper-class="bing-date-picker-popper"
     @change="handleChange"
   />
 </template>
-
-<style scoped lang="scss">
-// Element Plus DatePicker 主题适配已在全局样式中处理
-// 这里只需要保证组件正常工作
-</style>

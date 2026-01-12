@@ -55,7 +55,6 @@ export default defineConfig({
         'src/utils/codec.js',
         'src/utils/constants.js',
         'src/utils/format.js',
-        'src/composables/useWallpapers.js',
       ],
     }),
     // 生产环境：使用 externalGlobals 将外部依赖转换为全局变量

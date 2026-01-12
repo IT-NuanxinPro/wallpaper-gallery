@@ -137,11 +137,12 @@ function openLink(url) {
 
 .bing-title {
   font-size: $font-size-lg;
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-bold;
   line-height: 1.4;
   color: var(--color-text-primary);
   margin: 0;
   word-break: break-word;
+  letter-spacing: -0.3px;
 }
 
 .bing-date-row {
@@ -155,13 +156,13 @@ function openLink(url) {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 12px;
-  background: linear-gradient(135deg, #0078d4, #106ebe);
+  padding: 6px 14px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   font-size: $font-size-sm;
   font-weight: $font-weight-semibold;
-  border-radius: $radius-sm;
-  box-shadow: 0 2px 8px rgba(0, 120, 212, 0.3);
+  border-radius: 20px;
+  box-shadow: 0 3px 12px rgba(102, 126, 234, 0.35);
 
   svg {
     width: 14px;
@@ -172,33 +173,40 @@ function openLink(url) {
 .bing-resolution-badge {
   display: inline-flex;
   align-items: center;
-  padding: 4px 10px;
-  background: linear-gradient(135deg, #107c10, #0e8a0e);
+  padding: 5px 12px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
   font-size: $font-size-xs;
   font-weight: $font-weight-bold;
-  border-radius: $radius-sm;
-  box-shadow: 0 2px 6px rgba(16, 124, 16, 0.3);
+  border-radius: 20px;
+  box-shadow: 0 3px 10px rgba(16, 185, 129, 0.3);
+  letter-spacing: 0.5px;
 }
 
 .bing-location,
 .bing-photographer {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
+  gap: 10px;
   padding: $spacing-sm $spacing-md;
   background: var(--color-bg-hover);
-  border-radius: $radius-sm;
+  border: 1px solid var(--color-border);
+  border-radius: $radius-md;
   font-size: $font-size-sm;
   color: var(--color-text-secondary);
   line-height: 1.5;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: var(--color-bg-tertiary);
+    border-color: var(--color-border-hover);
+  }
 
   svg {
     width: 16px;
     height: 16px;
     flex-shrink: 0;
     margin-top: 2px;
-    color: var(--color-text-muted);
   }
 
   span {
@@ -208,13 +216,13 @@ function openLink(url) {
 
 .bing-location {
   svg {
-    color: #d83b01;
+    color: #ef4444;
   }
 }
 
 .bing-photographer {
   svg {
-    color: #0078d4;
+    color: #667eea;
   }
 }
 
@@ -229,13 +237,13 @@ function openLink(url) {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 14px;
+  padding: 10px 16px;
   border: none;
   border-radius: $radius-md;
   font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
+  font-weight: $font-weight-semibold;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   svg {
     width: 14px;
@@ -243,7 +251,7 @@ function openLink(url) {
   }
 
   &:hover {
-    transform: translateY(-1px);
+    transform: translateY(-2px);
   }
 
   &:active {
@@ -251,20 +259,24 @@ function openLink(url) {
   }
 
   &--search {
-    background: rgba(0, 120, 212, 0.1);
-    color: #0078d4;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+    color: #667eea;
+    border: 1px solid rgba(102, 126, 234, 0.25);
 
     &:hover {
-      background: rgba(0, 120, 212, 0.2);
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
     }
   }
 
   &--quiz {
-    background: rgba(107, 76, 184, 0.1);
-    color: #6b4cb8;
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(234, 88, 12, 0.15) 100%);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.25);
 
     &:hover {
-      background: rgba(107, 76, 184, 0.2);
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(234, 88, 12, 0.25) 100%);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
     }
   }
 }
@@ -278,7 +290,7 @@ function openLink(url) {
   }
 
   .bing-date-badge {
-    padding: 4px 10px;
+    padding: 5px 12px;
     font-size: $font-size-xs;
 
     svg {
@@ -288,7 +300,7 @@ function openLink(url) {
   }
 
   .bing-resolution-badge {
-    padding: 3px 8px;
+    padding: 4px 10px;
     font-size: 10px;
   }
 

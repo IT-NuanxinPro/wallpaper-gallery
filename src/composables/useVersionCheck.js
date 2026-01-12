@@ -1,11 +1,11 @@
 /**
  * 版本检测服务
- * - 定期检查服务器版本
+ * - 页面进入时检查一次服务器版本
  * - 检测到新版本时通知用户
  * - 支持强制刷新清除缓存
  */
 
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 // 当前版本（构建时注入）
 // eslint-disable-next-line no-undef
@@ -14,7 +14,6 @@ const CURRENT_VERSION = __APP_VERSION__ || '0.0.0'
 const BUILD_TIME = __BUILD_TIME__ || ''
 
 // 配置
-const CHECK_INTERVAL = 30 * 60 * 1000 // 30分钟检查一次
 const VERSION_URL = `${import.meta.env.BASE_URL}version.json`
 
 // 全局状态（单例）
@@ -22,8 +21,6 @@ const hasNewVersion = ref(false)
 const newVersionInfo = ref(null)
 const isChecking = ref(false)
 
-let checkTimer = null
-let initialDelayTimer = null // 首次延迟定时器
 let initialized = false
 
 /**
@@ -101,8 +98,6 @@ async function checkForUpdates() {
         buildTime: serverVersion.buildTime,
       }
       console.log(`[VersionCheck] 发现新版本: ${CURRENT_VERSION} → ${serverVersion.version}`)
-      // 发现新版本后停止轮询，节省资源
-      stopPeriodicCheck()
     }
   }
   catch (error) {
@@ -147,37 +142,6 @@ function dismissUpdate() {
 }
 
 /**
- * 启动定时检查
- */
-function startPeriodicCheck() {
-  if (checkTimer)
-    return
-
-  // 启动后延迟 30 秒首次检查（避免影响首屏加载）
-  initialDelayTimer = setTimeout(() => {
-    initialDelayTimer = null
-    checkForUpdates()
-
-    // 然后定期检查
-    checkTimer = setInterval(checkForUpdates, CHECK_INTERVAL)
-  }, 30 * 1000)
-}
-
-/**
- * 停止定时检查
- */
-function stopPeriodicCheck() {
-  if (initialDelayTimer) {
-    clearTimeout(initialDelayTimer)
-    initialDelayTimer = null
-  }
-  if (checkTimer) {
-    clearInterval(checkTimer)
-    checkTimer = null
-  }
-}
-
-/**
  * 版本检测 Composable
  */
 export function useVersionCheck() {
@@ -189,14 +153,12 @@ export function useVersionCheck() {
       const dismissedVersion = sessionStorage.getItem('dismissed_version')
       if (dismissedVersion && newVersionInfo.value?.latest === dismissedVersion) {
         hasNewVersion.value = false
+        return
       }
 
-      startPeriodicCheck()
+      // 延迟 5 秒后检查一次（避免影响首屏加载）
+      setTimeout(checkForUpdates, 5000)
     }
-  })
-
-  onUnmounted(() => {
-    // 组件卸载时不停止检查（全局单例）
   })
 
   return {
@@ -211,7 +173,6 @@ export function useVersionCheck() {
     checkForUpdates,
     forceRefresh,
     dismissUpdate,
-    stopPeriodicCheck,
   }
 }
 

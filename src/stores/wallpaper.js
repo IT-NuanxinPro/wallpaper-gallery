@@ -424,7 +424,7 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
   }
 
   /**
-   * 初始化 Bing 每日壁纸系列
+   * 初始化每日 Bing 壁纸系列
    * Bing 系列使用年度数据文件结构，不同于其他系列的分类结构
    */
   async function initBingSeries(seriesId, forceRefresh = false) {
@@ -513,7 +513,7 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
       console.error(`Failed to init Bing series:`, e)
       const errType = classifyError(e)
       errorType.value = errType
-      error.value = getErrorMessage(e, errType, 'Bing 每日壁纸')
+      error.value = getErrorMessage(e, errType, '每日 Bing 壁纸')
       wallpapers.value = []
     }
     finally {
@@ -603,7 +603,7 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
       return
     }
 
-    // 检查是否为 Bing 每日系列
+    // 检查是否为每日 Bing 系列
     const seriesConfig = SERIES_CONFIG[seriesId]
     if (seriesConfig?.isDaily) {
       return initBingSeries(seriesId, forceRefresh)

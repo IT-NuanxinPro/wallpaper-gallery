@@ -56,6 +56,8 @@ const useProxy = ref(false)
 
 // 定时器引用（用于组件卸载时清理）
 let cacheCheckTimer = null
+// GSAP 动画目标引用（用于组件卸载时清理）
+let gsapTargets = []
 
 // 根据系列类型智能选择显示URL：
 // - mobile 系列使用 previewUrl（1080px 预览图，更清晰适合长屏）
@@ -81,11 +83,22 @@ onMounted(() => {
   }, 0)
 })
 
-// 组件卸载时清除定时器
+// 组件卸载时清除定时器和 GSAP 动画
 onUnmounted(() => {
   if (cacheCheckTimer) {
     clearTimeout(cacheCheckTimer)
     cacheCheckTimer = null
+  }
+
+  // 清理所有 GSAP 动画，防止内存泄漏
+  if (gsapTargets.length > 0) {
+    gsapTargets.forEach(target => gsap.killTweensOf(target))
+    gsapTargets = []
+  }
+
+  // 清理卡片本身的动画
+  if (cardRef.value) {
+    gsap.killTweensOf(cardRef.value)
   }
 })
 
@@ -195,6 +208,9 @@ function handleMouseEnter(e) {
   const overlay = card.querySelector('.card-overlay')
   const img = card.querySelector('.card-image img')
 
+  // 记录动画目标，便于清理
+  gsapTargets = [card, overlay, img].filter(Boolean)
+
   gsap.to(card, {
     y: -10,
     boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
@@ -230,6 +246,8 @@ function handleMouseLeave(e) {
     boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
     duration: 0.3,
     ease: 'power2.out',
+    // 动画完成后清除内联样式，减少内存占用
+    clearProps: 'transform',
   })
 
   gsap.to(overlay, {
@@ -242,6 +260,8 @@ function handleMouseLeave(e) {
       scale: 1,
       duration: 0.4,
       ease: 'power2.out',
+      // 动画完成后清除内联样式
+      clearProps: 'transform',
     })
   }
 }
@@ -560,7 +580,7 @@ function handleMouseLeave(e) {
   height: 56px;
   background: rgba(255, 255, 255, 0.2);
   border-radius: $radius-full;
-  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 
   svg {
     width: 28px;
@@ -638,8 +658,7 @@ function handleMouseLeave(e) {
   align-items: center;
   gap: 4px;
   padding: 4px 8px;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.75);
   color: white;
   font-size: 10px;
   font-weight: $font-weight-medium;
@@ -694,11 +713,18 @@ function handleMouseLeave(e) {
 }
 
 .meta-format {
-  padding: 2px 6px;
-  background: var(--color-bg-hover);
+  padding: 3px 8px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+  color: #667eea;
   border-radius: $radius-sm;
-  font-weight: $font-weight-medium;
+  font-weight: $font-weight-semibold;
   font-size: 10px;
+  border: 1px solid rgba(102, 126, 234, 0.2);
+
+  [data-theme='dark'] & {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
+    border-color: rgba(102, 126, 234, 0.3);
+  }
 }
 
 .meta-views {

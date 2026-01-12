@@ -690,7 +690,7 @@ function generateCategorySplitData(wallpapers, seriesId, seriesConfig) {
  */
 
 /**
- * 处理 Bing 每日壁纸系列（纯元数据模式）
+ * 处理每日 Bing 壁纸系列（纯元数据模式）
  * 从本地图床仓库或线上数据源复制 JSON 元数据文件
  */
 async function processBingSeries(seriesId, seriesConfig) {
