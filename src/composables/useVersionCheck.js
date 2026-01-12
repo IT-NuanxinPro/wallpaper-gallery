@@ -126,8 +126,10 @@ function forceRefresh() {
     })
   }
 
-  // 强制刷新（绕过缓存）
-  window.location.reload(true)
+  // 强制刷新：添加时间戳参数绕过所有缓存（包括 CDN）
+  const url = new URL(window.location.href)
+  url.searchParams.set('_t', Date.now())
+  window.location.href = url.toString()
 }
 
 /**
