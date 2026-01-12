@@ -168,6 +168,19 @@ watch(currentSeries, async (newSeries, oldSeries) => {
   }
 })
 
+// 监听 Bing 系列的月份筛选变化，按需加载对应年份数据
+watch(() => filterStore.categoryFilter, async (newValue) => {
+  if (!isInitialized.value || currentSeries.value !== 'bing')
+    return
+
+  // 检查是否是年月格式（YYYY-MM）
+  if (newValue && /^\d{4}-\d{2}$/.test(newValue)) {
+    const year = Number.parseInt(newValue.split('-')[0])
+    // 按需加载该年份的数据
+    await wallpaperStore.loadBingYear(year)
+  }
+})
+
 // 初始化（只执行一次）
 onMounted(async () => {
   // 如果路由带有系列参数，先检查设备兼容性

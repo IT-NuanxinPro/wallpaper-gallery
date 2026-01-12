@@ -807,7 +807,7 @@ function handleMouseLeave(e) {
 }
 
 // ========================================
-// Bing 壁纸专用样式
+// Bing 壁纸专用样式（高级感设计）
 // ========================================
 
 // Bing 日期标签（移动端图片上，使用 CSS 媒体查询控制显示避免 CLS）
@@ -819,13 +819,16 @@ function handleMouseLeave(e) {
   display: none; // 默认隐藏
   align-items: center;
   gap: 4px;
-  padding: 4px 10px;
-  background: linear-gradient(135deg, #0078d4, #106ebe);
+  padding: 5px 10px;
+  background: linear-gradient(135deg, rgba(0, 120, 212, 0.95), rgba(16, 110, 190, 0.95));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: white;
   font-size: 11px;
   font-weight: $font-weight-semibold;
-  border-radius: $radius-sm;
-  box-shadow: 0 2px 8px rgba(0, 120, 212, 0.3);
+  border-radius: $radius-md;
+  box-shadow: 0 2px 12px rgba(0, 120, 212, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 
   // 仅移动端显示（使用媒体查询避免 CLS）
   @include mobile-only {
@@ -841,13 +844,14 @@ function handleMouseLeave(e) {
 // Bing 标题样式
 .card-bing-title {
   font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-bold;
   color: var(--color-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-bottom: $spacing-xs;
-  line-height: 1.4;
+  margin-bottom: $spacing-sm;
+  line-height: 1.5;
+  letter-spacing: 0.2px;
 }
 
 // Bing 元信息（日期 + 分辨率）
@@ -855,16 +859,26 @@ function handleMouseLeave(e) {
   display: flex;
   align-items: center;
   gap: $spacing-sm;
-  margin-bottom: $spacing-xs;
+  margin-bottom: $spacing-sm;
   font-size: $font-size-xs;
-  color: var(--color-text-secondary);
 
   .bing-date {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
+    padding: 4px 10px;
+    background: linear-gradient(135deg, rgba(0, 120, 212, 0.12), rgba(16, 110, 190, 0.08));
     color: #0078d4;
-    font-weight: $font-weight-medium;
+    font-weight: $font-weight-semibold;
+    border-radius: $radius-md;
+    border: 1px solid rgba(0, 120, 212, 0.15);
+    transition: all 0.2s ease;
+
+    [data-theme='dark'] & {
+      background: linear-gradient(135deg, rgba(0, 120, 212, 0.25), rgba(16, 110, 190, 0.2));
+      border-color: rgba(0, 120, 212, 0.3);
+      color: #4da6ff;
+    }
 
     svg {
       width: 12px;
@@ -873,12 +887,14 @@ function handleMouseLeave(e) {
   }
 
   .bing-resolution {
-    padding: 2px 8px;
+    padding: 4px 10px;
     background: linear-gradient(135deg, #10b981, #059669);
     color: white;
     font-size: 10px;
     font-weight: $font-weight-bold;
-    border-radius: $radius-full;
+    border-radius: $radius-md;
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+    letter-spacing: 0.5px;
   }
 }
 
@@ -886,20 +902,30 @@ function handleMouseLeave(e) {
 .card-bing-copyright {
   display: flex;
   align-items: center;
-  gap: 4px;
-  font-size: $font-size-xs;
-  color: var(--color-text-muted);
+  gap: 5px;
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: $radius-md;
+  margin-top: 2px;
+
+  [data-theme='dark'] & {
+    background: rgba(255, 255, 255, 0.05);
+  }
 
   svg {
     width: 12px;
     height: 12px;
     flex-shrink: 0;
+    color: var(--color-text-muted);
   }
 
   span {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    line-height: 1.3;
   }
 }
 </style>

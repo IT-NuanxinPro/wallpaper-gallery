@@ -251,7 +251,7 @@ function resetFilters() {
           加载中...
         </template>
         <template v-else>
-          共 <AnimatedNumber :value="resultCount" class="count-value" /> 张壁纸
+          共 <AnimatedNumber :value="resultCount" class="count-value" /> 张{{ currentSeries === 'avatar' ? '头像' : currentSeries === 'mobile' ? '手机壁纸' : '壁纸' }}
           <span v-if="hasActiveFilters && resultCount !== totalCount" class="filtered-hint">
             (筛选自 <AnimatedNumber :value="totalCount" :duration="0.4" /> 张)
           </span>

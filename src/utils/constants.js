@@ -6,7 +6,7 @@
 // - 本地开发：使用此默认值
 // - 线上构建：GitHub Actions 会自动替换为图床最新 tag
 // - jsdelivr 缓存策略：@main 分支有缓存，@tag 版本无缓存
-export const CDN_VERSION = 'v1.1.19'
+export const CDN_VERSION = 'v1.1.23'
 
 // 前端应用版本号（构建时由 vite 注入，用于缓存控制）
 // eslint-disable-next-line no-undef
