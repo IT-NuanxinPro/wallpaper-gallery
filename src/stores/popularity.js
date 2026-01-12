@@ -125,31 +125,21 @@ export const usePopularityStore = defineStore('popularity', () => {
   /**
    * 本地乐观增加浏览量
    * @param {string} imageId - 图片 ID
+   * @deprecated 不应直接调用，统计已在 recordView 中处理
    */
   function incrementLocalView(imageId) {
     incrementOptimistic(imageId, 'view')
-
-    // 同时更新内存中的 statsMap（立即反映到 UI）
-    const current = statsMap.value.get(imageId) || { views: 0, downloads: 0 }
-    statsMap.value.set(imageId, {
-      ...current,
-      views: current.views + 1,
-    })
+    // 不再修改 statsMap，避免重复计数
   }
 
   /**
    * 本地乐观增加下载量
    * @param {string} imageId - 图片 ID
+   * @deprecated 不应直接调用，统计已在 recordDownload 中处理
    */
   function incrementLocalDownload(imageId) {
     incrementOptimistic(imageId, 'download')
-
-    // 同时更新内存中的 statsMap（立即反映到 UI）
-    const current = statsMap.value.get(imageId) || { views: 0, downloads: 0 }
-    statsMap.value.set(imageId, {
-      ...current,
-      downloads: current.downloads + 1,
-    })
+    // 不再修改 statsMap，避免重复计数
   }
 
   /**

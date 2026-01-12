@@ -133,8 +133,6 @@ watch(() => props.isOpen, async (isOpen) => {
       trackWallpaperPreview(props.wallpaper)
       // 记录到 Supabase 统计（异步 RPC）
       recordView(props.wallpaper, currentSeries.value)
-      // 乐观更新本地统计（立即反映到 UI）
-      popularityStore.incrementLocalView(props.wallpaper.filename)
     }
 
     // 保存当前滚动位置
@@ -351,8 +349,6 @@ async function handleDownload() {
     trackWallpaperDownload(props.wallpaper, currentSeries.value)
     // 记录到 Supabase 统计（异步 RPC）
     recordDownload(props.wallpaper, currentSeries.value)
-    // 乐观更新本地统计（立即反映到 UI）
-    popularityStore.incrementLocalDownload(props.wallpaper.filename)
   }
   finally {
     downloading.value = false
