@@ -167,6 +167,53 @@ function cloneImageRepo(version) {
 }
 
 /**
+ * 恢复图片文件时间戳
+ */
+function restoreFileTimestamps() {
+  console.log('📅 Restoring file timestamps...')
+
+  try {
+    const backupAllFile = path.join(CONFIG.REPO_DIR, 'timestamps-backup-all.txt')
+    const backupFile = path.join(CONFIG.REPO_DIR, 'timestamps-backup.txt')
+    const restoreScript = path.join(CONFIG.REPO_DIR, 'scripts/restore-timestamps.sh')
+
+    // 检查恢复脚本是否存在
+    if (!fs.existsSync(restoreScript)) {
+      console.log('  ⚠️ restore-timestamps.sh not found, skipping timestamp restoration')
+      return false
+    }
+
+    // 优先使用完整备份文件
+    if (fs.existsSync(backupAllFile)) {
+      console.log('  Found timestamps-backup-all.txt, restoring all file timestamps...')
+      execSync(`chmod +x scripts/restore-timestamps.sh && BACKUP_FILE=timestamps-backup-all.txt ./scripts/restore-timestamps.sh`, {
+        cwd: CONFIG.REPO_DIR,
+        stdio: 'inherit',
+      })
+      console.log('  ✅ All file timestamps restored from backup')
+      return true
+    }
+    else if (fs.existsSync(backupFile)) {
+      console.log('  Found timestamps-backup.txt, restoring desktop file timestamps...')
+      execSync(`chmod +x scripts/restore-timestamps.sh && ./scripts/restore-timestamps.sh`, {
+        cwd: CONFIG.REPO_DIR,
+        stdio: 'inherit',
+      })
+      console.log('  ✅ Desktop file timestamps restored from backup')
+      return true
+    }
+    else {
+      console.log('  ⚠️ No timestamps backup file found, skipping timestamp restoration')
+      return false
+    }
+  }
+  catch (error) {
+    console.log(`  ❌ Failed to restore timestamps: ${error.message}`)
+    return false
+  }
+}
+
+/**
  * 生成壁纸数据
  */
 function generateWallpaperData() {
@@ -235,14 +282,20 @@ async function main() {
     }
     console.log('')
 
-    // 4. 生成壁纸数据
+    // 4. 恢复文件时间戳（重要：确保图片排序正确）
+    if (cloneSuccess) {
+      restoreFileTimestamps()
+      console.log('')
+    }
+
+    // 5. 生成壁纸数据
     const generateSuccess = generateWallpaperData()
     if (!generateSuccess) {
       throw new Error('Failed to generate wallpaper data')
     }
     console.log('')
 
-    // 5. 构建应用
+    // 6. 构建应用
     const buildSuccess = buildApplication()
     if (!buildSuccess) {
       throw new Error('Build failed')
