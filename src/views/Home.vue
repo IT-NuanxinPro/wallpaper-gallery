@@ -1,6 +1,8 @@
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import AvatarMakerBanner from '@/components/avatar/AvatarMakerBanner.vue'
+import AvatarMakerModal from '@/components/avatar/AvatarMakerModal/index.vue'
 import DiyAvatarBanner from '@/components/avatar/DiyAvatarBanner.vue'
 import AnnouncementBanner from '@/components/common/feedback/AnnouncementBanner.vue'
 import FilterPanel from '@/components/common/form/FilterPanel.vue'
@@ -147,6 +149,19 @@ function handleReload() {
 }
 
 // ========================================
+// Avatar Maker Modal
+// ========================================
+const isAvatarMakerOpen = ref(false)
+
+function handleAvatarMakerClick() {
+  isAvatarMakerOpen.value = true
+}
+
+function handleAvatarMakerClose() {
+  isAvatarMakerOpen.value = false
+}
+
+// ========================================
 // Lifecycle & Watchers
 // ========================================
 
@@ -220,8 +235,11 @@ onMounted(async () => {
       <!-- Announcement Banner -->
       <AnnouncementBanner />
 
-      <!-- DIY 头像工具入口 - 仅头像系列显示 -->
-      <DiyAvatarBanner v-if="currentSeries === 'avatar'" />
+      <!-- DIY 头像工具入口 - 仅头像系列且 PC 端显示 -->
+      <div v-if="currentSeries === 'avatar'" class="avatar-banners">
+        <DiyAvatarBanner />
+        <AvatarMakerBanner v-if="!isMobileDevice()" @click="handleAvatarMakerClick" />
+      </div>
 
       <!-- Filter Panel -->
       <FilterPanel
@@ -290,6 +308,12 @@ onMounted(async () => {
 
     <!-- Back to Top -->
     <BackToTop />
+
+    <!-- Avatar Maker Modal - 头像自制弹窗 -->
+    <AvatarMakerModal
+      :is-open="isAvatarMakerOpen"
+      @close="handleAvatarMakerClose"
+    />
   </div>
 </template>
 
@@ -300,6 +324,34 @@ onMounted(async () => {
   // 移动端：为 fixed 的筛选栏预留空间
   @include mobile-only {
     padding-top: calc($spacing-md + 52px); // 52px 为筛选栏高度
+  }
+}
+
+// 头像系列入口卡片容器
+.avatar-banners {
+  display: flex;
+  gap: $spacing-lg;
+  margin-bottom: $spacing-xl;
+
+  // PC 端：两个卡片各占 50%
+  > :deep(.diy-avatar-banner),
+  > :deep(.avatar-maker-banner) {
+    flex: 1;
+    min-width: 0; // 防止 flex 子元素溢出
+    margin-bottom: 0; // 移除单独的 margin-bottom，由容器统一控制
+  }
+
+  // 移动端：垂直堆叠
+  @include mobile-only {
+    flex-direction: column;
+    gap: $spacing-md;
+    margin-bottom: $spacing-md;
+
+    > :deep(.diy-avatar-banner),
+    > :deep(.avatar-maker-banner) {
+      flex: none;
+      width: 100%;
+    }
   }
 }
 
