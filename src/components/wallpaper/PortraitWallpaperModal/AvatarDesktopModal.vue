@@ -78,7 +78,6 @@ watch(() => props.wallpaper, () => resetState())
 function handleOpen() {
   trackWallpaperPreview(props.wallpaper)
   recordView(props.wallpaper, currentSeries.value)
-  popularityStore.incrementLocalView(props.wallpaper.filename)
   isVisible.value = true
 }
 
@@ -97,7 +96,6 @@ async function handleDownload() {
     await downloadFile(props.wallpaper.url, props.wallpaper.filename)
     trackWallpaperDownload(props.wallpaper, currentSeries.value)
     recordDownload(props.wallpaper, currentSeries.value)
-    popularityStore.incrementLocalDownload(props.wallpaper.filename)
   }
   finally {
     downloading.value = false

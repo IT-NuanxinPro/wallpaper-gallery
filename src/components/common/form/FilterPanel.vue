@@ -105,8 +105,15 @@ const hasActiveFilters = computed(() => {
   return props.categoryFilter !== 'all'
 })
 
+// Bing 系列是否隐藏瀑布流（Bing 图片比例固定，瀑布流效果不佳）
+const hideMasonryForBing = computed(() => props.currentSeries === 'bing')
+
 // 视图模式滑动指示器位置
 const viewModeSliderPosition = computed(() => {
+  // Bing 系列只有两个选项（网格/列表）
+  if (hideMasonryForBing.value) {
+    return viewMode.value === 'list' ? 'is-list-two' : 'is-grid'
+  }
   switch (viewMode.value) {
     case 'list':
       return 'is-list'
@@ -120,16 +127,6 @@ const viewModeSliderPosition = computed(() => {
 // 移动端视图模式滑动指示器位置（网格和列表两个选项）
 const mobileViewModeSliderPosition = computed(() => {
   return viewMode.value === 'list' ? 'is-list' : 'is-grid'
-})
-
-// 激活的筛选数量（不含分类，分类单独显示）
-const activeFilterCount = computed(() => {
-  let count = 0
-  if (props.formatFilter !== 'all')
-    count++
-  if (props.sortBy !== 'newest')
-    count++
-  return count
 })
 
 // 当前分类显示文本
@@ -277,7 +274,7 @@ function resetFilters() {
     <!-- PC 端筛选项 -->
     <div v-if="!isMobileOrTablet" class="filter-right">
       <!-- View Mode Toggle -->
-      <div class="view-mode-toggle">
+      <div class="view-mode-toggle" :class="{ 'is-two-options': hideMasonryForBing }">
         <!-- 滑动指示器 -->
         <div class="view-mode-slider" :class="viewModeSliderPosition" />
         <button
@@ -304,6 +301,7 @@ function resetFilters() {
           </svg>
         </button>
         <button
+          v-if="!hideMasonryForBing"
           class="view-mode-btn"
           :class="{ 'is-active': viewMode === 'masonry' }"
           aria-label="瀑布流视图"
@@ -450,7 +448,6 @@ function resetFilters() {
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
         </svg>
-        <span v-if="activeFilterCount > 0" class="filter-badge">{{ activeFilterCount }}</span>
       </button>
     </div>
 
@@ -465,78 +462,81 @@ function resetFilters() {
       @confirm="handleCategoryConfirm"
     />
 
-    <!-- 移动端筛选弹窗（格式+排序） -->
-    <van-popup
-      v-model:show="showFilterPopup"
-      position="bottom"
-      round
-      class="filter-popup-dark"
-      :close-on-click-overlay="true"
-      :lock-scroll="true"
-      :duration="0.3"
-      safe-area-inset-bottom
-    >
-      <div class="popup-content">
-        <!-- 弹窗头部 -->
-        <div class="popup-header">
-          <button class="popup-reset" @click="resetFilters">
-            重置
-          </button>
-          <span class="popup-title">筛选</span>
-          <button class="popup-close" @click="closeFilterPopup">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M18 6L6 18M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
+    <!-- 移动端筛选弹窗（格式+排序）- 使用 Teleport 避免 z-index 层叠问题 -->
+    <Teleport to="body">
+      <van-popup
+        v-model:show="showFilterPopup"
+        position="bottom"
+        round
+        class="filter-popup-dark"
+        :close-on-click-overlay="true"
+        :lock-scroll="true"
+        :duration="0.3"
+        safe-area-inset-bottom
+        :teleport="false"
+      >
+        <div class="popup-content">
+          <!-- 弹窗头部 -->
+          <div class="popup-header">
+            <button class="popup-reset" @click="resetFilters">
+              重置
+            </button>
+            <span class="popup-title">筛选</span>
+            <button class="popup-close" @click="closeFilterPopup">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
 
-        <!-- 筛选选项 -->
-        <div class="popup-body">
-          <!-- 格式 -->
-          <div v-if="!hideFormatFilter" class="filter-group">
-            <h3 class="group-title">
-              格式
-            </h3>
-            <div class="option-grid">
-              <button
-                v-for="option in FORMAT_OPTIONS"
-                :key="option.value"
-                class="option-btn"
-                :class="{ 'is-active': tempFormatFilter === option.value }"
-                @click="tempFormatFilter = option.value"
-              >
-                {{ option.label }}
-              </button>
+          <!-- 筛选选项 -->
+          <div class="popup-body">
+            <!-- 格式 -->
+            <div v-if="!hideFormatFilter" class="filter-group">
+              <h3 class="group-title">
+                格式
+              </h3>
+              <div class="option-grid">
+                <button
+                  v-for="option in FORMAT_OPTIONS"
+                  :key="option.value"
+                  class="option-btn"
+                  :class="{ 'is-active': tempFormatFilter === option.value }"
+                  @click="tempFormatFilter = option.value"
+                >
+                  {{ option.label }}
+                </button>
+              </div>
+            </div>
+
+            <!-- 排序 -->
+            <div class="filter-group">
+              <h3 class="group-title">
+                排序
+              </h3>
+              <div class="option-grid">
+                <button
+                  v-for="option in SORT_OPTIONS"
+                  :key="option.value"
+                  class="option-btn"
+                  :class="{ 'is-active': tempSortBy === option.value }"
+                  @click="tempSortBy = option.value"
+                >
+                  {{ option.label }}
+                </button>
+              </div>
             </div>
           </div>
 
-          <!-- 排序 -->
-          <div class="filter-group">
-            <h3 class="group-title">
-              排序
-            </h3>
-            <div class="option-grid">
-              <button
-                v-for="option in SORT_OPTIONS"
-                :key="option.value"
-                class="option-btn"
-                :class="{ 'is-active': tempSortBy === option.value }"
-                @click="tempSortBy = option.value"
-              >
-                {{ option.label }}
-              </button>
-            </div>
+          <!-- 确认按钮 -->
+          <div class="popup-footer">
+            <button class="confirm-btn" @click="applyFilters">
+              确认筛选
+            </button>
           </div>
         </div>
-
-        <!-- 确认按钮 -->
-        <div class="popup-footer">
-          <button class="confirm-btn" @click="applyFilters">
-            确认筛选
-          </button>
-        </div>
-      </div>
-    </van-popup>
+      </van-popup>
+    </Teleport>
   </div>
 </template>
 
@@ -653,6 +653,7 @@ function resetFilters() {
 .view-mode-toggle {
   display: flex;
   align-items: center;
+  gap: 4px;
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -671,8 +672,8 @@ function resetFilters() {
   position: absolute;
   top: 4px;
   left: 4px;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 34px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: $radius-md;
   box-shadow: 0 2px 10px rgba(102, 126, 234, 0.4);
@@ -680,11 +681,18 @@ function resetFilters() {
   z-index: 0;
 
   &.is-list {
-    transform: translateX(32px);
+    // 三个选项时列表位置：按钮宽度(40px) + 间距(4px)
+    transform: translateX(44px);
+  }
+
+  &.is-list-two {
+    // 两个选项时列表位置
+    transform: translateX(44px);
   }
 
   &.is-masonry {
-    transform: translateX(64px);
+    // 瀑布流位置：(按钮宽度 + 间距) * 2
+    transform: translateX(88px);
   }
 }
 
@@ -692,8 +700,8 @@ function resetFilters() {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 34px;
   border-radius: $radius-md;
   color: var(--color-text-muted);
   background: transparent;
@@ -935,8 +943,8 @@ function resetFilters() {
   justify-content: center;
 
   svg {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
   }
 }
 
@@ -944,7 +952,7 @@ function resetFilters() {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 10px 16px;
+  //  padding: 10px 16px;
   font-size: 14px;
   font-weight: 500;
   color: var(--color-text-primary);
@@ -1001,6 +1009,8 @@ function resetFilters() {
   display: flex;
   flex-direction: column;
   background: rgba(255, 255, 255, 0.95);
+  max-height: 80vh;
+  overflow: hidden;
 }
 
 .popup-header {
@@ -1065,6 +1075,9 @@ function resetFilters() {
 
 .popup-body {
   padding: 20px 16px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
 }
 
 .filter-group {

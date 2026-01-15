@@ -11,6 +11,8 @@ const islandExpanded = ref(false)
 
 let timer = null
 let islandTimer = null
+// 追踪所有 setTimeout，防止内存泄漏
+const pendingTimeouts = new Set()
 
 function updateTime() {
   const now = new Date()
@@ -22,9 +24,11 @@ function updateTime() {
 // 自动展示灵动岛动画
 function autoExpandIsland() {
   islandExpanded.value = true
-  setTimeout(() => {
+  const collapseTimer = setTimeout(() => {
+    pendingTimeouts.delete(collapseTimer)
     islandExpanded.value = false
   }, 3500)
+  pendingTimeouts.add(collapseTimer)
 }
 
 function applyCustomUrl() {
@@ -56,7 +60,11 @@ function handleFileUpload(event) {
 onMounted(() => {
   updateTime()
   timer = setInterval(updateTime, 1000)
-  setTimeout(autoExpandIsland, 2000)
+  const initTimer = setTimeout(() => {
+    pendingTimeouts.delete(initTimer)
+    autoExpandIsland()
+  }, 2000)
+  pendingTimeouts.add(initTimer)
   islandTimer = setInterval(autoExpandIsland, 8000)
 })
 
@@ -65,6 +73,9 @@ onUnmounted(() => {
     clearInterval(timer)
   if (islandTimer)
     clearInterval(islandTimer)
+  // 清理所有待执行的 setTimeout
+  pendingTimeouts.forEach(t => clearTimeout(t))
+  pendingTimeouts.clear()
 })
 </script>
 

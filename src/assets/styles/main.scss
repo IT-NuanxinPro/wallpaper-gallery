@@ -718,7 +718,6 @@ body.device-mode {
   }
 }
 
-
 // ========================================
 // Element Plus DatePicker 高级感样式
 // ========================================
@@ -886,7 +885,9 @@ body.device-mode {
     }
 
     &.is-focus {
-      box-shadow: 0 0 0 1px #667eea inset, 0 0 0 3px rgba(102, 126, 234, 0.15) !important;
+      box-shadow:
+        0 0 0 1px #667eea inset,
+        0 0 0 3px rgba(102, 126, 234, 0.15) !important;
     }
   }
 
@@ -970,7 +971,9 @@ body.device-mode {
       }
 
       &.is-focus {
-        box-shadow: 0 0 0 1px #818cf8 inset, 0 0 0 3px rgba(129, 140, 248, 0.2) !important;
+        box-shadow:
+          0 0 0 1px #818cf8 inset,
+          0 0 0 3px rgba(129, 140, 248, 0.2) !important;
       }
     }
 

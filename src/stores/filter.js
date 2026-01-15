@@ -37,6 +37,12 @@ export const useFilterStore = defineStore('filter', () => {
   const categoryOptionsCache = ref(null)
   const lastWallpapersLength = ref(0)
 
+  // 当前系列 ID（用于保存/恢复筛选状态）
+  const currentSeriesId = ref('')
+
+  // 各系列独立的筛选状态缓存
+  const seriesFilterCache = ref({})
+
   // ========================================
   // Composable Dependencies
   // ========================================
@@ -211,6 +217,13 @@ export const useFilterStore = defineStore('filter', () => {
    * 应用排序
    */
   function applySort(wallpapers) {
+    // 如果排序依赖 popularityStore 但数据未加载完成，暂时使用日期排序（降级方案）
+    // 这样可以避免在数据加载过程中显示错误的排序结果，防止界面跳动
+    const needsPopularity = ['popular', 'downloads', 'views', 'weekly-hot', 'monthly-hot'].includes(sortBy.value)
+    if (needsPopularity && popularityStore.loading) {
+      return sortByDate(wallpapers, 'desc')
+    }
+
     switch (sortBy.value) {
       case 'newest':
         return sortByDate(wallpapers, 'desc')
@@ -321,9 +334,27 @@ export const useFilterStore = defineStore('filter', () => {
    * 根据系列设置默认排序和筛选
    */
   function setDefaultSortBySeries(series) {
+    // 先调用 switchSeries 保存旧系列状态
+    switchSeries(series)
+
+    // 尝试恢复该系列的缓存状态
+    const restored = restoreSeriesFilter(series)
+
+    if (restored) {
+      // 成功恢复缓存，只需设置排序
+      sortBy.value = 'newest'
+      return
+    }
+
+    // 没有缓存，使用默认值
     // 所有系列默认使用最新优先
     const defaultSort = 'newest'
     sortBy.value = defaultSort
+
+    // 重置分辨率筛选（每个系列独立）
+    resolutionFilter.value = 'all'
+    // 重置格式筛选
+    formatFilter.value = 'all'
 
     // Bing 系列默认加载当前年月（不从 localStorage 恢复）
     if (series === 'bing') {
@@ -335,15 +366,8 @@ export const useFilterStore = defineStore('filter', () => {
       localStorage.removeItem(STORAGE_KEYS.CATEGORY)
     }
     else {
-      // 其他系列从 localStorage 恢复或使用默认值
-      const savedCategory = localStorage.getItem(STORAGE_KEYS.CATEGORY)
-      // 如果保存的是日期格式（Bing 的），则重置为 all
-      if (savedCategory && /^\d{4}-\d{2}$/.test(savedCategory)) {
-        categoryFilter.value = 'all'
-      }
-      else {
-        categoryFilter.value = savedCategory || 'all'
-      }
+      // 其他系列重置为默认值
+      categoryFilter.value = 'all'
     }
     subcategoryFilter.value = 'all'
   }
@@ -363,6 +387,50 @@ export const useFilterStore = defineStore('filter', () => {
     lastWallpapersLength.value = 0
   }
 
+  /**
+   * 保存当前系列的筛选状态到缓存
+   */
+  function saveCurrentSeriesFilter() {
+    if (!currentSeriesId.value)
+      return
+
+    seriesFilterCache.value[currentSeriesId.value] = {
+      categoryFilter: categoryFilter.value,
+      subcategoryFilter: subcategoryFilter.value,
+      resolutionFilter: resolutionFilter.value,
+      formatFilter: formatFilter.value,
+    }
+  }
+
+  /**
+   * 从缓存恢复指定系列的筛选状态
+   */
+  function restoreSeriesFilter(seriesId) {
+    const cached = seriesFilterCache.value[seriesId]
+    if (cached) {
+      categoryFilter.value = cached.categoryFilter
+      subcategoryFilter.value = cached.subcategoryFilter
+      resolutionFilter.value = cached.resolutionFilter
+      formatFilter.value = cached.formatFilter
+      return true
+    }
+    return false
+  }
+
+  /**
+   * 切换系列时调用，保存旧系列状态并恢复新系列状态
+   */
+  function switchSeries(newSeriesId) {
+    // 保存当前系列的筛选状态
+    saveCurrentSeriesFilter()
+
+    // 更新当前系列 ID
+    currentSeriesId.value = newSeriesId
+
+    // 清除分类选项缓存（因为切换系列后分类选项会变化）
+    clearCategoryCache()
+  }
+
   return {
     // State
     searchQuery,
@@ -372,6 +440,7 @@ export const useFilterStore = defineStore('filter', () => {
     resolutionFilter,
     categoryFilter,
     subcategoryFilter,
+    currentSeriesId,
     // Helpers
     createCategoryOptions,
     createSubcategoryOptions,
@@ -384,5 +453,8 @@ export const useFilterStore = defineStore('filter', () => {
     setDefaultSortBySeries,
     resetSubcategory,
     clearCategoryCache,
+    switchSeries,
+    saveCurrentSeriesFilter,
+    restoreSeriesFilter,
   }
 })

@@ -91,8 +91,6 @@ watch(() => props.wallpaper, () => {
 function openModal() {
   trackWallpaperPreview(props.wallpaper)
   recordView(props.wallpaper, currentSeries.value)
-  // 乐观更新本地统计（立即反映到 UI）
-  popularityStore.incrementLocalView(props.wallpaper.filename)
   scrollLock.lock()
   isVisible.value = true
 }
@@ -114,8 +112,6 @@ async function handleDownload() {
     await downloadFile(props.wallpaper.url, props.wallpaper.filename)
     trackWallpaperDownload(props.wallpaper, currentSeries.value)
     recordDownload(props.wallpaper, currentSeries.value)
-    // 乐观更新本地统计（立即反映到 UI）
-    popularityStore.incrementLocalDownload(props.wallpaper.filename)
   }
   finally {
     downloading.value = false

@@ -149,17 +149,6 @@ export function trackPagination(page, series, category) {
 }
 
 /**
- * 追踪今日精选点击事件
- * @param {object} wallpaper - 壁纸对象
- */
-export function trackTodayPickClick(wallpaper) {
-  trackEvent('today_pick_click', {
-    filename: wallpaper.filename,
-    category: wallpaper.category,
-  })
-}
-
-/**
  * 追踪返回顶部点击事件
  * @param {number} scrollPosition - 点击时的滚动位置
  */

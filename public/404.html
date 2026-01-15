@@ -7,8 +7,16 @@
     // GitHub Pages SPA fallback
     // 将路径保存到 sessionStorage，然后跳转到首页
     // index.html 会读取并恢复路由
-    sessionStorage.setItem('redirect', location.pathname + location.search);
-    location.replace('/');
+
+    // 排除对静态资源的重定向（如 .json, .jpg, .png 等）
+    const path = location.pathname;
+    const staticExtensions = ['.json', '.jpg', '.jpeg', '.png', '.gif', '.svg', '.webp', '.ico', '.css', '.js'];
+    const isStaticFile = staticExtensions.some(ext => path.toLowerCase().endsWith(ext));
+
+    if (!isStaticFile) {
+      sessionStorage.setItem('redirect', location.pathname + location.search);
+      location.replace('/');
+    }
   </script>
 </head>
 <body></body>

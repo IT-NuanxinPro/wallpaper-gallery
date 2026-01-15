@@ -4,7 +4,6 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import UpdateNotification from '@/components/common/feedback/UpdateNotification.vue'
-// import AppFooter from '@/components/layout/AppFooter.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import GridSkeleton from '@/components/wallpaper/WallpaperGrid/GridSkeleton.vue'
 
@@ -53,8 +52,6 @@ onMounted(() => {
           </Suspense>
         </RouterView>
       </main>
-
-      <!-- <AppFooter /> -->
 
       <!-- 版本更新提示 -->
       <UpdateNotification v-if="!hideHeader" />

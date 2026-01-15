@@ -1,14 +1,10 @@
 // ========================================
-// 统计服务核心模块
+// 统计服务核心模块（简化版）
 // ========================================
-// 负责：静态数据加载、RPC 写入、乐观更新
+// 负责：静态数据加载、RPC 写入
 
 import {
-  clearOptimisticQueue,
   getCachedStats,
-  getOptimisticQueue,
-  incrementOptimistic,
-  mergeWithOptimistic,
   setCachedStats,
 } from './localStatsCache'
 
@@ -39,7 +35,7 @@ export async function loadStaticStats(series, forceRefresh = false) {
       if (import.meta.env.DEV) {
         console.log(`[StatsService] 使用缓存数据: ${series}`)
       }
-      return mergeWithOptimistic(cached)
+      return cached
     }
   }
 
@@ -51,7 +47,7 @@ export async function loadStaticStats(series, forceRefresh = false) {
       // 静态文件不存在时返回空 Map（可能还未生成）
       if (response.status === 404) {
         console.warn(`[StatsService] 静态统计文件不存在: ${url}`)
-        return mergeWithOptimistic(new Map())
+        return new Map()
       }
       throw new Error(`HTTP ${response.status}`)
     }
@@ -92,64 +88,58 @@ export async function loadStaticStats(series, forceRefresh = false) {
       console.log(`[StatsService] 加载静态数据: ${series}, ${statsMap.size} 条`)
     }
 
-    // 合并乐观更新
-    return mergeWithOptimistic(statsMap)
+    return statsMap
   }
   catch (error) {
     console.error(`[StatsService] 加载静态统计失败: ${series}`, error)
-    // 返回仅包含乐观更新的数据
-    return mergeWithOptimistic(new Map())
+    return new Map()
   }
 }
 
 /**
- * 记录预览（乐观更新 + 异步 RPC）
+ * 记录预览（异步写入数据库）
  * @param {object} wallpaper - 壁纸对象
  * @param {string} series - 系列名称
  */
 export function recordView(wallpaper, series) {
+  if (!isSupabaseConfigured())
+    return
+
   const imageId = wallpaper.filename || wallpaper.id
 
-  // 1. 乐观更新（立即生效）
-  incrementOptimistic(imageId, 'view')
-
-  // 2. 异步写入 Supabase（静默失败）
-  if (isSupabaseConfigured()) {
-    callRPC('increment_view', {
-      img_id: imageId,
-      series_name: series,
-      cat: wallpaper.category || null,
-    }).catch((err) => {
-      if (import.meta.env.DEV) {
-        console.warn('[StatsService] 写入预览统计失败:', err)
-      }
-    })
-  }
+  // 异步写入 Supabase（静默失败）
+  callRPC('increment_view', {
+    img_id: imageId,
+    series_name: series,
+    cat: wallpaper.category || null,
+  }).catch((err) => {
+    if (import.meta.env.DEV) {
+      console.warn('[StatsService] 写入预览统计失败:', err)
+    }
+  })
 }
 
 /**
- * 记录下载（乐观更新 + 异步 RPC）
+ * 记录下载（异步写入数据库）
  * @param {object} wallpaper - 壁纸对象
  * @param {string} series - 系列名称
  */
 export function recordDownload(wallpaper, series) {
+  if (!isSupabaseConfigured())
+    return
+
   const imageId = wallpaper.filename || wallpaper.id
 
-  // 1. 乐观更新（立即生效）
-  incrementOptimistic(imageId, 'download')
-
-  // 2. 异步写入 Supabase（静默失败）
-  if (isSupabaseConfigured()) {
-    callRPC('increment_download', {
-      img_id: imageId,
-      series_name: series,
-      cat: wallpaper.category || null,
-    }).catch((err) => {
-      if (import.meta.env.DEV) {
-        console.warn('[StatsService] 写入下载统计失败:', err)
-      }
-    })
-  }
+  // 异步写入 Supabase（静默失败）
+  callRPC('increment_download', {
+    img_id: imageId,
+    series_name: series,
+    cat: wallpaper.category || null,
+  }).catch((err) => {
+    if (import.meta.env.DEV) {
+      console.warn('[StatsService] 写入下载统计失败:', err)
+    }
+  })
 }
 
 /**
@@ -176,38 +166,6 @@ async function callRPC(functionName, params) {
   if (!response.ok) {
     throw new Error(`RPC ${functionName} failed: ${response.status}`)
   }
-}
-
-/**
- * 获取单个壁纸的统计数据
- * @param {string} imageId - 图片 ID
- * @param {Map} statsMap - 已加载的统计数据 Map
- * @returns {object} - { views, downloads }
- */
-export function getWallpaperStats(imageId, statsMap) {
-  if (!statsMap) {
-    return { views: 0, downloads: 0 }
-  }
-
-  // 先检查静态数据
-  const staticStats = statsMap.get(imageId) || { views: 0, downloads: 0 }
-
-  // 合并乐观更新
-  const queue = getOptimisticQueue()
-  const optimisticViews = queue.views[imageId] || 0
-  const optimisticDownloads = queue.downloads[imageId] || 0
-
-  return {
-    views: staticStats.views + optimisticViews,
-    downloads: staticStats.downloads + optimisticDownloads,
-  }
-}
-
-/**
- * 重置统计缓存（用于强制刷新）
- */
-export function resetStatsCache() {
-  clearOptimisticQueue()
 }
 
 /**
@@ -257,10 +215,10 @@ export async function loadStatsFromSupabase(series, limit = 100) {
     // 写入缓存
     setCachedStats(series, statsMap)
 
-    return mergeWithOptimistic(statsMap)
+    return statsMap
   }
   catch (error) {
     console.error('[StatsService] 从 Supabase 加载统计失败:', error)
-    return mergeWithOptimistic(new Map())
+    return new Map()
   }
 }

@@ -4,17 +4,26 @@
 
 /**
  * 按日期排序
+ * 日期相同时按文件名排序，确保排序结果稳定
  */
 export function sortByDate(wallpapers, order = 'desc') {
   return [...wallpapers].sort((a, b) => {
     const dateA = new Date(a.createdAt)
     const dateB = new Date(b.createdAt)
-    return order === 'desc' ? dateB - dateA : dateA - dateB
+    const dateDiff = order === 'desc' ? dateB - dateA : dateA - dateB
+
+    // 日期相同时，按文件名排序确保稳定性
+    if (dateDiff === 0) {
+      return a.filename.localeCompare(b.filename)
+    }
+
+    return dateDiff
   })
 }
 
 /**
  * 按热度排序（使用预计算的 Map）
+ * 热度相同时按日期排序，日期也相同时按文件名排序
  */
 export function sortByPopularity(wallpapers, popularityMap) {
   return [...wallpapers].sort((a, b) => {
@@ -23,7 +32,12 @@ export function sortByPopularity(wallpapers, popularityMap) {
 
     // 热度相同时按最新排序
     if (scoreB === scoreA) {
-      return new Date(b.createdAt) - new Date(a.createdAt)
+      const dateDiff = new Date(b.createdAt) - new Date(a.createdAt)
+      // 日期也相同时按文件名排序
+      if (dateDiff === 0) {
+        return a.filename.localeCompare(b.filename)
+      }
+      return dateDiff
     }
 
     return scoreB - scoreA
@@ -32,6 +46,7 @@ export function sortByPopularity(wallpapers, popularityMap) {
 
 /**
  * 按下载量排序
+ * 下载量相同时按日期排序，日期也相同时按文件名排序
  */
 export function sortByDownloads(wallpapers, popularityMap) {
   return [...wallpapers].sort((a, b) => {
@@ -40,7 +55,12 @@ export function sortByDownloads(wallpapers, popularityMap) {
 
     // 下载量相同时按最新排序
     if (countB === countA) {
-      return new Date(b.createdAt) - new Date(a.createdAt)
+      const dateDiff = new Date(b.createdAt) - new Date(a.createdAt)
+      // 日期也相同时按文件名排序
+      if (dateDiff === 0) {
+        return a.filename.localeCompare(b.filename)
+      }
+      return dateDiff
     }
 
     return countB - countA
@@ -49,6 +69,7 @@ export function sortByDownloads(wallpapers, popularityMap) {
 
 /**
  * 按浏览量排序
+ * 浏览量相同时按日期排序，日期也相同时按文件名排序
  */
 export function sortByViews(wallpapers, popularityMap) {
   return [...wallpapers].sort((a, b) => {
@@ -57,7 +78,12 @@ export function sortByViews(wallpapers, popularityMap) {
 
     // 浏览量相同时按最新排序
     if (countB === countA) {
-      return new Date(b.createdAt) - new Date(a.createdAt)
+      const dateDiff = new Date(b.createdAt) - new Date(a.createdAt)
+      // 日期也相同时按文件名排序
+      if (dateDiff === 0) {
+        return a.filename.localeCompare(b.filename)
+      }
+      return dateDiff
     }
 
     return countB - countA
@@ -66,10 +92,18 @@ export function sortByViews(wallpapers, popularityMap) {
 
 /**
  * 按大小排序
+ * 大小相同时按文件名排序确保稳定性
  */
 export function sortBySize(wallpapers, order = 'desc') {
   return [...wallpapers].sort((a, b) => {
-    return order === 'desc' ? b.size - a.size : a.size - b.size
+    const sizeDiff = order === 'desc' ? b.size - a.size : a.size - b.size
+
+    // 大小相同时按文件名排序
+    if (sizeDiff === 0) {
+      return a.filename.localeCompare(b.filename)
+    }
+
+    return sizeDiff
   })
 }
 

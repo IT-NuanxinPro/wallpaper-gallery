@@ -15,7 +15,7 @@ dist-ssr
 # Auto-generated
 auto-imports.d.ts
 components.d.ts
-public/data/
+public/data/*
 !public/data/stats/
 public/version.json
 
@@ -31,6 +31,9 @@ public/version.json
 *.sw?
 .kiro
 .claude
+.shared
 .spec-workflow
 .code-workspace
+.zcf
+ARCHITECTURE.md
 SEO提交流程.md

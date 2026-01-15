@@ -1,14 +1,10 @@
 // ========================================
-// 热门数据管理 Store（重构版）
+// 热门数据管理 Store（简化版）
 // ========================================
-// 使用静态 JSON + 乐观更新，不再直接查询 Supabase 视图
+// 使用静态 JSON 加载数据，不再使用乐观更新
 
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import {
-  getOptimisticQueue,
-  incrementOptimistic,
-} from '@/services/localStatsCache'
 import {
   loadStaticStats,
   loadStatsFromSupabase,
@@ -39,13 +35,17 @@ export const usePopularityStore = defineStore('popularity', () => {
   const allTimeData = computed(() => {
     const entries = Array.from(statsMap.value.entries())
     return entries
-      .map(([imageId, stats]) => ({
-        filename: imageId,
-        image_id: imageId,
-        view_count: stats.views || 0,
-        download_count: stats.downloads || 0,
-        popularity_score: (stats.views || 0) + (stats.downloads || 0) * 2,
-      }))
+      .map(([imageId, stats]) => {
+        const views = stats.views || 0
+        const downloads = stats.downloads || 0
+        return {
+          filename: imageId,
+          image_id: imageId,
+          view_count: views,
+          download_count: downloads,
+          popularity_score: views + downloads * 2,
+        }
+      })
       .sort((a, b) => b.popularity_score - a.popularity_score)
   })
 
@@ -64,7 +64,6 @@ export const usePopularityStore = defineStore('popularity', () => {
   })
 
   // 兼容旧 API：weeklyMap 和 monthlyMap 返回相同数据
-  // 因为静态化后不再区分时间范围
   const weeklyMap = computed(() => popularityMap.value)
   const monthlyMap = computed(() => popularityMap.value)
 
@@ -91,13 +90,7 @@ export const usePopularityStore = defineStore('popularity', () => {
    */
   function getDownloadCount(filename) {
     const stats = statsMap.value.get(filename)
-    if (!stats)
-      return 0
-
-    // 合并乐观更新
-    const queue = getOptimisticQueue()
-    const optimistic = queue.downloads[filename] || 0
-    return (stats.downloads || 0) + optimistic
+    return stats?.downloads || 0
   }
 
   /**
@@ -105,51 +98,14 @@ export const usePopularityStore = defineStore('popularity', () => {
    */
   function getViewCount(filename) {
     const stats = statsMap.value.get(filename)
-    if (!stats)
-      return 0
-
-    // 合并乐观更新
-    const queue = getOptimisticQueue()
-    const optimistic = queue.views[filename] || 0
-    return (stats.views || 0) + optimistic
+    return stats?.views || 0
   }
 
   /**
    * 获取指定文件的热门分数
    */
   function getPopularityScore(filename, _timeRange = 'all') {
-    // 不再区分时间范围
     return popularityMap.value.get(filename)?.score || 0
-  }
-
-  /**
-   * 本地乐观增加浏览量
-   * @param {string} imageId - 图片 ID
-   */
-  function incrementLocalView(imageId) {
-    incrementOptimistic(imageId, 'view')
-
-    // 同时更新内存中的 statsMap（立即反映到 UI）
-    const current = statsMap.value.get(imageId) || { views: 0, downloads: 0 }
-    statsMap.value.set(imageId, {
-      ...current,
-      views: current.views + 1,
-    })
-  }
-
-  /**
-   * 本地乐观增加下载量
-   * @param {string} imageId - 图片 ID
-   */
-  function incrementLocalDownload(imageId) {
-    incrementOptimistic(imageId, 'download')
-
-    // 同时更新内存中的 statsMap（立即反映到 UI）
-    const current = statsMap.value.get(imageId) || { views: 0, downloads: 0 }
-    statsMap.value.set(imageId, {
-      ...current,
-      downloads: current.downloads + 1,
-    })
   }
 
   /**
@@ -223,8 +179,6 @@ export const usePopularityStore = defineStore('popularity', () => {
     getDownloadCount,
     getViewCount,
     getPopularityScore,
-    incrementLocalView,
-    incrementLocalDownload,
     clearData,
   }
 })

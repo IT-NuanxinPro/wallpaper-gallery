@@ -9,6 +9,7 @@ const shellLoaded = ref(false)
 const currentTime = ref('')
 
 let timeTimer = null
+let loadTimer = null
 
 function updateTime() {
   const now = new Date()
@@ -62,7 +63,7 @@ function onShellLoad() {
 onMounted(() => {
   updateTime()
   timeTimer = setInterval(updateTime, 1000)
-  setTimeout(() => {
+  loadTimer = setTimeout(() => {
     isLoaded.value = true
   }, 300)
 })
@@ -70,6 +71,8 @@ onMounted(() => {
 onUnmounted(() => {
   if (timeTimer)
     clearInterval(timeTimer)
+  if (loadTimer)
+    clearTimeout(loadTimer)
 })
 </script>
 
