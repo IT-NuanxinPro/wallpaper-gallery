@@ -1,0 +1,13 @@
+# Cloudflare Pages 配置
+name = "wallpaper-gallery-test"
+
+# 禁用 Functions（纯静态站点）
+[build]
+command = "pnpm build"
+cwd = "."
+
+[build.upload]
+format = "service-worker"
+
+# 不使用 Functions
+compatibility_date = "2024-01-01"

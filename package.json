@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "node scripts/generate-data.js && vite build",
+    "build:test": "node scripts/generate-data.js && vite build --mode staging",
     "build:vercel": "node scripts/vercel-build.js",
     "preview": "vite preview",
     "generate": "node scripts/generate-data.js",
