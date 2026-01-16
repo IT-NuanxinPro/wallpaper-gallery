@@ -461,22 +461,44 @@ function handleMouseLeave(e) {
 <style lang="scss" scoped>
 .wallpaper-card {
   position: relative;
-  background: var(--color-bg-card);
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(118, 75, 162, 0.08));
+  border: 1px solid rgba(102, 126, 234, 0.15);
   border-radius: var(--radius-lg);
   overflow: hidden;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  // 多层阴影创建立体感
+  box-shadow:
+    0 2px 4px rgba(102, 126, 234, 0.08),
+    0 4px 12px rgba(102, 126, 234, 0.12),
+    0 8px 24px rgba(102, 126, 234, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
   // 使用 backface-visibility 创建新的合成层，避免动画后的布局抖动
   backface-visibility: hidden;
   // 添加过渡效果，让圆角变化更平滑
-  transition: border-radius 0.4s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  // Hover 效果
+  &:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.12), rgba(118, 75, 162, 0.12));
+    border-color: rgba(102, 126, 234, 0.3);
+    // Hover 时阴影更强，立体感更明显
+    box-shadow:
+      0 4px 8px rgba(102, 126, 234, 0.12),
+      0 8px 20px rgba(102, 126, 234, 0.15),
+      0 16px 32px rgba(102, 126, 234, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    transform: translateY(-4px);
+  }
 
   // 移动端瀑布流和网格视图更紧凑的圆角
   @include mobile-only {
     &.view-grid,
     &.view-masonry {
       border-radius: var(--radius-sm);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      box-shadow:
+        0 1px 3px rgba(102, 126, 234, 0.08),
+        0 2px 8px rgba(102, 126, 234, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
   }
 }
