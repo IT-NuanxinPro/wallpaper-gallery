@@ -1,0 +1,198 @@
+name: Deploy Test to Cloudflare Pages
+
+on:
+  # 推送到测试分支时触发
+  push:
+    branches: [test, develop]
+  
+  # PR 到测试分支时触发预览部署
+  pull_request:
+    branches: [test]
+
+  # 手动触发
+  workflow_dispatch:
+
+# 设置 GITHUB_TOKEN 权限
+permissions:
+  contents: read
+  pull-requests: write  # 用于 PR 评论
+  deployments: write    # 用于部署状态
+
+# 只允许一个并发部署
+concurrency:
+  group: "test-pages-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: test
+      url: https://test-wallpaper.061129.xyz
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get latest CDN version from nuanXinProPic
+        id: cdn_version
+        run: |
+          # 使用 GitHub API 获取图床仓库的最新 tag
+          LATEST_TAG=$(curl -s "https://api.github.com/repos/IT-NuanxinPro/nuanXinProPic/tags" | jq -r '.[0].name // "v1.0.4"')
+
+          # 如果 API 返回空或错误，使用备用默认值
+          if [ -z "$LATEST_TAG" ] || [ "$LATEST_TAG" == "null" ]; then
+            LATEST_TAG="v1.0.4"
+            echo "⚠️ Failed to get tag from API, using fallback: $LATEST_TAG"
+          else
+            echo "✅ Got latest CDN version: $LATEST_TAG"
+          fi
+
+          echo "version=$LATEST_TAG" >> $GITHUB_OUTPUT
+
+      - name: Update CDN version in constants.js
+        run: |
+          CDN_VERSION="${{ steps.cdn_version.outputs.version }}"
+          echo "📦 Updating CDN_VERSION to: $CDN_VERSION"
+
+          # 使用 sed 替换版本号
+          sed -i "s/export const CDN_VERSION = '[^']*'/export const CDN_VERSION = '$CDN_VERSION'/" src/utils/constants.js
+
+          # 验证替换结果
+          echo "✅ Updated constants.js:"
+          grep "CDN_VERSION" src/utils/constants.js
+
+      - name: Checkout nuanXinProPic (wallpaper source)
+        uses: actions/checkout@v4
+        with:
+          repository: IT-NuanxinPro/nuanXinProPic
+          path: nuanXinProPic
+          fetch-depth: 1
+
+      - name: Restore file timestamps from backup
+        run: |
+          cd nuanXinProPic
+
+          # 优先使用完整备份文件（包含所有三个系列）
+          if [ -f "timestamps-backup-all.txt" ]; then
+            echo "✅ Found timestamps-backup-all.txt, restoring all file timestamps..."
+
+            # 使用完整备份文件恢复时间戳
+            chmod +x scripts/restore-timestamps.sh
+            BACKUP_FILE=timestamps-backup-all.txt ./scripts/restore-timestamps.sh
+
+            echo "✅ All file timestamps restored from backup"
+          elif [ -f "timestamps-backup.txt" ]; then
+            echo "✅ Found timestamps-backup.txt, restoring desktop file timestamps..."
+
+            # 使用旧的备份文件（仅 desktop）
+            chmod +x scripts/restore-timestamps.sh
+            ./scripts/restore-timestamps.sh
+
+            echo "✅ Desktop file timestamps restored from backup"
+          else
+            echo "⚠️ No timestamps backup file found, skipping timestamp restoration"
+          fi
+
+          # 验证：显示几个文件的时间
+          echo "📅 Sample file timestamps:"
+          echo "Desktop:"
+          ls -lh wallpaper/desktop/动漫/二次元/ 2>/dev/null | head -3 || echo "Desktop directory not found"
+          echo "Mobile:"
+          ls -lh wallpaper/mobile/动漫/ 2>/dev/null | head -3 || echo "Mobile directory not found"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install ImageMagick (for image dimensions)
+        run: sudo apt-get update && sudo apt-get install -y imagemagick
+
+      - name: Build
+        run: pnpm build
+
+      - name: Deploy to Cloudflare Pages
+        id: deploy
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: wallpaper-gallery-test
+          directory: dist
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.head_ref || github.ref_name }}
+
+      - name: Output deployment info
+        run: |
+          echo "🚀 Deployment successful!"
+          echo "📱 URL: ${{ steps.deploy.outputs.url }}"
+          echo "🌐 Environment: ${{ steps.deploy.outputs.environment }}"
+          echo "📦 Deployment ID: ${{ steps.deploy.outputs.id }}"
+
+      - name: Add PR comment with preview URL
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const deployUrl = '${{ steps.deploy.outputs.url }}';
+            const environment = '${{ steps.deploy.outputs.environment }}';
+            const deploymentId = '${{ steps.deploy.outputs.id }}';
+            
+            const comment = `## 🚀 测试环境部署成功！
+            
+            | 项目 | 信息 |
+            |------|------|
+            | 📱 预览链接 | ${deployUrl} |
+            | 🌐 自定义域名 | https://test-wallpaper.061129.xyz |
+            | 🏷️ 环境 | ${environment} |
+            | 📦 部署 ID | \`${deploymentId}\` |
+            | ⏰ 部署时间 | ${new Date().toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai'})} |
+            
+            ### 📋 本次部署包含的更改
+            - ✨ 头像自制工具功能
+            - 🎨 UI/UX 优化
+            - ⚡ 性能改进
+            - 🐛 Bug 修复
+            
+            ### 🔍 测试建议
+            - [ ] 检查头像制作功能
+            - [ ] 验证响应式布局
+            - [ ] 测试图片上传和裁剪
+            - [ ] 确认下载功能正常
+            
+            ---
+            💡 **提示**: 预览链接会在 PR 合并后自动清理`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: Create deployment status
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const deployUrl = '${{ steps.deploy.outputs.url }}' || 'https://test-wallpaper.061129.xyz';
+            const state = '${{ job.status }}' === 'success' ? 'success' : 'failure';
+            
+            github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: context.payload.deployment?.id || 0,
+              state: state,
+              environment_url: deployUrl,
+              description: state === 'success' ? '部署成功' : '部署失败'
+            });
