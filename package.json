@@ -1,15 +1,13 @@
 {
   "name": "wallpaper-gallery",
   "type": "module",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/generate-data.js && vite build",
-    "build:vercel": "node scripts/vercel-build.js",
+    "build": "vite build",
     "preview": "vite preview",
-    "generate": "node scripts/generate-data.js",
-    "generate:github": "node scripts/generate-data.js --github",
+    "sync": "node scripts/sync-data-local.js --force",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "vitest run",

@@ -111,8 +111,23 @@ const fileFormat = computed(() => {
 // 相对时间（如"3天前"）
 const relativeTime = computed(() => formatRelativeTime(props.wallpaper.createdAt))
 
-// 显示用的文件名（去除分类前缀）
-const displayFilename = computed(() => getDisplayFilename(props.wallpaper.filename))
+// 显示用的文件名（优先使用 AI 生成的 displayTitle）
+const displayFilename = computed(() => {
+  // 优先使用 AI 生成的标题
+  if (props.wallpaper.displayTitle) {
+    // 去除常见的图片格式后缀名
+    return props.wallpaper.displayTitle.replace(/\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|tif|ico|heic|heif)$/i, '')
+  }
+  return getDisplayFilename(props.wallpaper.filename)
+})
+
+// AI 关键词标签（显示前 3 个）
+const aiKeywords = computed(() => {
+  if (!props.wallpaper.keywords || props.wallpaper.keywords.length === 0) {
+    return []
+  }
+  return props.wallpaper.keywords.slice(0, 3)
+})
 
 // 高亮文件名（对显示名称进行高亮）
 const highlightedFilename = computed(() => {
@@ -383,13 +398,29 @@ function handleMouseLeave(e) {
 
       <!-- 普通壁纸信息展示 -->
       <template v-else>
-        <!-- 第一行：文件名 -->
-        <p class="card-filename" :title="displayFilename">
-          <template v-for="(part, idx) in highlightedFilename" :key="idx">
-            <span v-if="part.highlight" class="highlight">{{ part.text }}</span>
-            <span v-else>{{ part.text }}</span>
-          </template>
-        </p>
+        <!-- 第一行：文件名 (AI 标题优先) + AI 标识 -->
+        <div class="card-filename-row">
+          <p class="card-filename" :title="displayFilename">
+            <template v-for="(part, idx) in highlightedFilename" :key="idx">
+              <span v-if="part.highlight" class="highlight">{{ part.text }}</span>
+              <span v-else>{{ part.text }}</span>
+            </template>
+          </p>
+          <!-- AI 标识 -->
+          <!-- <span v-if="hasAiInfo" class="ai-badge" title="AI 智能分析">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 3L5 7l4 4m6-8l4 4-4 4M13 21l-2-8-2 8" />
+            </svg>
+          </span> -->
+        </div>
+
+        <!-- AI 关键词标签 -->
+        <div v-if="aiKeywords.length > 0" class="card-ai-keywords">
+          <span v-for="keyword in aiKeywords" :key="keyword" class="ai-keyword-tag">
+            {{ keyword }}
+          </span>
+        </div>
+
         <!-- 分类信息 -->
         <div v-if="categoryDisplay" class="card-category">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -606,14 +637,22 @@ function handleMouseLeave(e) {
   }
 }
 
+.card-filename-row {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  margin-bottom: $spacing-xs;
+}
+
 .card-filename {
+  flex: 1;
   font-size: $font-size-sm;
   font-weight: $font-weight-medium;
   color: var(--color-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-bottom: $spacing-xs;
+  margin-bottom: 0;
 
   .highlight {
     background: rgba(229, 62, 62, 0.1);
@@ -621,6 +660,50 @@ function handleMouseLeave(e) {
     font-weight: $font-weight-semibold;
     padding: 1px 4px;
     border-radius: 3px;
+  }
+}
+
+// AI 标识徽章
+// .ai-badge {
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   flex-shrink: 0;
+//   width: 18px;
+//   height: 18px;
+//   background: linear-gradient(135deg, #667eea, #764ba2);
+//   color: white;
+//   border-radius: $radius-sm;
+//   cursor: help;
+
+//   svg {
+//     width: 11px;
+//     height: 11px;
+//   }
+// }
+
+// AI 关键词标签
+.card-ai-keywords {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: $spacing-xs;
+}
+
+.ai-keyword-tag {
+  padding: 2px 6px;
+  font-size: 10px;
+  font-weight: $font-weight-medium;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  color: #667eea;
+  border-radius: $radius-sm;
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  white-space: nowrap;
+
+  [data-theme='dark'] & {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+    border-color: rgba(102, 126, 234, 0.3);
   }
 }
 
