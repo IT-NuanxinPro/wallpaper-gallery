@@ -474,8 +474,12 @@ function handleMouseLeave(e) {
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   // 使用 backface-visibility 创建新的合成层，避免动画后的布局抖动
   backface-visibility: hidden;
-  // 添加过渡效果，让圆角变化更平滑
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  // 添加过渡效果（排除 transform/opacity，由 GSAP 控制）
+  transition:
+    background 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    border-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
   // Hover 效果
   &:hover {
