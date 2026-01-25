@@ -362,26 +362,52 @@ ol {
 // 滚动条
 // ========================================
 
+// 隐藏滚动条但保持滚动功能（适用于 Electron 桌面应用）
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 0px;
+  height: 0px;
+  display: none;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-bg-secondary);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-border);
+  background: transparent;
   border-radius: var(--radius-full);
 
   &:hover {
-    background: var(--color-text-muted);
+    background: transparent;
   }
 }
 
-// Firefox
+// Firefox - 隐藏滚动条
 * {
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
+}
+
+// 如果需要在特定容器显示滚动条，可以添加 .show-scrollbar 类
+.show-scrollbar {
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    display: block;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--color-bg-secondary);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+
+    &:hover {
+      background: var(--color-text-muted);
+    }
+  }
+
   scrollbar-width: thin;
   scrollbar-color: var(--color-border) var(--color-bg-secondary);
 }

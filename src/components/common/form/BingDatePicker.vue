@@ -1,4 +1,5 @@
 <script setup>
+import { ElDatePicker } from 'element-plus'
 import { computed, ref, watch } from 'vue'
 
 const props = defineProps({
@@ -95,7 +96,7 @@ const placeholderText = computed(() => {
 </script>
 
 <template>
-  <el-date-picker
+  <ElDatePicker
     v-model="internalDateValue"
     type="month"
     :placeholder="placeholderText"

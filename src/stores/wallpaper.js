@@ -7,6 +7,7 @@ import { computed, ref } from 'vue'
 import { isWorkerAvailable, workerDecodeAndParse } from '@/composables/useWorker'
 import { decodeData } from '@/utils/codec'
 import { DATA_CACHE_BUSTER, SERIES_CONFIG } from '@/utils/constants'
+import { fetchWithRetry } from '@/utils/fetch-adapter'
 import { buildBingPreviewUrl, buildBingThumbnailUrl, buildBingUHDUrl, buildImageUrl } from '@/utils/format'
 import { LRUCache } from '@/utils/lruCache'
 
@@ -46,10 +47,6 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
 
   // 系列总数量（从索引文件中获取，用于显示预期总数）
   const expectedTotal = ref(0)
-
-  // 重试配置
-  const MAX_RETRIES = 3
-  const RETRY_DELAY = 1000 // 1秒
 
   // 请求版本号（用于防止竞态条件）
   let requestVersion = 0
@@ -155,38 +152,9 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
   }
 
   /**
-   * 带重试的 fetch 请求
+   * 带重试的 fetch 请求（已移至 fetch-adapter.js，这里保留兼容）
    */
-  async function fetchWithRetry(url, options = {}, retries = MAX_RETRIES) {
-    for (let i = 0; i < retries; i++) {
-      try {
-        const response = await fetch(url, options)
-        if (!response.ok) {
-          // 4xx 错误不重试
-          if (response.status >= 400 && response.status < 500) {
-            throw new Error(`HTTP error! status: ${response.status}`)
-          }
-          // 5xx 错误重试
-          if (i < retries - 1) {
-            await delay(RETRY_DELAY * (i + 1))
-            continue
-          }
-          throw new Error(`HTTP error! status: ${response.status}`)
-        }
-        return response
-      }
-      catch (error) {
-        // 网络错误重试
-        if (error instanceof TypeError && error.message.includes('fetch')) {
-          if (i < retries - 1) {
-            await delay(RETRY_DELAY * (i + 1))
-            continue
-          }
-        }
-        throw error
-      }
-    }
-  }
+  // fetchWithRetry 现在从 fetch-adapter.js 导入，支持 Electron 环境
 
   /**
    * 解码数据（优先使用 Worker，降级到主线程）

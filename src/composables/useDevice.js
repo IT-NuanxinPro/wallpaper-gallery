@@ -126,20 +126,30 @@ function getDeviceType(windowWidth) {
 /**
  * 设备检测 Composable
  * 用于响应式检测当前设备类型
+ *
+ * 注意：Electron 桌面应用强制返回桌面模式
  */
 export function useDevice() {
   const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1024)
 
-  // 设备类型
-  const deviceType = computed(() => getDeviceType(windowWidth.value))
+  // Electron 环境检测
+  const isElectron = typeof window !== 'undefined' && window.electronAPI?.isElectron
 
-  // 便捷判断属性
-  const isMobile = computed(() => deviceType.value === DEVICE_TYPES.MOBILE)
-  const isTablet = computed(() => deviceType.value === DEVICE_TYPES.TABLET)
-  const isDesktop = computed(() => deviceType.value === DEVICE_TYPES.DESKTOP)
+  // 设备类型 - Electron 环境强制返回桌面
+  const deviceType = computed(() => {
+    if (isElectron) {
+      return DEVICE_TYPES.DESKTOP
+    }
+    return getDeviceType(windowWidth.value)
+  })
 
-  // 组合判断：是否为移动端（手机或平板）
-  const isMobileOrTablet = computed(() => isMobile.value || isTablet.value)
+  // 便捷判断属性 - Electron 环境强制返回桌面
+  const isMobile = computed(() => isElectron ? false : deviceType.value === DEVICE_TYPES.MOBILE)
+  const isTablet = computed(() => isElectron ? false : deviceType.value === DEVICE_TYPES.TABLET)
+  const isDesktop = computed(() => isElectron ? true : deviceType.value === DEVICE_TYPES.DESKTOP)
+
+  // 组合判断：是否为移动端（手机或平板） - Electron 环境强制返回 false
+  const isMobileOrTablet = computed(() => isElectron ? false : (isMobile.value || isTablet.value))
 
   // 基于窗口尺寸的响应式断点判断（与 SCSS 保持一致）
   const isSmallMobile = computed(() => windowWidth.value < BREAKPOINTS.SM)

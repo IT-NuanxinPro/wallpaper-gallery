@@ -37,12 +37,10 @@ export const SERIES_CONFIG = {
     icon: 'monitor',
     imageBaseUrl: `${CDN_BASE}/wallpaper/desktop`,
     thumbnailBaseUrl: `${CDN_BASE}/thumbnail/desktop`,
-    // 新架构：指向分类索引文件（带版本参数防缓存）
-    indexUrl: `${import.meta.env.BASE_URL}data/desktop/index.json${DATA_CACHE_BUSTER}`,
-    // 向后兼容：保留旧的 dataUrl（如需回退）
-    dataUrl: `${import.meta.env.BASE_URL}data/desktop.json${DATA_CACHE_BUSTER}`,
-    // 分类数据目录（动态拼接时需手动添加版本参数）
-    categoryBaseUrl: `${import.meta.env.BASE_URL}data/desktop`,
+    // Electron 专用：使用相对路径
+    indexUrl: `./data/desktop/index.json${DATA_CACHE_BUSTER}`,
+    dataUrl: `./data/desktop.json${DATA_CACHE_BUSTER}`,
+    categoryBaseUrl: `./data/desktop`,
     aspectRatio: '16/10',
   },
   mobile: {
@@ -51,12 +49,10 @@ export const SERIES_CONFIG = {
     icon: 'smartphone',
     imageBaseUrl: `${CDN_BASE}/wallpaper/mobile`,
     thumbnailBaseUrl: `${CDN_BASE}/thumbnail/mobile`,
-    // 新架构：指向分类索引文件（带版本参数防缓存）
-    indexUrl: `${import.meta.env.BASE_URL}data/mobile/index.json${DATA_CACHE_BUSTER}`,
-    // 向后兼容：保留旧的 dataUrl（如需回退）
-    dataUrl: `${import.meta.env.BASE_URL}data/mobile.json${DATA_CACHE_BUSTER}`,
-    // 分类数据目录（动态拼接时需手动添加版本参数）
-    categoryBaseUrl: `${import.meta.env.BASE_URL}data/mobile`,
+    // Electron 专用：使用相对路径
+    indexUrl: `./data/mobile/index.json${DATA_CACHE_BUSTER}`,
+    dataUrl: `./data/mobile.json${DATA_CACHE_BUSTER}`,
+    categoryBaseUrl: `./data/mobile`,
     aspectRatio: '9/16',
   },
   avatar: {
@@ -65,12 +61,10 @@ export const SERIES_CONFIG = {
     icon: 'user',
     imageBaseUrl: `${CDN_BASE}/wallpaper/avatar`,
     thumbnailBaseUrl: `${CDN_BASE}/thumbnail/avatar`,
-    // 新架构：指向分类索引文件（带版本参数防缓存）
-    indexUrl: `${import.meta.env.BASE_URL}data/avatar/index.json${DATA_CACHE_BUSTER}`,
-    // 向后兼容：保留旧的 dataUrl（如需回退）
-    dataUrl: `${import.meta.env.BASE_URL}data/avatar.json${DATA_CACHE_BUSTER}`,
-    // 分类数据目录（动态拼接时需手动添加版本参数）
-    categoryBaseUrl: `${import.meta.env.BASE_URL}data/avatar`,
+    // Electron 专用：使用相对路径
+    indexUrl: `./data/avatar/index.json${DATA_CACHE_BUSTER}`,
+    dataUrl: `./data/avatar.json${DATA_CACHE_BUSTER}`,
+    categoryBaseUrl: `./data/avatar`,
     aspectRatio: '1/1',
   },
   bing: {
@@ -82,11 +76,10 @@ export const SERIES_CONFIG = {
     bingCdnBase: 'https://cn.bing.com',
     // 本地 4K 原图基础路径
     imageBaseUrl: `${CDN_BASE}/bing`,
-    // 元数据 API（带版本参数防缓存）
-    indexUrl: `${import.meta.env.BASE_URL}data/bing/index.json${DATA_CACHE_BUSTER}`,
-    latestUrl: `${import.meta.env.BASE_URL}data/bing/latest.json${DATA_CACHE_BUSTER}`,
-    // 年度数据目录（动态拼接时需手动添加版本参数）
-    yearBaseUrl: `${import.meta.env.BASE_URL}data/bing`,
+    // Electron 专用：使用相对路径
+    indexUrl: `./data/bing/index.json${DATA_CACHE_BUSTER}`,
+    latestUrl: `./data/bing/latest.json${DATA_CACHE_BUSTER}`,
+    yearBaseUrl: `./data/bing`,
     aspectRatio: '16/9',
     isDaily: true,
     hasMetadata: true,

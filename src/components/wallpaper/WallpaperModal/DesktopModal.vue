@@ -4,12 +4,15 @@
  * 左侧：MacBook Pro 真机预览（带 macOS 菜单栏）
  * 右侧：壁纸信息和操作
  */
+import { ElMessage } from 'element-plus'
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
+import { useElectron } from '@/composables/useElectron'
 import { useWallpaperType } from '@/composables/useWallpaperType'
 import { usePopularityStore } from '@/stores/popularity'
 import { trackWallpaperDownload, trackWallpaperPreview } from '@/utils/analytics'
+import { downloadImage, setWallpaper } from '@/utils/electron-adapter'
 import { downloadFile, formatDate, formatFileSize, formatRelativeTime, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/format'
 import { recordDownload, recordView } from '@/utils/supabase'
 
@@ -26,6 +29,7 @@ const props = defineProps({
 
 const emit = defineEmits(['close', 'openCrop'])
 
+const { isElectron } = useElectron()
 const { currentSeries } = useWallpaperType()
 const popularityStore = usePopularityStore()
 
@@ -34,6 +38,7 @@ const isVisible = ref(false)
 const imageLoaded = ref(false)
 const shellLoaded = ref(false)
 const downloading = ref(false)
+const settingWallpaper = ref(false)
 const imageDimensions = ref({ width: 0, height: 0 })
 
 // 统计数据（从 popularityStore 获取，支持乐观更新）
@@ -188,12 +193,89 @@ async function handleDownload() {
 
   downloading.value = true
   try {
-    await downloadFile(props.wallpaper.url, props.wallpaper.filename)
+    // Electron 环境使用原生下载
+    if (isElectron.value) {
+      const result = await downloadImage(props.wallpaper.url, props.wallpaper.filename)
+      if (result.success) {
+        ElMessage({
+          message: '下载成功！',
+          type: 'success',
+          duration: 3000,
+          offset: 100,
+        })
+      }
+      else {
+        // 用户取消下载不显示错误
+        if (result.message !== '用户取消下载') {
+          ElMessage({
+            message: `下载失败: ${result.message || '未知错误'}`,
+            type: 'error',
+            duration: 3000,
+            offset: 100,
+          })
+        }
+        console.error('下载失败:', result.message)
+        return
+      }
+    }
+    else {
+      // Web 环境使用浏览器下载
+      await downloadFile(props.wallpaper.url, props.wallpaper.filename)
+    }
     trackWallpaperDownload(props.wallpaper, currentSeries.value)
     recordDownload(props.wallpaper, currentSeries.value)
   }
+  catch (error) {
+    ElMessage({
+      message: `下载失败: ${error.message}`,
+      type: 'error',
+      duration: 3000,
+      offset: 100,
+    })
+    console.error('下载异常:', error)
+  }
   finally {
     downloading.value = false
+  }
+}
+
+// Electron 专属：设置为壁纸
+async function handleSetWallpaper() {
+  if (!props.wallpaper || settingWallpaper.value)
+    return
+
+  settingWallpaper.value = true
+  try {
+    const result = await setWallpaper(props.wallpaper.url)
+    if (result.success) {
+      ElMessage({
+        message: '壁纸设置成功！',
+        type: 'success',
+        duration: 3000,
+        offset: 100, // 距离顶部的偏移量
+      })
+    }
+    else {
+      ElMessage({
+        message: `设置失败: ${result.message || '未知错误'}`,
+        type: 'error',
+        duration: 3000,
+        offset: 100,
+      })
+      console.error('设置壁纸失败:', result.message)
+    }
+  }
+  catch (error) {
+    ElMessage({
+      message: `设置失败: ${error.message}`,
+      type: 'error',
+      duration: 3000,
+      offset: 100,
+    })
+    console.error('设置壁纸异常:', error)
+  }
+  finally {
+    settingWallpaper.value = false
   }
 }
 
@@ -426,6 +508,22 @@ onUnmounted(() => {
                   <path d="M6 2v4M6 14v8M18 2v4M18 14v8M2 6h4M14 6h8M2 18h4M14 18h8" />
                 </svg>
                 <span>智能裁剪</span>
+              </button>
+
+              <!-- Electron 专属：设为壁纸按钮 -->
+              <button
+                v-if="isElectron"
+                class="set-wallpaper-btn"
+                :disabled="settingWallpaper"
+                @click="handleSetWallpaper"
+              >
+                <LoadingSpinner v-if="settingWallpaper" size="sm" />
+                <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <path d="M21 15l-5-5L5 21" />
+                </svg>
+                <span>{{ settingWallpaper ? '设置中...' : '设为桌面' }}</span>
               </button>
 
               <button
@@ -906,7 +1004,8 @@ onUnmounted(() => {
   }
 }
 
-.download-btn {
+.download-btn,
+.set-wallpaper-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -939,6 +1038,15 @@ onUnmounted(() => {
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+  }
+}
+
+.set-wallpaper-btn {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+
+  &:hover:not(:disabled) {
+    box-shadow: 0 12px 32px rgba(16, 185, 129, 0.5);
   }
 }
 

@@ -2,10 +2,15 @@
   "name": "wallpaper-gallery",
   "type": "module",
   "version": "2.10.0",
+  "electronVersion": "1.0.0",
   "private": true,
+  "main": "out/main/main.js",
   "scripts": {
     "dev": "vite",
+    "dev:electron": "electron-vite dev",
     "build": "vite build",
+    "build:electron": "electron-vite build && electron-builder",
+    "build:electron:local": "electron-vite build && electron-builder --mac --arm64 --dir",
     "preview": "vite preview",
     "sync": "node scripts/sync-data.js --force",
     "lint": "eslint .",
@@ -31,6 +36,9 @@
     "@antfu/eslint-config": "^6.7.1",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vitest/coverage-v8": "^4.0.16",
+    "electron": "39.3.0",
+    "electron-builder": "^26.4.0",
+    "electron-vite": "^5.0.0",
     "eslint": "^9.39.2",
     "eslint-plugin-format": "^1.1.0",
     "fast-check": "^4.5.2",
@@ -48,5 +56,42 @@
   },
   "lint-staged": {
     "*.{js,vue}": "eslint --fix"
+  },
+  "build": {
+    "appId": "com.wallpaper-gallery.app",
+    "productName": "Wallpaper Gallery",
+    "directories": {
+      "output": "dist-app"
+    },
+    "files": [
+      "out/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.graphics-design",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
   }
 }

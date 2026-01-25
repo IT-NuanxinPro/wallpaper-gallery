@@ -1,0 +1,171 @@
+name: Build Electron App
+
+on:
+  push:
+    branches:
+      - feature/desktop-app
+    tags:
+      - 'v*'
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+        include:
+          - os: macos-latest
+            platform: mac
+            arch: arm64
+          - os: windows-latest
+            platform: win
+            arch: x64
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Get latest CDN version from nuanXinProPic
+        id: cdn_version
+        shell: bash
+        run: |
+          LATEST_TAG=$(curl -s "https://api.github.com/repos/IT-NuanxinPro/nuanXinProPic/tags" | jq -r '.[0].name // empty')
+          
+          if [ -z "$LATEST_TAG" ] || [ "$LATEST_TAG" == "null" ]; then
+            LATEST_TAG="v1.1.29"
+            echo "⚠️ API request failed, utilizing fallback: $LATEST_TAG"
+          else
+            echo "✅ Detected latest CDN version: $LATEST_TAG"
+          fi
+          
+          echo "version=$LATEST_TAG" >> $GITHUB_OUTPUT
+
+      - name: Update CDN version in constants.js
+        shell: bash
+        run: |
+          CDN_VERSION="${{ steps.cdn_version.outputs.version }}"
+          echo "📦 Injecting CDN_VERSION: $CDN_VERSION"
+          
+          if [[ "$RUNNER_OS" == "macOS" ]]; then
+            sed -i '' "s/export const CDN_VERSION = '[^']*'/export const CDN_VERSION = '$CDN_VERSION'/" src/utils/constants.js
+          else
+            sed -i "s/export const CDN_VERSION = '[^']*'/export const CDN_VERSION = '$CDN_VERSION'/" src/utils/constants.js
+          fi
+          
+          grep "CDN_VERSION" src/utils/constants.js || { echo "❌ Version update failed"; exit 1; }
+
+      - name: Checkout Wallpaper Data Repo
+        uses: actions/checkout@v4
+        with:
+          repository: IT-NuanxinPro/nuanXinProPic
+          ref: ${{ steps.cdn_version.outputs.version }}
+          path: nuanXinProPic
+          fetch-depth: 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Prepare Assets (Data & Icons)
+        shell: bash
+        run: |
+          # 1. 准备目录
+          mkdir -p public/data/bing
+
+          # 2. 检查图标文件（应该已经在仓库中）
+          if [ ! -f "build/icon.icns" ] || [ ! -f "build/icon.ico" ]; then
+            echo "⚠️ Warning: Icon files not found in build directory"
+            echo "   Please run './scripts/generate-icons.sh' locally and commit the icons"
+            exit 1
+          else
+            echo "✅ Icon files found in build directory"
+            ls -lh build/icon.*
+          fi
+
+          # 3. 复制图床数据
+          if [ -d "nuanXinProPic/data" ]; then
+            echo "📦 Syncing gallery data from tag: ${{ steps.cdn_version.outputs.version }}"
+            cp -r nuanXinProPic/data/* public/data/ 2>/dev/null || echo "⚠️ Some data files may not exist"
+            
+            if [ -d "nuanXinProPic/bing/meta" ]; then
+               cp -r nuanXinProPic/bing/meta/* public/data/bing/ 2>/dev/null || echo "⚠️ Bing data may not exist"
+            fi
+            
+            echo "✅ Data sync complete (version: ${{ steps.cdn_version.outputs.version }})"
+          else
+            echo "❌ Error: Data repository is empty or missing"
+            exit 1
+          fi
+
+      - name: Build Electron App
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: |
+          echo "🚀 Building for ${{ matrix.os }}..."
+          
+          ELECTRON_VERSION=$(node -p "require('./package.json').electronVersion || require('./package.json').version")
+          echo "📦 Electron Version: $ELECTRON_VERSION"
+          echo "📦 Data Version: ${{ steps.cdn_version.outputs.version }}"
+          
+          yarn build:electron
+          
+          echo "📂 Build Output:"
+          ls -R dist-app/
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: wallpaper-gallery-${{ matrix.platform }}-${{ matrix.arch }}
+          path: |
+            dist-app/*.dmg
+            dist-app/*.exe
+            dist-app/*.blockmap
+            dist-app/latest*.yml
+          if-no-files-found: error
+
+  release:
+    name: Create Release
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Display Artifacts Structure
+        run: ls -R artifacts/
+
+      - name: Publish Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            artifacts/wallpaper-gallery-mac-arm64/*.dmg
+            artifacts/wallpaper-gallery-mac-arm64/*.blockmap
+            artifacts/wallpaper-gallery-mac-arm64/latest-mac.yml
+            artifacts/wallpaper-gallery-win-x64/*.exe
+            artifacts/wallpaper-gallery-win-x64/*.exe.blockmap
+            artifacts/wallpaper-gallery-win-x64/latest.yml
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

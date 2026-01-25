@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Electron build output
+out
+dist-electron
+
 # Auto-generated
 auto-imports.d.ts
 components.d.ts
@@ -34,3 +38,4 @@ components.d.ts
 .zcf
 ARCHITECTURE.md
 SEO提交流程.md
+dist-app

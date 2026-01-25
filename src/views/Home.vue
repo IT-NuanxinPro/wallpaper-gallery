@@ -3,8 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AvatarMakerBanner from '@/components/avatar/AvatarMakerBanner.vue'
 import AvatarMakerModal from '@/components/avatar/AvatarMakerModal/index.vue'
-import DiyAvatarBanner from '@/components/avatar/DiyAvatarBanner.vue'
-import AnnouncementBanner from '@/components/common/feedback/AnnouncementBanner.vue'
+// import DiyAvatarBanner from '@/components/avatar/DiyAvatarBanner.vue'
 import FilterPanel from '@/components/common/form/FilterPanel.vue'
 import BackToTop from '@/components/common/navigation/BackToTop.vue'
 import PortraitWallpaperModal from '@/components/wallpaper/PortraitWallpaperModal/index.vue'
@@ -232,12 +231,9 @@ onMounted(async () => {
 <template>
   <div class="home-page">
     <div class="container">
-      <!-- Announcement Banner -->
-      <AnnouncementBanner />
-
       <!-- DIY 头像工具入口 - 仅头像系列且 PC 端显示 -->
       <div v-if="currentSeries === 'avatar'" class="avatar-banners">
-        <DiyAvatarBanner />
+        <!-- <DiyAvatarBanner /> -->
         <AvatarMakerBanner v-if="!isMobileDevice()" @click="handleAvatarMakerClick" />
       </div>
 
@@ -319,12 +315,10 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .home-page {
-  padding: $spacing-md 0 $spacing-2xl;
-
-  // 移动端：为 fixed 的筛选栏预留空间
-  @include mobile-only {
-    padding-top: calc($spacing-md + 52px); // 52px 为筛选栏高度
-  }
+  // 为固定的导航栏和筛选面板留出空间
+  // 标题栏 + 导航栏 + FilterPanel 高度 + 间距
+  padding-top: calc(var(--titlebar-height) + $header-height + 12px);
+  padding-bottom: $spacing-2xl;
 }
 
 // 头像系列入口卡片容器

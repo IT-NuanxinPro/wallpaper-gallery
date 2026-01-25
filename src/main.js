@@ -8,6 +8,14 @@ import router from './router'
 import '@/utils/flexible'
 
 // ========================================
+// Electron 环境检测
+// ========================================
+if (window.electronAPI?.isElectron) {
+  console.log('[Electron] Running in Electron environment')
+  console.log('[Electron] Platform:', window.electronAPI.platform)
+}
+
+// ========================================
 // 旧版 Hash 路由兼容处理
 // ========================================
 // 如果用户访问的是旧的 hash URL（如 /#/desktop），

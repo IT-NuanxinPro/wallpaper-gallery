@@ -148,6 +148,13 @@ function dismissUpdate() {
  */
 export function useVersionCheck() {
   onMounted(() => {
+    // Electron 环境不检查 Web 版本更新
+    const isElectron = typeof window !== 'undefined' && window.electronAPI?.isElectron
+    if (isElectron) {
+      console.log('[VersionCheck] Electron 环境，跳过 Web 版本检查')
+      return
+    }
+
     if (!initialized) {
       initialized = true
 
@@ -158,7 +165,7 @@ export function useVersionCheck() {
         return
       }
 
-      // 延迟 5 秒后检查一次（避免影响首屏加载）
+      // Web 环境延迟 5 秒检查（避免影响首屏加载）
       setTimeout(checkForUpdates, 5000)
     }
   })

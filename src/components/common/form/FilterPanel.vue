@@ -1,8 +1,9 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { ElOption, ElSelect } from 'element-plus'
+import { computed } from 'vue'
 import BingDatePicker from '@/components/common/form/BingDatePicker.vue'
 import CategoryDropdown from '@/components/common/form/CategoryDropdown.vue'
-import MobileCategoryDrawer from '@/components/common/navigation/MobileCategoryDrawer.vue'
+// import MobileCategoryDrawer from '@/components/common/navigation/MobileCategoryDrawer.vue'
 import AnimatedNumber from '@/components/common/ui/AnimatedNumber.vue'
 import { useDevice } from '@/composables/useDevice'
 import { useViewMode } from '@/composables/useViewMode'
@@ -65,16 +66,25 @@ const props = defineProps({
 
 const emit = defineEmits(['update:sortBy', 'update:formatFilter', 'update:resolutionFilter', 'update:categoryFilter', 'update:subcategoryFilter', 'reset'])
 
+// 调试：检查常量是否正确加载
+console.log('[FilterPanel] FORMAT_OPTIONS:', FORMAT_OPTIONS)
+console.log('[FilterPanel] RESOLUTION_OPTIONS:', RESOLUTION_OPTIONS)
+console.log('[FilterPanel] SORT_OPTIONS:', SORT_OPTIONS)
+
 const { isMobileOrTablet } = useDevice()
 const { viewMode, setViewMode } = useViewMode()
 
+// 调试：检查设备检测
+console.log('[FilterPanel] isMobileOrTablet:', isMobileOrTablet.value)
+console.log('[FilterPanel] isElectron:', window.electronAPI?.isElectron)
+
 // 移动端弹窗状态
-const showFilterPopup = ref(false) // 格式+排序筛选弹窗
-const showCategoryDrawer = ref(false) // 分类选择抽屉
+// const showFilterPopup = ref(false) // 格式+排序筛选弹窗
+// const showCategoryDrawer = ref(false) // 分类选择抽屉
 
 // 临时筛选值（用于弹窗内）
-const tempSortBy = ref(props.sortBy)
-const tempFormatFilter = ref(props.formatFilter)
+// const tempSortBy = ref(props.sortBy)
+// const tempFormatFilter = ref(props.formatFilter)
 
 // 获取当前年月（用于 Bing 系列默认值判断）
 function getCurrentYearMonth() {
@@ -125,26 +135,26 @@ const viewModeSliderPosition = computed(() => {
 })
 
 // 移动端视图模式滑动指示器位置（网格和列表两个选项）
-const mobileViewModeSliderPosition = computed(() => {
-  return viewMode.value === 'list' ? 'is-list' : 'is-grid'
-})
+// const mobileViewModeSliderPosition = computed(() => {
+//   return viewMode.value === 'list' ? 'is-list' : 'is-grid'
+// })
 
 // 当前分类显示文本
-const currentCategoryLabel = computed(() => {
-  if (props.categoryFilter === 'all') {
-    return '分类'
-  }
-  let label = props.categoryFilter
-  if (props.subcategoryFilter !== 'all') {
-    label += ` · ${props.subcategoryFilter}`
-  }
-  return label
-})
+// const currentCategoryLabel = computed(() => {
+//   if (props.categoryFilter === 'all') {
+//     return '分类'
+//   }
+//   let label = props.categoryFilter
+//   if (props.subcategoryFilter !== 'all') {
+//     label += ` · ${props.subcategoryFilter}`
+//   }
+//   return label
+// })
 
 // 分类是否激活
-const isCategoryActive = computed(() => {
-  return props.categoryFilter !== 'all'
-})
+// const isCategoryActive = computed(() => {
+//   return props.categoryFilter !== 'all'
+// })
 
 function handleSortChange(value) {
   emit('update:sortBy', value)
@@ -162,17 +172,17 @@ function handleResolutionChange(value) {
 }
 
 // 移动端分类变化处理（来自 MobileCategoryDrawer，不重置子分类，由抽屉组件自行处理）
-function handleCategoryChange(value) {
-  emit('update:categoryFilter', value)
-  // 注意：移动端抽屉会在 handleConfirm 中同时发送父分类和子分类
-  // 这里不再强制重置子分类，由抽屉组件管理
-  trackFilter('category', value)
-}
+// function handleCategoryChange(value) {
+//   emit('update:categoryFilter', value)
+//   // 注意：移动端抽屉会在 handleConfirm 中同时发送父分类和子分类
+//   // 这里不再强制重置子分类，由抽屉组件管理
+//   trackFilter('category', value)
+// }
 
-function handleSubcategoryChange(value) {
-  emit('update:subcategoryFilter', value)
-  trackFilter('subcategory', value)
-}
+// function handleSubcategoryChange(value) {
+//   emit('update:subcategoryFilter', value)
+//   trackFilter('subcategory', value)
+// }
 
 // 分类变化处理（来自 CategoryDropdown）
 function handleCategoryUpdate(value) {
@@ -197,47 +207,47 @@ function handleReset() {
 }
 
 // 移动端：打开分类抽屉
-function openCategoryDrawer() {
-  showCategoryDrawer.value = true
-}
+// function openCategoryDrawer() {
+//   showCategoryDrawer.value = true
+// }
 
 // 移动端：分类选择确认
-function handleCategoryConfirm() {
-  trackFilter('category', props.categoryFilter)
-  if (props.subcategoryFilter !== 'all') {
-    trackFilter('subcategory', props.subcategoryFilter)
-  }
-}
+// function handleCategoryConfirm() {
+//   trackFilter('category', props.categoryFilter)
+//   if (props.subcategoryFilter !== 'all') {
+//     trackFilter('subcategory', props.subcategoryFilter)
+//   }
+// }
 
 // 移动端：打开筛选弹窗（格式+排序）
-function openFilterPopup() {
-  tempSortBy.value = props.sortBy
-  tempFormatFilter.value = props.formatFilter
-  showFilterPopup.value = true
-}
+// function openFilterPopup() {
+//   tempSortBy.value = props.sortBy
+//   tempFormatFilter.value = props.formatFilter
+//   showFilterPopup.value = true
+// }
 
-function closeFilterPopup() {
-  showFilterPopup.value = false
-}
+// function closeFilterPopup() {
+//   showFilterPopup.value = false
+// }
 
-function applyFilters() {
-  emit('update:sortBy', tempSortBy.value)
-  emit('update:formatFilter', tempFormatFilter.value)
+// function applyFilters() {
+//   emit('update:sortBy', tempSortBy.value)
+//   emit('update:formatFilter', tempFormatFilter.value)
 
-  if (tempSortBy.value !== props.sortBy) {
-    trackFilter('sort', tempSortBy.value)
-  }
-  if (tempFormatFilter.value !== props.formatFilter) {
-    trackFilter('format', tempFormatFilter.value)
-  }
+//   if (tempSortBy.value !== props.sortBy) {
+//     trackFilter('sort', tempSortBy.value)
+//   }
+//   if (tempFormatFilter.value !== props.formatFilter) {
+//     trackFilter('format', tempFormatFilter.value)
+//   }
 
-  closeFilterPopup()
-}
+//   closeFilterPopup()
+// }
 
-function resetFilters() {
-  tempSortBy.value = 'newest'
-  tempFormatFilter.value = 'all'
-}
+// function resetFilters() {
+//   tempSortBy.value = 'newest'
+//   tempFormatFilter.value = 'all'
+// }
 </script>
 
 <template>
@@ -342,201 +352,60 @@ function resetFilters() {
       <!-- Format Filter -->
       <div v-if="!hideFormatFilter" class="filter-item">
         <span class="filter-label">格式</span>
-        <el-select
+        <ElSelect
           :model-value="formatFilter"
           placeholder="全部格式"
           size="default"
           style="width: 140px"
           @change="handleFormatChange"
         >
-          <el-option
+          <ElOption
             v-for="option in FORMAT_OPTIONS"
             :key="option.value"
             :label="option.label"
             :value="option.value"
           />
-        </el-select>
+        </ElSelect>
       </div>
 
       <!-- Resolution Filter (仅电脑壁纸系列显示) -->
       <div v-if="currentSeries === 'desktop'" class="filter-item">
         <span class="filter-label">分辨率</span>
-        <el-select
+        <ElSelect
           :model-value="resolutionFilter"
           placeholder="全部分辨率"
           size="default"
           style="width: 140px"
           @change="handleResolutionChange"
         >
-          <el-option
+          <ElOption
             v-for="option in RESOLUTION_OPTIONS"
             :key="option.value"
             :label="option.label"
             :value="option.value"
           />
-        </el-select>
+        </ElSelect>
       </div>
 
       <!-- Sort -->
       <div class="filter-item">
         <span class="filter-label">排序</span>
-        <el-select
+        <ElSelect
           :model-value="sortBy"
           placeholder="排序方式"
           size="default"
           style="width: 160px"
           @change="handleSortChange"
         >
-          <el-option
+          <ElOption
             v-for="option in SORT_OPTIONS"
             :key="option.value"
             :label="option.label"
             :value="option.value"
           />
-        </el-select>
+        </ElSelect>
       </div>
     </div>
-
-    <!-- 移动端视图切换 + 分类按钮 + 筛选按钮 -->
-    <div v-else class="filter-right-mobile">
-      <!-- 视图模式切换（网格/列表） -->
-      <div class="view-mode-toggle-mobile">
-        <div class="view-mode-slider-mobile" :class="mobileViewModeSliderPosition" />
-        <button
-          class="view-mode-btn-mobile"
-          :class="{ 'is-active': viewMode === 'grid' || viewMode === 'masonry' }"
-          aria-label="网格视图"
-          @click="setViewMode('grid')"
-        >
-          <!-- 网格图标 -->
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="3" width="7" height="7" />
-            <rect x="14" y="3" width="7" height="7" />
-            <rect x="3" y="14" width="7" height="7" />
-            <rect x="14" y="14" width="7" height="7" />
-          </svg>
-        </button>
-        <button
-          class="view-mode-btn-mobile"
-          :class="{ 'is-active': viewMode === 'list' }"
-          aria-label="列表视图"
-          @click="setViewMode('list')"
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
-          </svg>
-        </button>
-      </div>
-
-      <!-- 分类按钮（独立出来，点击打开左右分栏抽屉） -->
-      <button
-        class="category-btn"
-        :class="{ 'is-active': isCategoryActive }"
-        @click="openCategoryDrawer"
-      >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M4 6h16M4 12h16M4 18h7" />
-        </svg>
-        <span class="category-btn-text">{{ currentCategoryLabel }}</span>
-        <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M6 9l6 6 6-6" />
-        </svg>
-      </button>
-
-      <!-- 筛选按钮（格式+排序） -->
-      <button class="filter-btn filter-btn-compact" @click="openFilterPopup">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
-        </svg>
-      </button>
-    </div>
-
-    <!-- 移动端分类选择抽屉（左右分栏） -->
-    <MobileCategoryDrawer
-      v-model:show="showCategoryDrawer"
-      :category-options="categoryOptions"
-      :category-filter="categoryFilter"
-      :subcategory-filter="subcategoryFilter"
-      @update:category-filter="handleCategoryChange"
-      @update:subcategory-filter="handleSubcategoryChange"
-      @confirm="handleCategoryConfirm"
-    />
-
-    <!-- 移动端筛选弹窗（格式+排序）- 使用 Teleport 避免 z-index 层叠问题 -->
-    <Teleport to="body">
-      <van-popup
-        v-model:show="showFilterPopup"
-        position="bottom"
-        round
-        class="filter-popup-dark"
-        :close-on-click-overlay="true"
-        :lock-scroll="true"
-        :duration="0.3"
-        safe-area-inset-bottom
-        :teleport="false"
-      >
-        <div class="popup-content">
-          <!-- 弹窗头部 -->
-          <div class="popup-header">
-            <button class="popup-reset" @click="resetFilters">
-              重置
-            </button>
-            <span class="popup-title">筛选</span>
-            <button class="popup-close" @click="closeFilterPopup">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M18 6L6 18M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          <!-- 筛选选项 -->
-          <div class="popup-body">
-            <!-- 格式 -->
-            <div v-if="!hideFormatFilter" class="filter-group">
-              <h3 class="group-title">
-                格式
-              </h3>
-              <div class="option-grid">
-                <button
-                  v-for="option in FORMAT_OPTIONS"
-                  :key="option.value"
-                  class="option-btn"
-                  :class="{ 'is-active': tempFormatFilter === option.value }"
-                  @click="tempFormatFilter = option.value"
-                >
-                  {{ option.label }}
-                </button>
-              </div>
-            </div>
-
-            <!-- 排序 -->
-            <div class="filter-group">
-              <h3 class="group-title">
-                排序
-              </h3>
-              <div class="option-grid">
-                <button
-                  v-for="option in SORT_OPTIONS"
-                  :key="option.value"
-                  class="option-btn"
-                  :class="{ 'is-active': tempSortBy === option.value }"
-                  @click="tempSortBy = option.value"
-                >
-                  {{ option.label }}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- 确认按钮 -->
-          <div class="popup-footer">
-            <button class="confirm-btn" @click="applyFilters">
-              确认筛选
-            </button>
-          </div>
-        </div>
-      </van-popup>
-    </Teleport>
   </div>
 </template>
 
@@ -548,27 +417,38 @@ function resetFilters() {
   justify-content: space-between;
   gap: $spacing-md;
   padding: $spacing-md $spacing-lg;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 1);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-radius: $radius-lg;
+  // border-radius: $radius-lg;
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
   transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
   margin-bottom: $spacing-lg;
 
-  // 吸顶效果（PC 和移动端通用）
-  position: -webkit-sticky;
-  position: sticky;
-  top: $header-height;
-  z-index: 99;
+  // 固定定位在导航栏下方，留一点间距
+  position: fixed;
+  top: calc(var(--titlebar-height) + $header-height + 1px); // 标题栏 + 导航栏 + 间距
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 98;
+  width: 100%;
 
-  // 确保 sticky 在各浏览器正常工作
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
+  // 内容居中，与 container 保持一致
+  max-width: calc($container-max-width - $spacing-lg * 2);
+
+  // 2K 屏幕加宽
+  @include screen-2k-up {
+    max-width: calc($container-max-width-xl - $spacing-2xl * 2);
+  }
+
+  // 4K 屏幕进一步加宽
+  @include screen-4k-up {
+    max-width: calc($container-max-width-2xl - $spacing-2xl * 2);
+  }
 
   [data-theme='dark'] & {
-    background: rgba(15, 23, 42, 0.75);
+    background: rgba(15, 23, 42, 1);
     border-color: rgba(255, 255, 255, 0.08);
   }
 

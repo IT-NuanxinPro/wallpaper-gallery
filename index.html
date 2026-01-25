@@ -238,13 +238,23 @@
       })()
     </script>
 
-    <!-- GitHub Pages SPA 路由恢复脚本 -->
+    <!-- GitHub Pages SPA 路由恢复脚本（仅 Web 环境） -->
     <script>
       ;(function () {
-        var redirect = sessionStorage.getItem('redirect')
-        if (redirect) {
-          sessionStorage.removeItem('redirect')
-          window.history.replaceState(null, null, redirect)
+        // Electron 环境跳过
+        if (typeof window !== 'undefined' && window.electronAPI) {
+          return
+        }
+
+        try {
+          var redirect = sessionStorage.getItem('redirect')
+          if (redirect) {
+            sessionStorage.removeItem('redirect')
+            window.history.replaceState(null, null, redirect)
+          }
+        } catch (e) {
+          // sessionStorage 不可用时忽略
+          console.warn('sessionStorage not available:', e)
         }
       })()
     </script>

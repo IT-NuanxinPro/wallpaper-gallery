@@ -1,5 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import { isMobileDevice } from '@/composables/useDevice'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import { DEVICE_SERIES } from '@/utils/constants'
 
 // ========================================
@@ -93,7 +92,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(),
   routes,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
@@ -109,12 +108,9 @@ const router = createRouter({
 
 const STORAGE_KEY = 'wallpaper-gallery-current-series'
 
-// 缓存设备类型
-let deviceType = null
+// Electron 桌面应用专用分支：强制使用桌面模式
 function getDeviceType() {
-  if (!deviceType)
-    deviceType = isMobileDevice() ? 'mobile' : 'desktop'
-  return deviceType
+  return 'desktop'
 }
 
 // 获取默认系列
@@ -124,7 +120,7 @@ function getDefaultSeries() {
   const saved = localStorage.getItem(STORAGE_KEY)
   if (saved && available.includes(saved))
     return saved
-  return device === 'mobile' ? 'mobile' : 'desktop'
+  return 'desktop' // 默认桌面壁纸
 }
 
 // 路由守卫
@@ -138,14 +134,18 @@ router.beforeEach((to, from, next) => {
     return
   }
 
-  // 检查系列是否对当前设备可用（如手机访问 /bing）
-  if (to.meta?.series) {
-    const available = DEVICE_SERIES[getDeviceType()]
-    if (!available.includes(to.meta.series)) {
-      next({ path: `/${getDefaultSeries()}`, replace: true })
-      return
-    }
-  }
+  // 检查系列是否对当前设备可用（桌面应用支持所有系列）
+  // Electron 桌面应用：允许访问所有系列
+  // if (to.meta?.series) {
+  //   const type = getDeviceType()
+  //   if (type !== 'desktop') {
+  //     const available = DEVICE_SERIES[type]
+  //     if (!available.includes(to.meta.series)) {
+  //       next({ path: `/${getDefaultSeries()}`, replace: true })
+  //       return
+  //     }
+  //   }
+  // }
 
   next()
 })

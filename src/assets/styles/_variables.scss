@@ -61,6 +61,7 @@ $transition-bounce: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
 
 // 布局
 $header-height: 72px;
+$titlebar-height: 32px; // Electron 标题栏高度
 $container-max-width: 1600px; // 基础最大宽度（从 1440px 提升）
 $container-max-width-xl: 1800px; // 大屏最大宽度
 $container-max-width-2xl: 2200px; // 超大屏/4K 最大宽度
@@ -188,6 +189,7 @@ $breakpoint-4k: 2560px; // 4K 屏幕
   --radius-xl: #{$radius-xl};
   --radius-full: #{$radius-full};
   --header-height: #{$header-height};
+  --titlebar-height: 0px; // 默认 Web 端无标题栏
   --grid-gap: #{$grid-gap};
 
   // 动画
