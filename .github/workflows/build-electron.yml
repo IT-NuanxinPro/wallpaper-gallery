@@ -2,10 +2,8 @@ name: Build Electron App
 
 on:
   push:
-    branches:
-      - feature/desktop-app
     tags:
-      - 'v*'
+      - 'electron-v*'
     paths-ignore:
       - '**.md'
       - 'docs/**'
