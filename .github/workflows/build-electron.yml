@@ -26,6 +26,10 @@ jobs:
             arch: x64
 
     runs-on: ${{ matrix.os }}
+    
+    env:
+      ELECTRON_MIRROR: https://npmmirror.com/mirrors/electron/
+      ELECTRON_BUILDER_BINARIES_MIRROR: https://npmmirror.com/mirrors/electron-builder-binaries/
 
     steps:
       - name: Checkout Code
@@ -73,14 +77,6 @@ jobs:
         with:
           node-version: '22'
           cache: 'yarn'
-
-      - name: Configure Electron Mirror
-        shell: bash
-        run: |
-          echo "ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/" >> $GITHUB_ENV
-          echo "ELECTRON_BUILDER_BINARIES_MIRROR=https://npmmirror.com/mirrors/electron-builder-binaries/" >> $GITHUB_ENV
-          yarn config set electron_mirror https://npmmirror.com/mirrors/electron/
-          yarn config set electron_builder_binaries_mirror https://npmmirror.com/mirrors/electron-builder-binaries/
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
