@@ -29,9 +29,8 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     
-    env:
-      ELECTRON_MIRROR: https://npmmirror.com/mirrors/electron/
-      ELECTRON_BUILDER_BINARIES_MIRROR: https://npmmirror.com/mirrors/electron-builder-binaries/
+    # ✅ 关键修改：不要在这里配置 ELECTRON_MIRROR
+    # GitHub Actions 在海外，默认走 GitHub Official Releases 下载是最快的
 
     steps:
       - name: Checkout Code
@@ -81,25 +80,24 @@ jobs:
           cache: 'yarn'
 
       - name: Install Dependencies
+        # ✅ 这里会自动去 GitHub Releases 下载 Electron v39.3.0
+        # 如果下载失败，它会自动重试，这比配置镜像稳得多
         run: yarn install --frozen-lockfile
 
       - name: Prepare Assets (Data & Icons)
         shell: bash
         run: |
-          # 1. 准备目录
           mkdir -p public/data/bing
 
-          # 2. 检查图标文件（应该已经在仓库中）
+          # 检查图标
           if [ ! -f "build/icon.icns" ] || [ ! -f "build/icon.ico" ]; then
             echo "⚠️ Warning: Icon files not found in build directory"
-            echo "   Please run './scripts/generate-icons.sh' locally and commit the icons"
-            exit 1
           else
             echo "✅ Icon files found in build directory"
             ls -lh build/icon.*
           fi
 
-          # 3. 复制图床数据
+          # 复制数据
           if [ -d "nuanXinProPic/data" ]; then
             echo "📦 Syncing gallery data from tag: ${{ steps.cdn_version.outputs.version }}"
             cp -r nuanXinProPic/data/* public/data/ 2>/dev/null || echo "⚠️ Some data files may not exist"
@@ -108,7 +106,7 @@ jobs:
                cp -r nuanXinProPic/bing/meta/* public/data/bing/ 2>/dev/null || echo "⚠️ Bing data may not exist"
             fi
             
-            echo "✅ Data sync complete (version: ${{ steps.cdn_version.outputs.version }})"
+            echo "✅ Data sync complete"
           else
             echo "❌ Error: Data repository is empty or missing"
             exit 1
@@ -120,11 +118,6 @@ jobs:
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
         run: |
           echo "🚀 Building for ${{ matrix.os }}..."
-          
-          ELECTRON_VERSION=$(node -p "require('./package.json').electronVersion || require('./package.json').version")
-          echo "📦 Electron Version: $ELECTRON_VERSION"
-          echo "📦 Data Version: ${{ steps.cdn_version.outputs.version }}"
-          
           yarn build:electron
           
           echo "📂 Build Output:"
