@@ -94,6 +94,26 @@ function goHome() {
           </div>
         </section>
 
+        <section class="about-section">
+          <h2>开发者工具</h2>
+          <p>以下是一些开发和测试工具，用于验证应用的各项功能。</p>
+          <div class="dev-tools">
+            <router-link to="/yimen-demo" class="dev-tool-link dev-tool-link--featured">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="5" y="2" width="14" height="20" rx="2" />
+                <path d="M12 18h.01" />
+              </svg>
+              <div class="dev-tool-info">
+                <h3>🚀 一门云 App 功能测试</h3>
+                <p>测试原生下载功能、图片保存到相册、文件系统操作等 App 专属能力</p>
+                <div class="dev-tool-badge">
+                  App 专用
+                </div>
+              </div>
+            </router-link>
+          </div>
+        </section>
+
         <div class="about-actions">
           <button class="btn btn--primary" @click="goHome">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -214,6 +234,97 @@ function goHome() {
   &:hover {
     background: var(--color-accent);
     color: white;
+  }
+}
+
+.dev-tools {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  margin-top: $spacing-md;
+}
+
+.dev-tool-link {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  padding: $spacing-md;
+  background: var(--color-bg-hover);
+  border-radius: $radius-md;
+  color: var(--color-text-primary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1px solid var(--color-border);
+
+  svg {
+    width: 24px;
+    height: 24px;
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+
+  .dev-tool-info {
+    flex: 1;
+
+    h3 {
+      font-size: $font-size-md;
+      font-weight: $font-weight-semibold;
+      color: var(--color-text-primary);
+      margin-bottom: $spacing-xs;
+    }
+
+    p {
+      font-size: $font-size-sm;
+      color: var(--color-text-secondary);
+      margin: 0 0 $spacing-xs 0;
+    }
+
+    .dev-tool-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      background: var(--color-accent);
+      color: white;
+      border-radius: $radius-full;
+      font-size: 11px;
+      font-weight: $font-weight-medium;
+    }
+  }
+
+  &:hover {
+    background: var(--color-accent-light);
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+  }
+
+  &--featured {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+    border: 2px solid var(--color-accent);
+
+    svg {
+      color: var(--color-accent);
+      animation: pulse 2s infinite;
+    }
+
+    .dev-tool-info h3 {
+      color: var(--color-accent);
+    }
+
+    &:hover {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(99, 102, 241, 0.25);
+    }
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
   }
 }
 

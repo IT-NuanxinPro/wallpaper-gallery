@@ -1,11 +1,12 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import DownloadButton from '@/components/common/DownloadButton.vue'
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import { useScrollLock } from '@/composables/useScrollLock'
 import { useWallpaperType } from '@/composables/useWallpaperType'
 import { usePopularityStore } from '@/stores/popularity'
 import { trackWallpaperDownload, trackWallpaperPreview } from '@/utils/analytics'
-import { downloadFile, formatDate, formatFileSize, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/format'
+import { formatDate, formatFileSize, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/format'
 import { recordDownload, recordView } from '@/utils/supabase'
 import { useDeviceMode } from './composables/useDeviceMode'
 import DeviceMode from './DeviceMode.vue'
@@ -24,7 +25,6 @@ const popularityStore = usePopularityStore()
 
 const isVisible = ref(false)
 const imageLoaded = ref(false)
-const downloading = ref(false)
 const imageDimensions = ref({ width: 0, height: 0 })
 
 // 统计数据（从 popularityStore 获取，支持乐观更新）
@@ -115,20 +115,6 @@ function closeModal() {
 function onAfterLeave() {
   scrollLock.unlock()
   emit('close')
-}
-
-async function handleDownload() {
-  if (!props.wallpaper || downloading.value)
-    return
-  downloading.value = true
-  try {
-    await downloadFile(props.wallpaper.url, props.wallpaper.filename)
-    trackWallpaperDownload(props.wallpaper, currentSeries.value)
-    recordDownload(props.wallpaper, currentSeries.value)
-  }
-  finally {
-    downloading.value = false
-  }
 }
 
 function handleImageLoad(e) {
@@ -277,17 +263,18 @@ onUnmounted(() => document.removeEventListener('keydown', handleKeydown))
                 <span>真机预览</span>
               </button>
 
-              <button
-                class="action-btn action-btn--primary"
-                :disabled="downloading"
-                @click="handleDownload"
-              >
-                <LoadingSpinner v-if="downloading" size="sm" />
-                <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
-                </svg>
-                <span>{{ downloading ? '下载中...' : '下载壁纸' }}</span>
-              </button>
+              <!-- 下载按钮 -->
+              <DownloadButton
+                :wallpaper="wallpaper"
+                size="md"
+                variant="primary"
+                @download-start="() => {}"
+                @download-success="(wallpaper) => {
+                  trackWallpaperDownload(wallpaper, currentSeries)
+                  recordDownload(wallpaper, currentSeries)
+                }"
+                @download-error="(error) => console.error('下载失败:', error)"
+              />
             </div>
           </div>
         </div>

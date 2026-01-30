@@ -216,6 +216,48 @@ export function getDisplayFilename(filename) {
  * @param {string} filename - 保存的文件名
  */
 export async function downloadFile(url, filename) {
+  // 检查是否在一门云 App 环境中
+  if (typeof window !== 'undefined' && window.jsBridge && window.jsBridge.isReady()) {
+    // 在 App 环境中，使用原生保存到相册功能
+    const { saveImageToAlbum, showToast } = await import('@/utils/yimenBridge')
+
+    try {
+      // 动态重建 URL（如果是 CDN 链接）
+      let finalUrl = url
+      if (url.includes('@main')) {
+        const path = extractPathFromUrl(url)
+        finalUrl = buildImageUrl(path)
+      }
+
+      const result = await saveImageToAlbum(finalUrl, filename)
+
+      if (result.success) {
+        showToast(result.message || '图片已保存到相册')
+      }
+      else {
+        showToast(result.message || '保存失败')
+        // 如果原生保存失败，回退到浏览器下载
+        await downloadFileInBrowser(finalUrl, filename)
+      }
+    }
+    catch (error) {
+      console.error('App 环境下载失败，回退到浏览器下载:', error)
+      showToast('保存失败，使用浏览器下载')
+      await downloadFileInBrowser(url, filename)
+    }
+  }
+  else {
+    // 在浏览器环境中，使用传统下载方式
+    await downloadFileInBrowser(url, filename)
+  }
+}
+
+/**
+ * 浏览器环境下载文件
+ * @param {string} url - 文件 URL
+ * @param {string} filename - 保存的文件名
+ */
+async function downloadFileInBrowser(url, filename) {
   // 动态重建 URL（如果是 CDN 链接）
   let finalUrl = url
   if (url.includes('@main')) {

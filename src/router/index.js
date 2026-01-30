@@ -85,6 +85,13 @@ const routes = [
     component: () => import('@/views/demo/MacBookDemo.vue'),
     meta: { title: 'MacBook Pro 真机预览 Demo', hideHeader: true },
   },
+  // 一门云 App 测试页面
+  {
+    path: '/yimen-demo',
+    name: 'YimenDemo',
+    component: () => import('@/views/demo/YimenAppDemo.vue'),
+    meta: { title: '一门云 App 测试 - Wallpaper Gallery', hideHeader: true },
+  },
   // 404 重定向到首页
   {
     path: '/:pathMatch(.*)*',
