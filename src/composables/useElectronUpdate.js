@@ -101,34 +101,69 @@ async function checkAppUpdate() {
 }
 
 /**
- * 检查壁纸数据更新（使用 Web 版本号）
+ * 检查壁纸数据更新（直接检查图床仓库的最新 tag）
  */
 async function checkDataUpdate() {
   try {
-    // 使用 Web 版本号作为数据版本（Web 定时部署会自动更新）
-    const webVersion = await fetchVersion('https://wallpaper.061129.xyz/version.json')
+    // 直接从图床仓库获取最新 tag
+    const response = await fetch('https://api.github.com/repos/IT-NuanxinPro/nuanXinProPic/tags')
+    if (!response.ok) {
+      throw new Error(`GitHub API 请求失败: ${response.status}`)
+    }
 
-    if (!webVersion)
+    const tags = await response.json()
+    if (!tags || tags.length === 0) {
+      console.warn('[ElectronUpdate] 未找到图床版本标签')
       return
+    }
+
+    const latestTag = tags[0].name // 最新的 tag
 
     // 从 localStorage 获取本地数据版本
-    const localDataVersion = localStorage.getItem('wallpaper_data_version') || '0.0.0'
+    const localDataVersion = localStorage.getItem('wallpaper_data_version') || 'v0.0.0'
 
-    const comparison = compareVersions(webVersion.version, localDataVersion)
+    // 比较版本（去掉 v 前缀）
+    const latestVersion = latestTag.replace(/^v/, '')
+    const localVersion = localDataVersion.replace(/^v/, '')
+
+    const comparison = compareVersions(latestVersion, localVersion)
 
     if (comparison > 0) {
       hasDataUpdate.value = true
       dataUpdateInfo.value = {
         current: localDataVersion,
-        latest: webVersion.version,
-        updateTime: webVersion.buildTime,
+        latest: latestTag,
+        updateTime: new Date().toISOString(),
         changelog: '发现新的壁纸内容',
       }
-      console.log(`[ElectronUpdate] 发现壁纸数据更新: ${localDataVersion} → ${webVersion.version}`)
+      console.log(`[ElectronUpdate] 发现壁纸数据更新: ${localDataVersion} → ${latestTag}`)
     }
   }
   catch (error) {
     console.warn('[ElectronUpdate] 检查数据更新失败:', error)
+
+    // 如果 GitHub API 失败，回退到检查 Web 版本
+    try {
+      const webVersion = await fetchVersion('https://wallpaper.061129.xyz/version.json')
+      if (webVersion) {
+        const localDataVersion = localStorage.getItem('wallpaper_data_version') || '0.0.0'
+        const comparison = compareVersions(webVersion.version, localDataVersion)
+
+        if (comparison > 0) {
+          hasDataUpdate.value = true
+          dataUpdateInfo.value = {
+            current: localDataVersion,
+            latest: webVersion.version,
+            updateTime: webVersion.buildTime,
+            changelog: '发现新的壁纸内容',
+          }
+          console.log(`[ElectronUpdate] 发现壁纸数据更新（回退检查）: ${localDataVersion} → ${webVersion.version}`)
+        }
+      }
+    }
+    catch (fallbackError) {
+      console.warn('[ElectronUpdate] 回退检查也失败:', fallbackError)
+    }
   }
 }
 
@@ -164,9 +199,11 @@ async function updateWallpaperData() {
       const result = await window.electronAPI.updateWallpaperData()
 
       if (result.success) {
-        // 保存版本号
-        if (dataUpdateInfo.value?.latest) {
-          localStorage.setItem('wallpaper_data_version', dataUpdateInfo.value.latest)
+        // 保存图床版本号（从更新结果中获取，或使用当前检测到的最新版本）
+        const versionToSave = result.version || dataUpdateInfo.value?.latest
+        if (versionToSave) {
+          localStorage.setItem('wallpaper_data_version', versionToSave)
+          console.log(`[ElectronUpdate] 已保存数据版本: ${versionToSave}`)
         }
 
         hasDataUpdate.value = false
