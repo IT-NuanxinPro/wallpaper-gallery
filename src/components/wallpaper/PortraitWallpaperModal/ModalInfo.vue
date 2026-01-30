@@ -43,10 +43,16 @@ const props = defineProps({
 
 const emit = defineEmits(['download', 'toggleDeviceMode'])
 
-// 计算属性
-const displayFilename = computed(() =>
-  props.wallpaper ? getDisplayFilename(props.wallpaper.filename) : '',
-)
+// 计算属性 - 优先使用 AI 生成的 displayTitle
+const displayFilename = computed(() => {
+  if (!props.wallpaper)
+    return ''
+  // 优先使用 AI 生成的标题
+  if (props.wallpaper.displayTitle) {
+    return props.wallpaper.displayTitle
+  }
+  return getDisplayFilename(props.wallpaper.filename)
+})
 
 const categoryDisplay = computed(() => {
   if (!props.wallpaper?.category)
@@ -74,6 +80,10 @@ const formattedSize = computed(() =>
 const formattedDate = computed(() =>
   props.wallpaper ? formatDate(props.wallpaper.createdAt) : '',
 )
+
+// AI 信息
+const aiDescription = computed(() => props.wallpaper?.description || '')
+const aiKeywords = computed(() => props.wallpaper?.keywords || [])
 </script>
 
 <template>
@@ -95,9 +105,25 @@ const formattedDate = computed(() =>
     <!-- 实际内容 -->
     <template v-else>
       <div class="modal-info__main">
-        <h3 class="modal-info__title">
-          {{ displayFilename }}
-        </h3>
+        <div class="modal-info__header">
+          <h3 class="modal-info__title">
+            {{ displayFilename }}
+          </h3>
+        </div>
+
+        <!-- AI 描述 -->
+        <p v-if="aiDescription" class="modal-ai-description">
+          {{ aiDescription }}
+        </p>
+
+        <!-- 原始文件名（如果使用了 AI 标题） -->
+        <div v-if="wallpaper?.displayTitle && wallpaper.displayTitle !== getDisplayFilename(wallpaper.filename)" class="modal-info__original-name">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z" />
+            <path d="M13 2v7h7" />
+          </svg>
+          <span>{{ getDisplayFilename(wallpaper.filename) }}</span>
+        </div>
 
         <div v-if="categoryDisplay" class="modal-info__category">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -125,6 +151,14 @@ const formattedDate = computed(() =>
                 <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
               </svg>
               {{ downloadCount }}
+            </span>
+          </div>
+
+          <!-- AI 关键词标签云 -->
+          <div v-if="aiKeywords.length > 0" class="modal-ai-keywords">
+            <span class="keyword-label">关键词：</span>
+            <span v-for="keyword in aiKeywords" :key="keyword" class="keyword-tag">
+              {{ keyword }}
             </span>
           </div>
 
@@ -191,13 +225,41 @@ const formattedDate = computed(() =>
     gap: $spacing-xs;
   }
 
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+
   &__title {
+    flex: 1;
     font-size: $font-size-md;
     font-weight: $font-weight-semibold;
     color: var(--color-text-primary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  &__original-name {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--color-text-muted);
+    padding: 4px 0;
+
+    svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
 
   &__category {
@@ -350,6 +412,53 @@ const formattedDate = computed(() =>
   &--download {
     background: rgba(16, 185, 129, 0.15);
     color: var(--color-success);
+  }
+}
+
+// AI 相关样式
+.modal-ai-description {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  margin: 4px 0;
+  padding: 8px 12px;
+  background: var(--color-bg-hover);
+  border-radius: $radius-md;
+  border-left: 3px solid #667eea;
+}
+
+.modal-ai-keywords {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+
+  .keyword-label {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    font-weight: $font-weight-medium;
+  }
+
+  .keyword-tag {
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: $font-weight-medium;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.12), rgba(118, 75, 162, 0.12));
+    color: #667eea;
+    border-radius: $radius-md;
+    border: 1px solid rgba(102, 126, 234, 0.25);
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+      transform: translateY(-1px);
+    }
+
+    [data-theme='dark'] & {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+      border-color: rgba(102, 126, 234, 0.35);
+    }
   }
 }
 

@@ -97,9 +97,36 @@ Supabase 用于记录壁纸的浏览量和下载量统计。**此功能为可选
 在 Supabase 控制台中：
 - **Project Settings** → **API**
 - 复制 `Project URL` → 填入 `VITE_SUPABASE_URL`
+### 2. 获取项目凭证
+
+在 Supabase 控制台中：
+- **Project Settings** → **API**
+- 复制 `Project URL` → 填入 `VITE_SUPABASE_URL`
 - 复制 `anon public` Key → 填入 `VITE_SUPABASE_ANON_KEY`
 
-### 3. 创建数据库表
+### 3. 配置 GitHub Secrets（重要）
+
+为了保护你的 Supabase 凭证，需要在 GitHub 仓库中配置 Secrets：
+
+1. 进入你的 GitHub 仓库
+2. 点击 **Settings** → **Secrets and variables** → **Actions**
+3. 点击 **New repository secret** 添加以下 Secrets：
+
+| Secret 名称 | 值 | 说明 |
+|------------|-----|------|
+| `VITE_SUPABASE_URL` | 你的 Supabase Project URL | 例如：https://xxx.supabase.co |
+| `VITE_SUPABASE_ANON_KEY` | 你的 Supabase anon public key | 从 Supabase 控制台复制 |
+
+**为什么要用 Secrets？**
+- ✅ 防止 API Key 泄露
+- ✅ 避免别人 Fork 你的项目后消耗你的 Supabase 配额
+- ✅ 每个 Fork 用户需要配置自己的 Supabase
+
+**注意**：
+- 如果不配置这些 Secrets，部署会成功，但统计功能不可用
+- Fork 用户必须配置自己的 Supabase 才能启用统计功能
+
+### 4. 创建数据库表
 
 在 Supabase 控制台的 **SQL Editor** 中执行以下 SQL：
 

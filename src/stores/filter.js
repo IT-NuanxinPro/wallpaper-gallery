@@ -165,15 +165,35 @@ export const useFilterStore = defineStore('filter', () => {
     const { skipCategoryFilter = false } = options
     let result = [...wallpapers]
 
-    // 搜索过滤
+    // 搜索过滤（支持多关键词搜索，用空格分隔）
     if (debouncedQuery.value) {
-      const query = debouncedQuery.value.toLowerCase()
-      result = result.filter(w =>
-        w.filename.toLowerCase().includes(query)
-        || w.category?.toLowerCase().includes(query)
-        || w.subcategory?.toLowerCase().includes(query)
-        || (w.tags && w.tags.some(tag => tag.toLowerCase().includes(query))),
-      )
+      const queryTerms = debouncedQuery.value.toLowerCase().split(/\s+/).filter(Boolean)
+
+      result = result.filter((w) => {
+        // 构建搜索文本集合
+        const searchableTexts = [
+          w.filename?.toLowerCase() || '',
+          w.category?.toLowerCase() || '',
+          w.subcategory?.toLowerCase() || '',
+          w.displayTitle?.toLowerCase() || '',
+          w.description?.toLowerCase() || '',
+        ]
+
+        // 添加 tags 数组
+        if (w.tags && Array.isArray(w.tags)) {
+          searchableTexts.push(...w.tags.map(t => t.toLowerCase()))
+        }
+
+        // 添加 keywords 数组（AI 生成的关键词）
+        if (w.keywords && Array.isArray(w.keywords)) {
+          searchableTexts.push(...w.keywords.map(k => k.toLowerCase()))
+        }
+
+        // 所有搜索词都必须匹配（AND 逻辑）
+        return queryTerms.every(term =>
+          searchableTexts.some(text => text.includes(term)),
+        )
+      })
     }
 
     // 格式过滤

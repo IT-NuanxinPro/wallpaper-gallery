@@ -76,10 +76,28 @@ function autoExpandIsland() {
   }, 3500)
 }
 
-// 计算属性
-const displayFilename = computed(() =>
-  props.wallpaper ? getDisplayFilename(props.wallpaper.filename) : '',
-)
+// 计算属性 - 优先使用 AI 生成的 displayTitle
+const displayFilename = computed(() => {
+  if (!props.wallpaper)
+    return ''
+
+  // 优先使用 AI 生成的显示标题
+  if (props.wallpaper.displayTitle) {
+    // 去除常见的图片格式后缀名
+    return props.wallpaper.displayTitle.replace(/\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|tif|ico|heic|heif)$/i, '')
+  }
+
+  // 回退到处理过的文件名
+  return getDisplayFilename(props.wallpaper.filename)
+})
+
+// AI 标签（显示前3个关键词）
+const aiTags = computed(() => {
+  if (!props.wallpaper?.keywords || !Array.isArray(props.wallpaper.keywords)) {
+    return []
+  }
+  return props.wallpaper.keywords.slice(0, 3)
+})
 
 const categoryDisplay = computed(() => {
   if (!props.wallpaper?.category)
@@ -317,6 +335,10 @@ onUnmounted(() => {
             </div>
 
             <div class="info-tags">
+              <!-- AI 标签（显示前3个关键词） -->
+              <span v-for="tag in aiTags" :key="tag" class="tag tag--ai">
+                {{ tag }}
+              </span>
               <span class="tag" :class="[`tag--${resolution.type || 'success'}`]">
                 {{ resolution.label }}
               </span>
@@ -741,6 +763,20 @@ onUnmounted(() => {
   font-weight: 600;
   border-radius: 20px;
   backdrop-filter: blur(10px);
+
+  &--ai {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(16, 185, 129, 0.25) 100%);
+    color: #a78bfa;
+    border: 1px solid rgba(99, 102, 241, 0.4);
+    font-weight: 700;
+    position: relative;
+
+    &::before {
+      content: '✨';
+      margin-right: 6px;
+      font-size: 11px;
+    }
+  }
 
   &--success {
     background: rgba(16, 185, 129, 0.2);

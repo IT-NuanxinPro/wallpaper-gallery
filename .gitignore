@@ -15,9 +15,6 @@ dist-ssr
 # Auto-generated
 auto-imports.d.ts
 components.d.ts
-public/data/*
-!public/data/stats/
-public/version.json
 
 # Editor directories and files
 .vscode/*

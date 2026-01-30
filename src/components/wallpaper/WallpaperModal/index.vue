@@ -246,7 +246,27 @@ const fileExt = computed(() => props.wallpaper ? getFileExtension(props.wallpape
 const formattedSize = computed(() => props.wallpaper ? formatFileSize(props.wallpaper.size) : '')
 const formattedDate = computed(() => props.wallpaper ? formatDate(props.wallpaper.createdAt) : '')
 const relativeTime = computed(() => props.wallpaper ? formatRelativeTime(props.wallpaper.createdAt) : '')
-const displayFilename = computed(() => props.wallpaper ? getDisplayFilename(props.wallpaper.filename) : '')
+// 显示标题（优先使用 AI 标题）
+const displayTitle = computed(() => {
+  if (!props.wallpaper)
+    return ''
+
+  // 优先使用 AI 生成的显示标题
+  if (props.wallpaper.displayTitle) {
+    return props.wallpaper.displayTitle
+  }
+
+  // 回退到处理过的文件名
+  return getDisplayFilename(props.wallpaper.filename)
+})
+
+// AI 标签（显示前3个关键词）
+const aiTags = computed(() => {
+  if (!props.wallpaper?.keywords || !Array.isArray(props.wallpaper.keywords)) {
+    return []
+  }
+  return props.wallpaper.keywords.slice(0, 3)
+})
 
 // 分类信息显示
 const categoryDisplay = computed(() => {
@@ -502,9 +522,9 @@ onUnmounted(() => {
                 :wallpaper="wallpaper"
                 :compact="useCompactInfo"
               />
-              <!-- 普通壁纸文件名 -->
+              <!-- 普通壁纸标题 -->
               <h3 v-if="!isBingWallpaper" class="info-title">
-                {{ displayFilename }}
+                {{ displayTitle }}
               </h3>
               <!-- 分类信息（普通壁纸） -->
               <div v-if="categoryDisplay && !isBingWallpaper" class="info-category">
@@ -515,6 +535,10 @@ onUnmounted(() => {
                 <span>{{ categoryDisplay }}</span>
               </div>
               <div class="info-tags">
+                <!-- AI 标签（显示前3个关键词） -->
+                <span v-for="tag in aiTags" :key="tag" class="tag tag--ai">
+                  {{ tag }}
+                </span>
                 <!-- 紧凑布局显示原图清晰度，PC端显示预览图清晰度 -->
                 <span v-if="useCompactInfo && originalResolution" class="tag" :class="[`tag--${originalResolution.type || 'success'}`]">{{ originalResolution.label }}</span>
                 <span v-else class="tag" :class="[`tag--${resolution.type || 'success'}`]">{{ resolution.label }}</span>
@@ -990,6 +1014,20 @@ onUnmounted(() => {
   font-weight: $font-weight-bold;
   border-radius: $radius-sm;
   letter-spacing: 0.3px;
+
+  &--ai {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(16, 185, 129, 0.15) 100%);
+    color: var(--color-accent);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    font-weight: $font-weight-semibold;
+    position: relative;
+
+    &::before {
+      content: '✨';
+      margin-right: 4px;
+      font-size: 10px;
+    }
+  }
 
   &--primary {
     background: rgba(99, 102, 241, 0.15);
