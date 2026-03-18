@@ -2,7 +2,7 @@
 
 # --- 1. 获取图床仓库最新的 CDN 版本 ---
 echo "🔍 Fetching latest CDN version..."
-LATEST_TAG=$(curl -s "https://api.github.com/repos/IT-NuanxinPro/nuanXinProPic/tags" | jq -r '.[0].name // "v1.0.4"')
+LATEST_TAG=$(curl -s "https://api.github.com/repos/IT-NuanxinPro/nuanXinProPic/tags" | python3 -c "import sys, json; data=json.load(sys.stdin); print(data[0]['name'] if data else 'v1.2.17')")
 
 if [ -z "$LATEST_TAG" ] || [ "$LATEST_TAG" == "null" ]; then
   LATEST_TAG="v1.0.4"
