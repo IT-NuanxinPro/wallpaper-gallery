@@ -64,13 +64,6 @@ const routes = [
     component: () => import('@/views/About.vue'),
     meta: { title: '关于我们 - Wallpaper Gallery' },
   },
-  // Android 下载页面
-  {
-    path: '/download',
-    name: 'Download',
-    component: () => import('@/views/DownloadPage.vue'),
-    meta: { title: '下载 App - Wallpaper Gallery', hideHeader: true },
-  },
   // iPhone 真机预览 Demo
   {
     path: '/iphone-demo',
@@ -85,10 +78,11 @@ const routes = [
     component: () => import('@/views/demo/MacBookDemo.vue'),
     meta: { title: 'MacBook Pro 真机预览 Demo', hideHeader: true },
   },
-  // 404 重定向到首页
   {
     path: '/:pathMatch(.*)*',
-    redirect: '/',
+    name: 'NotFound',
+    component: () => import('@/views/NotFound.vue'),
+    meta: { title: '页面未找到 - Wallpaper Gallery', hideHeader: true },
   },
 ]
 
@@ -152,8 +146,11 @@ router.beforeEach((to, from, next) => {
 
 // 记录用户选择
 router.afterEach((to) => {
-  if (to.meta?.series)
+  document.title = to.meta.title || 'Wallpaper Gallery - 精选高清4K壁纸'
+
+  if (to.meta?.series) {
     localStorage.setItem(STORAGE_KEY, to.meta.series)
+  }
 })
 
 export default router

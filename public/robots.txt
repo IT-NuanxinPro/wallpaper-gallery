@@ -5,7 +5,7 @@ User-agent: *
 Allow: /
 
 # Sitemap 位置
-Sitemap: https://wallpaper.061129.xyz/sitemap.xml
+Sitemap: https://test-wallpaper.061129.xyz/sitemap.xml
 
 # 禁止抓取的路径（如果有）
 # Disallow: /admin/
