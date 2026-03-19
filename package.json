@@ -1,11 +1,13 @@
 {
   "name": "wallpaper-gallery",
   "type": "module",
-  "version": "2.10.0",
+  "version": "2.11.1",
   "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "prerender": "node scripts/prerender.js",
+    "build:seo": "pnpm build && pnpm prerender",
     "preview": "vite preview",
     "sync": "node scripts/sync-data.js --force",
     "lint": "eslint .",
@@ -38,6 +40,7 @@
     "javascript-obfuscator": "^5.1.0",
     "lint-staged": "^16.2.7",
     "postcss-pxtorem": "^6.1.0",
+    "puppeteer": "^24.39.1",
     "rollup-plugin-external-globals": "^0.13.0",
     "sass": "^1.97.0",
     "unplugin-auto-import": "^20.3.0",

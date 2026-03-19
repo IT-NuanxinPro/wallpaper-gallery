@@ -11,22 +11,19 @@
     <!-- SEO 基础优化 -->
     <meta
       name="description"
-      content="Wallpaper Gallery - 精选高清4K壁纸，涵盖动漫、风景、人像、游戏等多种分类，免费下载，支持电脑壁纸、手机壁纸和头像"
+      content="Wallpaper Gallery 提供 4K 高清壁纸免费下载，涵盖电脑桌面壁纸、手机壁纸、动漫头像和每日 Bing 壁纸等分类，适配 Windows、Mac、iPhone 和 Android 设备，支持高清预览。"
     />
-    <meta
-      name="keywords"
-      content="壁纸,高清壁纸,4K壁纸,桌面壁纸,手机壁纸,免费壁纸,动漫壁纸,风景壁纸,人像壁纸,游戏壁纸,头像"
-    />
+    <meta name="keywords" content="4K壁纸,高清壁纸,电脑壁纸,桌面壁纸,手机壁纸,动漫头像,免费壁纸下载,Bing壁纸" />
     <meta name="author" content="Wallpaper Gallery" />
     <meta name="theme-color" content="#6366f1" />
 
     <!-- Open Graph (Facebook, LinkedIn) -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://wallpaper.061129.xyz/" />
-    <meta property="og:title" content="Wallpaper Gallery - 精选高清壁纸" />
+    <meta property="og:title" content="4K高清壁纸下载_电脑桌面壁纸_手机壁纸 - Wallpaper Gallery" />
     <meta
       property="og:description"
-      content="免费高清 4K 壁纸，涵盖动漫、风景、人像等多种分类，支持电脑壁纸、手机壁纸和头像下载"
+      content="Wallpaper Gallery 提供 4K 高清壁纸免费下载，涵盖电脑桌面壁纸、手机壁纸、动漫头像和每日 Bing 壁纸等分类。"
     />
     <meta property="og:image" content="https://wallpaper.061129.xyz/og-image.jpg" />
     <meta property="og:site_name" content="Wallpaper Gallery" />
@@ -35,8 +32,11 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://wallpaper.061129.xyz/" />
-    <meta name="twitter:title" content="Wallpaper Gallery - 精选高清壁纸" />
-    <meta name="twitter:description" content="免费高清 4K 壁纸，涵盖动漫、风景、人像等多种分类" />
+    <meta name="twitter:title" content="4K高清壁纸下载_电脑桌面壁纸_手机壁纸 - Wallpaper Gallery" />
+    <meta
+      name="twitter:description"
+      content="Wallpaper Gallery 提供 4K 高清壁纸免费下载，涵盖电脑桌面壁纸、手机壁纸、动漫头像和每日 Bing 壁纸等分类。"
+    />
     <meta name="twitter:image" content="https://wallpaper.061129.xyz/twitter-card.jpg" />
 
     <!-- Canonical URL -->
@@ -45,7 +45,7 @@
     <!-- Robots -->
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 
-    <title>Wallpaper Gallery - 精选高清4K壁纸免费下载</title>
+    <title>4K高清壁纸下载_电脑桌面壁纸_手机壁纸 - Wallpaper Gallery</title>
 
     <!-- 关键 CSS 内联（首屏渲染优化） -->
     <style>
@@ -134,6 +134,40 @@
         min-height: 100vh;
         display: flex;
         flex-direction: column;
+      }
+
+      .seo-noscript {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 32px 20px;
+        color: var(--color-text-primary);
+      }
+
+      .seo-noscript h1 {
+        font-size: 28px;
+        margin-bottom: 12px;
+      }
+
+      .seo-noscript p {
+        color: var(--color-text-secondary);
+        margin-bottom: 16px;
+      }
+
+      .seo-noscript ul {
+        padding-left: 20px;
+      }
+
+      .seo-noscript li + li {
+        margin-top: 8px;
+      }
+
+      .seo-noscript a {
+        color: var(--color-accent);
+        text-decoration: none;
+      }
+
+      .seo-noscript a:hover {
+        text-decoration: underline;
       }
 
       /* 加载状态骨架屏样式 */
@@ -239,12 +273,22 @@
     </script>
   </head>
   <body>
-    <div id="app">
-      <div class="seo-content" style="display: none">
-        <h1>Wallpaper Gallery - 精选高清壁纸</h1>
-        <p>欢迎来到我们的壁纸画廊，这里提供 4K 电脑壁纸、手机壁纸、动漫头像等。支持 iOS、Android 和 PC 预览。</p>
+    <div id="app"></div>
+    <noscript>
+      <div class="seo-noscript">
+        <h1>Wallpaper Gallery - 4K 高清壁纸下载</h1>
+        <p>Wallpaper Gallery 提供电脑桌面壁纸、手机壁纸、动漫头像和每日 Bing 壁纸，支持多设备高清预览与下载。</p>
+        <nav aria-label="站点导航">
+          <ul>
+            <li><a href="/desktop">电脑桌面壁纸</a></li>
+            <li><a href="/mobile">手机壁纸</a></li>
+            <li><a href="/avatar">高清头像</a></li>
+            <li><a href="/bing">每日 Bing 壁纸</a></li>
+            <li><a href="/about">关于 Wallpaper Gallery</a></li>
+          </ul>
+        </nav>
       </div>
-    </div>
+    </noscript>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

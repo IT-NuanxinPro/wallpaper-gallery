@@ -2,6 +2,11 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { isMobileDevice } from '@/composables/useDevice'
 import { DEVICE_SERIES } from '@/utils/constants'
 
+const SITE_NAME = 'Wallpaper Gallery'
+const SITE_URL = 'https://wallpaper.061129.xyz'
+const DEFAULT_TITLE = '4K高清壁纸下载_电脑桌面壁纸_手机壁纸 - Wallpaper Gallery'
+const DEFAULT_DESCRIPTION = 'Wallpaper Gallery 提供 4K 高清壁纸免费下载，涵盖电脑桌面壁纸、手机壁纸、动漫头像和每日 Bing 壁纸等分类，适配 Windows、Mac、iPhone 和 Android 设备，支持高清预览。'
+
 // ========================================
 // 路由配置（使用标准懒加载，骨架屏由 App.vue Suspense 处理）
 // ========================================
@@ -11,7 +16,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: () => import('@/views/Home.vue'),
-    meta: { title: 'Wallpaper Gallery - 精选高清壁纸' },
+    meta: {
+      title: DEFAULT_TITLE,
+      description: DEFAULT_DESCRIPTION,
+      canonicalPath: '/',
+    },
   },
   // 电脑壁纸（横屏 16:10）
   {
@@ -19,7 +28,9 @@ const routes = [
     name: 'Desktop',
     component: () => import('@/views/Home.vue'),
     meta: {
-      title: '电脑壁纸 - Wallpaper Gallery',
+      title: '4K电脑桌面壁纸_高清电脑背景图片下载 - Wallpaper Gallery',
+      description: '精选 4K 电脑桌面壁纸免费下载，涵盖风景、动漫、游戏、人像等高清电脑背景图片，适配 Windows 和 Mac 大屏显示器。',
+      canonicalPath: '/desktop',
       series: 'desktop',
       aspectType: 'landscape',
     },
@@ -30,7 +41,9 @@ const routes = [
     name: 'Bing',
     component: () => import('@/views/Home.vue'),
     meta: {
-      title: '每日 Bing 壁纸 - Wallpaper Gallery',
+      title: 'Bing每日壁纸_必应高清壁纸下载 - Wallpaper Gallery',
+      description: '汇集每日 Bing 高清壁纸，提供必应精选图片大图预览与下载，适合电脑桌面和宽屏设备使用。',
+      canonicalPath: '/bing',
       series: 'bing',
       aspectType: 'landscape',
     },
@@ -41,7 +54,9 @@ const routes = [
     name: 'Mobile',
     component: () => import('@/views/Home.vue'),
     meta: {
-      title: '手机壁纸 - Wallpaper Gallery',
+      title: '4K手机壁纸_高清手机锁屏壁纸下载 - Wallpaper Gallery',
+      description: '提供海量 4K 手机壁纸和高清锁屏壁纸，适配 iPhone 与 Android 机型，支持竖屏预览与免费下载。',
+      canonicalPath: '/mobile',
       series: 'mobile',
       aspectType: 'portrait',
     },
@@ -52,7 +67,9 @@ const routes = [
     name: 'Avatar',
     component: () => import('@/views/Home.vue'),
     meta: {
-      title: '头像 - Wallpaper Gallery',
+      title: '高清头像_动漫头像_个性头像下载 - Wallpaper Gallery',
+      description: '精选高清头像、动漫头像和个性头像资源，适合微信、QQ、社交平台使用，支持正方形头像预览与下载。',
+      canonicalPath: '/avatar',
       series: 'avatar',
       aspectType: 'square',
     },
@@ -62,28 +79,47 @@ const routes = [
     path: '/about',
     name: 'About',
     component: () => import('@/views/About.vue'),
-    meta: { title: '关于我们 - Wallpaper Gallery' },
+    meta: {
+      title: '关于 Wallpaper Gallery - 4K 高清壁纸站',
+      description: '了解 Wallpaper Gallery 的项目定位、特色功能与壁纸资源分类，查看更多关于 4K 高清壁纸站的信息。',
+      canonicalPath: '/about',
+    },
   },
   // iPhone 真机预览 Demo
   {
     path: '/iphone-demo',
     name: 'IPhoneDemo',
     component: () => import('@/views/demo/IPhoneDemo.vue'),
-    meta: { title: 'iPhone 真机预览 Demo', hideHeader: true },
+    meta: {
+      title: 'iPhone 真机预览 Demo',
+      description: DEFAULT_DESCRIPTION,
+      canonicalPath: '/iphone-demo',
+      hideHeader: true,
+    },
   },
   // MacBook 真机预览 Demo
   {
     path: '/macbook-demo',
     name: 'MacBookDemo',
     component: () => import('@/views/demo/MacBookDemo.vue'),
-    meta: { title: 'MacBook Pro 真机预览 Demo', hideHeader: true },
+    meta: {
+      title: 'MacBook Pro 真机预览 Demo',
+      description: DEFAULT_DESCRIPTION,
+      canonicalPath: '/macbook-demo',
+      hideHeader: true,
+    },
   },
   // 404 重定向到首页
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: () => import('@/views/NotFound.vue'),
-    meta: { title: '页面未找到 - Wallpaper Gallery', hideHeader: true },
+    meta: {
+      title: '页面未找到 - Wallpaper Gallery',
+      description: DEFAULT_DESCRIPTION,
+      canonicalPath: '/',
+      hideHeader: true,
+    },
   },
 ]
 
@@ -122,24 +158,92 @@ function getDefaultSeries() {
   return device === 'mobile' ? 'mobile' : 'desktop'
 }
 
+function updateMetaTag(selector, attributes) {
+  let element = document.head.querySelector(selector)
+
+  if (!element) {
+    element = document.createElement('meta')
+    document.head.appendChild(element)
+  }
+
+  Object.entries(attributes).forEach(([key, value]) => {
+    element.setAttribute(key, value)
+  })
+}
+
+function updateLinkTag(selector, attributes) {
+  let element = document.head.querySelector(selector)
+
+  if (!element) {
+    element = document.createElement('link')
+    document.head.appendChild(element)
+  }
+
+  Object.entries(attributes).forEach(([key, value]) => {
+    element.setAttribute(key, value)
+  })
+}
+
+function applyRouteSeo(to) {
+  const title = to.meta.title || DEFAULT_TITLE
+  const description = to.meta.description || DEFAULT_DESCRIPTION
+  const canonicalPath = to.meta.canonicalPath || to.path || '/'
+  const url = new URL(canonicalPath, SITE_URL).toString()
+
+  document.title = title
+
+  updateMetaTag('meta[name="description"]', {
+    name: 'description',
+    content: description,
+  })
+
+  updateMetaTag('meta[property="og:title"]', {
+    property: 'og:title',
+    content: title,
+  })
+
+  updateMetaTag('meta[property="og:description"]', {
+    property: 'og:description',
+    content: description,
+  })
+
+  updateMetaTag('meta[property="og:url"]', {
+    property: 'og:url',
+    content: url,
+  })
+
+  updateMetaTag('meta[property="og:site_name"]', {
+    property: 'og:site_name',
+    content: SITE_NAME,
+  })
+
+  updateMetaTag('meta[name="twitter:title"]', {
+    name: 'twitter:title',
+    content: title,
+  })
+
+  updateMetaTag('meta[name="twitter:description"]', {
+    name: 'twitter:description',
+    content: description,
+  })
+
+  updateMetaTag('meta[name="twitter:url"]', {
+    name: 'twitter:url',
+    content: url,
+  })
+
+  updateLinkTag('link[rel="canonical"]', {
+    rel: 'canonical',
+    href: url,
+  })
+}
+
 // 路由守卫
 router.beforeEach((to, from, next) => {
-  if (to.meta.title)
-    document.title = to.meta.title
-
   // 首页重定向到默认系列
   if (to.path === '/') {
     next({ path: `/${getDefaultSeries()}`, replace: true })
     return
-  }
-
-  // 检查系列是否对当前设备可用（如手机访问 /bing）
-  if (to.meta?.series) {
-    const available = DEVICE_SERIES[getDeviceType()]
-    if (!available.includes(to.meta.series)) {
-      next({ path: `/${getDefaultSeries()}`, replace: true })
-      return
-    }
   }
 
   next()
@@ -147,10 +251,8 @@ router.beforeEach((to, from, next) => {
 
 // 记录用户选择
 router.afterEach((to) => {
-  // 1. 在这里加一行修改标题的代码（带兜底）
-  document.title = to.meta.title || 'Wallpaper Gallery - 精选高清4K壁纸'
+  applyRouteSeo(to)
 
-  // 2. 这是你原本就有的记录 series 的代码
   if (to.meta?.series) {
     localStorage.setItem(STORAGE_KEY, to.meta.series)
   }

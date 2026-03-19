@@ -55,7 +55,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -87,12 +87,12 @@ jobs:
             pnpm generate
           fi
 
-      # 5. 执行 Vite 打包构建
+      # 5. 执行 Vite 打包构建并生成关键路由静态 HTML
       - name: Build
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-        run: pnpm build
+        run: pnpm build:seo
 
       # 6. 将构建产物推送到 Cloudflare Pages (核心步骤：解决 SEO 和 200 路由)
       - name: Publish to Cloudflare Pages
