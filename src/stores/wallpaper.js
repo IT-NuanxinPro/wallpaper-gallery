@@ -29,6 +29,7 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
 
   // 当前加载的系列
   const currentLoadedSeries = ref('')
+  const currentRenderedSeries = ref('')
 
   // 已加载的分类列表（当前系列）
   const loadedCategories = ref(new Set())
@@ -442,6 +443,7 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
     if (!forceRefresh && bingWallpapersCache.value && bingWallpapersCache.value.length > 0) {
       wallpapers.value = bingWallpapersCache.value
       currentLoadedSeries.value = seriesId
+      currentRenderedSeries.value = seriesId
       loading.value = false
       error.value = null
       errorType.value = null
@@ -460,9 +462,6 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
 
     // 递增请求版本号，用于防止竞态条件
     const currentRequestVersion = ++requestVersion
-
-    // 立即清空旧数据
-    wallpapers.value = []
 
     loading.value = true
     error.value = null
@@ -514,6 +513,7 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
 
           // 一次性设置数据
           wallpapers.value = transformedItems
+          currentRenderedSeries.value = seriesId
           initialLoadedCount.value = transformedItems.length
           expectedTotal.value = transformedItems.length
 
@@ -541,6 +541,7 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
       errorType.value = errType
       error.value = getErrorMessage(e, errType, '每日 Bing 壁纸')
       wallpapers.value = []
+      currentRenderedSeries.value = ''
     }
     finally {
       // 只有当请求未过期时才更新 loading 状态
@@ -655,9 +656,6 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
     // 递增请求版本号，用于防止竞态条件
     const currentRequestVersion = ++requestVersion
 
-    // 立即清空旧数据，避免切换系列时显示旧图片
-    wallpapers.value = []
-
     loading.value = true
     error.value = null
     errorType.value = null
@@ -689,7 +687,7 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
         return
       }
 
-      // 4. 立即显示前3个分类的数据（预排序，确保数据层有序）
+      // 4. 在首批数据准备好后一次性替换，避免切系列时先清空再闪回
       const initialData = initialDataArrays.flat()
       initialData.sort((a, b) => {
         // 按日期降序（最新优先）
@@ -704,6 +702,7 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
         return dateDiff
       })
       wallpapers.value = initialData
+      currentRenderedSeries.value = seriesId
 
       // 5. 记录已加载的分类
       initialCategories.forEach((cat) => {
@@ -739,6 +738,7 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
       errorType.value = errType
       error.value = getErrorMessage(e, errType, `系列: ${seriesId}`)
       wallpapers.value = []
+      currentRenderedSeries.value = ''
     }
     finally {
       // 只有当请求未过期时才更新 loading 状态
@@ -999,6 +999,7 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
     error,
     errorType,
     currentLoadedSeries,
+    currentRenderedSeries,
     loadedCategories,
     isBackgroundLoading,
     // Getters

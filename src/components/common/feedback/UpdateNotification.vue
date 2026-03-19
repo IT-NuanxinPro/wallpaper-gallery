@@ -31,17 +31,6 @@ const versionDisplay = computed(() => {
 
         <!-- 内容区域 -->
         <div class="card-content">
-          <!-- 图标 -->
-          <!-- <div class="update-icon">
-            <div class="icon-circle">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 2L12 12M12 12L8 8M12 12L16 8" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M4 14V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V14" stroke-linecap="round" />
-              </svg>
-            </div>
-            <div class="icon-pulse" />
-          </div> -->
-
           <!-- 文字信息 -->
           <div class="update-info">
             <p class="update-title">

@@ -24,9 +24,6 @@ const _cdnParts = {
 }
 const CDN_BASE = `${_cdnParts.p}${_cdnParts.h}${_cdnParts.g}${_cdnParts.r}`
 
-// 备用：raw.githubusercontent.com（如 jsdelivr 不可用时切换）
-// const _cdnParts = { p: 'https:/', h: '/raw.githubusercontent.com', g: '/IT-NuanxinPro', r: '/nuanXinProPic/main' }
-
 // ========================================
 // 四大系列配置
 // ========================================

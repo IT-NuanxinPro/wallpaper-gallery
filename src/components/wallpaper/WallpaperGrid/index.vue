@@ -49,7 +49,7 @@ const { currentSeries, currentSeriesConfig, availableSeriesOptions } = useWallpa
 const { viewMode, setViewMode } = useViewMode()
 const { isMobile, isMobileOrTablet } = useDevice()
 
-// 从 props.popularityData 获取热门排名、下载次数和访问量
+// 获取热门排名、下载次数和访问量
 function getPopularRank(filename) {
   if (!props.popularityData || props.popularityData.length === 0) {
     return 0
@@ -77,17 +77,7 @@ function getViewCount(filename) {
 const gridRef = ref(null)
 const wrapperRef = ref(null)
 const isAnimating = ref(false)
-// 用于控制动画切换的视图模式（PC端和移动端统一使用）
 const displayViewMode = ref(viewMode.value)
-// 实际渲染使用的视图模式
-const effectiveViewMode = computed(() => {
-  if (isMobileOrTablet.value) {
-    // 移动端：只支持 grid 和 list，瀑布流自动转为 grid
-    const mode = displayViewMode.value
-    return mode === 'masonry' ? 'grid' : mode
-  }
-  return displayViewMode.value
-})
 
 // ========================================
 // 滚动加载相关（移动端和桌面端统一使用）
@@ -156,7 +146,7 @@ function resumeScrollLoad() {
 
 // 空状态类型判断
 const emptyStateType = computed(() => {
-  if (props.loading)
+  if (props.loading && props.wallpapers.length === 0)
     return 'loading'
   if (props.wallpapers.length === 0) {
     // 如果有筛选条件或搜索词，说明是筛选后无结果
@@ -174,7 +164,6 @@ const currentSeriesName = computed(() => {
   return currentSeriesConfig.value?.name || '壁纸'
 })
 
-// 计算比例类型（用于优化瀑布流列数）
 const aspectType = computed(() => {
   const ratio = currentSeriesConfig.value?.aspectRatio || '16/10'
   const [w, h] = ratio.split('/').map(Number)
@@ -200,34 +189,10 @@ function handleResetFilters() {
   emit('resetFilters')
 }
 
-// ========================================
-// 分页（已弃用，改用滚动加载）
-// ========================================
-// const DEFAULT_PAGE_SIZE = 30
-// const PAGE_SIZES = [10, 20, 30, 50]
-// const wallpapersRef = computed(() => props.wallpapers)
-// const {
-//   currentPage,
-//   pageSize,
-//   displayedItems: paginatedItems,
-//   goToPage,
-//   setPageSize,
-//   pausePagination,
-//   resumePagination,
-// } = usePagination(wallpapersRef, DEFAULT_PAGE_SIZE)
-
-// 用于控制列表显示的状态，避免闪烁
-const showGrid = ref(true)
-
-// ========================================
-// 移动端手势滑动支持（网格和列表两种模式）
-// ========================================
 const MOBILE_VIEW_MODE_ORDER = ['grid', 'list']
-const PC_VIEW_MODE_ORDER = ['grid', 'masonry', 'list']
 
 function getModeIndex(mode) {
-  const order = isMobileOrTablet.value ? MOBILE_VIEW_MODE_ORDER : PC_VIEW_MODE_ORDER
-  return order.indexOf(mode)
+  return MOBILE_VIEW_MODE_ORDER.indexOf(mode)
 }
 
 const touchStartX = ref(0)
@@ -260,8 +225,6 @@ function handleTouchEnd(e) {
     return
 
   const deltaX = e.changedTouches[0].clientX - touchStartX.value
-  const viewModeOrder = isMobileOrTablet.value ? MOBILE_VIEW_MODE_ORDER : PC_VIEW_MODE_ORDER
-
   // 滑动距离超过 80px 才触发切换
   if (Math.abs(deltaX) > 80) {
     const currentIndex = getModeIndex(viewMode.value)
@@ -269,15 +232,15 @@ function handleTouchEnd(e) {
 
     if (deltaX < 0) {
       // 向左滑 → 下一个模式
-      newIndex = (currentIndex + 1) % viewModeOrder.length
+      newIndex = (currentIndex + 1) % MOBILE_VIEW_MODE_ORDER.length
     }
     else {
       // 向右滑 → 上一个模式
-      newIndex = (currentIndex - 1 + viewModeOrder.length) % viewModeOrder.length
+      newIndex = (currentIndex - 1 + MOBILE_VIEW_MODE_ORDER.length) % MOBILE_VIEW_MODE_ORDER.length
     }
 
     // 直接切换视图模式（无动画）
-    setViewMode(viewModeOrder[newIndex])
+    setViewMode(MOBILE_VIEW_MODE_ORDER[newIndex])
   }
 
   isSwiping.value = false
@@ -452,6 +415,31 @@ function animateCardsIn() {
   })
 }
 
+function lockWrapperHeight() {
+  if (!wrapperRef.value)
+    return
+
+  const currentHeight = wrapperRef.value.offsetHeight
+  if (currentHeight > 0) {
+    wrapperRef.value.style.minHeight = `${currentHeight}px`
+  }
+}
+
+function releaseWrapperHeight() {
+  if (!wrapperRef.value)
+    return
+
+  nextTick(() => {
+    const timer = setTimeout(() => {
+      timers.delete(timer)
+      if (wrapperRef.value) {
+        wrapperRef.value.style.minHeight = ''
+      }
+    }, 220)
+    timers.add(timer)
+  })
+}
+
 // 初始加载动画
 onMounted(() => {
   // 添加滚动监听
@@ -485,6 +473,17 @@ onUnmounted(() => {
   }
 })
 
+watch(() => props.loading, (isLoading, wasLoading) => {
+  if (isLoading && !wasLoading && props.wallpapers.length > 0) {
+    lockWrapperHeight()
+    return
+  }
+
+  if (!isLoading && wasLoading) {
+    releaseWrapperHeight()
+  }
+})
+
 // 监听 wallpapers 变化（筛选/搜索/分类切换时）
 // 使用标记防止重复动画
 let animationPending = false
@@ -515,7 +514,6 @@ watch(() => props.wallpapers, async (newVal, oldVal) => {
 
   // 首次加载（从无到有）
   if (!oldVal || oldVal.length === 0) {
-    showGrid.value = true
     await nextTick()
     // 首次加载也执行入场动画
     if (newVal && newVal.length > 0) {
@@ -534,59 +532,11 @@ watch(() => props.wallpapers, async (newVal, oldVal) => {
     return
   }
 
-  // 分类切换/筛选（从有到有）：先隐藏，再显示并执行动画
-  showGrid.value = false
-
-  const timer = setTimeout(() => {
-    timers.delete(timer)
-    showGrid.value = true
-    nextTick(() => {
-      animateCardsIn()
-      animationPending = false
-    })
-  }, 100)
-  timers.add(timer)
+  // 分类切换/筛选（从有到有）：保留容器，直接对新卡片做入场动画，避免闪屏
+  await nextTick()
+  animateCardsIn()
+  animationPending = false
 }, { deep: false })
-
-// ========================================
-// 分页处理（已弃用，改用滚动加载）
-// ========================================
-// // 处理分页切换（桌面端）
-// function handlePageChange(page) {
-//   // 滚动到顶部
-//   window.scrollTo({ top: 0, behavior: 'smooth' })
-//
-//   // 短暂隐藏后切换页面并播放动画
-//   showGrid.value = false
-//
-//   const timer = setTimeout(() => {
-//     timers.delete(timer)
-//     goToPage(page)
-//     showGrid.value = true
-//     nextTick(() => {
-//       animateCardsIn()
-//     })
-//   }, 100)
-//   timers.add(timer)
-// }
-//
-// // 处理每页条数变化（桌面端）
-// function handlePageSizeChange(size) {
-//   // 滚动到顶部
-//   window.scrollTo({ top: 0, behavior: 'smooth' })
-//
-//   showGrid.value = false
-//
-//   const timer = setTimeout(() => {
-//     timers.delete(timer)
-//     setPageSize(size)
-//     showGrid.value = true
-//     nextTick(() => {
-//       animateCardsIn()
-//     })
-//   }, 100)
-//   timers.add(timer)
-// }
 
 function handleSelect(wallpaper) {
   emit('select', wallpaper)
@@ -609,7 +559,7 @@ const skeletonCount = computed(() => isMobile.value ? 6 : 12)
       </div>
 
       <!-- 骨架屏 -->
-      <div class="wallpaper-grid skeleton-grid" :class="[`view-${effectiveViewMode}`, `aspect-${aspectType}`]">
+      <div class="wallpaper-grid skeleton-grid" :class="[`view-${displayViewMode}`, `aspect-${aspectType}`]">
         <div v-for="n in skeletonCount" :key="n" class="skeleton-card">
           <div class="skeleton-image">
             <div class="skeleton-shimmer" />
@@ -681,11 +631,11 @@ const skeletonCount = computed(() => isMobile.value ? 6 : 12)
 
     <!-- Grid -->
     <template v-else>
-      <!-- 壁纸网格（网格、列表、PC瀑布流） -->
+      <!-- 壁纸网格（网格、列表） -->
       <div
         ref="gridRef"
         class="wallpaper-grid"
-        :class="[`view-${effectiveViewMode}`, `aspect-${aspectType}`, { 'is-hidden': !showGrid, 'is-animating': isAnimating }]"
+        :class="[`view-${displayViewMode}`, `aspect-${aspectType}`, { 'is-animating': isAnimating }]"
         @touchstart="handleTouchStart"
         @touchmove="handleTouchMove"
         @touchend="handleTouchEnd"
@@ -696,7 +646,7 @@ const skeletonCount = computed(() => isMobile.value ? 6 : 12)
           :wallpaper="wallpaper"
           :index="index"
           :search-query="searchQuery"
-          :view-mode="effectiveViewMode"
+          :view-mode="displayViewMode"
           :aspect-ratio="currentSeriesConfig?.aspectRatio || '16/10'"
           :popular-rank="getPopularRank(wallpaper.filename)"
           :download-count="getDownloadCount(wallpaper.filename)"
@@ -712,17 +662,6 @@ const skeletonCount = computed(() => isMobile.value ? 6 : 12)
           <span>加载中...</span>
         </div>
       </div>
-
-      <!-- 桌面端：分页（已弃用，改用滚动加载） -->
-      <!-- <Pagination
-        v-if="!isMobile && !isAnimating"
-        :current="currentPage"
-        :total="wallpapers.length"
-        :page-size="pageSize"
-        :page-sizes="PAGE_SIZES"
-        @change="handlePageChange"
-        @size-change="handlePageSizeChange"
-      /> -->
     </template>
   </div>
 </template>
@@ -731,6 +670,7 @@ const skeletonCount = computed(() => isMobile.value ? 6 : 12)
 .wallpaper-grid-wrapper {
   min-height: 400px;
   overflow-x: hidden; // 防止动画时出现横向滚动条
+  transition: min-height 0.22s ease;
 }
 
 // ========================================
@@ -864,11 +804,6 @@ const skeletonCount = computed(() => isMobile.value ? 6 : 12)
   @include mobile-only {
     gap: $spacing-sm;
   }
-
-  &.is-hidden {
-    opacity: 0;
-  }
-
   // 动画进行中禁用 hover 效果，避免干扰
   &.is-animating {
     pointer-events: none;
@@ -896,62 +831,6 @@ const skeletonCount = computed(() => isMobile.value ? 6 : 12)
   &.view-list {
     grid-template-columns: 1fr;
     gap: $spacing-md;
-  }
-
-  // 瀑布流视图
-  &.view-masonry {
-    display: block;
-    column-count: 2;
-    column-gap: calc(var(--grid-gap) * 1.2);
-
-    @include respond-to('md') {
-      column-count: 3;
-    }
-
-    @include respond-to('lg') {
-      column-count: 4;
-    }
-
-    @include respond-to('xl') {
-      column-count: 5;
-    }
-
-    // 移动端更紧凑的间距
-    @include mobile-only {
-      column-gap: $spacing-sm;
-    }
-
-    > * {
-      break-inside: avoid;
-      margin-bottom: calc(var(--grid-gap) * 1.2);
-      // 确保动画后位置稳定
-      backface-visibility: hidden;
-
-      // 移动端更紧凑的间距
-      @include mobile-only {
-        margin-bottom: $spacing-sm;
-      }
-    }
-  }
-
-  // 竖屏壁纸瀑布流需要更多列
-  &.view-masonry.aspect-portrait {
-    // 移动端仍然保持2列
-    @include mobile-only {
-      column-count: 2;
-    }
-
-    @include respond-to('md') {
-      column-count: 4;
-    }
-
-    @include respond-to('lg') {
-      column-count: 5;
-    }
-
-    @include respond-to('xl') {
-      column-count: 6;
-    }
   }
 
   // 正方形壁纸（头像）网格优化

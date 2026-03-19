@@ -12,7 +12,7 @@ import { defineConfig } from 'vite'
 import compression from 'vite-plugin-compression'
 import { cdnPlugin } from './build/vite-plugin-cdn.js'
 import { obfuscatePlugin } from './build/vite-plugin-obfuscate.js'
-import { versionPlugin } from './build/vite-plugin-version.js'
+import { formatBuildTime, versionPlugin } from './build/vite-plugin-version.js'
 
 // 是否生产环境
 const isProduction = process.env.NODE_ENV === 'production'
@@ -21,7 +21,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const pkg = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.json'), 'utf-8'))
 const APP_VERSION = pkg.version
-const BUILD_TIME = new Date().toISOString()
+const BUILD_TIME = formatBuildTime()
 
 // https://vite.dev/config/
 export default defineConfig({

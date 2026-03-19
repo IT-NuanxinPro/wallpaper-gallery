@@ -26,17 +26,14 @@ const props = defineProps({
     type: String,
     default: '16/10',
   },
-  // 热门排名（0表示不是热门）
   popularRank: {
     type: Number,
     default: 0,
   },
-  // 下载次数
   downloadCount: {
     type: Number,
     default: 0,
   },
-  // 访问量
   viewCount: {
     type: Number,
     default: 0,
@@ -44,8 +41,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['click', 'imageLoad'])
-
-// 设备检测
 const { isMobile } = useDevice()
 
 const cardRef = ref(null)
@@ -54,125 +49,73 @@ const imageLoaded = ref(false)
 const imageError = ref(false)
 const useProxy = ref(false)
 
-// 定时器引用（用于组件卸载时清理）
 let cacheCheckTimer = null
-// GSAP 动画目标引用（用于组件卸载时清理）
 let gsapTargets = []
 
-// 根据系列类型智能选择显示URL：
-// - mobile 系列使用 previewUrl（1080px 预览图，更清晰适合长屏）
-// - avatar 和 desktop 使用 thumbnailUrl（550px 缩略图，加载更快）
-// - 如果加载失败则使用代理服务
 const thumbnailUrl = computed(() => {
   if (useProxy.value) {
-    // 使用代理服务生成缩略图
     return `${IMAGE_PROXY.BASE_URL}?url=${encodeURIComponent(props.wallpaper.url)}&w=${IMAGE_PROXY.THUMB_WIDTH}&q=${IMAGE_PROXY.THUMB_QUALITY}&output=${IMAGE_PROXY.FORMAT}`
   }
-  // 优先使用 previewUrl（mobile 长屏），其次 thumbnailUrl，最后 url
   return props.wallpaper.previewUrl || props.wallpaper.thumbnailUrl || props.wallpaper.url
 })
 
-// 检查图片是否已在浏览器缓存中
 onMounted(() => {
-  // 使用 nextTick 确保 DOM 已渲染
   cacheCheckTimer = setTimeout(() => {
     if (imageRef.value && imageRef.value.complete && imageRef.value.naturalWidth > 0) {
-      // 图片已经加载完成（从缓存中）
       imageLoaded.value = true
     }
   }, 0)
 })
 
-// 组件卸载时清除定时器和 GSAP 动画
 onUnmounted(() => {
   if (cacheCheckTimer) {
     clearTimeout(cacheCheckTimer)
     cacheCheckTimer = null
   }
 
-  // 清理所有 GSAP 动画，防止内存泄漏
   if (gsapTargets.length > 0) {
     gsapTargets.forEach(target => gsap.killTweensOf(target))
     gsapTargets = []
   }
 
-  // 清理卡片本身的动画
   if (cardRef.value) {
     gsap.killTweensOf(cardRef.value)
   }
 })
 
 const formattedSize = computed(() => formatFileSize(props.wallpaper.size))
-const fileFormat = computed(() => {
-  const ext = props.wallpaper.filename.split('.').pop()?.toUpperCase() || ''
-  return ext
-})
-
-// 相对时间（如"3天前"）
+const fileFormat = computed(() => props.wallpaper.filename.split('.').pop()?.toUpperCase() || '')
 const relativeTime = computed(() => formatRelativeTime(props.wallpaper.createdAt))
-
-// 显示用的文件名（优先使用 AI 生成的 displayTitle）
 const displayFilename = computed(() => {
-  // 优先使用 AI 生成的标题
   if (props.wallpaper.displayTitle) {
-    // 去除常见的图片格式后缀名
     return props.wallpaper.displayTitle.replace(/\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|tif|ico|heic|heif)$/i, '')
   }
   return getDisplayFilename(props.wallpaper.filename)
 })
-
-// AI 关键词标签（显示前 3 个）
-const aiKeywords = computed(() => {
-  if (!props.wallpaper.keywords || props.wallpaper.keywords.length === 0) {
-    return []
-  }
-  return props.wallpaper.keywords.slice(0, 3)
-})
-
-// 高亮文件名（对显示名称进行高亮）
-const highlightedFilename = computed(() => {
-  return highlightText(displayFilename.value, props.searchQuery)
-})
-
-// 分类信息显示
+const aiKeywords = computed(() => props.wallpaper.keywords?.slice(0, 3) || [])
+const highlightedFilename = computed(() => highlightText(displayFilename.value, props.searchQuery))
 const categoryDisplay = computed(() => {
-  if (!props.wallpaper)
-    return ''
   const { category, subcategory } = props.wallpaper
   if (!category)
     return ''
-  if (subcategory)
-    return `${category} / ${subcategory}`
-  return category
+  return subcategory ? `${category} / ${subcategory}` : category
 })
 
-// Bing 壁纸特有属性
 const isBingWallpaper = computed(() => props.wallpaper?.isBing === true)
 const bingTitle = computed(() => props.wallpaper?.title || '')
-const bingDate = computed(() => {
-  if (!props.wallpaper?.date)
-    return ''
-  return formatBingDate(props.wallpaper.date)
-})
+const bingDate = computed(() => props.wallpaper?.date ? formatBingDate(props.wallpaper.date) : '')
 const bingCopyright = computed(() => {
   if (!props.wallpaper?.copyright)
     return ''
-  // 简化版权信息，只显示主要内容
   const copyright = props.wallpaper.copyright
   const parenIndex = copyright.indexOf('(')
   return parenIndex > 0 ? copyright.substring(0, parenIndex).trim() : copyright
 })
 
-// 计算卡片图片样式 - 动态宽高比
-const cardImageStyle = computed(() => {
-  if (props.viewMode === 'masonry')
-    return {} // 瀑布流不固定比例，让图片自适应高度
-  return { aspectRatio: props.aspectRatio.replace('/', ' / ') }
-})
+const normalizedAspectRatio = computed(() => props.aspectRatio.replace('/', ' / '))
+const cardImageStyle = computed(() => ({ aspectRatio: normalizedAspectRatio.value }))
 
-// 列表视图图片样式
 const listImageStyle = computed(() => {
-  // 移动端使用正方形图片，更和谐
   if (isMobile.value) {
     return {
       width: '100px',
@@ -180,13 +123,12 @@ const listImageStyle = computed(() => {
       aspectRatio: '1 / 1',
     }
   }
-  // PC端保持原逻辑
   const [w, h] = props.aspectRatio.split('/').map(Number)
   const ratio = w / h
-  const baseWidth = ratio >= 1 ? 200 : 120 // 横屏200px，竖屏120px
+  const baseWidth = ratio >= 1 ? 200 : 120
   return {
     width: `${baseWidth}px`,
-    aspectRatio: props.aspectRatio.replace('/', ' / '),
+    aspectRatio: normalizedAspectRatio.value,
   }
 })
 
@@ -197,13 +139,11 @@ function handleImageLoad() {
 }
 
 function handleImageError() {
-  // 只有在未使用代理时才尝试代理
   if (!useProxy.value) {
     useProxy.value = true
     imageLoaded.value = false
   }
   else {
-    // 代理也失败了，显示错误
     imageError.value = true
     imageLoaded.value = true
   }
@@ -213,9 +153,7 @@ function handleClick() {
   emit('click', props.wallpaper)
 }
 
-// 悬停动画（仅 PC 端）
 function handleMouseEnter(e) {
-  // 移动端不需要悬浮效果
   if (isMobile.value)
     return
 
@@ -223,7 +161,6 @@ function handleMouseEnter(e) {
   const overlay = card.querySelector('.card-overlay')
   const img = card.querySelector('.card-image img')
 
-  // 记录动画目标，便于清理
   gsapTargets = [card, overlay, img].filter(Boolean)
 
   gsap.to(card, {
@@ -248,7 +185,6 @@ function handleMouseEnter(e) {
 }
 
 function handleMouseLeave(e) {
-  // 移动端不需要悬浮效果
   if (isMobile.value)
     return
 
@@ -261,7 +197,6 @@ function handleMouseLeave(e) {
     boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
     duration: 0.3,
     ease: 'power2.out',
-    // 动画完成后清除内联样式，减少内存占用
     clearProps: 'transform',
   })
 
@@ -275,7 +210,6 @@ function handleMouseLeave(e) {
       scale: 1,
       duration: 0.4,
       ease: 'power2.out',
-      // 动画完成后清除内联样式
       clearProps: 'transform',
     })
   }
@@ -330,8 +264,8 @@ function handleMouseLeave(e) {
         @error="handleImageError"
       >
 
-      <!-- 分类标签（移动端网格/瀑布流视图显示在图片上，使用 CSS 控制显示避免 CLS） -->
-      <div v-if="categoryDisplay && (viewMode === 'grid' || viewMode === 'masonry') && !isBingWallpaper" class="card-category-badge">
+      <!-- 分类标签 -->
+      <div v-if="categoryDisplay && viewMode === 'grid' && !isBingWallpaper" class="card-category-badge">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
           <polyline points="9 22 9 12 15 12 15 22" />
@@ -339,8 +273,8 @@ function handleMouseLeave(e) {
         <span>{{ categoryDisplay }}</span>
       </div>
 
-      <!-- Bing 壁纸日期标签（移动端显示在图片上，使用 CSS 控制显示避免 CLS） -->
-      <div v-if="isBingWallpaper && (viewMode === 'grid' || viewMode === 'masonry')" class="card-bing-badge">
+      <!-- Bing 壁纸日期标签 -->
+      <div v-if="isBingWallpaper && viewMode === 'grid'" class="card-bing-badge">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
           <line x1="16" y1="2" x2="16" y2="6" />
@@ -350,7 +284,7 @@ function handleMouseLeave(e) {
         <span>{{ bingDate }}</span>
       </div>
 
-      <!-- Overlay on hover (仅 PC 端显示) -->
+      <!-- Overlay on hover -->
       <div v-if="!isMobile" class="card-overlay">
         <div class="overlay-content">
           <span class="overlay-icon">
@@ -367,13 +301,10 @@ function handleMouseLeave(e) {
 
     <!-- Card Info -->
     <div class="card-info">
-      <!-- Bing 壁纸专用信息展示 -->
       <template v-if="isBingWallpaper">
-        <!-- Bing 标题 -->
         <p class="card-filename card-bing-title" :title="bingTitle">
           {{ bingTitle }}
         </p>
-        <!-- Bing 日期和版权 -->
         <div class="card-bing-meta">
           <span class="bing-date">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -386,7 +317,6 @@ function handleMouseLeave(e) {
           </span>
           <span class="bing-resolution">4K</span>
         </div>
-        <!-- 版权信息 -->
         <div v-if="bingCopyright" class="card-bing-copyright" :title="wallpaper.copyright">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="10" />
@@ -396,9 +326,7 @@ function handleMouseLeave(e) {
         </div>
       </template>
 
-      <!-- 普通壁纸信息展示 -->
       <template v-else>
-        <!-- 第一行：文件名 (AI 标题优先) + AI 标识 -->
         <div class="card-filename-row">
           <p class="card-filename" :title="displayFilename">
             <template v-for="(part, idx) in highlightedFilename" :key="idx">
@@ -406,22 +334,14 @@ function handleMouseLeave(e) {
               <span v-else>{{ part.text }}</span>
             </template>
           </p>
-          <!-- AI 标识 -->
-          <!-- <span v-if="hasAiInfo" class="ai-badge" title="AI 智能分析">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M9 3L5 7l4 4m6-8l4 4-4 4M13 21l-2-8-2 8" />
-            </svg>
-          </span> -->
         </div>
 
-        <!-- AI 关键词标签 -->
         <div v-if="aiKeywords.length > 0" class="card-ai-keywords">
           <span v-for="keyword in aiKeywords" :key="keyword" class="ai-keyword-tag">
             {{ keyword }}
           </span>
         </div>
 
-        <!-- 分类信息 -->
         <div v-if="categoryDisplay" class="card-category">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
@@ -429,10 +349,8 @@ function handleMouseLeave(e) {
           </svg>
           <span>{{ categoryDisplay }}</span>
         </div>
-        <!-- 第二行：文件大小、访问量、下载量 -->
         <div class="card-meta">
           <span class="meta-item">{{ formattedSize }}</span>
-          <!-- 访问量 -->
           <span v-if="viewCount > 0" class="meta-item meta-views">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
@@ -440,7 +358,6 @@ function handleMouseLeave(e) {
             </svg>
             {{ formatNumber(viewCount) }}
           </span>
-          <!-- 下载次数 -->
           <span v-if="downloadCount > 0" class="meta-item meta-downloads">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
@@ -448,7 +365,6 @@ function handleMouseLeave(e) {
             {{ formatNumber(downloadCount) }}
           </span>
         </div>
-        <!-- 第三行：上传时间、格式标签 -->
         <div class="card-meta-secondary">
           <span class="meta-item meta-time">{{ relativeTime }}</span>
           <span class="meta-item meta-format">{{ fileFormat }}</span>
@@ -466,26 +382,21 @@ function handleMouseLeave(e) {
   border-radius: var(--radius-lg);
   overflow: hidden;
   cursor: pointer;
-  // 多层阴影创建立体感
   box-shadow:
     0 2px 4px rgba(102, 126, 234, 0.08),
     0 4px 12px rgba(102, 126, 234, 0.12),
     0 8px 24px rgba(102, 126, 234, 0.06),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  // 使用 backface-visibility 创建新的合成层，避免动画后的布局抖动
   backface-visibility: hidden;
-  // 添加过渡效果（排除 transform/opacity，由 GSAP 控制）
   transition:
     background 0.4s cubic-bezier(0.4, 0, 0.2, 1),
     border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
     border-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
-  // Hover 效果
   &:hover {
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.12), rgba(118, 75, 162, 0.12));
     border-color: rgba(102, 126, 234, 0.3);
-    // Hover 时阴影更强，立体感更明显
     box-shadow:
       0 4px 8px rgba(102, 126, 234, 0.12),
       0 8px 20px rgba(102, 126, 234, 0.15),
@@ -494,10 +405,8 @@ function handleMouseLeave(e) {
     transform: translateY(-4px);
   }
 
-  // 移动端瀑布流和网格视图更紧凑的圆角
   @include mobile-only {
-    &.view-grid,
-    &.view-masonry {
+    &.view-grid {
       border-radius: var(--radius-sm);
       box-shadow:
         0 1px 3px rgba(102, 126, 234, 0.08),
@@ -528,16 +437,8 @@ function handleMouseLeave(e) {
       display: none;
     }
   }
-
-  // 瀑布流模式：图片自适应高度，不使用 height: 100%
-  .view-masonry & {
-    img {
-      height: auto;
-    }
-  }
 }
 
-// 热门标签
 .hot-badge {
   position: absolute;
   top: $spacing-xs;
@@ -560,7 +461,6 @@ function handleMouseLeave(e) {
     display: none;
   }
 
-  // Top 3 特殊样式
   &--top3 {
     background: linear-gradient(135deg, #fbbf24, #f59e0b);
     box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
@@ -654,10 +554,8 @@ function handleMouseLeave(e) {
 .card-info {
   padding: $spacing-md;
 
-  // 移动端瀑布流和网格视图隐藏信息区域
   @include mobile-only {
-    .view-grid &,
-    .view-masonry & {
+    .view-grid & {
       display: none;
     }
   }
@@ -689,26 +587,6 @@ function handleMouseLeave(e) {
   }
 }
 
-// AI 标识徽章
-// .ai-badge {
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   flex-shrink: 0;
-//   width: 18px;
-//   height: 18px;
-//   background: linear-gradient(135deg, #667eea, #764ba2);
-//   color: white;
-//   border-radius: $radius-sm;
-//   cursor: help;
-
-//   svg {
-//     width: 11px;
-//     height: 11px;
-//   }
-// }
-
-// AI 关键词标签
 .card-ai-keywords {
   display: flex;
   align-items: center;
@@ -756,14 +634,13 @@ function handleMouseLeave(e) {
   }
 }
 
-// 移动端图片上的分类标签（使用 CSS 媒体查询控制显示，避免 JS hydration 导致的 CLS）
 .card-category-badge {
   position: absolute;
   bottom: $spacing-xs;
   left: $spacing-xs;
   right: $spacing-xs;
   z-index: 4;
-  display: none; // 默认隐藏
+  display: none;
   align-items: center;
   gap: 4px;
   padding: 4px 8px;
@@ -774,7 +651,6 @@ function handleMouseLeave(e) {
   border-radius: $radius-sm;
   max-width: calc(100% - #{$spacing-xs} * 2);
 
-  // 仅移动端显示（使用媒体查询避免 CLS）
   @include mobile-only {
     display: flex;
   }
@@ -854,7 +730,6 @@ function handleMouseLeave(e) {
   }
 }
 
-// 列表视图模式
 .wallpaper-card.view-list {
   display: flex;
   flex-direction: row;
@@ -862,10 +737,8 @@ function handleMouseLeave(e) {
 
   .card-image {
     flex-shrink: 0;
-    // width 和 aspect-ratio 由 listImageStyle 动态控制
 
     @include mobile-only {
-      // 移动端使用正方形图片
       width: 100px !important;
       height: 100px !important;
       border-radius: var(--radius-md);
@@ -893,7 +766,6 @@ function handleMouseLeave(e) {
   .card-filename {
     font-size: $font-size-md;
     margin-bottom: $spacing-sm;
-    // 列表模式下支持2行省略
     white-space: normal;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -915,17 +787,12 @@ function handleMouseLeave(e) {
   }
 }
 
-// ========================================
-// Bing 壁纸专用样式（高级感设计）
-// ========================================
-
-// Bing 日期标签（移动端图片上，使用 CSS 媒体查询控制显示避免 CLS）
 .card-bing-badge {
   position: absolute;
   bottom: $spacing-xs;
   left: $spacing-xs;
   z-index: 4;
-  display: none; // 默认隐藏
+  display: none;
   align-items: center;
   gap: 4px;
   padding: 5px 10px;
@@ -939,7 +806,6 @@ function handleMouseLeave(e) {
   box-shadow: 0 2px 12px rgba(0, 120, 212, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.2);
 
-  // 仅移动端显示（使用媒体查询避免 CLS）
   @include mobile-only {
     display: flex;
   }

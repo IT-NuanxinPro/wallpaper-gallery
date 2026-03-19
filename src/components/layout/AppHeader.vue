@@ -1,21 +1,26 @@
 <script setup>
 import { gsap } from 'gsap'
+import { storeToRefs } from 'pinia'
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import SearchBar from '@/components/common/form/SearchBar.vue'
 import EnvBadge from '@/components/common/ui/EnvBadge.vue'
 import { useDevice } from '@/composables/useDevice'
 import { useFullscreen } from '@/composables/useFullscreen'
-import { useSearch } from '@/composables/useSearch'
 import { useTheme } from '@/composables/useTheme'
 import { useWallpaperType } from '@/composables/useWallpaperType'
+import { useFilterStore } from '@/stores/filter'
+import { useWallpaperStore } from '@/stores/wallpaper'
 
 const route = useRoute()
 const router = useRouter()
 const { theme, toggleTheme } = useTheme()
 const { isFullscreen, toggleFullscreen } = useFullscreen()
 const { isMobile } = useDevice()
-const { searchQuery, wallpapers } = useSearch()
+const filterStore = useFilterStore()
+const wallpaperStore = useWallpaperStore()
+const { searchQuery } = storeToRefs(filterStore)
+const { wallpapers } = storeToRefs(wallpaperStore)
 const { availableSeriesOptions, currentSeries } = useWallpaperType()
 
 // 判断系列是否为当前激活状态（结合路由和当前系列）
@@ -34,7 +39,12 @@ const isSeriesActive = computed(() => (seriesId) => {
 
 // 导航滑块相关
 const navRef = ref(null)
-const navSliderStyle = ref({})
+const navSliderStyle = ref({
+  opacity: 0,
+  width: '0px',
+  transform: 'translateX(0px)',
+})
+let navSliderRafId = 0
 
 // 获取当前激活的系列ID
 const activeSeriesId = computed(() => {
@@ -45,25 +55,57 @@ const activeSeriesId = computed(() => {
   return 'desktop'
 })
 
-// 更新滑块位置
-async function updateNavSliderPosition() {
-  await nextTick()
-  if (!navRef.value || isMobile.value)
-    return
-  const activeLink = navRef.value.querySelector('.nav-link.is-active')
-  if (activeLink) {
-    const navRect = navRef.value.getBoundingClientRect()
-    const linkRect = activeLink.getBoundingClientRect()
-    navSliderStyle.value = {
-      width: `${linkRect.width}px`,
-      transform: `translateX(${linkRect.left - navRect.left - 4}px)`,
-    }
+function resetNavSlider() {
+  navSliderStyle.value = {
+    opacity: 0,
+    width: '0px',
+    transform: 'translateX(0px)',
   }
 }
 
+function measureNavSliderPosition() {
+  if (!navRef.value || isMobile.value) {
+    resetNavSlider()
+    return false
+  }
+
+  const activeLink = navRef.value.querySelector('.nav-link.is-active, .nav-link.router-link-active')
+  if (!activeLink) {
+    resetNavSlider()
+    return false
+  }
+
+  const navRect = navRef.value.getBoundingClientRect()
+  const linkRect = activeLink.getBoundingClientRect()
+
+  if (!linkRect.width || !navRect.width) {
+    resetNavSlider()
+    return false
+  }
+
+  navSliderStyle.value = {
+    opacity: 1,
+    width: `${linkRect.width}px`,
+    transform: `translateX(${linkRect.left - navRect.left - 4}px)`,
+  }
+  return true
+}
+
+// 更新滑块位置
+async function updateNavSliderPosition(retries = 4) {
+  await nextTick()
+  cancelAnimationFrame(navSliderRafId)
+  navSliderRafId = requestAnimationFrame(() => {
+    const positioned = measureNavSliderPosition()
+    if (!positioned && retries > 0) {
+      updateNavSliderPosition(retries - 1)
+    }
+  })
+}
+
 // 监听变化
-watch(activeSeriesId, updateNavSliderPosition)
-watch(() => route.path, updateNavSliderPosition)
+watch(activeSeriesId, () => updateNavSliderPosition(), { flush: 'post' })
+watch(() => route.path, () => updateNavSliderPosition(), { flush: 'post' })
 
 // 处理窗口大小变化
 function handleResize() {
@@ -73,10 +115,19 @@ function handleResize() {
 onMounted(() => {
   updateNavSliderPosition()
   window.addEventListener('resize', handleResize)
+  window.addEventListener('load', handleResize)
+
+  if (document.fonts?.ready) {
+    document.fonts.ready.then(() => {
+      updateNavSliderPosition()
+    })
+  }
 })
 
 onUnmounted(() => {
+  cancelAnimationFrame(navSliderRafId)
   window.removeEventListener('resize', handleResize)
+  window.removeEventListener('load', handleResize)
 })
 
 // 获取系列对应的路由路径
@@ -660,6 +711,7 @@ function closeSearch() {
   border-radius: $radius-lg;
   box-shadow: 0 2px 10px rgba(102, 126, 234, 0.4);
   transition:
+    opacity 180ms ease,
     transform 350ms cubic-bezier(0.4, 0, 0.2, 1),
     width 350ms cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 0;

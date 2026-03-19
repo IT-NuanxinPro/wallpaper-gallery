@@ -58,6 +58,8 @@ const isLoading = ref(false)
 const currentSeries = computed(() => seriesStore.currentSeries)
 const isMobile = computed(() => isMobileDevice())
 const showMobileSeriesNotice = computed(() => isMobile.value && ['desktop', 'bing'].includes(currentSeries.value))
+const isSeriesContentReady = computed(() => wallpaperStore.currentRenderedSeries === currentSeries.value)
+const visibleWallpapers = computed(() => isSeriesContentReady.value ? wallpaperStore.wallpapers : [])
 
 const mobileNoticeContent = computed(() => {
   if (currentSeries.value === 'bing') {
@@ -89,7 +91,7 @@ const error = computed(() => wallpaperStore.error)
 
 // 分类选项
 const categoryOptions = computed(() =>
-  filterStore.createCategoryOptions(wallpaperStore.wallpapers),
+  filterStore.createCategoryOptions(visibleWallpapers.value),
 )
 
 // 二级分类选项
@@ -99,7 +101,7 @@ const subcategoryOptions = computed(() =>
 
 // 筛选和排序后的壁纸列表
 const filteredWallpapers = computed(() =>
-  filterStore.getFilteredAndSorted(wallpaperStore.wallpapers),
+  filterStore.getFilteredAndSorted(visibleWallpapers.value),
 )
 
 // 结果数量

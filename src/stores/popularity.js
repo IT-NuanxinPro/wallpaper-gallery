@@ -24,9 +24,6 @@ export const usePopularityStore = defineStore('popularity', () => {
   // 当前加载的系列
   const currentSeries = ref('')
 
-  // 是否已加载
-  const loaded = ref(false)
-
   // ========================================
   // Getters
   // ========================================
@@ -67,10 +64,6 @@ export const usePopularityStore = defineStore('popularity', () => {
   const weeklyMap = computed(() => popularityMap.value)
   const monthlyMap = computed(() => popularityMap.value)
 
-  // 兼容旧 API
-  const weeklyData = computed(() => allTimeData.value)
-  const monthlyData = computed(() => allTimeData.value)
-
   // 是否有热门数据
   const hasData = computed(() => statsMap.value.size > 0)
 
@@ -102,13 +95,6 @@ export const usePopularityStore = defineStore('popularity', () => {
   }
 
   /**
-   * 获取指定文件的热门分数
-   */
-  function getPopularityScore(filename, _timeRange = 'all') {
-    return popularityMap.value.get(filename)?.score || 0
-  }
-
-  /**
    * 加载热门数据
    * @param {string} series - 系列名称
    * @param {boolean} forceRefresh - 是否强制刷新
@@ -135,7 +121,6 @@ export const usePopularityStore = defineStore('popularity', () => {
       }
 
       statsMap.value = data
-      loaded.value = true
 
       if (import.meta.env.DEV) {
         console.log(`[PopularityStore] 加载完成: ${series}, ${data.size} 条数据`)
@@ -156,7 +141,6 @@ export const usePopularityStore = defineStore('popularity', () => {
   function clearData() {
     statsMap.value = new Map()
     currentSeries.value = ''
-    loaded.value = false
   }
 
   return {
@@ -164,11 +148,8 @@ export const usePopularityStore = defineStore('popularity', () => {
     statsMap,
     loading,
     currentSeries,
-    loaded,
-    // Getters (兼容旧 API)
+    // Getters
     allTimeData,
-    weeklyData,
-    monthlyData,
     popularityMap,
     weeklyMap,
     monthlyMap,
@@ -178,7 +159,6 @@ export const usePopularityStore = defineStore('popularity', () => {
     getPopularRank,
     getDownloadCount,
     getViewCount,
-    getPopularityScore,
     clearData,
   }
 })

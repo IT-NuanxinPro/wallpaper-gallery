@@ -105,29 +105,7 @@ const hasActiveFilters = computed(() => {
   return props.categoryFilter !== 'all'
 })
 
-// Bing 系列是否隐藏瀑布流（Bing 图片比例固定，瀑布流效果不佳）
-const hideMasonryForBing = computed(() => props.currentSeries === 'bing')
-
-// 视图模式滑动指示器位置
-const viewModeSliderPosition = computed(() => {
-  // Bing 系列只有两个选项（网格/列表）
-  if (hideMasonryForBing.value) {
-    return viewMode.value === 'list' ? 'is-list-two' : 'is-grid'
-  }
-  switch (viewMode.value) {
-    case 'list':
-      return 'is-list'
-    case 'masonry':
-      return 'is-masonry'
-    default:
-      return 'is-grid'
-  }
-})
-
-// 移动端视图模式滑动指示器位置（网格和列表两个选项）
-const mobileViewModeSliderPosition = computed(() => {
-  return viewMode.value === 'list' ? 'is-list' : 'is-grid'
-})
+const viewModeSliderPosition = computed(() => viewMode.value === 'list' ? 'is-list' : 'is-grid')
 
 // 当前分类显示文本
 const currentCategoryLabel = computed(() => {
@@ -274,8 +252,7 @@ function resetFilters() {
     <!-- PC 端筛选项 -->
     <div v-if="!isMobileOrTablet" class="filter-right">
       <!-- View Mode Toggle -->
-      <div class="view-mode-toggle" :class="{ 'is-two-options': hideMasonryForBing }">
-        <!-- 滑动指示器 -->
+      <div class="view-mode-toggle">
         <div class="view-mode-slider" :class="viewModeSliderPosition" />
         <button
           class="view-mode-btn"
@@ -298,20 +275,6 @@ function resetFilters() {
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
-          </svg>
-        </button>
-        <button
-          v-if="!hideMasonryForBing"
-          class="view-mode-btn"
-          :class="{ 'is-active': viewMode === 'masonry' }"
-          aria-label="瀑布流视图"
-          @click="setViewMode('masonry')"
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="3" width="7" height="10" />
-            <rect x="14" y="3" width="7" height="6" />
-            <rect x="3" y="16" width="7" height="5" />
-            <rect x="14" y="12" width="7" height="9" />
           </svg>
         </button>
       </div>
@@ -401,10 +364,10 @@ function resetFilters() {
     <div v-else class="filter-right-mobile">
       <!-- 视图模式切换（网格/列表） -->
       <div class="view-mode-toggle-mobile">
-        <div class="view-mode-slider-mobile" :class="mobileViewModeSliderPosition" />
+        <div class="view-mode-slider-mobile" :class="viewModeSliderPosition" />
         <button
           class="view-mode-btn-mobile"
-          :class="{ 'is-active': viewMode === 'grid' || viewMode === 'masonry' }"
+          :class="{ 'is-active': viewMode === 'grid' }"
           aria-label="网格视图"
           @click="setViewMode('grid')"
         >
@@ -681,18 +644,7 @@ function resetFilters() {
   z-index: 0;
 
   &.is-list {
-    // 三个选项时列表位置：按钮宽度(40px) + 间距(4px)
     transform: translateX(44px);
-  }
-
-  &.is-list-two {
-    // 两个选项时列表位置
-    transform: translateX(44px);
-  }
-
-  &.is-masonry {
-    // 瀑布流位置：(按钮宽度 + 间距) * 2
-    transform: translateX(88px);
   }
 }
 

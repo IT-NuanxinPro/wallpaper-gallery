@@ -53,7 +53,7 @@ export default defineConfig({
   plugins: [
     versionPlugin({
       version: '1.0.0',
-      buildTime: new Date().toISOString(),
+      buildTime: '2026-01-10 20:00:00',
       outputPath: 'public/version.json', // 可选,默认值
     }),
   ],
@@ -64,7 +64,7 @@ export default defineConfig({
 ```json
 {
   "version": "1.0.0",
-  "buildTime": "2026-01-10T12:00:00.000Z"
+  "buildTime": "2026-01-10 20:00:00"
 }
 ```
 
