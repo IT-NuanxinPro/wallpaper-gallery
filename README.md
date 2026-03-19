@@ -1,6 +1,22 @@
-# Wallpaper Gallery
+<div align="center">
+  <img src="https://wallpaper.061129.xyz/favicon.svg" width="120" height="120" alt="Wallpaper Gallery Logo" />
+  <h1>Wallpaper Gallery</h1>
+  <p>一个高雅大气的精选高清 4K 壁纸分享站，完美适配全平台</p>
 
-一个高雅大气的壁纸展示网站，基于 Vue 3 + Vite 7 构建，完美适配桌面端和移动端。
+  <p>
+    <a href="https://wallpaper.061129.xyz"><img src="https://img.shields.io/badge/Deployed_with-Cloudflare_Pages-f38020?style=flat-square&logo=cloudflare&logoColor=white" alt="Cloudflare Pages"></a>
+    <img src="https://img.shields.io/badge/Vue-3.5-4fc08d?style=flat-square&logo=vue.js&logoColor=white" alt="Vue 3">
+    <img src="https://img.shields.io/badge/Vite-7.0-646cff?style=flat-square&logo=vite&logoColor=white" alt="Vite 7">
+    <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" alt="License">
+  </p>
+  
+  <p>
+    <a href="https://wallpaper.061129.xyz">🌐 访问体验站</a> | 
+    <a href="#-特性">✨ 功能亮点</a> | 
+    <a href="#-技术栈">🛠️ 技术栈实现</a>
+  </p>
+</div>
+
 
 ## ✨ 特性
 
@@ -107,7 +123,8 @@
 | 路由 | Vue Router 4 |
 | 状态管理 | Pinia |
 | 数据统计 | Supabase (PostgreSQL) |
-| 部署 | GitHub Pages (生产) / Vercel (测试) |
+| 部署 | Cloudflare Pages (全球分发)|
+| CI/CD | GitHub Actions (高性能构建)|
 | CDN 加速 | Cloudflare + jsDelivr |
 | 统计分析 | Cloudflare Web Analytics + Umami |
 
@@ -378,23 +395,22 @@ wallpaper-gallery/
 - **移动端性能优化** - 移除 backdrop-filter 模糊效果，提升滚动流畅度
 - **路由守卫精简** - 从 ~80 行简化到 ~30 行，减少不必要的计算
 - **内存泄漏修复** - 头像制作弹窗完善资源清理机制，防止 Image 对象和 Cropper 实例泄漏
+- **高性能混合构建** - 移除 Cloudflare 侧冗余的 Git 克隆逻辑，利用 GitHub Actions 强力算力同步图床数据，缩短构建耗时 80%。
+- **无感 CDN 刷新** - 部署成功后 Cloudflare 自动完成全球节点缓存刷新。
 
 ## 📊 SEO 优化
 
 - **结构化数据** - Schema.org 标记，增强搜索引擎理解
 - **Sitemap** - 自动生成站点地图
 - **搜索引擎提交** - 支持百度主动推送、Google Search Console
-
+- **SPA 路由优化** - 通过 Cloudflare _redirects 解决单页应用刷新 404 问题，确保所有路径返回 200 OK，极大地提升搜索引擎抓取成功率。
+- **全球边缘加速** - 基于 Cloudflare 全球网络，首屏加载速度提升 50% 以上。
+ 
 ## ☕ 赞赏支持
 
 如果这个项目对你有帮助，欢迎请作者喝杯咖啡 ☕
 
 本项目完全开源免费，所有壁纸资源均可自由使用。维护开源项目需要投入大量时间和精力，你的支持是我持续更新的动力！
-
-<p align="center">
-  <img src="docs/sponsor-alipay.png" width="300" alt="支付宝" />
-  <img src="docs/sponsor-wechat.png" width="300" alt="微信支付" />
-</p>
 
 感谢每一位支持者 ❤️
 
