@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
@@ -18,6 +19,8 @@
     <meta name="theme-color" content="#6366f1" />
 
     <meta name="msvalidate.01" content="F7BD40FE9A903E88D1BF4F71F8DDCAA3" />
+    <meta name="google-site-verification" content="googled18f1d057f89f650" />
+    <meta name="baidu-site-verification" content="codeva-0y9FGffGpu" />
 
     <!-- Open Graph (Facebook, LinkedIn) -->
     <meta property="og:type" content="website" />
@@ -46,6 +49,77 @@
 
     <!-- Robots -->
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+    <!-- JSON-LD 结构化数据 -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://wallpaper.061129.xyz/#website",
+            "url": "https://wallpaper.061129.xyz/",
+            "name": "Wallpaper Gallery",
+            "description": "提供 4K 高清壁纸免费下载，涵盖电脑桌面壁纸、手机壁纸、动漫头像和每日 Bing 壁纸",
+            "inLanguage": "zh-CN",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://wallpaper.061129.xyz/?q={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://wallpaper.061129.xyz/#organization",
+            "name": "Wallpaper Gallery",
+            "url": "https://wallpaper.061129.xyz/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://wallpaper.061129.xyz/favicon.svg"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://wallpaper.061129.xyz/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "首页", "item": "https://wallpaper.061129.xyz/" },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "电脑壁纸",
+                "item": "https://wallpaper.061129.xyz/desktop/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "手机壁纸",
+                "item": "https://wallpaper.061129.xyz/mobile/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 4,
+                "name": "高清头像",
+                "item": "https://wallpaper.061129.xyz/avatar/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 5,
+                "name": "每日Bing壁纸",
+                "item": "https://wallpaper.061129.xyz/bing/"
+              }
+            ]
+          },
+          {
+            "@type": "ImageGallery",
+            "@id": "https://wallpaper.061129.xyz/#gallery",
+            "name": "4K高清壁纸下载",
+            "description": "精选4K高清壁纸，涵盖电脑桌面壁纸、手机壁纸、动漫头像等分类",
+            "url": "https://wallpaper.061129.xyz/",
+            "inLanguage": "zh-CN"
+          }
+        ]
+      }
+    </script>
 
     <title>4K高清壁纸下载_电脑桌面壁纸_手机壁纸 - Wallpaper Gallery</title>
 
@@ -269,20 +343,37 @@
           }
         }
 
+        function applyTheme(theme) {
+          document.documentElement.setAttribute('data-theme', theme)
+          document.documentElement.style.colorScheme = theme
+
+          const themeColorMeta = document.querySelector('meta[name="theme-color"]')
+          if (themeColorMeta) {
+            themeColorMeta.setAttribute('content', theme === THEMES.DARK ? '#0f0f1a' : '#6366f1')
+          }
+        }
+
         // 读取用户保存的主题模式
         let savedMode = null
+        let legacyTheme = null
         try {
           savedMode = localStorage.getItem('wallpaper-gallery-theme-mode')
+          legacyTheme = localStorage.getItem('wallpaper-gallery-theme')
         } catch (e) {
           // localStorage 可能不可用（如隐私模式）
         }
 
-        // 确定主题模式（默认跟随系统）
-        const themeMode = savedMode && Object.values(THEME_MODES).includes(savedMode) ? savedMode : THEME_MODES.SYSTEM
+        // 确定主题模式（默认跟随系统，兼容旧版手动 light/dark 存储）
+        const themeMode =
+          savedMode && Object.values(THEME_MODES).includes(savedMode)
+            ? savedMode
+            : legacyTheme && Object.values(THEMES).includes(legacyTheme)
+              ? legacyTheme
+              : THEME_MODES.SYSTEM
 
         // 计算并应用主题
         const theme = computeTheme(themeMode)
-        document.documentElement.setAttribute('data-theme', theme)
+        applyTheme(theme)
       })()
     </script>
   </head>

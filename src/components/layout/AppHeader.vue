@@ -14,7 +14,7 @@ import { useWallpaperStore } from '@/stores/wallpaper'
 
 const route = useRoute()
 const router = useRouter()
-const { theme, toggleTheme } = useTheme()
+const { theme, themeMode, themeOptions, toggleTheme, setThemeMode } = useTheme()
 const { isFullscreen, toggleFullscreen } = useFullscreen()
 const { isMobile } = useDevice()
 const filterStore = useFilterStore()
@@ -116,6 +116,8 @@ onMounted(() => {
   updateNavSliderPosition()
   window.addEventListener('resize', handleResize)
   window.addEventListener('load', handleResize)
+  document.addEventListener('pointerdown', handleGlobalPointerDown)
+  window.addEventListener('keydown', handleGlobalKeydown)
 
   if (document.fonts?.ready) {
     document.fonts.ready.then(() => {
@@ -128,6 +130,8 @@ onUnmounted(() => {
   cancelAnimationFrame(navSliderRafId)
   window.removeEventListener('resize', handleResize)
   window.removeEventListener('load', handleResize)
+  document.removeEventListener('pointerdown', handleGlobalPointerDown)
+  window.removeEventListener('keydown', handleGlobalKeydown)
 })
 
 // 获取系列对应的路由路径
@@ -147,6 +151,16 @@ const isSearchExpanded = ref(false)
 const searchContainerRef = ref(null)
 const searchBarRef = ref(null)
 const isAnimating = ref(false)
+const showThemeMenu = ref(false)
+const themeSwitcherRef = ref(null)
+
+const activeThemeOption = computed(() =>
+  themeOptions.find(option => option.value === themeMode.value) || themeOptions[0],
+)
+
+const themeButtonLabel = computed(() =>
+  `${activeThemeOption.value.label}，当前${theme.value === 'dark' ? '深色' : '浅色'}`,
+)
 
 function openDrawer() {
   showDrawer.value = true
@@ -231,6 +245,49 @@ function closeSearch() {
     },
   })
 }
+
+function toggleThemeMenu() {
+  showThemeMenu.value = !showThemeMenu.value
+}
+
+function closeThemeMenu() {
+  showThemeMenu.value = false
+}
+
+function handleThemeOptionSelect(mode) {
+  setThemeMode(mode)
+  closeThemeMenu()
+}
+
+function handleThemeQuickToggle() {
+  toggleTheme()
+  closeThemeMenu()
+}
+
+function handleGlobalPointerDown(event) {
+  if (isMobile.value || !showThemeMenu.value)
+    return
+
+  const target = event.target
+  if (themeSwitcherRef.value?.contains(target))
+    return
+
+  closeThemeMenu()
+}
+
+function handleGlobalKeydown(event) {
+  if (event.key === 'Escape') {
+    closeThemeMenu()
+  }
+}
+
+watch(() => route.path, () => {
+  closeThemeMenu()
+}, { flush: 'post' })
+
+watch(isMobile, () => {
+  closeThemeMenu()
+})
 </script>
 
 <template>
@@ -338,21 +395,52 @@ function closeSearch() {
           </svg>
         </button>
 
-        <button
-          class="theme-toggle"
-          :aria-label="theme === 'dark' ? '切换到浅色模式' : '切换到深色模式'"
-          @click="toggleTheme"
-        >
-          <!-- Sun Icon -->
-          <svg v-if="theme === 'dark'" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="5" />
-            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-          </svg>
-          <!-- Moon Icon -->
-          <svg v-else class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-          </svg>
-        </button>
+        <div ref="themeSwitcherRef" class="theme-switcher">
+          <button
+            class="theme-toggle"
+            :class="{ 'is-active': showThemeMenu }"
+            :aria-label="themeButtonLabel"
+            aria-haspopup="menu"
+            :aria-expanded="showThemeMenu"
+            @click="toggleThemeMenu"
+          >
+            <svg v-if="theme === 'dark'" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5" />
+              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+            </svg>
+            <svg v-else class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+          </button>
+
+          <Transition name="theme-menu">
+            <div v-if="showThemeMenu" class="theme-menu" role="menu" aria-label="主题模式">
+              <div class="theme-menu-header">
+                <span class="theme-menu-title">外观主题</span>
+                <span class="theme-menu-subtitle">{{ activeThemeOption.label }}</span>
+              </div>
+
+              <button class="theme-menu-quick" type="button" @click="handleThemeQuickToggle">
+                <span>快速切换</span>
+                <span>{{ theme === 'dark' ? '切到浅色' : '切到深色' }}</span>
+              </button>
+
+              <button
+                v-for="option in themeOptions"
+                :key="option.value"
+                class="theme-menu-option"
+                :class="{ 'is-active': themeMode === option.value }"
+                type="button"
+                role="menuitemradio"
+                :aria-checked="themeMode === option.value"
+                @click="handleThemeOptionSelect(option.value)"
+              >
+                <span class="theme-menu-option__title">{{ option.label }}</span>
+                <span class="theme-menu-option__desc">{{ option.description }}</span>
+              </button>
+            </div>
+          </Transition>
+        </div>
 
         <a
           href="https://github.com/IT-NuanxinPro/wallpaper-gallery"
@@ -387,8 +475,11 @@ function closeSearch() {
 
         <button
           class="theme-toggle"
-          :aria-label="theme === 'dark' ? '切换到浅色模式' : '切换到深色模式'"
-          @click="toggleTheme"
+          :class="{ 'is-active': showThemeMenu }"
+          :aria-label="themeButtonLabel"
+          aria-haspopup="dialog"
+          :aria-expanded="showThemeMenu"
+          @click="toggleThemeMenu"
         >
           <svg v-if="theme === 'dark'" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="5" />
@@ -431,6 +522,48 @@ function closeSearch() {
           />
           <button class="search-close-btn" @click="closeSearch">
             取消
+          </button>
+        </div>
+      </van-popup>
+    </Teleport>
+
+    <Teleport v-if="isMobile" to="body">
+      <van-popup
+        v-model:show="showThemeMenu"
+        position="bottom"
+        round
+        class="theme-sheet"
+        :teleport="null"
+        :close-on-click-overlay="true"
+      >
+        <div class="theme-sheet-content">
+          <div class="theme-sheet-header">
+            <div>
+              <h3>外观主题</h3>
+              <p>当前为{{ activeThemeOption.label }}</p>
+            </div>
+            <button class="theme-sheet-close" type="button" @click="closeThemeMenu">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <button class="theme-sheet-quick" type="button" @click="handleThemeQuickToggle">
+            <span>快速切换</span>
+            <span>{{ theme === 'dark' ? '切到浅色' : '切到深色' }}</span>
+          </button>
+
+          <button
+            v-for="option in themeOptions"
+            :key="option.value"
+            class="theme-sheet-option"
+            :class="{ 'is-active': themeMode === option.value }"
+            type="button"
+            @click="handleThemeOptionSelect(option.value)"
+          >
+            <span class="theme-sheet-option__title">{{ option.label }}</span>
+            <span class="theme-sheet-option__desc">{{ option.description }}</span>
           </button>
         </div>
       </van-popup>
@@ -759,6 +892,10 @@ function closeSearch() {
   gap: $spacing-sm;
 }
 
+.theme-switcher {
+  position: relative;
+}
+
 .header-env-badge {
   margin-left: $spacing-sm;
 }
@@ -852,6 +989,7 @@ function closeSearch() {
 }
 
 .search-toggle.is-active,
+.theme-toggle.is-active,
 .fullscreen-toggle.is-active {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-color: transparent;
@@ -864,10 +1002,211 @@ function closeSearch() {
   }
 }
 
+.theme-menu-enter-active,
+.theme-menu-leave-active {
+  transition: all 180ms ease;
+}
+
+.theme-menu-enter-from,
+.theme-menu-leave-to {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.98);
+}
+
+.theme-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 280px;
+  padding: 10px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.16);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  [data-theme='dark'] & {
+    background: rgba(15, 23, 42, 0.92);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
+  }
+}
+
+.theme-menu-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 8px 8px 10px;
+}
+
+.theme-menu-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.theme-menu-subtitle {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.theme-menu-quick,
+.theme-menu-option {
+  width: 100%;
+  border: 0;
+  text-align: left;
+  border-radius: 16px;
+  color: inherit;
+  background: transparent;
+  transition: all 220ms ease;
+}
+
+.theme-menu-quick {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
+
+  &:hover {
+    background: rgba(102, 126, 234, 0.16);
+  }
+}
+
+.theme-menu-option {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+
+  &:hover {
+    background: rgba(102, 126, 234, 0.08);
+  }
+
+  &.is-active {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.16), rgba(118, 75, 162, 0.14));
+  }
+}
+
+.theme-menu-option__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.theme-menu-option__desc {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
 .header-actions-mobile {
   display: flex;
   align-items: center;
   gap: $spacing-xs;
+}
+
+.theme-sheet {
+  background: rgba(255, 255, 255, 0.96);
+
+  [data-theme='dark'] & {
+    background: rgba(15, 23, 42, 0.96);
+  }
+}
+
+.theme-sheet-content {
+  padding: 20px 16px calc(16px + env(safe-area-inset-bottom));
+}
+
+.theme-sheet-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+
+  h3 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--color-text-primary);
+  }
+
+  p {
+    margin: 6px 0 0;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+  }
+}
+
+.theme-sheet-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  color: var(--color-text-secondary);
+  background: rgba(102, 126, 234, 0.08);
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.theme-sheet-quick,
+.theme-sheet-option {
+  width: 100%;
+  border: 0;
+  text-align: left;
+  border-radius: 18px;
+}
+
+.theme-sheet-quick {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
+}
+
+.theme-sheet-option {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  background: rgba(102, 126, 234, 0.04);
+  transition: all 220ms ease;
+
+  & + & {
+    margin-top: 10px;
+  }
+
+  &.is-active {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.16), rgba(118, 75, 162, 0.14));
+  }
+}
+
+.theme-sheet-option__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.theme-sheet-option__desc {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
 }
 
 .action-divider {

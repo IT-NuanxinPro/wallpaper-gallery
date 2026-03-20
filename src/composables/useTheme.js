@@ -1,74 +1,277 @@
 // ========================================
-// 主题切换 Composable
-// 简化版：仅支持浅色/暗色手动切换
+// 全局主题 Composable
+// 统一管理主题模式、实际生效主题、系统监听与首屏同步
 // ========================================
 
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { trackThemeChange } from '@/utils/analytics'
-import { STORAGE_KEYS, THEMES } from '@/utils/constants'
+import { STORAGE_KEYS, THEME_MODES, THEMES } from '@/utils/constants'
 
-// 当前主题（默认浅色）
 const theme = ref(THEMES.LIGHT)
+const themeMode = ref(THEME_MODES.SYSTEM)
 
-// 应用主题到 DOM
-function applyTheme() {
-  document.documentElement.setAttribute('data-theme', theme.value)
+const THEME_COLOR_MAP = {
+  [THEMES.LIGHT]: '#6366f1',
+  [THEMES.DARK]: '#0f0f1a',
+}
+
+let initialized = false
+let mediaQueryList = null
+let cleanupSystemListener = null
+let autoThemeTimerId = 0
+let documentListenersBound = false
+
+function isClient() {
+  return typeof window !== 'undefined' && typeof document !== 'undefined'
+}
+
+function readStorage(key) {
+  if (!isClient())
+    return null
+
+  try {
+    return window.localStorage.getItem(key)
+  }
+  catch {
+    return null
+  }
+}
+
+function writeStorage(key, value) {
+  if (!isClient())
+    return
+
+  try {
+    window.localStorage.setItem(key, value)
+  }
+  catch {
+  }
+}
+
+function removeStorage(key) {
+  if (!isClient())
+    return
+
+  try {
+    window.localStorage.removeItem(key)
+  }
+  catch {
+  }
+}
+
+function getThemeByTime(date = new Date()) {
+  const hour = date.getHours()
+  return hour >= 6 && hour < 18 ? THEMES.LIGHT : THEMES.DARK
+}
+
+function getThemeBySystem() {
+  if (!isClient() || !window.matchMedia)
+    return THEMES.LIGHT
+
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? THEMES.DARK : THEMES.LIGHT
+}
+
+function computeTheme(mode) {
+  switch (mode) {
+    case THEME_MODES.LIGHT:
+      return THEMES.LIGHT
+    case THEME_MODES.DARK:
+      return THEMES.DARK
+    case THEME_MODES.AUTO:
+      return getThemeByTime()
+    case THEME_MODES.SYSTEM:
+    default:
+      return getThemeBySystem()
+  }
+}
+
+function applyThemeToDom(resolvedTheme) {
+  if (!isClient())
+    return
+
+  document.documentElement.setAttribute('data-theme', resolvedTheme)
+  document.documentElement.style.colorScheme = resolvedTheme
+
+  const themeColorMeta = document.querySelector('meta[name="theme-color"]')
+  if (themeColorMeta) {
+    themeColorMeta.setAttribute('content', THEME_COLOR_MAP[resolvedTheme] || THEME_COLOR_MAP[THEMES.LIGHT])
+  }
+}
+
+function persistThemeMode(mode) {
+  writeStorage(STORAGE_KEYS.THEME_MODE, mode)
+
+  if (mode === THEME_MODES.LIGHT || mode === THEME_MODES.DARK) {
+    writeStorage(STORAGE_KEYS.THEME, mode)
+  }
+  else {
+    removeStorage(STORAGE_KEYS.THEME)
+  }
+}
+
+function syncResolvedTheme() {
+  const resolvedTheme = computeTheme(themeMode.value)
+  theme.value = resolvedTheme
+  applyThemeToDom(resolvedTheme)
+  return resolvedTheme
+}
+
+function clearAutoThemeTimer() {
+  if (!isClient() || !autoThemeTimerId)
+    return
+
+  window.clearTimeout(autoThemeTimerId)
+  autoThemeTimerId = 0
+}
+
+function scheduleAutoThemeRefresh() {
+  clearAutoThemeTimer()
+
+  if (!isClient() || themeMode.value !== THEME_MODES.AUTO)
+    return
+
+  const now = new Date()
+  const nextBoundary = new Date(now)
+
+  if (now.getHours() < 6) {
+    nextBoundary.setHours(6, 0, 1, 0)
+  }
+  else if (now.getHours() < 18) {
+    nextBoundary.setHours(18, 0, 1, 0)
+  }
+  else {
+    nextBoundary.setDate(nextBoundary.getDate() + 1)
+    nextBoundary.setHours(6, 0, 1, 0)
+  }
+
+  const delay = Math.max(nextBoundary.getTime() - now.getTime(), 1000)
+  autoThemeTimerId = window.setTimeout(() => {
+    syncResolvedTheme()
+    scheduleAutoThemeRefresh()
+  }, delay)
+}
+
+function handleSystemThemeChange() {
+  if (themeMode.value === THEME_MODES.SYSTEM) {
+    syncResolvedTheme()
+  }
+}
+
+function bindSystemThemeListener() {
+  if (!isClient() || !window.matchMedia)
+    return
+
+  cleanupSystemListener?.()
+
+  mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)')
+  const listener = () => handleSystemThemeChange()
+
+  if (mediaQueryList.addEventListener) {
+    mediaQueryList.addEventListener('change', listener)
+    cleanupSystemListener = () => mediaQueryList?.removeEventListener('change', listener)
+  }
+  else {
+    mediaQueryList.addListener(listener)
+    cleanupSystemListener = () => mediaQueryList?.removeListener(listener)
+  }
+}
+
+function handleVisibilitySync() {
+  if (document.visibilityState === 'hidden')
+    return
+
+  if (themeMode.value === THEME_MODES.SYSTEM || themeMode.value === THEME_MODES.AUTO) {
+    syncResolvedTheme()
+  }
+
+  if (themeMode.value === THEME_MODES.AUTO) {
+    scheduleAutoThemeRefresh()
+  }
+}
+
+function bindDocumentListeners() {
+  if (!isClient() || documentListenersBound)
+    return
+
+  document.addEventListener('visibilitychange', handleVisibilitySync)
+  window.addEventListener('focus', handleVisibilitySync)
+  documentListenersBound = true
+}
+
+function readInitialThemeMode() {
+  const savedMode = readStorage(STORAGE_KEYS.THEME_MODE)
+  if (savedMode && Object.values(THEME_MODES).includes(savedMode)) {
+    return savedMode
+  }
+
+  const legacyTheme = readStorage(STORAGE_KEYS.THEME)
+  if (legacyTheme && Object.values(THEMES).includes(legacyTheme)) {
+    return legacyTheme
+  }
+
+  return THEME_MODES.SYSTEM
+}
+
+function updateThemeMode(nextMode, { track = true } = {}) {
+  if (!Object.values(THEME_MODES).includes(nextMode))
+    return
+
+  const previousResolvedTheme = theme.value
+  themeMode.value = nextMode
+  persistThemeMode(nextMode)
+  const resolvedTheme = syncResolvedTheme()
+  scheduleAutoThemeRefresh()
+
+  if (track && previousResolvedTheme !== resolvedTheme) {
+    trackThemeChange(resolvedTheme)
+  }
+}
+
+function initTheme() {
+  if (!initialized) {
+    bindSystemThemeListener()
+    bindDocumentListeners()
+    initialized = true
+  }
+
+  themeMode.value = readInitialThemeMode()
+  syncResolvedTheme()
+  scheduleAutoThemeRefresh()
 }
 
 export function useTheme() {
-  // 初始化主题
-  const initTheme = () => {
-    // 读取用户保存的主题
-    const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME)
-    if (savedTheme && Object.values(THEMES).includes(savedTheme)) {
-      theme.value = savedTheme
-    }
-    else {
-      // 默认浅色
-      theme.value = THEMES.LIGHT
-    }
-    applyTheme()
-  }
-
-  // 切换主题
   const toggleTheme = () => {
-    theme.value = theme.value === THEMES.LIGHT ? THEMES.DARK : THEMES.LIGHT
-    trackThemeChange(theme.value)
+    const nextTheme = theme.value === THEMES.DARK ? THEMES.LIGHT : THEMES.DARK
+    updateThemeMode(nextTheme)
   }
 
-  // 设置指定主题
   const setTheme = (newTheme) => {
     if (Object.values(THEMES).includes(newTheme)) {
-      theme.value = newTheme
+      updateThemeMode(newTheme)
     }
   }
 
-  // 监听主题变化，保存到 localStorage 并应用
-  watch(theme, (newTheme) => {
-    localStorage.setItem(STORAGE_KEYS.THEME, newTheme)
-    applyTheme()
-  })
+  const setThemeMode = (newMode) => {
+    updateThemeMode(newMode)
+  }
 
-  // 组件挂载时初始化
-  onMounted(() => {
-    initTheme()
-  })
-
-  // 计算属性
   const isDark = computed(() => theme.value === THEMES.DARK)
 
-  // 主题选项（用于UI选择器）
   const themeOptions = [
-    { value: THEMES.LIGHT, label: '浅色', icon: '☀️' },
-    { value: THEMES.DARK, label: '深色', icon: '🌙' },
+    { value: THEME_MODES.SYSTEM, label: '跟随系统', description: '根据设备当前主题自动切换' },
+    { value: THEME_MODES.LIGHT, label: '浅色模式', description: '始终使用明亮界面' },
+    { value: THEME_MODES.DARK, label: '深色模式', description: '始终使用深色界面' },
+    { value: THEME_MODES.AUTO, label: '昼夜自动', description: '白天浅色，夜间深色' },
   ]
 
   return {
     theme,
+    themeMode,
     isDark,
     themeOptions,
     toggleTheme,
     setTheme,
+    setThemeMode,
     initTheme,
   }
 }

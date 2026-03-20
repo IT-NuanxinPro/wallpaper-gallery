@@ -2,9 +2,17 @@
 # 允许所有合法的搜索引擎抓取
 User-agent: *
 Allow: /
+Allow: /favicon.svg
+Allow: /apple-touch-icon.png
+Allow: /og-image.jpg
 
 # 禁止抓取原始数据文件夹（防止爬虫只抓 JSON 不抓页面）
 Disallow: /data/
+Disallow: /assets/js/
+
+# 允许图片爬虫抓取所有图片资源
+User-agent: Googlebot-Image
+Allow: /
 
 # 针对百度爬虫的优化
 User-agent: Baiduspider

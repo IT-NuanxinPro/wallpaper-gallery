@@ -14,11 +14,11 @@ import { recordDownload, recordView } from '@/utils/supabase'
 import AvatarDesktopModal from './AvatarDesktopModal.vue'
 import AvatarMobileModal from './AvatarMobileModal.vue'
 import { useDeviceMode } from './composables/useDeviceMode'
-import DesktopModal from './DesktopModal.vue'
 import DeviceMode from './DeviceMode.vue'
 import MobileModal from './MobileModal.vue'
 import ModalContent from './ModalContent.vue'
 import ModalInfo from './ModalInfo.vue'
+import PortraitDesktopModal from './PortraitDesktopModal.vue'
 
 const props = defineProps({
   wallpaper: {
@@ -237,7 +237,7 @@ onUnmounted(() => {
 
 <template>
   <!-- PC端手机壁纸使用独立的桌面弹窗 -->
-  <DesktopModal
+  <PortraitDesktopModal
     v-if="useDesktopModal"
     :wallpaper="wallpaper"
     :is-open="isOpen"

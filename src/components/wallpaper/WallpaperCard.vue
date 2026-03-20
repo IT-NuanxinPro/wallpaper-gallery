@@ -103,6 +103,17 @@ const categoryDisplay = computed(() => {
 
 const isBingWallpaper = computed(() => props.wallpaper?.isBing === true)
 const bingTitle = computed(() => props.wallpaper?.title || '')
+
+const imageAlt = computed(() => {
+  if (isBingWallpaper.value && props.wallpaper.title)
+    return `${props.wallpaper.title} - Bing每日壁纸`
+  const parts = [displayFilename.value]
+  if (categoryDisplay.value)
+    parts.push(categoryDisplay.value)
+  if (aiKeywords.value.length > 0)
+    parts.push(aiKeywords.value.join(' '))
+  return `${parts.join(' - ')} 高清壁纸`
+})
 const bingDate = computed(() => props.wallpaper?.date ? formatBingDate(props.wallpaper.date) : '')
 const bingCopyright = computed(() => {
   if (!props.wallpaper?.copyright)
@@ -254,7 +265,7 @@ function handleMouseLeave(e) {
       <img
         ref="imageRef"
         :src="thumbnailUrl"
-        :alt="wallpaper.filename"
+        :alt="imageAlt"
         width="800"
         height="600"
         loading="lazy"

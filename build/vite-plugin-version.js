@@ -48,8 +48,17 @@ export function versionPlugin(options = {}) {
           buildTime,
         }
         fs.writeFileSync(versionFile, JSON.stringify(versionData, null, 2))
-
         console.log(`[version-plugin] Updated ${outputPath} to v${version}`)
+
+        // 更新 sitemap.xml 中的 lastmod 日期
+        const sitemapFile = path.resolve(rootDir, 'public/sitemap.xml')
+        if (fs.existsSync(sitemapFile)) {
+          const today = buildTime.split(' ')[0] // 取 YYYY-MM-DD 部分
+          const content = fs.readFileSync(sitemapFile, 'utf-8')
+          const updated = content.replace(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/g, `<lastmod>${today}</lastmod>`)
+          fs.writeFileSync(sitemapFile, updated)
+          console.log(`[version-plugin] Updated sitemap.xml lastmod to ${today}`)
+        }
       }
     },
   }

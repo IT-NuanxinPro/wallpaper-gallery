@@ -1,17 +1,12 @@
 <script setup>
 import { ElConfigProvider } from 'element-plus'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
-import { computed, onMounted } from 'vue'
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import UpdateNotification from '@/components/common/feedback/UpdateNotification.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import GridSkeleton from '@/components/wallpaper/WallpaperGrid/GridSkeleton.vue'
-
-import { useTheme } from '@/composables/useTheme'
 import { useVersionCheck } from '@/composables/useVersionCheck'
-
-// Theme
-const { initTheme } = useTheme()
 
 // Version check (启动版本检测)
 useVersionCheck()
@@ -24,11 +19,6 @@ const skeletonAspectType = computed(() => route.meta?.aspectType || 'landscape')
 
 // 是否隐藏导航栏（用于下载页等独立页面）
 const hideHeader = computed(() => route.meta?.hideHeader === true)
-
-// Initialize
-onMounted(() => {
-  initTheme()
-})
 </script>
 
 <template>
