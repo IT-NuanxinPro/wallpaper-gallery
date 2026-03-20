@@ -12,7 +12,6 @@ const DIST_DIR = path.resolve(ROOT_DIR, 'dist')
 const HOST = '127.0.0.1'
 const PORT = Number(process.env.PRERENDER_PORT || 0)
 const PRERENDER_ROUTES = [
-  '/',
   '/desktop',
   '/mobile',
   '/avatar',
