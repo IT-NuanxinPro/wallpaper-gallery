@@ -1,6 +1,4 @@
-// ========================================
-// 热门数据管理 Store（简化版）
-// ========================================
+// 热门数据管理 Store
 // 使用静态 JSON 加载数据，不再使用乐观更新
 
 import { defineStore } from 'pinia'
@@ -11,10 +9,6 @@ import {
 } from '@/services/statsService'
 
 export const usePopularityStore = defineStore('popularity', () => {
-  // ========================================
-  // State
-  // ========================================
-
   // 统计数据 Map<imageId, {views, downloads}>
   const statsMap = ref(new Map())
 

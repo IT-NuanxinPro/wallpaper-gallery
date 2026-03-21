@@ -2,7 +2,7 @@
 import { gsap } from 'gsap'
 import { ref, watch } from 'vue'
 import { useScrollTop } from '@/composables/useScrollTop'
-import { trackBackToTop } from '@/utils/analytics'
+import { trackBackToTop } from '@/utils/common/analytics'
 
 const { showButton, scrollToTop } = useScrollTop()
 const buttonRef = ref(null)

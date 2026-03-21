@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue'
-import { trackDiyAvatarClick } from '@/utils/analytics'
+import { trackDiyAvatarClick } from '@/utils/common/analytics'
 
 const isVisible = ref(false)
 const isHovered = ref(false)

@@ -1,7 +1,3 @@
-// ========================================
-// Store Barrel Export
-// ========================================
-
 export { useFilterStore } from './filter'
 export { usePopularityStore } from './popularity'
 export { useSeriesStore } from './series'

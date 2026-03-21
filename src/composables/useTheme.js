@@ -4,8 +4,8 @@
 // ========================================
 
 import { computed, ref } from 'vue'
-import { trackThemeChange } from '@/utils/analytics'
-import { STORAGE_KEYS, THEME_MODES, THEMES } from '@/utils/constants'
+import { trackThemeChange } from '@/utils/common/analytics'
+import { STORAGE_KEYS, THEME_MODES, THEMES } from '@/utils/config/constants'
 
 const theme = ref(THEMES.LIGHT)
 const themeMode = ref(THEME_MODES.SYSTEM)

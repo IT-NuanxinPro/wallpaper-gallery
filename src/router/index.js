@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { isMobileDevice } from '@/composables/useDevice'
-import { DEVICE_SERIES } from '@/utils/constants'
+import { detectDevice, DEVICE_TYPES } from '@/composables/useDevice'
+import { DEVICE_SERIES } from '@/utils/config/constants'
 
 const SITE_NAME = 'Wallpaper Gallery'
 const SITE_URL = 'https://wallpaper.061129.xyz'
@@ -83,29 +83,6 @@ const routes = [
       title: '关于 Wallpaper Gallery - 4K 高清壁纸站',
       description: '了解 Wallpaper Gallery 的项目定位、特色功能与壁纸资源分类，查看更多关于 4K 高清壁纸站的信息。',
       canonicalPath: '/about',
-    },
-  },
-  // iPhone 真机预览 Demo
-  {
-    path: '/iphone-demo',
-    name: 'IPhoneDemo',
-    component: () => import('@/views/demo/IPhoneDemo.vue'),
-    meta: {
-      title: 'iPhone 真机预览 Demo',
-      description: DEFAULT_DESCRIPTION,
-      canonicalPath: '/iphone-demo',
-      hideHeader: true,
-    },
-  },
-  // MacBook 真机预览 Demo
-  {
-    path: '/macbook-demo',
-    name: 'MacBookDemo',
-    component: () => import('@/views/demo/MacBookDemo.vue'),
-    meta: {
-      title: 'MacBook Pro 真机预览 Demo',
-      description: DEFAULT_DESCRIPTION,
-      canonicalPath: '/macbook-demo',
       hideHeader: true,
     },
   },
@@ -134,18 +111,12 @@ const router = createRouter({
   },
 })
 
-// ========================================
-// 路由守卫配置（简化版）
-// ========================================
-
+// 路由守卫配置
 const STORAGE_KEY = 'wallpaper-gallery-current-series'
 
-// 缓存设备类型
-let deviceType = null
 function getDeviceType() {
-  if (!deviceType)
-    deviceType = isMobileDevice() ? 'mobile' : 'desktop'
-  return deviceType
+  const deviceType = detectDevice()
+  return deviceType === DEVICE_TYPES.MOBILE ? 'mobile' : deviceType
 }
 
 // 获取默认系列

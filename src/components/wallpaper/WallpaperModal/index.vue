@@ -5,12 +5,12 @@ import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import { useDevice } from '@/composables/useDevice'
 import { useWallpaperType } from '@/composables/useWallpaperType'
 import { usePopularityStore } from '@/stores/popularity'
-import { trackWallpaperDownload, trackWallpaperPreview } from '@/utils/analytics'
-import { downloadFile, formatDate, formatFileSize, formatRelativeTime, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/format'
-import { recordDownload, recordView } from '@/utils/supabase'
-import ImageCropModal from '../ImageCropModal.vue'
-import BingWallpaperInfo from './BingWallpaperInfo.vue'
-import DesktopModal from './DesktopModal.vue'
+import { trackWallpaperDownload, trackWallpaperPreview } from '@/utils/common/analytics'
+import { downloadFile, formatDate, formatFileSize, formatRelativeTime, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/common/format'
+import { recordDownload, recordView } from '@/utils/integrations/supabase'
+import ImageCropModal from '../crop/index.vue'
+import DesktopModal from './desktop/DesktopModal.vue'
+import BingWallpaperInfo from './shared/BingWallpaperInfo.vue'
 
 const props = defineProps({
   wallpaper: {

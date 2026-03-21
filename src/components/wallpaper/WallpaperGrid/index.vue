@@ -1,13 +1,16 @@
 <script setup>
-import { gsap } from 'gsap'
-import { Flip } from 'gsap/Flip'
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import { useDevice } from '@/composables/useDevice'
 import { useViewMode } from '@/composables/useViewMode'
 import { useWallpaperType } from '@/composables/useWallpaperType'
-import WallpaperCard from '../WallpaperCard.vue'
+import WallpaperCard from '../card/index.vue'
+import { useGridAnimations } from './composables/useGridAnimations'
+import { PAGE_SIZE, useGridPagination } from './composables/useGridPagination'
+import { useGridTouchMode } from './composables/useGridTouchMode'
+import GridEmptyState from './shared/GridEmptyState.vue'
+import GridLoadingState from './shared/GridLoadingState.vue'
 
 const props = defineProps({
   wallpapers: {
@@ -41,9 +44,6 @@ const props = defineProps({
 
 const emit = defineEmits(['select', 'resetFilters'])
 
-// 注册 GSAP Flip 插件
-gsap.registerPlugin(Flip)
-
 const router = useRouter()
 const { currentSeries, currentSeriesConfig, availableSeriesOptions } = useWallpaperType()
 const { viewMode, setViewMode } = useViewMode()
@@ -76,73 +76,23 @@ function getViewCount(filename) {
 
 const gridRef = ref(null)
 const wrapperRef = ref(null)
-const isAnimating = ref(false)
 const displayViewMode = ref(viewMode.value)
-
-// ========================================
-// 滚动加载相关（移动端和桌面端统一使用）
-// ========================================
-const PAGE_SIZE = 20
-const displayCount = ref(PAGE_SIZE)
-const isLoadingMore = ref(false)
-const scrollPaused = ref(false) // 滚动加载暂停标记
 
 // 定时器引用集合（用于组件卸载时清理）
 const timers = new Set()
 
-// 显示的项目
-const displayedItems = computed(() => {
-  return props.wallpapers.slice(0, displayCount.value)
+const wallpapersRef = computed(() => props.wallpapers)
+const {
+  displayedItems,
+  handleScroll,
+  isLoadingMore,
+  pauseScrollLoad,
+  resetDisplayCount,
+  resumeScrollLoad,
+} = useGridPagination({
+  timers,
+  wallpapers: wallpapersRef,
 })
-
-// 是否还有更多数据可加载
-const hasMoreData = computed(() => {
-  return displayCount.value < props.wallpapers.length
-})
-
-// 滚动加载处理（移动端和桌面端统一使用）
-function handleScroll() {
-  if (scrollPaused.value || isLoadingMore.value || !hasMoreData.value)
-    return
-
-  const scrollTop = window.scrollY || document.documentElement.scrollTop
-  const windowHeight = window.innerHeight
-  const documentHeight = document.documentElement.scrollHeight
-
-  // 距离底部 200px 时触发加载
-  if (scrollTop + windowHeight >= documentHeight - 200) {
-    loadMore()
-  }
-}
-
-// 加载更多
-function loadMore() {
-  if (isLoadingMore.value || !hasMoreData.value)
-    return
-
-  isLoadingMore.value = true
-
-  const timer = setTimeout(() => {
-    timers.delete(timer)
-    const newCount = Math.min(
-      displayCount.value + PAGE_SIZE,
-      props.wallpapers.length,
-    )
-    displayCount.value = newCount
-    isLoadingMore.value = false
-  }, 150)
-  timers.add(timer)
-}
-
-// 暂停滚动加载
-function pauseScrollLoad() {
-  scrollPaused.value = true
-}
-
-// 恢复滚动加载
-function resumeScrollLoad() {
-  scrollPaused.value = false
-}
 
 // 空状态类型判断
 const emptyStateType = computed(() => {
@@ -189,272 +139,39 @@ function handleResetFilters() {
   emit('resetFilters')
 }
 
-const MOBILE_VIEW_MODE_ORDER = ['grid', 'list']
-
-function getModeIndex(mode) {
-  return MOBILE_VIEW_MODE_ORDER.indexOf(mode)
-}
-
-const touchStartX = ref(0)
-const touchStartY = ref(0)
-const isSwiping = ref(false)
-
-function handleTouchStart(e) {
-  if (!isMobileOrTablet.value)
-    return
-  touchStartX.value = e.touches[0].clientX
-  touchStartY.value = e.touches[0].clientY
-  isSwiping.value = false
-}
-
-function handleTouchMove(e) {
-  if (!isMobileOrTablet.value)
-    return
-
-  const deltaX = e.touches[0].clientX - touchStartX.value
-  const deltaY = e.touches[0].clientY - touchStartY.value
-
-  // 判断是否是水平滑动（水平位移 > 垂直位移 * 1.5）
-  if (Math.abs(deltaX) > Math.abs(deltaY) * 1.5 && Math.abs(deltaX) > 30) {
-    isSwiping.value = true
-  }
-}
-
-function handleTouchEnd(e) {
-  if (!isMobileOrTablet.value || !isSwiping.value)
-    return
-
-  const deltaX = e.changedTouches[0].clientX - touchStartX.value
-  // 滑动距离超过 80px 才触发切换
-  if (Math.abs(deltaX) > 80) {
-    const currentIndex = getModeIndex(viewMode.value)
-    let newIndex
-
-    if (deltaX < 0) {
-      // 向左滑 → 下一个模式
-      newIndex = (currentIndex + 1) % MOBILE_VIEW_MODE_ORDER.length
-    }
-    else {
-      // 向右滑 → 上一个模式
-      newIndex = (currentIndex - 1 + MOBILE_VIEW_MODE_ORDER.length) % MOBILE_VIEW_MODE_ORDER.length
-    }
-
-    // 直接切换视图模式（无动画）
-    setViewMode(MOBILE_VIEW_MODE_ORDER[newIndex])
-  }
-
-  isSwiping.value = false
-}
-
-// Flip 插件预热标记
-const isFlipWarmedUp = ref(false)
-
-// ========================================
-// 视图切换动画 - 使用 GSAP Flip 实现丝滑形态变换
-// 移动端和 PC 端统一支持（移动端只有 grid/list 两种模式）
-// ========================================
-watch(viewMode, async (newMode, oldMode) => {
-  if (!gridRef.value || newMode === oldMode)
-    return
-
-  // 如果正在动画中，先终止之前的动画
-  if (isAnimating.value) {
-    gsap.killTweensOf('.wallpaper-card')
-  }
-
-  isAnimating.value = true
-  // 暂停滚动加载，防止动画期间数据变化
-  pauseScrollLoad()
-
-  try {
-    const cards = gridRef.value.querySelectorAll('.wallpaper-card')
-
-    if (cards.length === 0) {
-      displayViewMode.value = newMode
-      isAnimating.value = false
-      resumeScrollLoad()
-      return
-    }
-
-    // 在 wrapper 上设置 minHeight，避免影响 grid 内部布局
-    if (wrapperRef.value) {
-      const currentHeight = wrapperRef.value.offsetHeight
-      wrapperRef.value.style.minHeight = `${currentHeight}px`
-    }
-
-    // 记录当前卡片的位置和尺寸状态
-    const state = Flip.getState(cards, {
-      simple: true,
-    })
-
-    // 切换布局类
-    displayViewMode.value = newMode
-    await nextTick()
-
-    // 移动端使用更快的动画，减少等待感
-    const animationConfig = isMobileOrTablet.value
-      ? {
-          duration: 0.35,
-          ease: 'power2.out',
-          stagger: {
-            amount: 0.08,
-            from: 'start',
-            grid: [2, 'auto'], // 移动端 2 列布局
-          },
-        }
-      : {
-          duration: 0.45,
-          ease: 'power2.inOut',
-          stagger: {
-            amount: 0.12,
-            from: 'start',
-          },
-        }
-
-    // 执行 Flip 动画
-    Flip.from(state, {
-      ...animationConfig,
-      absolute: true,
-      scale: true,
-      onComplete: () => {
-        isAnimating.value = false
-        isFlipWarmedUp.value = true
-        resumeScrollLoad()
-        // 动画完成后清除固定高度
-        if (wrapperRef.value) {
-          wrapperRef.value.style.minHeight = ''
-        }
-      },
-    })
-  }
-  catch (error) {
-    console.warn('View mode animation error:', error)
-    displayViewMode.value = newMode
-    isAnimating.value = false
-    resumeScrollLoad()
-    // 错误时也要清除固定高度
-    if (wrapperRef.value) {
-      wrapperRef.value.style.minHeight = ''
-    }
-  }
+const {
+  handleTouchEnd,
+  handleTouchMove,
+  handleTouchStart,
+} = useGridTouchMode({
+  isMobileOrTablet,
+  setViewMode,
+  viewMode,
 })
 
-// 预热 Flip 插件
-function warmupFlip() {
-  if (isFlipWarmedUp.value || !gridRef.value)
-    return
-
-  const cards = gridRef.value.querySelectorAll('.wallpaper-card')
-  if (cards.length > 0) {
-    Flip.getState(cards, { simple: true })
-    isFlipWarmedUp.value = true
-  }
-}
-
-// 页面切换时的入场动画
-function animateCardsIn() {
-  if (!gridRef.value)
-    return
-
-  nextTick(() => {
-    const cards = gridRef.value?.querySelectorAll('.wallpaper-card')
-    if (cards && cards.length > 0) {
-      // 移动端使用更有活力的弹出动画
-      if (isMobileOrTablet.value) {
-        gsap.set(cards, {
-          opacity: 0,
-          scale: 0.85,
-          y: 20,
-        })
-
-        gsap.to(cards, {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          duration: 0.4,
-          stagger: {
-            amount: 0.35,
-            from: 'start',
-            grid: [2, 'auto'], // 2列网格的动画顺序
-          },
-          ease: 'back.out(1.2)',
-          onComplete: () => {
-            cards.forEach((card) => {
-              card.style.transform = ''
-              card.style.opacity = ''
-            })
-          },
-        })
-      }
-      else {
-        // PC端保持原有的简洁动画
-        gsap.set(cards, {
-          opacity: 0,
-          y: 15,
-        })
-
-        gsap.to(cards, {
-          opacity: 1,
-          y: 0,
-          duration: 0.3,
-          stagger: {
-            amount: 0.2,
-            from: 'start',
-          },
-          ease: 'power2.out',
-          onComplete: () => {
-            cards.forEach((card) => {
-              card.style.transform = ''
-              card.style.opacity = ''
-            })
-            warmupFlip()
-          },
-        })
-      }
-    }
-  })
-}
-
-function lockWrapperHeight() {
-  if (!wrapperRef.value)
-    return
-
-  const currentHeight = wrapperRef.value.offsetHeight
-  if (currentHeight > 0) {
-    wrapperRef.value.style.minHeight = `${currentHeight}px`
-  }
-}
-
-function releaseWrapperHeight() {
-  if (!wrapperRef.value)
-    return
-
-  nextTick(() => {
-    const timer = setTimeout(() => {
-      timers.delete(timer)
-      if (wrapperRef.value) {
-        wrapperRef.value.style.minHeight = ''
-      }
-    }, 220)
-    timers.add(timer)
-  })
-}
+const {
+  animateCardsIn,
+  cleanupGridAnimations,
+  initializeGridAnimations,
+  isAnimating,
+  lockWrapperHeight,
+  releaseWrapperHeight,
+  warmupFlip,
+} = useGridAnimations({
+  displayViewMode,
+  displayedItems,
+  gridRef,
+  isMobileOrTablet,
+  timers,
+  viewMode,
+  wrapperRef,
+})
 
 // 初始加载动画
 onMounted(() => {
   // 添加滚动监听
   window.addEventListener('scroll', handleScroll)
-
-  if (gridRef.value && displayedItems.value.length > 0) {
-    animateCardsIn()
-  }
-  else {
-    const timer = setTimeout(() => {
-      timers.delete(timer)
-      warmupFlip()
-    }, 500)
-    timers.add(timer)
-  }
+  initializeGridAnimations()
 })
 
 onUnmounted(() => {
@@ -463,14 +180,7 @@ onUnmounted(() => {
   timers.forEach(timer => clearTimeout(timer))
   timers.clear()
 
-  // 清理所有 GSAP 动画，防止内存泄漏
-  gsap.killTweensOf('.wallpaper-card')
-  if (gridRef.value) {
-    const cards = gridRef.value.querySelectorAll('.wallpaper-card')
-    if (cards.length > 0) {
-      gsap.killTweensOf(cards)
-    }
-  }
+  cleanupGridAnimations()
 })
 
 watch(() => props.loading, (isLoading, wasLoading) => {
@@ -481,6 +191,15 @@ watch(() => props.loading, (isLoading, wasLoading) => {
 
   if (!isLoading && wasLoading) {
     releaseWrapperHeight()
+  }
+})
+
+watch(isAnimating, (animating) => {
+  if (animating) {
+    pauseScrollLoad()
+  }
+  else {
+    resumeScrollLoad()
   }
 })
 
@@ -510,7 +229,7 @@ watch(() => props.wallpapers, async (newVal, oldVal) => {
   animationPending = true
 
   // 重置显示数量（仅在非后台追加时）
-  displayCount.value = PAGE_SIZE
+  resetDisplayCount()
 
   // 首次加载（从无到有）
   if (!oldVal || oldVal.length === 0) {
@@ -548,86 +267,24 @@ const skeletonCount = computed(() => isMobile.value ? 6 : 12)
 
 <template>
   <div ref="wrapperRef" class="wallpaper-grid-wrapper">
-    <!-- Loading State: 骨架屏 -->
-    <div v-if="loading" class="loading-state">
-      <!-- 移动端加载提示 -->
-      <div v-if="isMobileOrTablet" class="mobile-loading-hint">
-        <LoadingSpinner size="md" />
-        <p class="loading-text">
-          正在加载{{ currentSeriesName }}...
-        </p>
-      </div>
+    <GridLoadingState
+      v-if="loading"
+      :aspect-type="aspectType"
+      :current-series-name="currentSeriesName"
+      :display-view-mode="displayViewMode"
+      :is-mobile-or-tablet="isMobileOrTablet"
+      :skeleton-count="skeletonCount"
+    />
 
-      <!-- 骨架屏 -->
-      <div class="wallpaper-grid skeleton-grid" :class="[`view-${displayViewMode}`, `aspect-${aspectType}`]">
-        <div v-for="n in skeletonCount" :key="n" class="skeleton-card">
-          <div class="skeleton-image">
-            <div class="skeleton-shimmer" />
-          </div>
-          <!-- 桌面端显示骨架信息 -->
-          <div v-if="!isMobileOrTablet" class="skeleton-info">
-            <div class="skeleton-title" />
-            <div class="skeleton-meta" />
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Empty State: 系列数据为空 -->
-    <div v-else-if="emptyStateType === 'no-series-data'" class="grid-empty series-empty">
-      <div class="empty-icon">
-        <!-- 根据系列显示不同图标 -->
-        <svg v-if="currentSeries === 'desktop'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-          <line x1="8" y1="21" x2="16" y2="21" />
-          <line x1="12" y1="17" x2="12" y2="21" />
-        </svg>
-        <svg v-else-if="currentSeries === 'mobile'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
-          <line x1="12" y1="18" x2="12.01" y2="18" />
-        </svg>
-        <svg v-else-if="currentSeries === 'avatar'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-          <circle cx="12" cy="7" r="4" />
-        </svg>
-        <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <rect x="3" y="3" width="18" height="18" rx="2" />
-          <circle cx="8.5" cy="8.5" r="1.5" />
-          <path d="M21 15l-5-5L5 21" />
-        </svg>
-      </div>
-      <h3>暂无{{ currentSeriesName }}</h3>
-      <p>该分类暂时没有内容，敬请期待~</p>
-      <!-- 快捷跳转按钮 -->
-      <div v-if="alternativeSeries.length > 0" class="empty-actions">
-        <button
-          v-for="series in alternativeSeries"
-          :key="series.id"
-          class="action-btn"
-          @click="navigateToSeries(series.id)"
-        >
-          查看{{ series.name }}
-        </button>
-      </div>
-    </div>
-
-    <!-- Empty State: 筛选后无结果 -->
-    <div v-else-if="emptyStateType === 'no-filter-results'" class="grid-empty filter-empty">
-      <div class="empty-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="11" cy="11" r="8" />
-          <path d="M21 21l-4.35-4.35" />
-          <path d="M8 8l6 6M14 8l-6 6" />
-        </svg>
-      </div>
-      <h3>没有找到匹配的壁纸</h3>
-      <p>尝试调整搜索条件或筛选器</p>
-      <div class="empty-actions">
-        <button class="action-btn primary" @click="handleResetFilters">
-          清除筛选条件
-        </button>
-      </div>
-    </div>
+    <GridEmptyState
+      v-else-if="emptyStateType"
+      :alternative-series="alternativeSeries"
+      :current-series="currentSeries"
+      :current-series-name="currentSeriesName"
+      :type="emptyStateType"
+      @navigate="navigateToSeries"
+      @reset-filters="handleResetFilters"
+    />
 
     <!-- Grid -->
     <template v-else>
@@ -671,108 +328,6 @@ const skeletonCount = computed(() => isMobile.value ? 6 : 12)
   min-height: 400px;
   overflow-x: hidden; // 防止动画时出现横向滚动条
   transition: min-height 0.22s ease;
-}
-
-// ========================================
-// 骨架屏样式
-// ========================================
-.skeleton-grid {
-  animation: fadeIn 0.3s ease;
-}
-
-.skeleton-card {
-  background: var(--color-bg-card);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-
-  @include mobile-only {
-    border-radius: var(--radius-sm);
-  }
-}
-
-.skeleton-image {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 9 / 16; // 默认竖屏比例
-  background: var(--color-bg-hover);
-  overflow: hidden;
-
-  .aspect-landscape & {
-    aspect-ratio: 16 / 10;
-  }
-
-  .aspect-square & {
-    aspect-ratio: 1 / 1;
-  }
-}
-
-.skeleton-shimmer {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent 0%, var(--color-bg-card) 50%, transparent 100%);
-  animation: shimmer 1.5s infinite;
-}
-
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
-}
-
-.skeleton-info {
-  padding: $spacing-md;
-}
-
-.skeleton-title {
-  height: 16px;
-  width: 70%;
-  background: var(--color-bg-hover);
-  border-radius: $radius-sm;
-  margin-bottom: $spacing-sm;
-}
-
-.skeleton-meta {
-  height: 12px;
-  width: 40%;
-  background: var(--color-bg-hover);
-  border-radius: $radius-sm;
-}
-
-// ========================================
-// 移动端首次加载提示
-// ========================================
-.loading-state {
-  position: relative;
-}
-
-.mobile-loading-hint {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: $spacing-md;
-  padding: $spacing-xl 0;
-  margin-bottom: $spacing-md;
-
-  .loading-text {
-    font-size: $font-size-sm;
-    color: var(--color-text-muted);
-    animation: pulse 1.5s ease-in-out infinite;
-  }
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
 }
 
 // ========================================
@@ -849,121 +404,6 @@ const skeletonCount = computed(() => isMobile.value ? 6 : 12)
     @include respond-to('xl') {
       grid-template-columns: repeat(6, 1fr);
     }
-  }
-}
-
-.grid-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: $spacing-2xl;
-  text-align: center;
-  animation: fadeIn 0.5s ease;
-
-  .empty-icon {
-    width: 100px;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-bg-hover);
-    border-radius: 50%;
-    margin-bottom: $spacing-lg;
-
-    svg {
-      width: 48px;
-      height: 48px;
-      color: var(--color-text-muted);
-      opacity: 0.7;
-    }
-  }
-
-  h3 {
-    font-size: $font-size-lg;
-    font-weight: $font-weight-semibold;
-    color: var(--color-text-primary);
-    margin-bottom: $spacing-sm;
-  }
-
-  p {
-    font-size: $font-size-sm;
-    color: var(--color-text-muted);
-    margin-bottom: $spacing-lg;
-  }
-
-  &.series-empty {
-    .empty-icon {
-      background: linear-gradient(135deg, var(--color-accent-light) 0%, rgba(99, 102, 241, 0.1) 100%);
-
-      svg {
-        color: var(--color-accent);
-        opacity: 0.8;
-      }
-    }
-  }
-
-  &.filter-empty {
-    .empty-icon {
-      background: var(--color-bg-secondary);
-
-      svg {
-        color: var(--color-text-muted);
-      }
-    }
-  }
-}
-
-.empty-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: $spacing-sm;
-  justify-content: center;
-  margin-top: $spacing-sm;
-}
-
-.action-btn {
-  padding: 10px 20px;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-  color: var(--color-text-primary);
-  background: var(--color-bg-secondary);
-  border: 1px solid var(--color-border);
-  border-radius: $radius-md;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: var(--color-bg-hover);
-    border-color: var(--color-accent);
-    color: var(--color-accent);
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
-
-  &.primary {
-    color: white;
-    background: var(--color-accent);
-    border-color: var(--color-accent);
-
-    &:hover {
-      background: var(--color-accent-hover);
-      border-color: var(--color-accent-hover);
-      color: white;
-    }
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
 </style>

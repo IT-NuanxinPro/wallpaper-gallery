@@ -51,7 +51,7 @@ function closeBanner() {
         <!-- PC端文案 -->
         <p class="banner-text desktop-text">
           <strong>欢迎来到壁纸画廊！</strong>
-          网站刚刚上线，目前收录博主精选高质量壁纸，<span class="highlight">定期更新</span>中。
+          目前收录博主精选高质量壁纸，<span class="highlight">持续更新</span>中。
           PC/手机均可访问，记得收藏哦~
         </p>
         <!-- 移动端文案（更简洁） -->

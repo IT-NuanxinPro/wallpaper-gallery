@@ -1,13 +1,16 @@
 import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
-import { RESOLUTION_THRESHOLDS, STORAGE_KEYS } from '@/utils/constants'
-import { debounce } from '@/utils/format'
-import { sortByDate, sortByDownloads, sortByName, sortByPopularity, sortBySize, sortByViews } from '@/utils/sorting'
+import { debounce } from '@/utils/common/format'
+import { sortByDate, sortByDownloads, sortByName, sortByPopularity, sortBySize, sortByViews } from '@/utils/common/sorting'
+import { RESOLUTION_THRESHOLDS, STORAGE_KEYS } from '@/utils/config/constants'
+import { getDefaultCategoryFilter, hasActiveSeriesFilters } from '@/utils/filter/defaults'
 import { usePopularityStore } from './popularity'
 
 export const useFilterStore = defineStore('filter', () => {
   const searchQuery = ref('')
   const debouncedQuery = ref('')
+  const exactSearchLabel = ref('')
+  const exactSearchValue = ref('')
   const sortBy = ref(localStorage.getItem(STORAGE_KEYS.SORT) || 'newest')
   const formatFilter = ref('all')
   const resolutionFilter = ref('all')
@@ -21,7 +24,14 @@ export const useFilterStore = defineStore('filter', () => {
   const popularityStore = usePopularityStore()
   const updateDebouncedQuery = debounce(value => (debouncedQuery.value = value), 300)
 
-  watch(searchQuery, updateDebouncedQuery)
+  watch(searchQuery, (value) => {
+    updateDebouncedQuery(value)
+
+    if (value !== exactSearchLabel.value) {
+      exactSearchLabel.value = ''
+      exactSearchValue.value = ''
+    }
+  })
   watch(sortBy, value => localStorage.setItem(STORAGE_KEYS.SORT, value))
   watch(categoryFilter, value => localStorage.setItem(STORAGE_KEYS.CATEGORY, value))
 
@@ -97,7 +107,10 @@ export const useFilterStore = defineStore('filter', () => {
     const { skipCategoryFilter = false } = options
     let result = [...wallpapers]
 
-    if (debouncedQuery.value) {
+    if (exactSearchValue.value) {
+      result = result.filter(wallpaper => wallpaper.filename === exactSearchValue.value)
+    }
+    else if (debouncedQuery.value) {
       const queryTerms = debouncedQuery.value.toLowerCase().split(/\s+/).filter(Boolean)
 
       result = result.filter((wallpaper) => {
@@ -189,37 +202,31 @@ export const useFilterStore = defineStore('filter', () => {
     return applySort(applyFilters(wallpapers, options))
   }
 
-  function getCurrentYearMonth() {
-    const now = new Date()
-    const year = now.getFullYear()
-    const month = String(now.getMonth() + 1).padStart(2, '0')
-    return `${year}-${month}`
-  }
-
   function hasActiveFilters(currentSeries = '') {
-    if (debouncedQuery.value || formatFilter.value !== 'all' || resolutionFilter.value !== 'all' || subcategoryFilter.value !== 'all') {
-      return true
-    }
-
-    if (currentSeries === 'bing') {
-      return categoryFilter.value !== getCurrentYearMonth()
-    }
-
-    return categoryFilter.value !== 'all'
+    return hasActiveSeriesFilters({
+      searchQuery: debouncedQuery.value,
+      sortBy: sortBy.value,
+      formatFilter: formatFilter.value,
+      resolutionFilter: resolutionFilter.value,
+      categoryFilter: categoryFilter.value,
+      subcategoryFilter: subcategoryFilter.value,
+      currentSeries,
+      defaultSort: 'newest',
+    })
   }
 
   function resetFilters(defaultSort = 'newest', currentSeries = '') {
-    searchQuery.value = ''
-    debouncedQuery.value = ''
+    clearSearch()
     formatFilter.value = 'all'
     resolutionFilter.value = 'all'
     subcategoryFilter.value = 'all'
     sortBy.value = defaultSort
-    categoryFilter.value = currentSeries === 'bing' ? getCurrentYearMonth() : 'all'
+    categoryFilter.value = getDefaultCategoryFilter(currentSeries)
   }
 
   function setDefaultSortBySeries(series) {
     switchSeries(series)
+    clearSearch()
 
     if (restoreSeriesFilter(series)) {
       sortBy.value = 'newest'
@@ -229,7 +236,7 @@ export const useFilterStore = defineStore('filter', () => {
     sortBy.value = 'newest'
     resolutionFilter.value = 'all'
     formatFilter.value = 'all'
-    categoryFilter.value = series === 'bing' ? getCurrentYearMonth() : 'all'
+    categoryFilter.value = getDefaultCategoryFilter(series)
     subcategoryFilter.value = 'all'
 
     if (series === 'bing') {
@@ -244,6 +251,24 @@ export const useFilterStore = defineStore('filter', () => {
   function clearCategoryCache() {
     categoryOptionsCache.value = null
     lastWallpapersLength.value = 0
+  }
+
+  function clearSearch() {
+    searchQuery.value = ''
+    debouncedQuery.value = ''
+    exactSearchLabel.value = ''
+    exactSearchValue.value = ''
+  }
+
+  function setExactSearch(label, value) {
+    exactSearchLabel.value = label
+    exactSearchValue.value = value
+    searchQuery.value = label
+  }
+
+  function clearExactSearch() {
+    exactSearchLabel.value = ''
+    exactSearchValue.value = ''
   }
 
   function saveCurrentSeriesFilter() {
@@ -279,6 +304,7 @@ export const useFilterStore = defineStore('filter', () => {
   return {
     searchQuery,
     debouncedQuery,
+    exactSearchValue,
     sortBy,
     formatFilter,
     resolutionFilter,
@@ -295,7 +321,10 @@ export const useFilterStore = defineStore('filter', () => {
     setDefaultSortBySeries,
     resetSubcategory,
     clearCategoryCache,
+    clearSearch,
+    clearExactSearch,
     switchSeries,
+    setExactSearch,
     saveCurrentSeriesFilter,
     restoreSeriesFilter,
   }

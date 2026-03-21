@@ -1,12 +1,11 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { detectDevice } from '@/composables/useDevice'
-import { DEFAULT_SERIES, DEVICE_SERIES, SERIES_CONFIG, STORAGE_KEYS } from '@/utils/constants'
+import { getDeviceTypeRef } from '@/composables/useDevice'
+import { DEFAULT_SERIES, DEVICE_SERIES, SERIES_CONFIG, STORAGE_KEYS } from '@/utils/config/constants'
 
 export const useSeriesStore = defineStore('series', () => {
   const currentSeries = ref(null)
-
-  const deviceType = computed(() => detectDevice())
+  const deviceType = getDeviceTypeRef()
   const availableSeries = computed(() => DEVICE_SERIES[deviceType.value] || DEVICE_SERIES.desktop)
   const currentSeriesConfig = computed(() => currentSeries.value ? SERIES_CONFIG[currentSeries.value] : null)
   const availableSeriesOptions = computed(() => availableSeries.value.map(seriesId => SERIES_CONFIG[seriesId]))

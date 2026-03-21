@@ -6,7 +6,7 @@ import App from './App.vue'
 import router from './router'
 
 // 自定义 flexible 适配方案（PC 端保持设计稿尺寸，移动端等比缩放）
-import '@/utils/flexible'
+import '@/utils/platform/flexible'
 
 // ========================================
 // 旧版 Hash 路由兼容处理

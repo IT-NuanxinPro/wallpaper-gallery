@@ -123,15 +123,78 @@ function getDeviceType(windowWidth) {
   return DEVICE_TYPES.DESKTOP
 }
 
+const sharedWindowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1024)
+const sharedWindowHeight = ref(typeof window !== 'undefined' ? window.innerHeight : 768)
+const sharedHasTouch = ref(detectTouchSupport())
+const sharedDeviceType = computed(() => getDeviceType(sharedWindowWidth.value))
+const sharedDeviceChangeCallbacks = ref([])
+
+let activeDeviceConsumers = 0
+let deviceCheckTimer = null
+let isDeviceListenerBound = false
+
+function notifyDeviceChange(oldDeviceType) {
+  if (deviceCheckTimer) {
+    clearTimeout(deviceCheckTimer)
+  }
+
+  deviceCheckTimer = window.setTimeout(() => {
+    deviceCheckTimer = null
+    const newDeviceType = sharedDeviceType.value
+    if (oldDeviceType !== newDeviceType) {
+      sharedDeviceChangeCallbacks.value.forEach((callback) => {
+        callback(newDeviceType, oldDeviceType)
+      })
+    }
+  }, 0)
+}
+
+function updateDeviceViewport() {
+  if (typeof window === 'undefined')
+    return
+
+  const oldDeviceType = sharedDeviceType.value
+  sharedWindowWidth.value = window.innerWidth
+  sharedWindowHeight.value = window.innerHeight
+  sharedHasTouch.value = detectTouchSupport()
+
+  notifyDeviceChange(oldDeviceType)
+}
+
+function bindDeviceListeners() {
+  if (typeof window === 'undefined' || isDeviceListenerBound)
+    return
+
+  window.addEventListener('resize', updateDeviceViewport)
+  window.addEventListener('orientationchange', updateDeviceViewport)
+  window.visualViewport?.addEventListener('resize', updateDeviceViewport)
+  isDeviceListenerBound = true
+}
+
+function unbindDeviceListeners() {
+  if (typeof window === 'undefined' || !isDeviceListenerBound || activeDeviceConsumers > 0)
+    return
+
+  window.removeEventListener('resize', updateDeviceViewport)
+  window.removeEventListener('orientationchange', updateDeviceViewport)
+  window.visualViewport?.removeEventListener('resize', updateDeviceViewport)
+
+  if (deviceCheckTimer) {
+    clearTimeout(deviceCheckTimer)
+    deviceCheckTimer = null
+  }
+
+  isDeviceListenerBound = false
+}
+
 /**
  * 设备检测 Composable
  * 用于响应式检测当前设备类型
  */
 export function useDevice() {
-  const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1024)
-
-  // 设备类型
-  const deviceType = computed(() => getDeviceType(windowWidth.value))
+  const windowWidth = sharedWindowWidth
+  const windowHeight = sharedWindowHeight
+  const deviceType = sharedDeviceType
 
   // 便捷判断属性
   const isMobile = computed(() => deviceType.value === DEVICE_TYPES.MOBILE)
@@ -149,40 +212,11 @@ export function useDevice() {
   const isLargeDesktop = computed(() => windowWidth.value >= BREAKPOINTS.XL)
 
   // 触摸设备检测
-  const hasTouch = ref(detectTouchSupport())
+  const hasTouch = sharedHasTouch
 
   // 屏幕方向检测（横屏/竖屏）
-  const isLandscape = computed(() => windowWidth.value > window.innerHeight)
+  const isLandscape = computed(() => windowWidth.value > windowHeight.value)
   const isPortrait = computed(() => !isLandscape.value)
-
-  // 设备变化回调
-  const deviceChangeCallbacks = ref([])
-
-  // 定时器引用（用于清理）
-  let deviceCheckTimer = null
-
-  function updateWidth() {
-    const newWidth = window.innerWidth
-    const oldDeviceType = deviceType.value
-    windowWidth.value = newWidth
-
-    // 清除之前的定时器
-    if (deviceCheckTimer) {
-      clearTimeout(deviceCheckTimer)
-    }
-
-    // 检测设备类型是否变化（在 computed 更新后）
-    deviceCheckTimer = setTimeout(() => {
-      deviceCheckTimer = null
-      const newDeviceType = deviceType.value
-      if (oldDeviceType !== newDeviceType) {
-        // 触发设备变化回调
-        deviceChangeCallbacks.value.forEach((callback) => {
-          callback(newDeviceType, oldDeviceType)
-        })
-      }
-    }, 0)
-  }
 
   /**
    * 注册设备类型变化监听器
@@ -190,28 +224,24 @@ export function useDevice() {
    * @returns {Function} 取消注册的函数
    */
   function onDeviceChange(callback) {
-    deviceChangeCallbacks.value.push(callback)
+    sharedDeviceChangeCallbacks.value.push(callback)
     return () => {
-      const index = deviceChangeCallbacks.value.indexOf(callback)
+      const index = sharedDeviceChangeCallbacks.value.indexOf(callback)
       if (index > -1) {
-        deviceChangeCallbacks.value.splice(index, 1)
+        sharedDeviceChangeCallbacks.value.splice(index, 1)
       }
     }
   }
 
   onMounted(() => {
-    window.addEventListener('resize', updateWidth)
+    activeDeviceConsumers += 1
+    bindDeviceListeners()
+    updateDeviceViewport()
   })
 
   onUnmounted(() => {
-    window.removeEventListener('resize', updateWidth)
-    // 清除未完成的定时器
-    if (deviceCheckTimer) {
-      clearTimeout(deviceCheckTimer)
-      deviceCheckTimer = null
-    }
-    // 清空设备变化回调数组
-    deviceChangeCallbacks.value = []
+    activeDeviceConsumers = Math.max(0, activeDeviceConsumers - 1)
+    unbindDeviceListeners()
   })
 
   return {
@@ -247,8 +277,7 @@ export function useDevice() {
  * 可在 composable 外部使用
  */
 export function detectDevice() {
-  const width = typeof window !== 'undefined' ? window.innerWidth : 1024
-  return getDeviceType(width)
+  return sharedDeviceType.value
 }
 
 /**
@@ -271,4 +300,8 @@ export function isTabletDevice() {
 export function isMobileOrTabletDevice() {
   const device = detectDevice()
   return device === DEVICE_TYPES.MOBILE || device === DEVICE_TYPES.TABLET
+}
+
+export function getDeviceTypeRef() {
+  return sharedDeviceType
 }

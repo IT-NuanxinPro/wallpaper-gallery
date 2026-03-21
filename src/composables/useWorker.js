@@ -3,8 +3,8 @@
 // ========================================
 
 import { ref, shallowRef } from 'vue'
-import { decodeData } from '@/utils/codec'
-import * as sorting from '@/utils/sorting'
+import { decodeData } from '@/utils/common/codec'
+import * as sorting from '@/utils/common/sorting'
 
 // Worker 实例（单例）
 let workerInstance = null

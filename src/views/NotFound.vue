@@ -29,7 +29,6 @@ const goBack = () => router.back()
 
 <style lang="scss" scoped>
 .not-found {
-  // 占满全屏
   width: 100%;
   height: 100vh;
   height: 100dvh;

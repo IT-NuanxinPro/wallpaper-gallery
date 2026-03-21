@@ -1,6 +1,6 @@
 import { ref } from 'vue'
-import { trackViewModeChange } from '@/utils/analytics'
-import { STORAGE_KEYS } from '@/utils/constants'
+import { trackViewModeChange } from '@/utils/common/analytics'
+import { STORAGE_KEYS } from '@/utils/config/constants'
 
 function getDefaultViewMode() {
   const stored = localStorage.getItem(STORAGE_KEYS.VIEW_MODE)

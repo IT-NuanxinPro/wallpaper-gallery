@@ -4,11 +4,12 @@
 
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { isWorkerAvailable, workerDecodeAndParse } from '@/composables/useWorker'
-import { decodeData } from '@/utils/codec'
-import { DATA_CACHE_BUSTER, SERIES_CONFIG } from '@/utils/constants'
-import { buildBingPreviewUrl, buildBingThumbnailUrl, buildBingUHDUrl, buildImageUrl } from '@/utils/format'
-import { LRUCache } from '@/utils/lruCache'
+import { decodeDataWithWorker } from '@/services/wallpaper/decoder'
+import { delay, fetchWithRetry } from '@/services/wallpaper/fetch'
+import { LRUCache } from '@/utils/cache/LRUCache'
+import { DATA_CACHE_BUSTER, SERIES_CONFIG } from '@/utils/config/constants'
+import { classifyWallpaperError, getWallpaperErrorMessage } from '@/utils/wallpaper/errors'
+import { formatWallpaperStatistics, transformBingWallpaper, transformWallpaperUrls } from '@/utils/wallpaper/transformers'
 
 export const useWallpaperStore = defineStore('wallpaper', () => {
   // ========================================
@@ -48,9 +49,10 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
   // 系列总数量（从索引文件中获取，用于显示预期总数）
   const expectedTotal = ref(0)
 
-  // 重试配置
-  const MAX_RETRIES = 3
-  const RETRY_DELAY = 1000 // 1秒
+  const retryConfig = {
+    retries: 3,
+    retryDelay: 1000,
+  }
 
   // 请求版本号（用于防止竞态条件）
   let requestVersion = 0
@@ -79,193 +81,8 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
 
   // 统计信息
   const statistics = computed(() => {
-    const items = wallpapers.value
-    const jpgCount = items.filter(w => w.format === 'JPG' || w.format === 'JPEG').length
-    const pngCount = items.filter(w => w.format === 'PNG').length
-    const totalSize = items.reduce((sum, w) => sum + (w.size || 0), 0)
-
-    // 动态导入格式化函数（避免循环依赖）
-    let totalSizeFormatted = '0 B'
-    if (totalSize > 0) {
-      try {
-        // 使用简单的格式化逻辑，避免导入依赖
-        const units = ['B', 'KB', 'MB', 'GB']
-        const k = 1024
-        const i = Math.floor(Math.log(totalSize) / Math.log(k))
-        totalSizeFormatted = `${Number.parseFloat((totalSize / k ** i).toFixed(2))} ${units[i]}`
-      }
-      catch {
-        totalSizeFormatted = `${totalSize} B`
-      }
-    }
-
-    return {
-      total: items.length,
-      jpg: jpgCount,
-      png: pngCount,
-      totalSize,
-      totalSizeFormatted,
-    }
+    return formatWallpaperStatistics(wallpapers.value)
   })
-
-  // ========================================
-  // Helper Functions
-  // ========================================
-
-  /**
-   * 分类错误类型
-   */
-  function classifyError(error) {
-    if (error instanceof TypeError && error.message.includes('fetch')) {
-      return 'network'
-    }
-    if (error.message && error.message.includes('HTTP error')) {
-      return 'network'
-    }
-    if (error instanceof SyntaxError || error.message.includes('JSON')) {
-      return 'parse'
-    }
-    if (error.message && (error.message.includes('Invalid') || error.message.includes('format'))) {
-      return 'format'
-    }
-    return 'unknown'
-  }
-
-  /**
-   * 获取用户友好的错误信息
-   */
-  function getErrorMessage(error, errorType, context = '') {
-    const contextStr = context ? ` (${context})` : ''
-    switch (errorType) {
-      case 'network':
-        return `网络连接失败，请检查网络设置${contextStr}`
-      case 'parse':
-        return `数据解析失败，可能是数据格式错误${contextStr}`
-      case 'format':
-        return `数据格式错误${contextStr}`
-      default:
-        return error.message || `加载失败${contextStr}`
-    }
-  }
-
-  /**
-   * 延迟函数
-   */
-  function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms))
-  }
-
-  /**
-   * 带重试的 fetch 请求
-   */
-  async function fetchWithRetry(url, options = {}, retries = MAX_RETRIES) {
-    for (let i = 0; i < retries; i++) {
-      try {
-        const response = await fetch(url, options)
-        if (!response.ok) {
-          // 4xx 错误不重试
-          if (response.status >= 400 && response.status < 500) {
-            throw new Error(`HTTP error! status: ${response.status}`)
-          }
-          // 5xx 错误重试
-          if (i < retries - 1) {
-            await delay(RETRY_DELAY * (i + 1))
-            continue
-          }
-          throw new Error(`HTTP error! status: ${response.status}`)
-        }
-        return response
-      }
-      catch (error) {
-        // 网络错误重试
-        if (error instanceof TypeError && error.message.includes('fetch')) {
-          if (i < retries - 1) {
-            await delay(RETRY_DELAY * (i + 1))
-            continue
-          }
-        }
-        throw error
-      }
-    }
-  }
-
-  /**
-   * 解码数据（优先使用 Worker，降级到主线程）
-   */
-  async function decodeDataWithWorker(encoded) {
-    // 如果 Worker 可用且数据较大，使用 Worker
-    if (isWorkerAvailable() && encoded.length > 1000) {
-      try {
-        return await workerDecodeAndParse(encoded)
-      }
-      catch (e) {
-        console.warn('Worker decode failed, fallback to main thread:', e)
-      }
-    }
-    // 降级到主线程
-    const jsonStr = decodeData(encoded)
-    return JSON.parse(jsonStr)
-  }
-
-  /**
-   * 将相对路径转换为完整 URL
-   * 使用图片专属的 cdnTag 实现精准缓存控制
-   */
-  function transformWallpaperUrls(wallpaper) {
-    const cdnTag = wallpaper.cdnTag // 图片专属的 CDN tag
-    return {
-      ...wallpaper,
-      url: wallpaper.path ? buildImageUrl(wallpaper.path, cdnTag) : (wallpaper.url || ''),
-      thumbnailUrl: wallpaper.thumbnailPath ? buildImageUrl(wallpaper.thumbnailPath, cdnTag) : (wallpaper.thumbnailUrl || ''),
-      previewUrl: wallpaper.previewPath ? buildImageUrl(wallpaper.previewPath, cdnTag) : (wallpaper.previewUrl || null),
-      downloadUrl: wallpaper.path ? buildImageUrl(wallpaper.path, cdnTag) : (wallpaper.downloadUrl || ''),
-    }
-  }
-
-  /**
-   * 转换 Bing 壁纸数据为标准格式
-   * @param {object} bingItem - Bing 壁纸元数据
-   * @returns {object} 标准壁纸格式
-   */
-  function transformBingWallpaper(bingItem) {
-    // UHD 原图 URL（直接使用 Bing CDN）
-    const uhdUrl = buildBingUHDUrl(bingItem.urlbase)
-
-    return {
-      id: `bing-${bingItem.date}`,
-      filename: `bing-${bingItem.date}.jpg`,
-      // Bing 壁纸按日期分类
-      category: bingItem.date.substring(0, 7), // 年-月，如 2025-01
-      // 所有图片都使用 Bing CDN
-      url: uhdUrl,
-      downloadUrl: uhdUrl,
-      thumbnailUrl: buildBingThumbnailUrl(bingItem.urlbase),
-      previewUrl: buildBingPreviewUrl(bingItem.urlbase),
-      // Bing 特有字段
-      date: bingItem.date,
-      title: bingItem.title,
-      copyright: bingItem.copyright,
-      copyrightlink: bingItem.copyrightlink,
-      quiz: bingItem.quiz,
-      urlbase: bingItem.urlbase,
-      hsh: bingItem.hsh,
-      // 标准字段（Bing 不提供文件大小，UHD 图片约 1-3MB）
-      size: 0,
-      format: 'JPG',
-      createdAt: `${bingItem.date}T00:00:00Z`,
-      // Bing UHD 壁纸分辨率（通常为 3840x2160 或更高）
-      resolution: {
-        width: 3840,
-        height: 2160,
-        label: '4K UHD',
-        type: 'success',
-      },
-      // 标记为 Bing 系列
-      isBing: true,
-      // 搜索标签
-      tags: [bingItem.title, bingItem.date.substring(0, 7)],
-    }
-  }
 
   // ========================================
   // Actions
@@ -288,7 +105,7 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
     }
 
     try {
-      const response = await fetchWithRetry(seriesConfig.indexUrl)
+      const response = await fetchWithRetry(seriesConfig.indexUrl, {}, retryConfig)
       let data
       try {
         data = await response.json()
@@ -345,7 +162,7 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
       return indexData
     }
     catch (e) {
-      const errType = classifyError(e)
+      const errType = classifyWallpaperError(e)
       errorType.value = errType
       console.error(`Failed to load series index for ${seriesId}:`, e)
       throw e
@@ -372,7 +189,7 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
 
     try {
       const categoryUrl = `${seriesConfig.categoryBaseUrl}/${categoryFile}${DATA_CACHE_BUSTER}`
-      const response = await fetchWithRetry(categoryUrl)
+      const response = await fetchWithRetry(categoryUrl, {}, retryConfig)
       let data
       try {
         data = await response.json()
@@ -421,7 +238,7 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
       return transformedList
     }
     catch (e) {
-      const errType = classifyError(e)
+      const errType = classifyWallpaperError(e)
       errorType.value = errType
       console.error(`Failed to load category ${categoryFile}:`, e)
       throw e
@@ -477,7 +294,7 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
     try {
       // 1. 加载 Bing 索引文件
       const indexUrl = seriesConfig.indexUrl
-      const indexResponse = await fetchWithRetry(indexUrl)
+      const indexResponse = await fetchWithRetry(indexUrl, {}, retryConfig)
       const indexData = await indexResponse.json()
 
       // 检查请求是否过期
@@ -494,7 +311,7 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
 
       if (currentYearInfo) {
         const yearUrl = `${seriesConfig.yearBaseUrl}/${currentYearInfo.file}${DATA_CACHE_BUSTER}`
-        const yearResponse = await fetchWithRetry(yearUrl)
+        const yearResponse = await fetchWithRetry(yearUrl, {}, retryConfig)
         const yearData = await yearResponse.json()
 
         // 再次检查请求是否过期
@@ -537,9 +354,9 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
         return
       }
       console.error(`Failed to init Bing series:`, e)
-      const errType = classifyError(e)
+      const errType = classifyWallpaperError(e)
       errorType.value = errType
-      error.value = getErrorMessage(e, errType, '每日 Bing 壁纸')
+      error.value = getWallpaperErrorMessage(e, errType, '每日 Bing 壁纸')
       wallpapers.value = []
       currentRenderedSeries.value = ''
     }
@@ -570,7 +387,7 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
     let indexData = seriesIndexCache.value[seriesId]
     if (!indexData) {
       const indexUrl = seriesConfig.indexUrl
-      const indexResponse = await fetchWithRetry(indexUrl)
+      const indexResponse = await fetchWithRetry(indexUrl, {}, retryConfig)
       indexData = await indexResponse.json()
 
       // 检查请求是否过期
@@ -590,7 +407,7 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
 
     try {
       const yearUrl = `${seriesConfig.yearBaseUrl}/${yearInfo.file}${DATA_CACHE_BUSTER}`
-      const yearResponse = await fetchWithRetry(yearUrl)
+      const yearResponse = await fetchWithRetry(yearUrl, {}, retryConfig)
       const yearData = await yearResponse.json()
 
       // 检查请求是否过期
@@ -734,9 +551,9 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
         return
       }
       console.error(`Failed to init series ${seriesId}:`, e)
-      const errType = errorType.value || classifyError(e)
+      const errType = errorType.value || classifyWallpaperError(e)
       errorType.value = errType
-      error.value = getErrorMessage(e, errType, `系列: ${seriesId}`)
+      error.value = getWallpaperErrorMessage(e, errType, `系列: ${seriesId}`)
       wallpapers.value = []
       currentRenderedSeries.value = ''
     }
@@ -893,7 +710,7 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
         })
 
         // 批次间暂停，避免阻塞主线程
-        await new Promise(resolve => setTimeout(resolve, 150))
+        await delay(150)
       }
       catch (e) {
         console.warn(`Failed to load batch:`, e)
