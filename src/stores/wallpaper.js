@@ -759,6 +759,10 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
     return wallpapers.value.find(w => w.id === id)
   }
 
+  function getSeriesCategories(seriesId) {
+    return seriesIndexCache.value[seriesId]?.categories || []
+  }
+
   /**
    * 获取壁纸索引
    */
@@ -830,6 +834,7 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
     loadCategory,
     loadBingYear,
     getWallpaperById,
+    getSeriesCategories,
     getWallpaperIndex,
     getPrevWallpaper,
     getNextWallpaper,

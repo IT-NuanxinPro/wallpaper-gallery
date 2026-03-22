@@ -48,7 +48,6 @@ function loadUmamiAnalytics() {
 // 加载 Umami Analytics（尽早加载）
 loadUmamiAnalytics()
 
-// 在应用挂载前统一初始化主题，避免首屏脚本与运行时状态不一致
 const { initTheme } = useTheme()
 initTheme()
 

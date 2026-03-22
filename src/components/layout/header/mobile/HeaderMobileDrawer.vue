@@ -126,17 +126,23 @@ defineEmits(['close', 'navigate', 'update:show'])
   </Teleport>
 </template>
 
+<style lang="scss">
+.mobile-drawer.van-popup {
+  --van-popup-background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+}
+
+html[data-theme='dark'] .mobile-drawer.van-popup {
+  --van-popup-background: rgba(15, 23, 42, 0.94);
+  background: rgba(15, 23, 42, 0.94) !important;
+}
+</style>
+
 <style lang="scss" scoped>
 .mobile-drawer {
-  :deep(.van-popup) {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
-
-    [data-theme='dark'] & {
-      background: rgba(15, 23, 42, 0.9);
-    }
-  }
+  background: transparent;
 }
 
 .drawer-content {

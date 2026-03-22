@@ -49,6 +49,7 @@ export function transformBingWallpaper(bingItem) {
     id: `bing-${bingItem.date}`,
     filename: `bing-${bingItem.date}.jpg`,
     category: bingItem.date.substring(0, 7),
+    displayTitle: bingItem.title,
     url: uhdUrl,
     downloadUrl: uhdUrl,
     thumbnailUrl: buildBingThumbnailUrl(bingItem.urlbase),

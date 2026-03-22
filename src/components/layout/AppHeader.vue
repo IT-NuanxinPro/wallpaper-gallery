@@ -65,6 +65,13 @@ const isAnimating = ref(false)
 const showThemeMenu = ref(false)
 const themeSwitcherRef = ref(null)
 
+onUnmounted(() => {
+  const searchBar = searchBarRef.value?.$el || searchBarRef.value
+  if (searchBar) {
+    gsap.killTweensOf(searchBar)
+  }
+})
+
 const activeThemeOption = computed(() =>
   themeOptions.find(option => option.value === themeMode.value) || themeOptions[0],
 )
@@ -72,6 +79,7 @@ const activeThemeOption = computed(() =>
 const themeButtonLabel = computed(() =>
   `${activeThemeOption.value.label}，当前${theme.value === 'dark' ? '深色' : '浅色'}`,
 )
+const hasSearchQuery = computed(() => Boolean(searchQuery.value?.trim()))
 
 const searchExpandWidth = computed(() => {
   if (isTablet.value) {
@@ -182,6 +190,11 @@ function closeSearch() {
 }
 
 function handleSearch(payload) {
+  if (currentSeries.value === 'bing') {
+    filterStore.categoryFilter = 'all'
+    filterStore.subcategoryFilter = 'all'
+  }
+
   if (payload?.mode === 'exact' && payload.exactValue) {
     filterStore.setExactSearch(payload.query, payload.exactValue)
   }
@@ -193,6 +206,11 @@ function handleSearch(payload) {
   if (isMobile.value) {
     closeSearch()
   }
+}
+
+function handleClearSearch() {
+  filterStore.clearSearch()
+  filterStore.clearExactSearch()
 }
 
 function toggleThemeMenu() {
@@ -291,11 +309,23 @@ watch(isMobile, () => {
             @search="handleSearch"
           />
           <button
+            v-if="hasSearchQuery && !isSearchExpanded"
+            class="header-search-clear"
+            aria-label="清空当前搜索"
+            @click="handleClearSearch"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+            <span>清空搜索</span>
+          </button>
+          <button
             class="search-toggle"
-            :class="{ 'is-active': isSearchExpanded }"
+            :class="{ 'has-query': hasSearchQuery, 'is-active': isSearchExpanded }"
             :aria-label="isSearchExpanded ? '关闭搜索' : '打开搜索'"
             @click="toggleSearch"
           >
+            <span v-if="hasSearchQuery && !isSearchExpanded" class="search-toggle-indicator" />
             <!-- Search Icon -->
             <svg v-if="!isSearchExpanded" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="11" cy="11" r="8" />
@@ -368,13 +398,25 @@ watch(isMobile, () => {
 
       <!-- 移动端操作栏 -->
       <div v-else class="header-actions-mobile">
+        <button
+          v-if="hasSearchQuery && !isSearchExpanded"
+          class="header-search-clear header-search-clear--mobile"
+          aria-label="清空当前搜索"
+          @click="handleClearSearch"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
+
         <!-- 搜索按钮 -->
         <button
           class="search-toggle"
-          :class="{ 'is-active': isSearchExpanded }"
+          :class="{ 'has-query': hasSearchQuery, 'is-active': isSearchExpanded }"
           aria-label="搜索"
           @click="toggleSearch"
         >
+          <span v-if="hasSearchQuery && !isSearchExpanded" class="search-toggle-indicator" />
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8" />
             <path d="M21 21l-4.35-4.35" />
@@ -697,6 +739,60 @@ watch(isMobile, () => {
   }
 }
 
+.header-search-clear {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: $radius-full;
+  font-size: 12px;
+  font-weight: $font-weight-semibold;
+  color: #667eea;
+  background: rgba(102, 126, 234, 0.12);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  white-space: nowrap;
+  transition: all 220ms ease;
+
+  [data-theme='dark'] & {
+    background: rgba(102, 126, 234, 0.16);
+    border-color: rgba(102, 126, 234, 0.28);
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  &:hover {
+    color: white;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: transparent;
+    box-shadow: 0 8px 18px rgba(102, 126, 234, 0.24);
+  }
+
+  &--mobile {
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    justify-content: center;
+
+    span {
+      display: none;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1180px) {
+    position: absolute;
+    top: 50%;
+    right: calc(100% + 8px);
+    z-index: 7;
+    transform: translateY(-50%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
 // 操作按钮 - 毛玻璃效果
 .search-toggle,
 .theme-toggle,
@@ -798,6 +894,31 @@ watch(isMobile, () => {
   &:hover {
     color: white;
     box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+  }
+}
+
+.search-toggle.has-query:not(.is-active) {
+  color: #667eea;
+  border-color: rgba(102, 126, 234, 0.24);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.08);
+}
+
+.search-toggle-indicator {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.9),
+    0 0 0 5px rgba(16, 185, 129, 0.12);
+
+  [data-theme='dark'] & {
+    box-shadow:
+      0 0 0 2px rgba(15, 23, 42, 0.95),
+      0 0 0 5px rgba(16, 185, 129, 0.16);
   }
 }
 

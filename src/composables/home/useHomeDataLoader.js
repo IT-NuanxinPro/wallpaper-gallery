@@ -4,6 +4,7 @@ export function useHomeDataLoader({
   currentSeries,
   showMobileSeriesNotice,
   filterStore,
+  hotTagsStore,
   popularityStore,
   seriesStore,
   syncSeriesFromRoute,
@@ -27,6 +28,7 @@ export function useHomeDataLoader({
       await Promise.all([
         wallpaperStore.initSeries(series),
         popularityStore.fetchPopularityData(series),
+        hotTagsStore.fetchHotTags(series),
       ])
     }
     finally {

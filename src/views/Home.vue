@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import AvatarMakerBanner from '@/components/avatar/AvatarMakerBanner.vue'
 import AvatarMakerModal from '@/components/avatar/AvatarMakerModal/index.vue'
@@ -7,6 +7,7 @@ import DiyAvatarBanner from '@/components/avatar/DiyAvatarBanner.vue'
 import AnnouncementBanner from '@/components/common/feedback/AnnouncementBanner.vue'
 import BackToTop from '@/components/common/navigation/BackToTop.vue'
 import HomeModalHost from '@/components/home/HomeModalHost.vue'
+import HotTagsPanel from '@/components/home/HotTagsPanel.vue'
 import MobileSeriesNotice from '@/components/home/MobileSeriesNotice.vue'
 import FilterPanel from '@/components/wallpaper/filter/index.vue'
 import WallpaperGrid from '@/components/wallpaper/WallpaperGrid/index.vue'
@@ -15,16 +16,19 @@ import { useHomeSeriesSync } from '@/composables/home/useHomeSeriesSync'
 import { useWallpaperNavigator } from '@/composables/home/useWallpaperNavigator'
 import { useDevice } from '@/composables/useDevice'
 import { useFilterStore } from '@/stores/filter'
+import { useHotTagsStore } from '@/stores/hotTags'
 import { usePopularityStore } from '@/stores/popularity'
 import { useSeriesStore } from '@/stores/series'
 import { useWallpaperStore } from '@/stores/wallpaper'
 import { SERIES_CONFIG } from '@/utils/config/constants'
+import { getDefaultCategoryFilter } from '@/utils/filter/defaults'
 
 const route = useRoute()
 
 const seriesStore = useSeriesStore()
 const wallpaperStore = useWallpaperStore()
 const popularityStore = usePopularityStore()
+const hotTagsStore = useHotTagsStore()
 const filterStore = useFilterStore()
 const { isMobile } = useDevice()
 
@@ -32,6 +36,7 @@ const currentSeries = computed(() => seriesStore.currentSeries)
 const showMobileSeriesNotice = computed(() => isMobile.value && ['desktop', 'bing'].includes(currentSeries.value))
 const isSeriesContentReady = computed(() => wallpaperStore.currentRenderedSeries === currentSeries.value)
 const visibleWallpapers = computed(() => isSeriesContentReady.value ? wallpaperStore.wallpapers : [])
+const seriesCategoryDefinitions = computed(() => wallpaperStore.getSeriesCategories(currentSeries.value))
 
 const mobileNoticeContent = computed(() => {
   if (currentSeries.value === 'bing') {
@@ -54,8 +59,56 @@ const hideFormatFilter = computed(() => SERIES_CONFIG[currentSeries.value]?.hide
 const categoryOptions = computed(() => filterStore.createCategoryOptions(visibleWallpapers.value))
 const subcategoryOptions = computed(() => filterStore.createSubcategoryOptions(categoryOptions.value))
 const filteredWallpapers = computed(() => filterStore.getFilteredAndSorted(visibleWallpapers.value))
+const hotTagLookup = computed(() => {
+  const categorySet = new Set()
+  const subcategorySet = new Set()
+
+  seriesCategoryDefinitions.value.forEach((category) => {
+    if (category?.id || category?.name) {
+      categorySet.add(category.id || category.name)
+      categorySet.add(category.name || category.id)
+    }
+
+    if (Array.isArray(category?.subcategories)) {
+      category.subcategories.forEach((subcategory) => {
+        subcategorySet.add(subcategory.name)
+      })
+    }
+  })
+
+  return { categorySet, subcategorySet }
+})
+const hotCategoryTags = computed(() =>
+  hotTagsStore.tags
+    .filter(tag => hotTagLookup.value.categorySet.has(tag.tag) || hotTagLookup.value.subcategorySet.has(tag.tag))
+    .slice(0, 6)
+    .map(tag => ({
+      ...tag,
+      interactionType: 'category',
+    })),
+)
+const hotKeywordTags = computed(() =>
+  hotTagsStore.tags
+    .filter(tag => !hotTagLookup.value.categorySet.has(tag.tag) && !hotTagLookup.value.subcategorySet.has(tag.tag))
+    .slice(0, 8)
+    .map(tag => ({
+      ...tag,
+      interactionType: 'keyword',
+    })),
+)
+const isHotTagsDataStable = computed(() =>
+  hotTagsStore.currentSeries === currentSeries.value
+  && wallpaperStore.currentRenderedSeries === currentSeries.value
+  && !hotTagsStore.loading
+  && !wallpaperStore.loading
+  && !wallpaperStore.isBackgroundLoading,
+)
+const activeHotTag = ref('')
+const isHotTagsVisible = ref(false)
 const resultCount = computed(() => filteredWallpapers.value.length)
 const hasActiveFilters = computed(() => filterStore.hasActiveFilters(currentSeries.value))
+
+let hotTagsRevealTimer = null
 
 const routeSyncReady = ref(false)
 const { syncSeriesFromRoute } = useHomeSeriesSync(route, seriesStore, routeSyncReady)
@@ -65,6 +118,7 @@ const { error, handleReload, loading } = useHomeDataLoader({
   currentSeries,
   showMobileSeriesNotice,
   filterStore,
+  hotTagsStore,
   popularityStore,
   seriesStore,
   syncSeriesFromRoute,
@@ -72,6 +126,35 @@ const { error, handleReload, loading } = useHomeDataLoader({
 })
 
 routeSyncReady.value = true
+
+watch(
+  [currentSeries, isHotTagsDataStable],
+  ([, stable]) => {
+    if (hotTagsRevealTimer) {
+      clearTimeout(hotTagsRevealTimer)
+      hotTagsRevealTimer = null
+    }
+
+    if (!stable) {
+      isHotTagsVisible.value = false
+      activeHotTag.value = ''
+      return
+    }
+
+    hotTagsRevealTimer = window.setTimeout(() => {
+      isHotTagsVisible.value = true
+      hotTagsRevealTimer = null
+    }, 320)
+  },
+  { immediate: true },
+)
+
+onBeforeUnmount(() => {
+  if (hotTagsRevealTimer) {
+    clearTimeout(hotTagsRevealTimer)
+    hotTagsRevealTimer = null
+  }
+})
 
 const {
   close,
@@ -84,6 +167,141 @@ const {
 
 function handleReset() {
   filterStore.resetFilters(filterStore.sortBy, currentSeries.value)
+  activeHotTag.value = ''
+}
+
+function handleClearSearch() {
+  filterStore.clearSearch()
+  filterStore.clearExactSearch()
+  if (currentSeries.value === 'bing') {
+    filterStore.categoryFilter = getDefaultCategoryFilter(currentSeries.value)
+    filterStore.subcategoryFilter = 'all'
+  }
+  activeHotTag.value = ''
+}
+
+function resetNonSearchFilters() {
+  filterStore.formatFilter = 'all'
+  filterStore.resolutionFilter = 'all'
+}
+
+function applyTagAsCategory(tag) {
+  const matchedCategory = categoryOptions.value.find(option =>
+    option.value !== 'all' && (option.value === tag || option.label === tag),
+  )
+
+  if (matchedCategory) {
+    filterStore.clearSearch()
+    filterStore.clearExactSearch()
+    resetNonSearchFilters()
+    filterStore.categoryFilter = matchedCategory.value
+    filterStore.subcategoryFilter = 'all'
+    return true
+  }
+
+  const matchedParentCategory = categoryOptions.value.find(option =>
+    option.value !== 'all'
+    && Array.isArray(option.subcategories)
+    && option.subcategories.some(subcategory => subcategory.name === tag),
+  )
+
+  if (matchedParentCategory) {
+    filterStore.clearSearch()
+    filterStore.clearExactSearch()
+    resetNonSearchFilters()
+    filterStore.categoryFilter = matchedParentCategory.value
+    filterStore.subcategoryFilter = tag
+    return true
+  }
+
+  return false
+}
+
+function normalizeBingMonthTag(tag) {
+  const matched = tag.match(/^(\d{4})\s+(\d{2})$/)
+  if (!matched) {
+    return ''
+  }
+
+  return `${matched[1]}-${matched[2]}`
+}
+
+function extractBingTagYears(tagItem) {
+  const years = new Set()
+  const monthCategory = normalizeBingMonthTag(tagItem?.tag || '')
+
+  if (monthCategory) {
+    years.add(Number.parseInt(monthCategory.slice(0, 4), 10))
+  }
+
+  if (Array.isArray(tagItem?.topWallpapers)) {
+    tagItem.topWallpapers.forEach((filename) => {
+      const matched = String(filename).match(/bing-(\d{4})-\d{2}-\d{2}\.jpg/i)
+      if (matched) {
+        years.add(Number.parseInt(matched[1], 10))
+      }
+    })
+  }
+
+  return [...years].filter(Number.isInteger)
+}
+
+function isBingMonthTag(tag) {
+  return Boolean(normalizeBingMonthTag(tag))
+}
+
+async function ensureBingHotTagData(tagItem) {
+  if (currentSeries.value !== 'bing') {
+    return ''
+  }
+
+  const monthCategory = normalizeBingMonthTag(tagItem?.tag || '')
+  const years = extractBingTagYears(tagItem)
+
+  if (years.length > 0) {
+    await Promise.all(years.map(year => wallpaperStore.loadBingYear(year)))
+  }
+
+  return monthCategory
+}
+
+async function handleHotTagSelect(tagItem) {
+  const tag = tagItem?.tag || ''
+  if (!tag) {
+    return
+  }
+
+  const bingMonthCategory = await ensureBingHotTagData(tagItem)
+  const normalizedTag = bingMonthCategory || tag
+
+  if (applyTagAsCategory(normalizedTag)) {
+    activeHotTag.value = tag
+    return
+  }
+
+  if (
+    currentSeries.value === 'bing'
+    && !isBingMonthTag(tag)
+    && Array.isArray(tagItem?.topWallpapers)
+    && tagItem.topWallpapers.length === 1
+  ) {
+    const exactFilename = tagItem.topWallpapers[0]
+    filterStore.clearSearch()
+    filterStore.clearExactSearch()
+    resetNonSearchFilters()
+    filterStore.categoryFilter = 'all'
+    filterStore.subcategoryFilter = 'all'
+    filterStore.setExactSearch(tag, exactFilename)
+    activeHotTag.value = tag
+    return
+  }
+
+  filterStore.clearExactSearch()
+  resetNonSearchFilters()
+  filterStore.categoryFilter = getDefaultCategoryFilter(currentSeries.value)
+  filterStore.subcategoryFilter = 'all'
+  filterStore.searchQuery = tag
+  activeHotTag.value = tag
 }
 
 const isAvatarMakerOpen = ref(false)
@@ -113,6 +331,15 @@ function handleAvatarMakerClose() {
           <AvatarMakerBanner v-if="!isMobile" @click="handleAvatarMakerClick" />
         </div>
 
+        <HotTagsPanel
+          :category-tags="isHotTagsVisible ? hotCategoryTags : []"
+          :keyword-tags="isHotTagsVisible ? hotKeywordTags : []"
+          :loading="!isHotTagsVisible"
+          :active-tag="activeHotTag"
+          :current-series="currentSeries"
+          @select="handleHotTagSelect"
+        />
+
         <FilterPanel
           v-model:sort-by="filterStore.sortBy"
           v-model:format-filter="filterStore.formatFilter"
@@ -120,12 +347,14 @@ function handleAvatarMakerClose() {
           v-model:category-filter="filterStore.categoryFilter"
           v-model:subcategory-filter="filterStore.subcategoryFilter"
           :category-options="categoryOptions"
+          :search-query="filterStore.searchQuery"
           :subcategory-options="subcategoryOptions"
           :result-count="resultCount"
           :total-count="wallpaperStore.displayTotal"
           :loading="loading"
           :hide-format-filter="hideFormatFilter"
           :current-series="currentSeries"
+          @clear-search="handleClearSearch"
           @reset="handleReset"
         />
 

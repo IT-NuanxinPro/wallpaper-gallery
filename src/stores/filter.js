@@ -119,7 +119,10 @@ export const useFilterStore = defineStore('filter', () => {
           wallpaper.category?.toLowerCase() || '',
           wallpaper.subcategory?.toLowerCase() || '',
           wallpaper.displayTitle?.toLowerCase() || '',
+          wallpaper.title?.toLowerCase() || '',
           wallpaper.description?.toLowerCase() || '',
+          wallpaper.copyright?.toLowerCase() || '',
+          wallpaper.date?.toLowerCase() || '',
         ]
 
         if (wallpaper.tags && Array.isArray(wallpaper.tags)) {

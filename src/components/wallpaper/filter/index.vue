@@ -23,6 +23,10 @@ const props = defineProps({
     type: String,
     default: 'all',
   },
+  searchQuery: {
+    type: String,
+    default: '',
+  },
   categoryFilter: {
     type: String,
     default: 'all',
@@ -64,7 +68,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['update:sortBy', 'update:formatFilter', 'update:resolutionFilter', 'update:categoryFilter', 'update:subcategoryFilter', 'reset'])
+const emit = defineEmits(['clearSearch', 'update:sortBy', 'update:formatFilter', 'update:resolutionFilter', 'update:categoryFilter', 'update:subcategoryFilter', 'reset'])
 
 const { isMobile } = useDevice()
 const { viewMode, setViewMode } = useViewMode()
@@ -204,12 +208,16 @@ function resetFilters() {
 <template>
   <div class="filter-panel" :class="{ 'has-filters': hasActiveFilters }">
     <FilterSummary
+      :active-search-query="props.searchQuery"
+      :category-filter="categoryFilter"
       :current-series="currentSeries"
       :has-active-filters="hasActiveFilters"
       :is-mobile-or-tablet="isMobile"
       :loading="loading"
       :result-count="resultCount"
+      :subcategory-filter="subcategoryFilter"
       :total-count="totalCount"
+      @clear-search="emit('clearSearch')"
       @reset="handleReset"
     />
 
