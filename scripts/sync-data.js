@@ -11,7 +11,8 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
+import { decodeData } from '../src/utils/common/codec.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -49,6 +50,27 @@ async function downloadFile(url, destPath) {
   return data
 }
 
+export function extractCategoryFilesFromIndexData(indexData) {
+  if (!indexData || typeof indexData !== 'object') {
+    return []
+  }
+
+  const encoded = indexData.blob || indexData.payload
+  if (encoded) {
+    const decoded = JSON.parse(decodeData(encoded))
+    if (!Array.isArray(decoded)) {
+      return []
+    }
+    return decoded.map(category => category?.file).filter(Boolean)
+  }
+
+  if (Array.isArray(indexData.categories)) {
+    return indexData.categories.map(category => category?.file).filter(Boolean)
+  }
+
+  return []
+}
+
 /**
  * 获取目录下的所有 JSON 文件
  */
@@ -62,24 +84,16 @@ async function listJsonFiles(baseUrl) {
 
     const indexData = await response.json()
 
-    // 如果有 blob 字段，需要解密获取分类列表
-    if (indexData.blob) {
-      try {
-        const { decodeData } = await import('../src/utils/codec.js')
-        const jsonStr = decodeData(indexData.blob)
-        const categories = JSON.parse(jsonStr)
-        return categories.map(cat => cat.file)
-      }
-      catch (e) {
-        console.log(e)
-        return []
-      }
+    try {
+      return extractCategoryFilesFromIndexData(indexData)
     }
-
-    return []
+    catch (error) {
+      console.warn('  ⚠️  解析分类索引失败:', error)
+      return []
+    }
   }
-  catch (e) {
-    console.log(e)
+  catch (error) {
+    console.warn('  ⚠️  获取分类文件列表失败:', error)
     return []
   }
 }
@@ -192,7 +206,7 @@ async function syncSeries(seriesId, seriesConfig) {
  */
 async function main() {
   console.log('='.repeat(60))
-  console.log('� 数据同步工具')
+  console.log('📦 数据同步工具')
   console.log('='.repeat(60))
   console.log(`\n来源: ${CONFIG.ONLINE_DATA_BASE_URL}`)
   console.log(`输出: ${CONFIG.OUTPUT_DIR}`)
@@ -239,7 +253,9 @@ async function main() {
   console.log('\n✨ 完成!\n')
 }
 
-main().catch((error) => {
-  console.error('\n❌ 错误:', error.message)
-  process.exit(1)
-})
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((error) => {
+    console.error('\n❌ 错误:', error.message)
+    process.exit(1)
+  })
+}

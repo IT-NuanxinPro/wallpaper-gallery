@@ -52,9 +52,9 @@ export default defineConfig({
     // 生产环境：对敏感文件进行混淆
     isProduction && obfuscatePlugin({
       include: [
-        'src/utils/codec.js',
-        'src/utils/constants.js',
-        'src/utils/format.js',
+        'src/utils/common/codec.js',
+        'src/utils/config/constants.js',
+        'src/utils/common/format.js',
       ],
     }),
     // 生产环境：使用 externalGlobals 将外部依赖转换为全局变量

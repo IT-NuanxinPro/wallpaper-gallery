@@ -13,6 +13,7 @@
   <p>
     <a href="https://wallpaper.061129.xyz" target="_blank">🌐 访问体验站</a> | 
     <a href="https://wallpaper-gallery-architecture.061129.xyz/" target="_blank">🏗️ 架构在线文档</a> |
+    <a href="https://linux.do" target="_blank">🤝 鸣谢社区 LINUX DO</a> |
     <a href="#-特性">✨ 功能亮点</a> | 
     <a href="#-技术栈">🛠️ 技术栈实现</a>
   </p>

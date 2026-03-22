@@ -83,8 +83,8 @@ jobs:
             fi
             echo "✅ Data copied successfully"
           else
-            echo "⚠️ Data directory not found, fallback to pnpm generate"
-            pnpm generate
+            echo "⚠️ Data directory not found, fallback to pnpm sync"
+            pnpm sync
           fi
 
       # 5. 执行 Vite 打包构建并生成关键路由静态 HTML
