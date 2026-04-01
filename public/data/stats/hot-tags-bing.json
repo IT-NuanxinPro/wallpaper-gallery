@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-03-31T18:31:52.221Z",
+  "generatedAt": "2026-04-01T18:10:23.093Z",
   "series": "bing",
   "total": 169,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 277,
+      "score": 276,
       "views": 330,
       "downloads": 63,
       "wallpaperCount": 31,
@@ -56,7 +56,7 @@
     },
     {
       "tag": "2026 02",
-      "score": 41,
+      "score": 40,
       "views": 49,
       "downloads": 5,
       "wallpaperCount": 16,
@@ -138,19 +138,6 @@
       ]
     },
     {
-      "tag": "伸个懒腰，迈向新年！",
-      "score": 17,
-      "views": 21,
-      "downloads": 4,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-01.jpg"
-      ]
-    },
-    {
       "tag": "2025 11",
       "score": 16,
       "views": 22,
@@ -178,6 +165,19 @@
       ],
       "topWallpapers": [
         "bing-2026-01-09.jpg"
+      ]
+    },
+    {
+      "tag": "伸个懒腰，迈向新年！",
+      "score": 16,
+      "views": 21,
+      "downloads": 4,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-01.jpg"
       ]
     },
     {
