@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-04-11T17:59:01.133Z",
+  "generatedAt": "2026-04-12T18:03:12.699Z",
   "series": "bing",
   "total": 170,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 259,
+      "score": 257,
       "views": 330,
       "downloads": 63,
       "wallpaperCount": 31,
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 165,
+      "score": 163,
       "views": 133,
       "downloads": 28,
       "wallpaperCount": 25,
@@ -99,7 +99,7 @@
     },
     {
       "tag": "当水划出界线",
-      "score": 22,
+      "score": 21,
       "views": 14,
       "downloads": 4,
       "wallpaperCount": 2,
@@ -126,7 +126,7 @@
     },
     {
       "tag": "漂浮的传承",
-      "score": 17,
+      "score": 16,
       "views": 12,
       "downloads": 4,
       "wallpaperCount": 1,
@@ -135,49 +135,6 @@
       ],
       "topWallpapers": [
         "bing-2026-03-02.jpg"
-      ]
-    },
-    {
-      "tag": "伸个懒腰，迈向新年！",
-      "score": 16,
-      "views": 21,
-      "downloads": 4,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-01.jpg"
-      ]
-    },
-    {
-      "tag": "努克的慵懒时光",
-      "score": 16,
-      "views": 20,
-      "downloads": 4,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-06.jpg"
-      ]
-    },
-    {
-      "tag": "2025 11",
-      "score": 15,
-      "views": 22,
-      "downloads": 6,
-      "wallpaperCount": 13,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2025-11-23.jpg",
-        "bing-2025-11-12.jpg",
-        "bing-2025-11-24.jpg",
-        "bing-2025-11-13.jpg",
-        "bing-2025-11-19.jpg"
       ]
     },
     {
@@ -191,6 +148,49 @@
       ],
       "topWallpapers": [
         "bing-2026-01-09.jpg"
+      ]
+    },
+    {
+      "tag": "伸个懒腰，迈向新年！",
+      "score": 15,
+      "views": 21,
+      "downloads": 4,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-01.jpg"
+      ]
+    },
+    {
+      "tag": "努克的慵懒时光",
+      "score": 15,
+      "views": 20,
+      "downloads": 4,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-06.jpg"
+      ]
+    },
+    {
+      "tag": "2025 11",
+      "score": 14,
+      "views": 22,
+      "downloads": 6,
+      "wallpaperCount": 13,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2025-11-23.jpg",
+        "bing-2025-11-12.jpg",
+        "bing-2025-11-24.jpg",
+        "bing-2025-11-19.jpg",
+        "bing-2025-11-25.jpg"
       ]
     },
     {
