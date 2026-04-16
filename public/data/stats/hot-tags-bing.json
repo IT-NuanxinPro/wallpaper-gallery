@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-15T18:42:49.943Z",
+  "generatedAt": "2026-04-16T18:43:57.858Z",
   "series": "bing",
   "total": 170,
   "tags": [
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 160,
+      "score": 159,
       "views": 133,
       "downloads": 28,
       "wallpaperCount": 25,
@@ -33,13 +33,13 @@
         "bing-2026-03-02.jpg",
         "bing-2026-03-23.jpg",
         "bing-2026-03-01.jpg",
-        "bing-2026-03-20.jpg",
-        "bing-2026-03-24.jpg"
+        "bing-2026-03-24.jpg",
+        "bing-2026-03-21.jpg"
       ]
     },
     {
       "tag": "2025 12",
-      "score": 48,
+      "score": 47,
       "views": 67,
       "downloads": 18,
       "wallpaperCount": 26,
@@ -56,7 +56,7 @@
     },
     {
       "tag": "2026 02",
-      "score": 39,
+      "score": 38,
       "views": 50,
       "downloads": 5,
       "wallpaperCount": 16,
@@ -65,8 +65,8 @@
       ],
       "topWallpapers": [
         "bing-2026-02-01.jpg",
-        "bing-2026-02-25.jpg",
         "bing-2026-02-06.jpg",
+        "bing-2026-02-25.jpg",
         "bing-2026-02-20.jpg",
         "bing-2026-02-26.jpg"
       ]
@@ -289,19 +289,6 @@
       ]
     },
     {
-      "tag": "春日绯梦",
-      "score": 12,
-      "views": 12,
-      "downloads": 1,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-20.jpg"
-      ]
-    },
-    {
       "tag": "2025 06",
       "score": 11,
       "views": 16,
@@ -316,6 +303,19 @@
         "bing-2025-06-04.jpg",
         "bing-2025-06-03.jpg",
         "bing-2025-06-13.jpg"
+      ]
+    },
+    {
+      "tag": "春日绯梦",
+      "score": 11,
+      "views": 12,
+      "downloads": 1,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-20.jpg"
       ]
     },
     {
@@ -342,23 +342,6 @@
       ],
       "topWallpapers": [
         "bing-2026-01-19.jpg"
-      ]
-    },
-    {
-      "tag": "2025 03",
-      "score": 9,
-      "views": 16,
-      "downloads": 10,
-      "wallpaperCount": 13,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2025-03-22.jpg",
-        "bing-2025-03-01.jpg",
-        "bing-2025-03-20.jpg",
-        "bing-2025-03-11.jpg",
-        "bing-2025-03-12.jpg"
       ]
     },
     {
@@ -389,6 +372,23 @@
       ],
       "topWallpapers": [
         "bing-2026-03-07.jpg"
+      ]
+    },
+    {
+      "tag": "2025 03",
+      "score": 8,
+      "views": 16,
+      "downloads": 10,
+      "wallpaperCount": 13,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2025-03-01.jpg",
+        "bing-2025-03-22.jpg",
+        "bing-2025-03-20.jpg",
+        "bing-2025-03-11.jpg",
+        "bing-2025-03-12.jpg"
       ]
     },
     {
