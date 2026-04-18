@@ -17,7 +17,7 @@ const DATA_DIR = path.resolve(__dirname, '../public/data')
 
 const STATIC_SERIES = ['desktop', 'mobile', 'avatar']
 const BING_CDN_BASE = 'https://cn.bing.com'
-const GITHUB_CDN_BASE = 'https://cdn.jsdelivr.net/gh/IT-NuanxinPro/nuanXinProPic'
+const GITHUB_CDN_BASE = 'https://cdn.jsdelivr.net/gh/mkmkgo/nuanXinProPic'
 const UPSERT_BATCH_SIZE = 200
 const SELECT_BATCH_SIZE = 1000
 

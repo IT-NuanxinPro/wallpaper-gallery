@@ -20,10 +20,10 @@ const __dirname = path.dirname(__filename)
 // 配置
 const CONFIG = {
   // 线上数据源（使用 GitHub Raw，避免 jsDelivr @main 缓存延迟）
-  ONLINE_DATA_BASE_URL: 'https://raw.githubusercontent.com/IT-NuanxinPro/nuanXinProPic/main/data',
+  ONLINE_DATA_BASE_URL: 'https://raw.githubusercontent.com/mkmkgo/nuanXinProPic/main/data',
 
   // Bing 系列特殊路径（使用 /bing/meta 而不是 /data/bing）
-  BING_DATA_BASE_URL: 'https://raw.githubusercontent.com/IT-NuanxinPro/nuanXinProPic/main/bing/meta',
+  BING_DATA_BASE_URL: 'https://raw.githubusercontent.com/mkmkgo/nuanXinProPic/main/bing/meta',
 
   // 输出目录
   OUTPUT_DIR: path.resolve(__dirname, '../public/data'),
