@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-04-20T18:35:23.879Z",
+  "generatedAt": "2026-04-21T18:40:09.742Z",
   "series": "bing",
   "total": 171,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 249,
+      "score": 246,
       "views": 333,
       "downloads": 63,
       "wallpaperCount": 31,
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 157,
+      "score": 156,
       "views": 135,
       "downloads": 29,
       "wallpaperCount": 25,
@@ -86,7 +86,7 @@
     },
     {
       "tag": "王者视野",
-      "score": 26,
+      "score": 25,
       "views": 41,
       "downloads": 5,
       "wallpaperCount": 1,
@@ -122,19 +122,6 @@
       "topWallpapers": [
         "bing-2026-03-23.jpg",
         "bing-2026-03-22.jpg"
-      ]
-    },
-    {
-      "tag": "时光在此处茁壮成长",
-      "score": 15,
-      "views": 16,
-      "downloads": 5,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-09.jpg"
       ]
     },
     {
@@ -174,6 +161,19 @@
       ],
       "topWallpapers": [
         "bing-2026-03-02.jpg"
+      ]
+    },
+    {
+      "tag": "时光在此处茁壮成长",
+      "score": 14,
+      "views": 16,
+      "downloads": 5,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-09.jpg"
       ]
     },
     {
@@ -431,19 +431,6 @@
       ]
     },
     {
-      "tag": "聚光灯下的番红花",
-      "score": 7,
-      "views": 4,
-      "downloads": 2,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-04.jpg"
-      ]
-    },
-    {
       "tag": "废墟之上，椋鸟群舞",
       "score": 7,
       "views": 11,
@@ -566,6 +553,19 @@
       ],
       "topWallpapers": [
         "bing-2026-01-14.jpg"
+      ]
+    },
+    {
+      "tag": "聚光灯下的番红花",
+      "score": 6,
+      "views": 4,
+      "downloads": 2,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-04.jpg"
       ]
     }
   ]
