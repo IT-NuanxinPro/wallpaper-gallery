@@ -1,48 +1,48 @@
 {
-  "generatedAt": "2026-04-22T18:40:38.314Z",
+  "generatedAt": "2026-04-23T18:42:33.281Z",
   "series": "bing",
-  "total": 171,
+  "total": 285,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 243,
-      "views": 333,
-      "downloads": 63,
+      "score": 310,
+      "views": 370,
+      "downloads": 98,
       "wallpaperCount": 31,
       "series": [
         "bing"
       ],
       "topWallpapers": [
-        "bing-2026-01-03.jpg",
         "bing-2026-01-04.jpg",
+        "bing-2026-01-03.jpg",
         "bing-2026-01-15.jpg",
-        "bing-2026-01-01.jpg",
+        "bing-2026-01-09.jpg",
         "bing-2026-01-06.jpg"
       ]
     },
     {
       "tag": "2026 03",
-      "score": 155,
-      "views": 135,
-      "downloads": 29,
+      "score": 240,
+      "views": 168,
+      "downloads": 61,
       "wallpaperCount": 25,
       "series": [
         "bing"
       ],
       "topWallpapers": [
         "bing-2026-03-02.jpg",
-        "bing-2026-03-23.jpg",
         "bing-2026-03-01.jpg",
-        "bing-2026-03-24.jpg",
-        "bing-2026-03-21.jpg"
+        "bing-2026-03-23.jpg",
+        "bing-2026-03-18.jpg",
+        "bing-2026-03-24.jpg"
       ]
     },
     {
       "tag": "2025 12",
-      "score": 47,
-      "views": 67,
-      "downloads": 18,
-      "wallpaperCount": 26,
+      "score": 94,
+      "views": 98,
+      "downloads": 45,
+      "wallpaperCount": 27,
       "series": [
         "bing"
       ],
@@ -50,32 +50,66 @@
         "bing-2025-12-31.jpg",
         "bing-2025-12-30.jpg",
         "bing-2025-12-07.jpg",
-        "bing-2025-12-01.jpg",
-        "bing-2025-12-19.jpg"
+        "bing-2025-12-19.jpg",
+        "bing-2025-12-01.jpg"
       ]
     },
     {
       "tag": "2026 02",
-      "score": 39,
-      "views": 51,
-      "downloads": 5,
+      "score": 75,
+      "views": 68,
+      "downloads": 22,
       "wallpaperCount": 17,
       "series": [
         "bing"
       ],
       "topWallpapers": [
         "bing-2026-02-01.jpg",
-        "bing-2026-02-06.jpg",
         "bing-2026-02-25.jpg",
+        "bing-2026-02-06.jpg",
         "bing-2026-02-20.jpg",
         "bing-2026-02-26.jpg"
       ]
     },
     {
+      "tag": "2025 06",
+      "score": 36,
+      "views": 41,
+      "downloads": 36,
+      "wallpaperCount": 25,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2025-06-26.jpg",
+        "bing-2025-06-27.jpg",
+        "bing-2025-06-04.jpg",
+        "bing-2025-06-03.jpg",
+        "bing-2025-06-13.jpg"
+      ]
+    },
+    {
+      "tag": "2025 11",
+      "score": 34,
+      "views": 35,
+      "downloads": 19,
+      "wallpaperCount": 13,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2025-11-23.jpg",
+        "bing-2025-11-11.jpg",
+        "bing-2025-11-12.jpg",
+        "bing-2025-11-24.jpg",
+        "bing-2025-11-13.jpg"
+      ]
+    },
+    {
       "tag": "传奇故事前的篇章",
-      "score": 27,
-      "views": 34,
-      "downloads": 9,
+      "score": 29,
+      "views": 35,
+      "downloads": 10,
       "wallpaperCount": 1,
       "series": [
         "bing"
@@ -86,9 +120,9 @@
     },
     {
       "tag": "王者视野",
-      "score": 25,
-      "views": 41,
-      "downloads": 5,
+      "score": 29,
+      "views": 43,
+      "downloads": 7,
       "wallpaperCount": 1,
       "series": [
         "bing"
@@ -98,89 +132,10 @@
       ]
     },
     {
-      "tag": "小村庄，大视野",
-      "score": 19,
-      "views": 22,
-      "downloads": 6,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-15.jpg"
-      ]
-    },
-    {
-      "tag": "当水划出界线",
-      "score": 19,
-      "views": 14,
-      "downloads": 4,
-      "wallpaperCount": 2,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-23.jpg",
-        "bing-2026-03-22.jpg"
-      ]
-    },
-    {
-      "tag": "伸个懒腰，迈向新年！",
-      "score": 15,
-      "views": 21,
-      "downloads": 4,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-01.jpg"
-      ]
-    },
-    {
-      "tag": "努克的慵懒时光",
-      "score": 15,
-      "views": 20,
-      "downloads": 4,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-06.jpg"
-      ]
-    },
-    {
-      "tag": "漂浮的传承",
-      "score": 15,
-      "views": 12,
-      "downloads": 4,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-02.jpg"
-      ]
-    },
-    {
-      "tag": "时光在此处茁壮成长",
-      "score": 14,
-      "views": 16,
-      "downloads": 5,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-09.jpg"
-      ]
-    },
-    {
       "tag": "2025 07",
-      "score": 13,
-      "views": 15,
-      "downloads": 13,
+      "score": 25,
+      "views": 27,
+      "downloads": 25,
       "wallpaperCount": 12,
       "series": [
         "bing"
@@ -194,40 +149,93 @@
       ]
     },
     {
-      "tag": "2025 11",
-      "score": 13,
-      "views": 22,
+      "tag": "当水划出界线",
+      "score": 25,
+      "views": 16,
       "downloads": 6,
-      "wallpaperCount": 13,
+      "wallpaperCount": 2,
       "series": [
         "bing"
       ],
       "topWallpapers": [
-        "bing-2025-11-23.jpg",
-        "bing-2025-11-12.jpg",
-        "bing-2025-11-24.jpg",
-        "bing-2025-11-25.jpg",
-        "bing-2025-11-11.jpg"
+        "bing-2026-03-23.jpg",
+        "bing-2026-03-22.jpg"
       ]
     },
     {
-      "tag": "纯粹的瑞士魔力",
-      "score": 12,
-      "views": 14,
-      "downloads": 4,
+      "tag": "小村庄，大视野",
+      "score": 21,
+      "views": 23,
+      "downloads": 7,
       "wallpaperCount": 1,
       "series": [
         "bing"
       ],
       "topWallpapers": [
-        "bing-2026-01-10.jpg"
+        "bing-2026-01-15.jpg"
+      ]
+    },
+    {
+      "tag": "漂浮的传承",
+      "score": 20,
+      "views": 14,
+      "downloads": 6,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-02.jpg"
+      ]
+    },
+    {
+      "tag": "时光在此处茁壮成长",
+      "score": 18,
+      "views": 18,
+      "downloads": 7,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-09.jpg"
+      ]
+    },
+    {
+      "tag": "2025 03",
+      "score": 17,
+      "views": 29,
+      "downloads": 23,
+      "wallpaperCount": 13,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2025-03-01.jpg",
+        "bing-2025-03-22.jpg",
+        "bing-2025-03-20.jpg",
+        "bing-2025-03-30.jpg",
+        "bing-2025-03-11.jpg"
+      ]
+    },
+    {
+      "tag": "努克的慵懒时光",
+      "score": 17,
+      "views": 22,
+      "downloads": 5,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-06.jpg"
       ]
     },
     {
       "tag": "每一步，都是传承",
-      "score": 12,
-      "views": 10,
-      "downloads": 3,
+      "score": 17,
+      "views": 12,
+      "downloads": 5,
       "wallpaperCount": 1,
       "series": [
         "bing"
@@ -237,10 +245,53 @@
       ]
     },
     {
+      "tag": "伸个懒腰，迈向新年！",
+      "score": 16,
+      "views": 22,
+      "downloads": 5,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-01.jpg"
+      ]
+    },
+    {
+      "tag": "城市花开",
+      "score": 16,
+      "views": 11,
+      "downloads": 4,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-18.jpg"
+      ]
+    },
+    {
+      "tag": "2025 10",
+      "score": 15,
+      "views": 15,
+      "downloads": 9,
+      "wallpaperCount": 7,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2025-10-19.jpg",
+        "bing-2025-10-30.jpg",
+        "bing-2025-10-04.jpg",
+        "bing-2025-10-01.jpg",
+        "bing-2025-10-05.jpg"
+      ]
+    },
+    {
       "tag": "根系自由生长的地方",
-      "score": 12,
-      "views": 7,
-      "downloads": 3,
+      "score": 15,
+      "views": 8,
+      "downloads": 4,
       "wallpaperCount": 1,
       "series": [
         "bing"
@@ -251,9 +302,9 @@
     },
     {
       "tag": "春天的形状",
-      "score": 12,
-      "views": 10,
-      "downloads": 2,
+      "score": 15,
+      "views": 11,
+      "downloads": 3,
       "wallpaperCount": 1,
       "series": [
         "bing"
@@ -263,27 +314,49 @@
       ]
     },
     {
-      "tag": "2025 06",
-      "score": 11,
-      "views": 16,
-      "downloads": 11,
-      "wallpaperCount": 13,
+      "tag": "纯粹的瑞士魔力",
+      "score": 14,
+      "views": 15,
+      "downloads": 5,
+      "wallpaperCount": 1,
       "series": [
         "bing"
       ],
       "topWallpapers": [
-        "bing-2025-06-26.jpg",
-        "bing-2025-06-27.jpg",
-        "bing-2025-06-04.jpg",
-        "bing-2025-06-03.jpg",
-        "bing-2025-06-13.jpg"
+        "bing-2026-01-10.jpg"
+      ]
+    },
+    {
+      "tag": "春日绯梦",
+      "score": 14,
+      "views": 13,
+      "downloads": 2,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-20.jpg"
+      ]
+    },
+    {
+      "tag": "圆周率的古老启示",
+      "score": 13,
+      "views": 7,
+      "downloads": 4,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-14.jpg"
       ]
     },
     {
       "tag": "高角羚群紧急戒备",
-      "score": 11,
-      "views": 19,
-      "downloads": 2,
+      "score": 13,
+      "views": 20,
+      "downloads": 3,
       "wallpaperCount": 1,
       "series": [
         "bing"
@@ -294,9 +367,9 @@
     },
     {
       "tag": "威尼斯的灵魂",
-      "score": 11,
-      "views": 19,
-      "downloads": 2,
+      "score": 13,
+      "views": 20,
+      "downloads": 3,
       "wallpaperCount": 1,
       "series": [
         "bing"
@@ -306,36 +379,27 @@
       ]
     },
     {
-      "tag": "城市花开",
-      "score": 11,
-      "views": 9,
-      "downloads": 2,
-      "wallpaperCount": 1,
+      "tag": "2025 04",
+      "score": 12,
+      "views": 17,
+      "downloads": 13,
+      "wallpaperCount": 8,
       "series": [
         "bing"
       ],
       "topWallpapers": [
-        "bing-2026-03-18.jpg"
-      ]
-    },
-    {
-      "tag": "春日绯梦",
-      "score": 11,
-      "views": 12,
-      "downloads": 1,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-20.jpg"
+        "bing-2025-04-15.jpg",
+        "bing-2025-04-02.jpg",
+        "bing-2025-04-03.jpg",
+        "bing-2025-04-06.jpg",
+        "bing-2025-04-10.jpg"
       ]
     },
     {
       "tag": "从抗拒到绽放",
-      "score": 10,
-      "views": 12,
-      "downloads": 3,
+      "score": 12,
+      "views": 13,
+      "downloads": 4,
       "wallpaperCount": 1,
       "series": [
         "bing"
@@ -346,9 +410,9 @@
     },
     {
       "tag": "2025 02",
-      "score": 9,
-      "views": 11,
-      "downloads": 9,
+      "score": 11,
+      "views": 21,
+      "downloads": 19,
       "wallpaperCount": 10,
       "series": [
         "bing"
@@ -362,109 +426,10 @@
       ]
     },
     {
-      "tag": "大自然的波普艺术",
-      "score": 9,
-      "views": 10,
-      "downloads": 3,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-19.jpg"
-      ]
-    },
-    {
-      "tag": "治愈、宁静且充满希望",
-      "score": 9,
-      "views": 4,
-      "downloads": 3,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-07.jpg"
-      ]
-    },
-    {
-      "tag": "2025 03",
-      "score": 8,
-      "views": 16,
-      "downloads": 10,
-      "wallpaperCount": 13,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2025-03-01.jpg",
-        "bing-2025-03-22.jpg",
-        "bing-2025-03-20.jpg",
-        "bing-2025-03-11.jpg",
-        "bing-2025-03-12.jpg"
-      ]
-    },
-    {
-      "tag": "巴伐利亚的瑰宝",
-      "score": 8,
-      "views": 6,
-      "downloads": 3,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-26.jpg"
-      ]
-    },
-    {
-      "tag": "圆周率的古老启示",
-      "score": 8,
-      "views": 5,
-      "downloads": 2,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-14.jpg"
-      ]
-    },
-    {
-      "tag": "水獭之国爱沙尼亚",
-      "score": 7,
-      "views": 11,
-      "downloads": 1,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-12.jpg"
-      ]
-    },
-    {
-      "tag": "2025 01",
-      "score": 6,
-      "views": 10,
-      "downloads": 6,
-      "wallpaperCount": 7,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2025-01-30.jpg",
-        "bing-2025-01-23.jpg",
-        "bing-2025-01-19.jpg",
-        "bing-2025-01-25.jpg",
-        "bing-2025-01-27.jpg"
-      ]
-    },
-    {
       "tag": "2025 05",
-      "score": 6,
-      "views": 8,
-      "downloads": 6,
+      "score": 11,
+      "views": 14,
+      "downloads": 12,
       "wallpaperCount": 6,
       "series": [
         "bing"
@@ -478,62 +443,92 @@
       ]
     },
     {
-      "tag": "雪中的故宫，中国北京",
-      "score": 6,
+      "tag": "大自然的波普艺术",
+      "score": 11,
+      "views": 11,
+      "downloads": 4,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-19.jpg"
+      ]
+    },
+    {
+      "tag": "治愈、宁静且充满希望",
+      "score": 11,
       "views": 5,
+      "downloads": 4,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-07.jpg"
+      ]
+    },
+    {
+      "tag": "巴伐利亚的瑰宝",
+      "score": 10,
+      "views": 7,
+      "downloads": 4,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-26.jpg"
+      ]
+    },
+    {
+      "tag": "一个美好的春天",
+      "score": 10,
+      "views": 6,
       "downloads": 3,
       "wallpaperCount": 1,
       "series": [
         "bing"
       ],
       "topWallpapers": [
-        "bing-2025-12-07.jpg"
+        "bing-2026-03-11.jpg"
       ]
     },
     {
-      "tag": "柏林，新年之桥",
-      "score": 6,
-      "views": 8,
-      "downloads": 2,
+      "tag": "2025 01",
+      "score": 9,
+      "views": 19,
+      "downloads": 15,
+      "wallpaperCount": 8,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2025-01-30.jpg",
+        "bing-2025-01-23.jpg",
+        "bing-2025-01-17.jpg",
+        "bing-2025-01-19.jpg",
+        "bing-2025-01-25.jpg"
+      ]
+    },
+    {
+      "tag": "瑞士山间的短逃离",
+      "score": 9,
+      "views": 6,
+      "downloads": 4,
       "wallpaperCount": 1,
       "series": [
         "bing"
       ],
       "topWallpapers": [
-        "bing-2025-12-31.jpg"
-      ]
-    },
-    {
-      "tag": "晨光透过结霜的树木洒下，瑞典",
-      "score": 6,
-      "views": 7,
-      "downloads": 2,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2025-12-30.jpg"
-      ]
-    },
-    {
-      "tag": "帕拉米蒂的历史之阶",
-      "score": 6,
-      "views": 7,
-      "downloads": 2,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-14.jpg"
+        "bing-2026-01-24.jpg"
       ]
     },
     {
       "tag": "聚光灯下的番红花",
-      "score": 6,
-      "views": 4,
-      "downloads": 2,
+      "score": 9,
+      "views": 5,
+      "downloads": 3,
       "wallpaperCount": 1,
       "series": [
         "bing"
@@ -543,29 +538,42 @@
       ]
     },
     {
-      "tag": "废墟之上，椋鸟群舞",
-      "score": 6,
-      "views": 11,
-      "downloads": 1,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-08.jpg"
-      ]
-    },
-    {
       "tag": "古老岩石，现代灯光",
-      "score": 6,
-      "views": 7,
-      "downloads": 1,
+      "score": 9,
+      "views": 8,
+      "downloads": 2,
       "wallpaperCount": 1,
       "series": [
         "bing"
       ],
       "topWallpapers": [
         "bing-2026-03-05.jpg"
+      ]
+    },
+    {
+      "tag": "爱尔兰的精神十字路口",
+      "score": 9,
+      "views": 7,
+      "downloads": 2,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-17.jpg"
+      ]
+    },
+    {
+      "tag": "走进熊猫世界",
+      "score": 9,
+      "views": 10,
+      "downloads": 1,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-16.jpg"
       ]
     }
   ]
