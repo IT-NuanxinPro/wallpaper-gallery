@@ -68,6 +68,7 @@ const loginRoute = computed(() => ({
 const allSeriesOptions = [
   { id: 'all', name: '全部' },
   { id: 'desktop', name: '电脑壁纸' },
+  { id: 'video', name: '动态壁纸' },
   { id: 'bing', name: '每日 Bing' },
   { id: 'mobile', name: '手机壁纸' },
   { id: 'avatar', name: '头像' },
@@ -121,6 +122,7 @@ const seriesCounts = computed(() => {
   return {
     all: getUniqueAssetKeys(currentTabItems.value).length,
     desktop: getUniqueAssetKeys(source.desktop || []).length,
+    video: getUniqueAssetKeys(source.video || []).length,
     bing: getUniqueAssetKeys(source.bing || []).length,
     mobile: getUniqueAssetKeys(source.mobile || []).length,
     avatar: getUniqueAssetKeys(source.avatar || []).length,

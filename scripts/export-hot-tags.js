@@ -14,7 +14,7 @@ import stopwords from './config/hot-tags-stopwords.json' with { type: 'json' }
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const SERIES_LIST = ['desktop', 'mobile', 'avatar', 'bing']
+const SERIES_LIST = ['desktop', 'mobile', 'avatar', 'video', 'bing']
 const OUTPUT_DIR = path.join(__dirname, '../public/data/stats')
 const DATA_DIR = path.join(__dirname, '../public/data')
 const LIMIT_PER_SERIES = 40
@@ -77,6 +77,9 @@ function loadSeriesWallpapers(series) {
   }
 
   const indexPath = path.join(DATA_DIR, series, 'index.json')
+  if (!fs.existsSync(indexPath)) {
+    return []
+  }
   const categories = loadDecodedBlob(indexPath)
   const wallpapers = []
 

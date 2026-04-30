@@ -65,6 +65,12 @@ Fork 只会复制仓库代码，不会复制你原仓库或上游仓库里的以
 - `VITE_SUPABASE_URL`
 - `SUPABASE_SERVICE_ROLE_KEY`
 
+补充说明：
+
+- `pnpm sync:assets` 会把当前 `public/data` 中解析出的所有系列资产全量写入远端 `wallpaper_assets`
+- 它适合在 CI 中配合最新图床数据执行，不适合拿本地过期数据直接同步线上
+- 如果你只想核对远端状态，请优先做只读查询，而不是先跑同步
+
 ---
 
 ## 3. Cloudflare Pages 设置
@@ -155,6 +161,14 @@ Fork 只会复制仓库代码，不会复制你原仓库或上游仓库里的以
 
 - `supabase-init.sql` 负责初始化匿名统计表、RPC 与热门统计查询。
 - `supabase-user-system.sql` 负责创建 `profiles`、`user_preferences`、`user_wallpaper_likes`、`user_collections`、`user_download_history`、`wallpaper_assets`，并补齐 Auth 触发器与现有 `image_stats` 的兼容修复。
+
+如果你的 Supabase 项目已经是旧版本结构，建议重新检查 `wallpaper_assets` 是否至少满足以下条件：
+
+- `series` 约束包含 `video`
+- 存在 `duration_seconds` 字段
+- `image_stats` 唯一键已升级为 `(series, image_id)`
+
+这些字段与约束缺失时，动态壁纸的 `wallpaper_assets` 同步会失败。
 
 如果你是从只做统计的旧项目升级过来，再根据现状按需使用：
 

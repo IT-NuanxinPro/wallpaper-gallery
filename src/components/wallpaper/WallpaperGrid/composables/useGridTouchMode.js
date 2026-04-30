@@ -6,7 +6,7 @@ function getModeIndex(mode) {
   return MOBILE_VIEW_MODE_ORDER.indexOf(mode)
 }
 
-export function useGridTouchMode({ isMobileOrTablet, setViewMode, viewMode }) {
+export function useGridTouchMode({ allowListMode = null, isMobileOrTablet, setViewMode, viewMode }) {
   const touchStartX = ref(0)
   const touchStartY = ref(0)
   const isSwiping = ref(false)
@@ -35,6 +35,10 @@ export function useGridTouchMode({ isMobileOrTablet, setViewMode, viewMode }) {
   function handleTouchEnd(e) {
     if (!isMobileOrTablet.value || !isSwiping.value)
       return
+
+    if (allowListMode && !allowListMode.value) {
+      return
+    }
 
     const deltaX = e.changedTouches[0].clientX - touchStartX.value
     if (Math.abs(deltaX) > 80) {

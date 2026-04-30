@@ -25,6 +25,10 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  hideCategoryFilter: {
+    type: Boolean,
+    default: false,
+  },
   resolutionFilter: {
     type: String,
     default: 'all',
@@ -41,6 +45,14 @@ defineProps({
     type: String,
     default: 'grid',
   },
+  allowListMode: {
+    type: Boolean,
+    default: true,
+  },
+  hideViewMode: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 defineEmits([
@@ -55,11 +67,11 @@ defineEmits([
 
 <template>
   <div class="filter-right">
-    <div class="filter-item filter-item--view-mode">
-      <ViewModeToggle :mode="viewMode" @change="$emit('viewModeChange', $event)" />
+    <div v-if="!hideViewMode" class="filter-item filter-item--view-mode">
+      <ViewModeToggle :mode="viewMode" :allow-list-mode="allowListMode" @change="$emit('viewModeChange', $event)" />
     </div>
 
-    <div class="filter-divider" />
+    <div v-if="!hideViewMode" class="filter-divider" />
 
     <div v-if="currentSeries === 'bing'" class="filter-item filter-item--date">
       <span class="filter-label">日期</span>
@@ -69,7 +81,7 @@ defineEmits([
       />
     </div>
 
-    <div v-else class="filter-item filter-item--category">
+    <div v-else-if="!hideCategoryFilter" class="filter-item filter-item--category">
       <span class="filter-label">分类</span>
       <CategoryDropdown
         :category-options="categoryOptions"

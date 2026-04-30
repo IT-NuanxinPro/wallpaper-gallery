@@ -18,7 +18,7 @@ const SUPABASE_URL = process.env.VITE_SUPABASE_URL
 const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY
 
 // 导出配置
-const SERIES_LIST = ['desktop', 'mobile', 'avatar', 'bing']
+const SERIES_LIST = ['desktop', 'mobile', 'avatar', 'video', 'bing']
 const OUTPUT_DIR = path.join(__dirname, '../public/data/stats')
 const LIMIT_PER_SERIES = 500 // 每个系列导出前 500 条
 

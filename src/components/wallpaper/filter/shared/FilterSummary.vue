@@ -1,7 +1,9 @@
 <script setup>
+import { computed } from 'vue'
 import AnimatedNumber from '@/components/common/ui/AnimatedNumber.vue'
+import { VIDEO_USAGE_SHORT_LABELS } from '@/utils/config/constants'
 
-defineProps({
+const props = defineProps({
   activeSearchQuery: {
     type: String,
     default: '',
@@ -41,6 +43,44 @@ defineProps({
 })
 
 defineEmits(['clearSearch', 'reset'])
+
+const categoryLabel = computed(() => {
+  if (props.currentSeries === 'video') {
+    return VIDEO_USAGE_SHORT_LABELS[props.categoryFilter] || props.categoryFilter
+  }
+
+  return props.categoryFilter
+})
+
+const resultLabel = computed(() => {
+  if (props.currentSeries === 'avatar') {
+    return '头像'
+  }
+
+  if (props.currentSeries === 'mobile') {
+    return '手机壁纸'
+  }
+
+  if (props.currentSeries === 'video') {
+    const videoLabels = {
+      'desktop': '电脑动态壁纸',
+      'mobile': '手机动态壁纸',
+      'social-cover': '朋友圈封面',
+    }
+
+    return videoLabels[props.categoryFilter] || '动态壁纸'
+  }
+
+  return '壁纸'
+})
+
+const showFilteredHint = computed(() => {
+  if (!props.hasActiveFilters || props.resultCount === props.totalCount) {
+    return false
+  }
+
+  return true
+})
 </script>
 
 <template>
@@ -50,8 +90,8 @@ defineEmits(['clearSearch', 'reset'])
         加载中...
       </template>
       <template v-else>
-        共 <AnimatedNumber :value="resultCount" class="count-value" /> 张{{ currentSeries === 'avatar' ? '头像' : currentSeries === 'mobile' ? '手机壁纸' : '壁纸' }}
-        <span v-if="hasActiveFilters && resultCount !== totalCount" class="filtered-hint">
+        共 <AnimatedNumber :value="resultCount" class="count-value" /> 张{{ resultLabel }}
+        <span v-if="showFilteredHint" class="filtered-hint">
           (筛选自 <AnimatedNumber :value="totalCount" :duration="0.4" /> 张)
         </span>
       </template>
@@ -75,10 +115,10 @@ defineEmits(['clearSearch', 'reset'])
         :class="{ 'search-context--stacked': categoryFilter !== 'all' || subcategoryFilter !== 'all' }"
       >
         <template v-if="categoryFilter !== 'all' && subcategoryFilter !== 'all'">
-          在 {{ categoryFilter }} / {{ subcategoryFilter }} 中搜索 “{{ activeSearchQuery }}”
+          在 {{ categoryLabel }} / {{ subcategoryFilter }} 中搜索 “{{ activeSearchQuery }}”
         </template>
         <template v-else-if="categoryFilter !== 'all'">
-          在 {{ categoryFilter }} 中搜索 “{{ activeSearchQuery }}”
+          在 {{ categoryLabel }} 中搜索 “{{ activeSearchQuery }}”
         </template>
         <template v-else>
           搜索 “{{ activeSearchQuery }}”

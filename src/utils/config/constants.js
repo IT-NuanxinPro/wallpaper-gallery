@@ -6,7 +6,7 @@
 // - 本地开发：使用此默认值
 // - 线上构建：GitHub Actions 会自动替换为图床最新 tag
 // - jsdelivr 缓存策略：@main 分支有缓存，@tag 版本无缓存
-export const CDN_VERSION = 'v1.1.29'
+export const CDN_VERSION = 'v1.2.63'
 
 // 前端应用版本号（构建时由 vite 注入，用于缓存控制）
 // eslint-disable-next-line no-undef
@@ -23,6 +23,7 @@ const _cdnParts = {
   r: `/nuanXinProPic@${CDN_VERSION}`,
 }
 const CDN_BASE = `${_cdnParts.p}${_cdnParts.h}${_cdnParts.g}${_cdnParts.r}`
+const R2_RESOURCE_BASE = 'https://img.061129.xyz'
 
 // ========================================
 // 四大系列配置
@@ -73,6 +74,22 @@ export const SERIES_CONFIG = {
     categoryBaseUrl: `${import.meta.env.BASE_URL}data/avatar`,
     aspectRatio: '1/1',
   },
+  video: {
+    id: 'video',
+    name: '动态壁纸',
+    icon: 'video-play',
+    resourceBaseUrl: R2_RESOURCE_BASE,
+    imageBaseUrl: `${R2_RESOURCE_BASE}/wallpaper/video`,
+    thumbnailBaseUrl: `${R2_RESOURCE_BASE}/thumbnail/video`,
+    indexUrl: `${import.meta.env.BASE_URL}data/video/index.json${DATA_CACHE_BUSTER}`,
+    latestUrl: `${import.meta.env.BASE_URL}data/video/latest.json${DATA_CACHE_BUSTER}`,
+    dataUrl: `${import.meta.env.BASE_URL}data/video.json${DATA_CACHE_BUSTER}`,
+    categoryBaseUrl: `${import.meta.env.BASE_URL}data/video`,
+    aspectRatio: '16/9',
+    isVideo: true,
+    pcOnly: true,
+    hideFormatFilter: true,
+  },
   bing: {
     id: 'bing',
     name: '每日Bing',
@@ -99,8 +116,8 @@ export const SERIES_CONFIG = {
 
 // 设备可见的系列（PC端显示所有系列，平板显示所有系列，移动端不显示 Bing）
 export const DEVICE_SERIES = {
-  desktop: ['desktop', 'bing', 'mobile', 'avatar'], // PC端可见所有系列
-  tablet: ['desktop', 'bing', 'mobile', 'avatar'], // 平板可见所有系列
+  desktop: ['desktop', 'video', 'bing', 'mobile', 'avatar'], // PC端可见所有系列
+  tablet: ['desktop', 'video', 'bing', 'mobile', 'avatar'], // 平板可见所有系列
   mobile: ['mobile', 'avatar'], // 移动端只显示手机壁纸和头像（Bing 仅 PC 端）
 }
 
@@ -112,7 +129,19 @@ export const DEFAULT_SERIES = {
 }
 
 // 所有系列ID列表
-export const ALL_SERIES = ['desktop', 'bing', 'mobile', 'avatar']
+export const ALL_SERIES = ['desktop', 'video', 'bing', 'mobile', 'avatar']
+
+export const VIDEO_USAGE_LABELS = {
+  'desktop': '电脑动态壁纸',
+  'mobile': '手机动态壁纸',
+  'social-cover': '动态背景图',
+}
+
+export const VIDEO_USAGE_SHORT_LABELS = {
+  'desktop': '电脑壁纸',
+  'mobile': '手机壁纸',
+  'social-cover': '动态背景',
+}
 
 // ========================================
 // 图片代理服务配置（备用方案，如本地缩略图不可用时使用）

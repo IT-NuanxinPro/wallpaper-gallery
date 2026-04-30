@@ -2,6 +2,10 @@
 import { computed } from 'vue'
 
 const props = defineProps({
+  allowListMode: {
+    type: Boolean,
+    default: true,
+  },
   mode: {
     type: String,
     default: 'grid',
@@ -14,7 +18,12 @@ const props = defineProps({
 
 defineEmits(['change'])
 
-const sliderClass = computed(() => props.mode === 'list' ? 'is-list' : 'is-grid')
+const sliderClass = computed(() => {
+  if (!props.allowListMode) {
+    return 'is-grid is-single'
+  }
+  return props.mode === 'list' ? 'is-list' : 'is-grid'
+})
 </script>
 
 <template>
@@ -33,6 +42,7 @@ const sliderClass = computed(() => props.mode === 'list' ? 'is-list' : 'is-grid'
       </svg>
     </button>
     <button
+      v-if="allowListMode"
       :class="[mobile ? 'view-mode-btn-mobile' : 'view-mode-btn', { 'is-active': mode === 'list' }]"
       aria-label="列表视图"
       @click="$emit('change', 'list')"
@@ -77,6 +87,10 @@ const sliderClass = computed(() => props.mode === 'list' ? 'is-list' : 'is-grid'
 
   &.is-list {
     transform: translateX(44px);
+  }
+
+  &.is-single {
+    width: calc(100% - 8px);
   }
 }
 
@@ -149,6 +163,10 @@ const sliderClass = computed(() => props.mode === 'list' ? 'is-list' : 'is-grid'
 
   &.is-list {
     transform: translateX(32px);
+  }
+
+  &.is-single {
+    width: calc(100% - 6px);
   }
 }
 

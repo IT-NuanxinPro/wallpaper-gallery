@@ -68,7 +68,7 @@ jobs:
           if [ -d "nuanXinProPic/data" ]; then
             echo "📦 Copying data from nuanXinProPic/data..."
             # 同步主系列
-            for series in desktop mobile avatar; do
+            for series in desktop mobile avatar video; do
               if [ -d "nuanXinProPic/data/$series" ]; then
                 cp -r "nuanXinProPic/data/$series" public/data/
               fi

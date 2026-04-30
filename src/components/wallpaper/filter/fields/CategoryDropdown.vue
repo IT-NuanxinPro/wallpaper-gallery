@@ -39,6 +39,15 @@ const currentSubcategories = computed(() => {
   return category?.subcategories || []
 })
 
+const hoveredCategoryLabel = computed(() => {
+  if (hoveredCategory.value === 'all') {
+    return '全部分类'
+  }
+
+  const category = props.categoryOptions.find(opt => opt.value === hoveredCategory.value)
+  return category?.label || hoveredCategory.value
+})
+
 // 显示文本
 const displayText = computed(() => {
   if (props.categoryFilter === 'all') {
@@ -175,7 +184,7 @@ onUnmounted(() => {
           <Transition name="slide-right">
             <div v-if="currentSubcategories.length > 0" class="category-list secondary-list">
               <div class="list-header">
-                {{ hoveredCategory }}
+                {{ hoveredCategoryLabel }}
               </div>
               <div class="list-items">
                 <!-- 全部选项 -->

@@ -35,6 +35,19 @@ const routes = [
       aspectType: 'landscape',
     },
   },
+  // 动态壁纸（横屏 16:9）
+  {
+    path: '/video',
+    name: 'Video',
+    component: () => import('@/views/Home.vue'),
+    meta: {
+      title: '动态壁纸下载_电脑动态壁纸_视频壁纸 - Wallpaper Gallery',
+      description: '精选电脑动态壁纸、视频壁纸与动态背景资源，支持高清预览、播放与下载。',
+      canonicalPath: '/video',
+      series: 'video',
+      aspectType: 'landscape',
+    },
+  },
   // 每日 Bing 壁纸（横屏 16:9）
   {
     path: '/bing',

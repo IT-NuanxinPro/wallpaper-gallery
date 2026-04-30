@@ -50,7 +50,7 @@ $$;
 
 create table if not exists public.wallpaper_assets (
   asset_key text primary key,
-  series text not null check (series in ('desktop', 'mobile', 'avatar', 'bing')),
+  series text not null check (series in ('desktop', 'mobile', 'avatar', 'video', 'bing')),
   filename text not null check (btrim(filename) <> ''),
   title text,
   category text,
@@ -63,6 +63,7 @@ create table if not exists public.wallpaper_assets (
   height integer check (height is null or height > 0),
   format text,
   file_size bigint check (file_size is null or file_size >= 0),
+  duration_seconds double precision check (duration_seconds is null or duration_seconds >= 0),
   cdn_tag text,
   status text not null default 'active' check (status in ('active', 'removed')),
   removed_at timestamptz,
@@ -73,6 +74,10 @@ create table if not exists public.wallpaper_assets (
   unique (series, filename),
   check (asset_key = series || ':' || filename)
 );
+
+alter table public.wallpaper_assets
+  add column if not exists duration_seconds double precision
+  check (duration_seconds is null or duration_seconds >= 0);
 
 create index if not exists idx_wallpaper_assets_series
   on public.wallpaper_assets(series);
@@ -127,7 +132,7 @@ comment on table public.profiles is
 
 create table if not exists public.user_preferences (
   user_id uuid primary key references public.profiles(id) on delete cascade,
-  default_series text check (default_series is null or default_series in ('desktop', 'mobile', 'avatar', 'bing')),
+  default_series text check (default_series is null or default_series in ('desktop', 'mobile', 'avatar', 'video', 'bing')),
   theme_mode text not null default 'system' check (theme_mode in ('light', 'dark', 'system', 'timed')),
   view_mode_desktop text not null default 'grid' check (view_mode_desktop in ('grid', 'list', 'waterfall')),
   view_mode_mobile text not null default 'grid' check (view_mode_mobile in ('grid', 'list')),

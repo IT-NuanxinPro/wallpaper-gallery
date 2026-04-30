@@ -119,6 +119,14 @@ const alternativeSeries = computed(() => {
   return availableSeriesOptions.value.filter(opt => opt.id !== currentSeries.value)
 })
 
+const allowListMode = computed(() => currentSeries.value !== 'video')
+
+watch(currentSeries, (series) => {
+  if (series === 'video' && viewMode.value !== 'grid') {
+    setViewMode('grid')
+  }
+}, { immediate: true })
+
 // 跳转到其他系列
 function navigateToSeries(seriesId) {
   router.push(`/${seriesId}`)
@@ -134,6 +142,7 @@ const {
   handleTouchMove,
   handleTouchStart,
 } = useGridTouchMode({
+  allowListMode,
   isMobileOrTablet,
   setViewMode,
   viewMode,

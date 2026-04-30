@@ -13,7 +13,8 @@ const _urlParts = {
   r: `/nuanXinProPic@${CDN_VERSION}`,
 }
 
-const IMAGE_EXTENSION_PATTERN = /\.(?:jpg|jpeg|png|gif|bmp|webp|svg|tiff|tif|ico|heic|heif)$/i
+const IMAGE_EXTENSION_PATTERN = /\.(?:jpg|jpeg|png|gif|bmp|webp|svg|tiff|tif|ico|heic|heif|mp4|webm|mov|m4v)$/i
+const VIDEO_EXTENSION_PATTERN = /\.(?:mp4|webm|mov|m4v)(?:[?#].*)?$/i
 const GENERIC_WALLPAPER_NAME_PATTERNS = [
   /^微信图片[_-]?\d+(?:[_-]\d+)*$/,
   /^mmexport\d+$/i,
@@ -239,6 +240,10 @@ function normalizeWallpaperExtension(value) {
   return normalized
 }
 
+function isVideoResourceUrl(value) {
+  return VIDEO_EXTENSION_PATTERN.test(String(value || ''))
+}
+
 function isMeaningfulWallpaperFilename(value) {
   const normalized = stripImageExtension(value).trim()
   if (!normalized)
@@ -395,6 +400,14 @@ export function buildWallpaperImageFallbackUrls(wallpaper, options = {}) {
     return []
 
   const series = options.series || resolveWallpaperSeries(wallpaper)
+  if (wallpaper?.mediaType === 'video' || series === 'video') {
+    return [...new Set([
+      wallpaper.thumbnailUrl,
+      !isVideoResourceUrl(wallpaper.previewUrl) ? wallpaper.previewUrl : '',
+      !isVideoResourceUrl(wallpaper.url) ? wallpaper.url : '',
+    ].filter(Boolean))]
+  }
+
   const extension = normalizeWallpaperExtension(
     extractFilenameExtension(wallpaper?.filename) || wallpaper?.format,
   )

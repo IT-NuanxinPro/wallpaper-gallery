@@ -3,6 +3,7 @@ import { gsap } from 'gsap'
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useDevice } from '@/composables/useDevice'
 import { buildWallpaperImageFallbackUrls, formatBingDate, formatFileSize, formatRelativeTime, getDisplayFilename, highlightText } from '@/utils/common/format'
+import { VIDEO_USAGE_SHORT_LABELS } from '@/utils/config/constants'
 import WallpaperCardInfo from './shared/WallpaperCardInfo.vue'
 import WallpaperCardMedia from './shared/WallpaperCardMedia.vue'
 
@@ -49,11 +50,18 @@ const imageRef = ref(null)
 const imageLoaded = ref(false)
 const imageError = ref(false)
 const imageCandidateIndex = ref(0)
+const isMediaHovered = ref(false)
 
 let cacheCheckTimer = null
 let gsapTargets = []
 
-const primaryImageUrl = computed(() => props.wallpaper.previewUrl || props.wallpaper.thumbnailUrl || props.wallpaper.url)
+const primaryImageUrl = computed(() => {
+  if (props.wallpaper?.mediaType === 'video') {
+    return props.wallpaper.thumbnailUrl || props.wallpaper.previewUrl || props.wallpaper.url
+  }
+
+  return props.wallpaper.previewUrl || props.wallpaper.thumbnailUrl || props.wallpaper.url
+})
 const candidateImageUrls = computed(() => buildWallpaperImageFallbackUrls({
   ...props.wallpaper,
   thumbnailUrl: props.wallpaper.thumbnailUrl,
@@ -98,15 +106,22 @@ onUnmounted(() => {
 const formattedSize = computed(() => formatFileSize(props.wallpaper.size))
 const fileFormat = computed(() => props.wallpaper.filename.split('.').pop()?.toUpperCase() || '')
 const relativeTime = computed(() => formatRelativeTime(props.wallpaper.createdAt))
+const isVideoWallpaper = computed(() => props.wallpaper?.mediaType === 'video')
 const displayFilename = computed(() => {
   if (props.wallpaper.displayTitle) {
-    return props.wallpaper.displayTitle.replace(/\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|tif|ico|heic|heif)$/i, '')
+    return props.wallpaper.displayTitle.replace(/\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|tif|ico|heic|heif|mp4|webm|mov|m4v)$/i, '')
   }
   return getDisplayFilename(props.wallpaper.filename)
 })
 const aiKeywords = computed(() => props.wallpaper.keywords?.slice(0, 3) || [])
 const highlightedFilename = computed(() => highlightText(displayFilename.value, props.searchQuery))
 const categoryDisplay = computed(() => {
+  if (isVideoWallpaper.value) {
+    const usageLabel = VIDEO_USAGE_SHORT_LABELS[props.wallpaper?.usage] || props.wallpaper?.usage || props.wallpaper?.category || ''
+    const topic = props.wallpaper?.topic || props.wallpaper?.subcategory || '通用'
+    return usageLabel ? `${usageLabel} / ${topic}` : topic
+  }
+
   const { category, subcategory } = props.wallpaper
   if (!category)
     return ''
@@ -120,8 +135,15 @@ const imageAlt = computed(() => {
   if (isBingWallpaper.value && props.wallpaper.title)
     return `${props.wallpaper.title} - Bing每日壁纸`
   const parts = [displayFilename.value]
-  if (categoryDisplay.value)
+  if (isVideoWallpaper.value) {
+    const usageLabel = VIDEO_USAGE_SHORT_LABELS[props.wallpaper?.usage] || props.wallpaper?.usage || ''
+    if (usageLabel) {
+      parts.push(usageLabel)
+    }
+  }
+  else if (categoryDisplay.value) {
     parts.push(categoryDisplay.value)
+  }
   if (aiKeywords.value.length > 0)
     parts.push(aiKeywords.value.join(' '))
   return `${parts.join(' - ')} 高清壁纸`
@@ -135,7 +157,20 @@ const bingCopyright = computed(() => {
   return parenIndex > 0 ? copyright.substring(0, parenIndex).trim() : copyright
 })
 
-const normalizedAspectRatio = computed(() => props.aspectRatio.replace('/', ' / '))
+const computedAspectRatio = computed(() => {
+  if (isVideoWallpaper.value) {
+    if (props.wallpaper?.usage === 'mobile') {
+      return '9/16'
+    }
+    if (props.wallpaper?.usage === 'social-cover') {
+      return '9/16'
+    }
+    return '16/9'
+  }
+
+  return props.aspectRatio
+})
+const normalizedAspectRatio = computed(() => computedAspectRatio.value.replace('/', ' / '))
 const cardImageStyle = computed(() => ({ aspectRatio: normalizedAspectRatio.value }))
 
 const listImageStyle = computed(() => {
@@ -146,7 +181,7 @@ const listImageStyle = computed(() => {
       aspectRatio: '1 / 1',
     }
   }
-  const [w, h] = props.aspectRatio.split('/').map(Number)
+  const [w, h] = computedAspectRatio.value.split('/').map(Number)
   const ratio = w / h
   const baseWidth = ratio >= 1 ? 200 : 120
   return {
@@ -181,6 +216,8 @@ function handleMouseEnter() {
   if (isMobile.value)
     return
 
+  isMediaHovered.value = true
+
   const card = cardRef.value
   if (!card)
     return
@@ -214,6 +251,8 @@ function handleMouseEnter() {
 function handleMouseLeave() {
   if (isMobile.value)
     return
+
+  isMediaHovered.value = false
 
   const card = cardRef.value
   if (!card)
@@ -250,9 +289,8 @@ function handleMouseLeave() {
   <div
     ref="cardRef"
     class="wallpaper-card"
-    :class="`view-${viewMode}`"
+    :class="[`view-${viewMode}`, { 'is-media-hovered': isMediaHovered }]"
     :data-flip-id="wallpaper.id"
-    @click="handleClick"
   >
     <WallpaperCardMedia
       :bing-date="bingDate"
@@ -263,11 +301,13 @@ function handleMouseLeave() {
       :image-ref="imageRef"
       :index="index"
       :is-bing-wallpaper="isBingWallpaper"
+      :is-video-wallpaper="isVideoWallpaper"
       :is-mobile="isMobile"
       :popular-rank="popularRank"
       :style="viewMode === 'list' ? listImageStyle : cardImageStyle"
       :thumbnail-url="thumbnailUrl"
       :view-mode="viewMode"
+      @click="handleClick"
       @load="handleImageLoad"
       @error="handleImageError"
       @hover-enter="handleMouseEnter"
@@ -286,6 +326,7 @@ function handleMouseLeave() {
       :formatted-size="formattedSize"
       :highlighted-filename="highlightedFilename"
       :is-bing-wallpaper="isBingWallpaper"
+      :is-video-wallpaper="isVideoWallpaper"
       :relative-time="relativeTime"
       :view-count="viewCount"
       :view-mode="viewMode"
@@ -304,7 +345,6 @@ function handleMouseLeave() {
   border: 1px solid var(--accent-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  cursor: pointer;
   box-shadow:
     0 14px 30px rgba(37, 99, 235, 0.08),
     0 24px 48px rgba(15, 23, 42, 0.08),
@@ -365,7 +405,7 @@ function handleMouseLeave() {
     }
   }
 
-  &:hover {
+  &.is-media-hovered {
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(219, 234, 254, 0.9)),
       radial-gradient(circle at top left, rgba(var(--color-accent-rgb), 0.24), transparent 52%),

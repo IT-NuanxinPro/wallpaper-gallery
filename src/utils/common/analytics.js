@@ -2,6 +2,21 @@
 // Umami Analytics 事件追踪工具函数
 // ========================================
 
+let analyticsDisabled = false
+
+function shouldDisableAnalytics(error) {
+  const message = String(error?.message || error || '')
+  return message.includes('429') || message.includes('Too Many Requests')
+}
+
+function handleTrackingError(error) {
+  if (shouldDisableAnalytics(error))
+    analyticsDisabled = true
+
+  if (import.meta.env.DEV)
+    console.warn('[Analytics] tracking skipped:', error)
+}
+
 /**
  * 追踪自定义事件
  * @param {string} eventName - 事件名称
@@ -9,17 +24,20 @@
  */
 export function trackEvent(eventName, eventData = {}) {
   // 只在生产环境且 umami 可用时追踪
+  if (analyticsDisabled)
+    return
+
   if (import.meta.env.PROD && typeof window !== 'undefined' && window.umami) {
     try {
-      if (Object.keys(eventData).length > 0) {
-        window.umami.track(eventName, eventData)
-      }
-      else {
-        window.umami.track(eventName)
-      }
+      const result = Object.keys(eventData).length > 0
+        ? window.umami.track(eventName, eventData)
+        : window.umami.track(eventName)
+
+      if (result && typeof result.catch === 'function')
+        result.catch(handleTrackingError)
     }
     catch (error) {
-      console.warn('Umami tracking error:', error)
+      handleTrackingError(error)
     }
   }
   else if (import.meta.env.DEV) {

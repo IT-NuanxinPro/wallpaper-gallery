@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import WallpaperCardActions from '@/components/wallpaper/card/shared/WallpaperCardActions.vue'
 import { useScrollLock } from '@/composables/useScrollLock'
@@ -178,17 +178,6 @@ function resetState() {
   if (deviceMode.isDeviceMode.value)
     deviceMode.reset()
 }
-
-function handleKeydown(e) {
-  if (!isVisible.value)
-    return
-  if (e.key === 'Escape') {
-    deviceMode.isDeviceMode.value ? deviceMode.exit() : closeModal()
-  }
-}
-
-onMounted(() => document.addEventListener('keydown', handleKeydown))
-onUnmounted(() => document.removeEventListener('keydown', handleKeydown))
 </script>
 
 <template>
@@ -198,7 +187,6 @@ onUnmounted(() => document.removeEventListener('keydown', handleKeydown))
         v-if="isVisible && wallpaper"
         class="mobile-modal"
         :class="{ 'is-device-mode': deviceMode.isDeviceMode.value }"
-        @click.self="closeModal"
       >
         <div
           class="mobile-modal__content"

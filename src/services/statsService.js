@@ -48,6 +48,10 @@ export function isSupabaseConfigured() {
  * @returns {Promise<Map>} - 统计数据 Map<imageId, {views, downloads}>
  */
 export async function loadStaticStats(series, forceRefresh = false) {
+  if (series === 'video') {
+    return new Map()
+  }
+
   // 检查缓存
   if (!forceRefresh) {
     const cached = getCachedStats(series)

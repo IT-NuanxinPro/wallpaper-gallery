@@ -48,9 +48,10 @@ export const useInteractionStore = defineStore('interaction', () => {
   // ========================================
 
   function groupInteractionsBySeries(items) {
-    const grouped = { desktop: [], bing: [], mobile: [], avatar: [] }
+    const grouped = { desktop: [], video: [], bing: [], mobile: [], avatar: [] }
     const seenBySeries = {
       desktop: new Set(),
+      video: new Set(),
       bing: new Set(),
       mobile: new Set(),
       avatar: new Set(),

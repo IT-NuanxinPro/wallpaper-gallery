@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
 import { debounce } from '@/utils/common/format'
 import { sortByDate, sortByDownloads, sortByName, sortByPopularity, sortBySize, sortByViews } from '@/utils/common/sorting'
-import { RESOLUTION_THRESHOLDS, STORAGE_KEYS } from '@/utils/config/constants'
+import { RESOLUTION_THRESHOLDS, STORAGE_KEYS, VIDEO_USAGE_SHORT_LABELS } from '@/utils/config/constants'
 import { getDefaultCategoryFilter, hasActiveSeriesFilters } from '@/utils/filter/defaults'
 import { usePopularityStore } from './popularity'
 
@@ -35,6 +35,14 @@ export const useFilterStore = defineStore('filter', () => {
   watch(sortBy, value => localStorage.setItem(STORAGE_KEYS.SORT, value))
   watch(categoryFilter, value => localStorage.setItem(STORAGE_KEYS.CATEGORY, value))
 
+  function getCategoryLabel(category, seriesId = currentSeriesId.value) {
+    if (seriesId === 'video') {
+      return VIDEO_USAGE_SHORT_LABELS[category] || category
+    }
+
+    return category
+  }
+
   function createCategoryOptions(wallpapers) {
     if (categoryOptionsCache.value && wallpapers.length === lastWallpapersLength.value) {
       return categoryOptionsCache.value
@@ -61,23 +69,27 @@ export const useFilterStore = defineStore('filter', () => {
     const sortedCategories = Object.keys(categoryCount)
       .sort((a, b) => (categoryCount[b] || 0) - (categoryCount[a] || 0))
 
-    const result = [
-      { value: 'all', label: '全部分类', count: wallpapers.length },
-      ...sortedCategories.map((category) => {
-        const subcategories = subcategoryCount[category]
-          ? Object.entries(subcategoryCount[category])
-              .map(([name, count]) => ({ name, count }))
-              .sort((a, b) => b.count - a.count)
-          : []
+    const categoryItems = sortedCategories.map((category) => {
+      const subcategories = subcategoryCount[category]
+        ? Object.entries(subcategoryCount[category])
+            .map(([name, count]) => ({ name, count }))
+            .sort((a, b) => b.count - a.count)
+        : []
 
-        return {
-          value: category,
-          label: category,
-          count: categoryCount[category],
-          ...(subcategories.length > 0 && { subcategories }),
-        }
-      }),
-    ]
+      return {
+        value: category,
+        label: getCategoryLabel(category),
+        count: categoryCount[category],
+        ...(subcategories.length > 0 && { subcategories }),
+      }
+    })
+
+    const result = currentSeriesId.value === 'video'
+      ? categoryItems
+      : [
+          { value: 'all', label: '全部分类', count: wallpapers.length },
+          ...categoryItems,
+        ]
 
     categoryOptionsCache.value = result
     lastWallpapersLength.value = wallpapers.length
@@ -316,6 +328,7 @@ export const useFilterStore = defineStore('filter', () => {
     currentSeriesId,
     createCategoryOptions,
     createSubcategoryOptions,
+    getCategoryLabel,
     applyFilters,
     applySort,
     getFilteredAndSorted,

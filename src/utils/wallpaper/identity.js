@@ -1,5 +1,5 @@
 // 这个模块会被前端和纯 Node 脚本同时引用，不能依赖 Vite 别名或 import.meta.env 配置。
-const ALL_SERIES = ['desktop', 'bing', 'mobile', 'avatar']
+const ALL_SERIES = ['desktop', 'video', 'bing', 'mobile', 'avatar']
 
 const BING_FILENAME_PATTERN = /^bing-\d{4}-\d{2}-\d{2}\.jpg$/i
 const BING_DATE_FILENAME_PATTERN = /^\d{4}-\d{2}-\d{2}\.jpg$/i
@@ -65,6 +65,10 @@ export function resolveWallpaperSeries(wallpaper, fallbackSeries = '') {
 
       if (normalized.includes('/wallpaper/mobile/') || normalized.includes('/thumbnail/mobile/') || normalized.includes('/data/mobile/')) {
         return 'mobile'
+      }
+
+      if (normalized.includes('/wallpaper/video/') || normalized.includes('/thumbnail/video/') || normalized.includes('/preview/video/') || normalized.includes('/data/video/')) {
+        return 'video'
       }
 
       if (normalized.includes('/wallpaper/avatar/') || normalized.includes('/thumbnail/avatar/') || normalized.includes('/data/avatar/')) {

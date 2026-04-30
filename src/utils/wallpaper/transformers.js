@@ -1,4 +1,5 @@
 import { buildBingPreviewUrl, buildBingThumbnailUrl, buildBingUHDUrl, buildImageUrl } from '@/utils/common/format'
+import { SERIES_CONFIG } from '@/utils/config/constants'
 
 export function formatWallpaperStatistics(items) {
   const jpgCount = items.filter(w => w.format === 'JPG' || w.format === 'JPEG').length
@@ -32,6 +33,32 @@ export function formatBytes(totalSize) {
 
 export function transformWallpaperUrls(wallpaper) {
   const cdnTag = wallpaper.cdnTag
+  const isVideo = wallpaper?.mediaType === 'video' || wallpaper?.usage || wallpaper?.series === 'video'
+  const videoBaseUrl = SERIES_CONFIG.video?.resourceBaseUrl || ''
+
+  if (isVideo) {
+    const buildVideoUrl = (resourcePath) => {
+      if (!resourcePath)
+        return ''
+      if (/^https?:\/\//i.test(resourcePath))
+        return resourcePath
+      if (!videoBaseUrl)
+        return resourcePath
+      const normalizedPath = resourcePath.startsWith('/') ? resourcePath : `/${resourcePath}`
+      return `${videoBaseUrl}${normalizedPath}`
+    }
+
+    return {
+      ...wallpaper,
+      mediaType: 'video',
+      _series: 'video',
+      url: buildVideoUrl(wallpaper.path || wallpaper.url),
+      playbackUrl: buildVideoUrl(wallpaper.playbackPath || wallpaper.playbackUrl || wallpaper.previewPath || wallpaper.previewUrl || wallpaper.path || wallpaper.url),
+      thumbnailUrl: buildVideoUrl(wallpaper.thumbnailPath || wallpaper.thumbnailUrl),
+      previewUrl: buildVideoUrl(wallpaper.previewPath || wallpaper.previewUrl),
+      downloadUrl: buildVideoUrl(wallpaper.path || wallpaper.downloadUrl || wallpaper.url),
+    }
+  }
 
   return {
     ...wallpaper,

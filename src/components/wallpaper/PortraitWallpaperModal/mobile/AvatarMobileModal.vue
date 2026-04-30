@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import WallpaperCardActions from '@/components/wallpaper/card/shared/WallpaperCardActions.vue'
@@ -184,16 +184,6 @@ function resetState() {
   imageDimensions.value = { width: 0, height: 0 }
   // 统计数据现在是 computed，无需手动重置
 }
-
-function handleKeydown(e) {
-  if (!isVisible.value)
-    return
-  if (e.key === 'Escape')
-    closeModal()
-}
-
-onMounted(() => document.addEventListener('keydown', handleKeydown))
-onUnmounted(() => document.removeEventListener('keydown', handleKeydown))
 </script>
 
 <template>
@@ -202,7 +192,6 @@ onUnmounted(() => document.removeEventListener('keydown', handleKeydown))
       <div
         v-if="isVisible && wallpaper"
         class="avatar-modal"
-        @click.self="closeModal"
       >
         <div class="avatar-modal__content">
           <!-- 关闭按钮 -->

@@ -13,6 +13,13 @@ export const useHotTagsStore = defineStore('hotTags', () => {
     if (!series)
       return
 
+    if (series === 'video') {
+      currentSeries.value = series
+      tags.value = []
+      loading.value = false
+      return
+    }
+
     if (!forceRefresh && cache.value[series]) {
       currentSeries.value = series
       tags.value = cache.value[series]

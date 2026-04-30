@@ -15,9 +15,10 @@ const SUPABASE_URL = process.env.VITE_SUPABASE_URL
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY
 const DATA_DIR = path.resolve(__dirname, '../public/data')
 
-const STATIC_SERIES = ['desktop', 'mobile', 'avatar']
+const STATIC_SERIES = ['desktop', 'mobile', 'avatar', 'video']
 const BING_CDN_BASE = 'https://cn.bing.com'
 const GITHUB_CDN_BASE = 'https://cdn.jsdelivr.net/gh/IT-NuanxinPro/nuanXinProPic'
+const VIDEO_CDN_BASE = 'https://img.061129.xyz'
 const UPSERT_BATCH_SIZE = 200
 const SELECT_BATCH_SIZE = 1000
 
@@ -38,6 +39,19 @@ function buildCdnAssetUrl(assetPath, cdnTag) {
   return `${GITHUB_CDN_BASE}@${version}${assetPath}`
 }
 
+function buildVideoAssetUrl(assetPath) {
+  if (!assetPath) {
+    return null
+  }
+
+  if (/^https?:\/\//i.test(assetPath)) {
+    return assetPath
+  }
+
+  const normalizedPath = assetPath.startsWith('/') ? assetPath : `/${assetPath}`
+  return `${VIDEO_CDN_BASE}${normalizedPath}`
+}
+
 function buildBingAssetUrl(urlbase, suffix) {
   if (!urlbase) {
     return null
@@ -56,6 +70,9 @@ function chunk(items, size) {
 
 function getStandardCategoryFiles(series) {
   const indexPath = path.join(DATA_DIR, series, 'index.json')
+  if (!fs.existsSync(indexPath)) {
+    return []
+  }
   const indexData = readJson(indexPath)
   const encoded = indexData.blob || indexData.payload
 
@@ -82,9 +99,10 @@ function getBingYearFiles() {
 export function mapStandardWallpaperAsset(series, wallpaper) {
   const filename = normalizeWallpaperFilename(wallpaper?.filename || wallpaper?.id, series)
   const assetKey = buildWallpaperAssetKey(filename, series)
-  const rawUrl = buildCdnAssetUrl(wallpaper?.path, wallpaper?.cdnTag)
-  const previewUrl = buildCdnAssetUrl(wallpaper?.previewPath, wallpaper?.cdnTag)
-  const thumbnailUrl = buildCdnAssetUrl(wallpaper?.thumbnailPath, wallpaper?.cdnTag)
+  const buildAssetUrl = series === 'video' ? buildVideoAssetUrl : buildCdnAssetUrl
+  const rawUrl = buildAssetUrl(wallpaper?.path, wallpaper?.cdnTag)
+  const previewUrl = buildAssetUrl(wallpaper?.previewPath, wallpaper?.cdnTag)
+  const thumbnailUrl = buildAssetUrl(wallpaper?.thumbnailPath, wallpaper?.cdnTag)
 
   return {
     asset_key: assetKey,
@@ -99,16 +117,20 @@ export function mapStandardWallpaperAsset(series, wallpaper) {
       description: wallpaper?.description || null,
       display_title: wallpaper?.displayTitle || null,
       keywords: Array.isArray(wallpaper?.keywords) ? wallpaper.keywords : [],
+      media_type: wallpaper?.mediaType || 'image',
       resolution: wallpaper?.resolution || null,
       sha: wallpaper?.sha || null,
       source_id: wallpaper?.id || null,
+      topic: wallpaper?.topic || wallpaper?.subcategory || null,
       tags: Array.isArray(wallpaper?.tags) ? wallpaper.tags : [],
+      usage: wallpaper?.usage || null,
       urls: {
         preview: previewUrl,
         raw: rawUrl,
         thumbnail: thumbnailUrl,
       },
     },
+    duration_seconds: wallpaper?.duration || null,
     preview_path: wallpaper?.previewPath || null,
     raw_url: rawUrl,
     removed_at: null,

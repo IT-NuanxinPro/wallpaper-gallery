@@ -37,10 +37,12 @@ const interactionStore = useInteractionStore()
 const authStore = useAuthStore()
 
 const currentSeries = computed(() => seriesStore.currentSeries)
+const isVideoSeries = computed(() => currentSeries.value === 'video')
 const showMobileSeriesNotice = computed(() => isMobile.value && ['desktop', 'bing'].includes(currentSeries.value))
 const isSeriesContentReady = computed(() => wallpaperStore.currentRenderedSeries === currentSeries.value)
 const visibleWallpapers = computed(() => isSeriesContentReady.value ? wallpaperStore.wallpapers : [])
 const seriesCategoryDefinitions = computed(() => wallpaperStore.getSeriesCategories(currentSeries.value))
+const showHotTagsPanel = computed(() => !isVideoSeries.value)
 
 const mobileNoticeContent = computed(() => {
   if (currentSeries.value === 'bing') {
@@ -353,6 +355,7 @@ function handleAvatarMakerClose() {
         </div>
 
         <HotTagsPanel
+          v-if="showHotTagsPanel"
           :is-mobile="isMobile"
           :category-tags="isHotTagsVisible ? hotCategoryTags : []"
           :keyword-tags="isHotTagsVisible ? hotKeywordTags : []"

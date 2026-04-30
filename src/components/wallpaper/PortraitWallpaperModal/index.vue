@@ -3,7 +3,7 @@
  * 竖屏壁纸弹窗主组件
  * 使用 Vue Transition + CSS 动画，遵循 Vue 最佳实践
  */
-import { computed, onMounted, onUnmounted, ref, toRef, watch } from 'vue'
+import { computed, onUnmounted, ref, toRef, watch } from 'vue'
 import { useDevice } from '@/composables/useDevice'
 import { useInteraction } from '@/composables/useInteraction'
 import { useWallpaperType } from '@/composables/useWallpaperType'
@@ -244,27 +244,7 @@ function resetState() {
 }
 
 // 键盘导航
-function handleKeydown(e) {
-  if (!isVisible.value)
-    return
-
-  if (e.key === 'Escape') {
-    if (deviceMode.isDeviceMode.value) {
-      exitDeviceMode()
-    }
-    else {
-      handleClose()
-    }
-  }
-}
-
-onMounted(() => {
-  document.addEventListener('keydown', handleKeydown)
-})
-
 onUnmounted(() => {
-  document.removeEventListener('keydown', handleKeydown)
-
   // 只有当不使用独立弹窗组件时才清理滚动状态
   if (!useDesktopModal.value && !useAvatarDesktopModal.value && !useMobileModal.value && !useAvatarMobileModal.value) {
     document.body.classList.remove('modal-open')
@@ -345,7 +325,6 @@ onUnmounted(() => {
         v-if="isVisible && wallpaper"
         class="portrait-modal"
         :class="{ 'is-device-mode': deviceMode.isDeviceMode.value && isMobile }"
-        @click.self="handleClose"
       >
         <div
           ref="contentRef"

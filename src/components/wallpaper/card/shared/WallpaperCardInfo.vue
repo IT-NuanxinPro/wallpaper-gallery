@@ -54,6 +54,10 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  isVideoWallpaper: {
+    type: Boolean,
+    default: false,
+  },
   isAuthenticated: {
     type: Boolean,
     default: false,
@@ -126,7 +130,7 @@ defineProps({
         </p>
       </div>
 
-      <div v-if="aiKeywords.length > 0" class="card-ai-keywords">
+      <div v-if="aiKeywords.length > 0 && !isVideoWallpaper" class="card-ai-keywords">
         <span v-for="keyword in aiKeywords" :key="keyword" class="ai-keyword-tag">
           {{ keyword }}
         </span>
@@ -157,7 +161,7 @@ defineProps({
       </div>
       <div class="card-footer">
         <div class="card-meta-secondary">
-          <span class="meta-item meta-time">{{ relativeTime }}</span>
+          <span v-if="!isVideoWallpaper" class="meta-item meta-time">{{ relativeTime }}</span>
           <span class="meta-item meta-format">{{ fileFormat }}</span>
         </div>
       </div>

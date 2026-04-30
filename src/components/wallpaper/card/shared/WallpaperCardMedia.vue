@@ -44,6 +44,10 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  isVideoWallpaper: {
+    type: Boolean,
+    default: false,
+  },
   liked: {
     type: Boolean,
     default: false,
@@ -78,7 +82,7 @@ defineProps({
   },
 })
 
-const emit = defineEmits(['error', 'load', 'hoverEnter', 'hoverLeave'])
+const emit = defineEmits(['click', 'error', 'load', 'hoverEnter', 'hoverLeave'])
 </script>
 
 <template>
@@ -86,6 +90,7 @@ const emit = defineEmits(['error', 'load', 'hoverEnter', 'hoverLeave'])
     class="card-image"
     :class="`card-image--${viewMode}`"
     :style="style"
+    @click="emit('click')"
     @mouseenter="emit('hoverEnter')"
     @mouseleave="emit('hoverLeave')"
   >
@@ -149,7 +154,7 @@ const emit = defineEmits(['error', 'load', 'hoverEnter', 'hoverLeave'])
             <path d="M11 8v6M8 11h6" />
           </svg>
         </span>
-        <span class="overlay-text">查看大图</span>
+        <span class="overlay-text">{{ isVideoWallpaper ? '查看详情' : '查看大图' }}</span>
       </div>
     </div>
   </div>
@@ -160,6 +165,7 @@ const emit = defineEmits(['error', 'load', 'hoverEnter', 'hoverLeave'])
   position: relative;
   overflow: hidden;
   background: var(--color-bg-hover);
+  cursor: pointer;
 
   [data-theme='dark'] & {
     background:

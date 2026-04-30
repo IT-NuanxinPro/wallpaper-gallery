@@ -258,20 +258,11 @@ function resetState() {
   islandExpanded.value = false
 }
 
-function handleKeydown(e) {
-  if (!isVisible.value)
-    return
-  if (e.key === 'Escape')
-    handleClose()
-}
-
 onMounted(() => {
-  document.addEventListener('keydown', handleKeydown)
   // 注意：时钟定时器在 handleOpen 中启动，避免组件挂载但弹窗未打开时浪费资源
 })
 
 onUnmounted(() => {
-  document.removeEventListener('keydown', handleKeydown)
   if (timeTimer)
     clearInterval(timeTimer)
   if (islandTimer)
@@ -285,7 +276,6 @@ onUnmounted(() => {
       <div
         v-if="isVisible && wallpaper"
         class="desktop-modal"
-        @click.self="handleClose"
       >
         <div class="desktop-modal__content">
           <!-- 关闭按钮 -->

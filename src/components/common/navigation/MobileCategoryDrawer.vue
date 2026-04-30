@@ -64,6 +64,11 @@ const currentSubcategories = computed(() => {
   return category?.subcategories || []
 })
 
+const tempCategoryLabel = computed(() => {
+  const category = props.categoryOptions.find(opt => opt.value === tempCategory.value)
+  return category?.label || tempCategory.value
+})
+
 // 是否有二级分类
 const hasSubcategories = computed(() => currentSubcategories.value.length > 0)
 
@@ -142,7 +147,7 @@ function closeDrawer() {
           <div class="subcategory-panel">
             <template v-if="hasSubcategories">
               <div class="subcategory-header">
-                <span>{{ tempCategory }}</span>
+                <span>{{ tempCategoryLabel }}</span>
               </div>
               <div class="subcategory-grid">
                 <!-- 全部选项 -->

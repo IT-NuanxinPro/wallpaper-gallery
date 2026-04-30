@@ -536,6 +536,7 @@ onUnmounted(() => {
   justify-content: center;
   align-items: center;
   padding: $spacing-xl;
+
   &--dark {
     background: #f5f5f5;
   }

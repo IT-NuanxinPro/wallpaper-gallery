@@ -3,6 +3,7 @@ import { gsap } from 'gsap'
 import { computed, nextTick, onMounted, onUnmounted, ref, toRef, watch } from 'vue'
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import WallpaperCardActions from '@/components/wallpaper/card/shared/WallpaperCardActions.vue'
+import VideoWallpaperPlayer from '@/components/wallpaper/VideoWallpaperPlayer.vue'
 import { useDevice } from '@/composables/useDevice'
 import { useInteraction } from '@/composables/useInteraction'
 import { useWallpaperType } from '@/composables/useWallpaperType'
@@ -82,6 +83,8 @@ const contentRef = ref(null)
 const infoRef = ref(null)
 const imageLoaded = ref(false)
 const imageError = ref(false)
+const videoLoaded = ref(false)
+const videoError = ref(false)
 const downloading = ref(false)
 const actualDimensions = ref({ width: 0, height: 0 })
 
@@ -120,6 +123,8 @@ const collectCount = computed(() => {
     return 0
   return popularityStore.getCollectCount(props.wallpaper.filename)
 })
+
+const isVideoWallpaper = computed(() => props.wallpaper?.mediaType === 'video')
 
 // 是否有预览图（仅 desktop 系列）
 const hasPreview = computed(() => !!props.wallpaper?.previewUrl)
@@ -255,6 +260,8 @@ watch(() => props.wallpaper, () => {
   fallbackStage.value = 'none'
   imageLoaded.value = false
   imageError.value = false
+  videoLoaded.value = false
+  videoError.value = false
   actualDimensions.value = { width: 0, height: 0 }
   // 重置渐进式加载状态
   previewLoaded.value = false
@@ -428,15 +435,28 @@ async function handleDownload() {
   }
 }
 
+function handleVideoLoadedMetadata(event) {
+  videoLoaded.value = true
+  videoError.value = false
+
+  if (event?.target?.videoWidth > 0) {
+    actualDimensions.value = {
+      width: event.target.videoWidth,
+      height: event.target.videoHeight,
+    }
+  }
+}
+
+function handleVideoError() {
+  videoError.value = true
+}
+
 // Keyboard navigation
 function handleKeydown(e) {
   if (!props.isOpen)
     return
 
   switch (e.key) {
-    case 'Escape':
-      handleClose()
-      break
     case 'ArrowLeft':
       handlePrev()
       break
@@ -504,58 +524,77 @@ onUnmounted(() => {
         </button>
 
         <!-- Image Container -->
-        <div class="modal-image-container">
-          <!-- Loading -->
-          <div v-if="!imageLoaded" class="modal-loading">
-            <LoadingSpinner size="lg" />
-            <p v-if="loadingOriginal" class="loading-text">
-              正在加载原图...
-            </p>
-          </div>
+        <div class="modal-image-container" :class="{ 'modal-image-container--video': isVideoWallpaper }">
+          <template v-if="isVideoWallpaper">
+            <div v-if="videoError" class="modal-error">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <path d="M12 8v4M12 16h.01" />
+              </svg>
+              <p>视频加载失败</p>
+            </div>
+            <VideoWallpaperPlayer
+              v-else
+              :src="wallpaper.url"
+              :poster="wallpaper.thumbnailUrl || wallpaper.previewUrl"
+              @loadedmetadata="handleVideoLoadedMetadata"
+              @error="handleVideoError"
+            />
+          </template>
 
-          <!-- Error -->
-          <div v-else-if="imageError" class="modal-error">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="3" width="18" height="18" rx="2" />
-              <path d="M12 8v4M12 16h.01" />
-            </svg>
-            <p>图片加载失败</p>
-          </div>
+          <template v-else>
+            <!-- Loading -->
+            <div v-if="!imageLoaded" class="modal-loading">
+              <LoadingSpinner size="lg" />
+              <p v-if="loadingOriginal" class="loading-text">
+                正在加载原图...
+              </p>
+            </div>
 
-          <!-- Image -->
-          <img
-            v-show="imageLoaded && !imageError"
-            :src="displayUrl"
-            :alt="wallpaper.filename"
-            width="1920"
-            height="1080"
-            class="modal-image"
-            @load="handleImageLoad"
-            @error="handleImageError"
-          >
+            <!-- Error -->
+            <div v-else-if="imageError" class="modal-error">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <path d="M12 8v4M12 16h.01" />
+              </svg>
+              <p>图片加载失败</p>
+            </div>
 
-          <!-- 预览图标识 -->
-          <div v-if="hasPreview && imageLoaded && !imageError && !showOriginal" class="preview-badge">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-              <circle cx="12" cy="12" r="3" />
-            </svg>
-            <span>预览图</span>
-          </div>
+            <!-- Image -->
+            <img
+              v-show="imageLoaded && !imageError"
+              :src="displayUrl"
+              :alt="wallpaper.filename"
+              width="1920"
+              height="1080"
+              class="modal-image"
+              @load="handleImageLoad"
+              @error="handleImageError"
+            >
 
-          <!-- 原图标识 -->
-          <div v-if="hasPreview && imageLoaded && !imageError && showOriginal" class="original-badge">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 3l14 9-14 9V3z" />
-            </svg>
-            <span>原图</span>
-          </div>
+            <!-- 预览图标识 -->
+            <div v-if="hasPreview && imageLoaded && !imageError && !showOriginal" class="preview-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              <span>预览图</span>
+            </div>
+
+            <!-- 原图标识 -->
+            <div v-if="hasPreview && imageLoaded && !imageError && showOriginal" class="original-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 3l14 9-14 9V3z" />
+              </svg>
+              <span>原图</span>
+            </div>
+          </template>
         </div>
 
         <!-- Info Panel -->
         <div ref="infoRef" class="modal-info">
           <!-- 图片加载中显示骨架屏 -->
-          <template v-if="!imageLoaded || imageError">
+          <template v-if="(!isVideoWallpaper && (!imageLoaded || imageError)) || (isVideoWallpaper && videoError)">
             <div class="info-skeleton">
               <div class="skeleton-title" />
               <div class="skeleton-tags">
@@ -632,7 +671,7 @@ onUnmounted(() => {
             </div>
 
             <!-- 移动端：原图信息卡片（突出显示高清质量） -->
-            <div v-if="isMobile && originalResolution && !isBingWallpaper" class="mobile-original-card">
+            <div v-if="isMobile && originalResolution && !isBingWallpaper && !isVideoWallpaper" class="mobile-original-card">
               <div class="mobile-card-header">
                 <span class="mobile-card-label">原图信息</span>
                 <span class="mobile-resolution-tag" :class="[`tag--${originalResolution.type || 'success'}`]">
@@ -680,7 +719,7 @@ onUnmounted(() => {
                     <path d="M8 21h8M12 17v4" />
                   </svg>
                   <span>{{ displayDimensions.width }} × {{ displayDimensions.height }}</span>
-                  <span v-if="hasPreview && !showOriginal" class="detail-label">预览图</span>
+                  <span v-if="hasPreview && !showOriginal && !isVideoWallpaper" class="detail-label">预览图</span>
                 </div>
                 <!-- 上传日期 -->
                 <div class="detail-item">
@@ -697,7 +736,7 @@ onUnmounted(() => {
             </div>
 
             <!-- 原图信息卡片（仅水平布局且有预览图时显示，突出原图质量吸引下载） -->
-            <div v-if="useHorizontalLayout && hasPreview && originalResolution && !isBingWallpaper" class="original-info-card">
+            <div v-if="useHorizontalLayout && hasPreview && originalResolution && !isBingWallpaper && !isVideoWallpaper" class="original-info-card">
               <div class="original-info-header">
                 <span class="original-label">原图</span>
                 <span class="original-resolution-tag" :class="[`tag--${originalResolution.type || 'success'}`]">
@@ -762,7 +801,7 @@ onUnmounted(() => {
                 <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
                 </svg>
-                <span>{{ downloading ? '下载中...' : '下载原图' }}</span>
+                <span>{{ downloading ? '下载中...' : (isVideoWallpaper ? '下载视频' : '下载原图') }}</span>
               </button>
             </div>
           </template>
@@ -773,7 +812,7 @@ onUnmounted(() => {
 
   <!-- 裁剪弹窗 -->
   <ImageCropModal
-    v-if="wallpaper"
+    v-if="wallpaper && !isVideoWallpaper"
     :image-url="wallpaper.url"
     :filename="wallpaper.filename"
     :is-open="isCropModalOpen"
@@ -924,6 +963,14 @@ onUnmounted(() => {
   @include tablet-only {
     min-height: 400px;
     max-height: 65vh;
+  }
+}
+
+.modal-image-container--video {
+  padding: $spacing-xl;
+
+  @include mobile-only {
+    padding: $spacing-md;
   }
 }
 

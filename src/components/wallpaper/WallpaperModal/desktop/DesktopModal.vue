@@ -1,10 +1,10 @@
 <script setup>
 /**
  * PC端电脑壁纸弹窗 - 左右布局
- * 左侧：MacBook Pro 真机预览（带 macOS 菜单栏）
+ * 左侧：圆角大图预览
  * 右侧：壁纸信息和操作
  */
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import WallpaperCardActions from '@/components/wallpaper/card/shared/WallpaperCardActions.vue'
@@ -14,6 +14,7 @@ import { trackWallpaperDownload, trackWallpaperPreview } from '@/utils/common/an
 import { buildProxyImageUrl, buildRawImageUrl, buildWallpaperDownloadFilename, downloadFile, formatDate, formatFileSize, formatRelativeTime, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/common/format'
 import { recordDownload, recordView } from '@/utils/integrations/supabase'
 import { resolveWallpaperSeries } from '@/utils/wallpaper/identity'
+import DesktopImageStage from './DesktopImageStage.vue'
 
 const props = defineProps({
   wallpaper: {
@@ -56,7 +57,6 @@ const popularityStore = usePopularityStore()
 const isVisible = ref(false)
 const imageLoaded = ref(false)
 const fallbackStage = ref('none')
-const shellLoaded = ref(false)
 const downloading = ref(false)
 const imageDimensions = ref({ width: 0, height: 0 })
 
@@ -72,25 +72,6 @@ const viewCount = computed(() => {
     return 0
   return popularityStore.getViewCount(props.wallpaper.filename)
 })
-
-// 悬浮状态
-const isHovered = ref(false)
-
-// 当前时间
-const currentTime = ref('')
-let timeTimer = null
-
-function updateTime() {
-  const now = new Date()
-  const month = now.getMonth() + 1
-  const day = now.getDate()
-  const weekDays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
-  const weekDay = weekDays[now.getDay()]
-  const hours = String(now.getHours()).padStart(2, '0')
-  const minutes = String(now.getMinutes()).padStart(2, '0')
-  const seconds = String(now.getSeconds()).padStart(2, '0')
-  currentTime.value = `${month}月${day}日 ${weekDay} ${hours}:${minutes}:${seconds}`
-}
 
 // 计算属性 - 优先使用 AI 生成的 displayTitle
 const displayFilename = computed(() => {
@@ -193,21 +174,10 @@ function handleOpen() {
 
   // 滚动锁定由父组件处理，这里只需要显示弹窗
   isVisible.value = true
-
-  // 启动时钟更新（仅在弹窗打开时运行）
-  updateTime()
-  if (timeTimer)
-    clearInterval(timeTimer)
-  timeTimer = setInterval(updateTime, 1000)
 }
 
 function handleClose() {
   isVisible.value = false
-  // 清理定时器
-  if (timeTimer) {
-    clearInterval(timeTimer)
-    timeTimer = null
-  }
 }
 
 function onModalAfterLeave() {
@@ -251,10 +221,6 @@ function handleImageError() {
   }
 }
 
-function handleShellLoad() {
-  shellLoaded.value = true
-}
-
 function handleOpenCrop() {
   emit('openCrop')
 }
@@ -264,27 +230,6 @@ function resetState() {
   imageDimensions.value = { width: 0, height: 0 }
   // 统计数据现在是 computed，无需手动重置
 }
-
-function handleKeydown(e) {
-  if (!isVisible.value)
-    return
-  switch (e.key) {
-    case 'Escape':
-      handleClose()
-      break
-  }
-}
-
-onMounted(() => {
-  document.addEventListener('keydown', handleKeydown)
-  // 注意：时钟定时器在 handleOpen 中启动，避免组件挂载但弹窗未打开时浪费资源
-})
-
-onUnmounted(() => {
-  document.removeEventListener('keydown', handleKeydown)
-  if (timeTimer)
-    clearInterval(timeTimer)
-})
 </script>
 
 <template>
@@ -293,7 +238,6 @@ onUnmounted(() => {
       <div
         v-if="isVisible && wallpaper"
         class="desktop-modal"
-        @click.self="handleClose"
       >
         <div class="desktop-modal__content">
           <!-- 关闭按钮 -->
@@ -303,69 +247,18 @@ onUnmounted(() => {
             </svg>
           </button>
 
-          <!-- 左侧：MacBook Pro 真机预览 -->
+          <!-- 左侧：圆角大图预览 -->
           <div class="desktop-modal__preview">
-            <div
-              class="macbook-wrapper"
-              :class="{ 'is-hovered': isHovered }"
-              @mouseenter="isHovered = true"
-              @mouseleave="isHovered = false"
+            <DesktopImageStage
+              :image-loaded="imageLoaded"
+              :image-src="optimizedImageUrl"
+              @load="handleImageLoad"
+              @error="handleImageError"
             >
-              <!-- 屏幕区域 -->
-              <div class="screen-area">
-                <div v-if="!imageLoaded" class="loading-placeholder">
-                  <LoadingSpinner size="md" />
-                </div>
-                <img
-                  :src="optimizedImageUrl"
-                  alt="壁纸预览"
-                  class="wallpaper-img"
-                  :class="{ loaded: imageLoaded }"
-                  @load="handleImageLoad"
-                  @error="handleImageError"
-                >
-                <!-- macOS 菜单栏 -->
-                <div class="menu-bar">
-                  <div class="menu-left">
-                    <span class="apple-logo" />
-                    <span class="menu-item active">访达</span>
-                    <span class="menu-item">文件</span>
-                    <span class="menu-item">编辑</span>
-                    <span class="menu-item">显示</span>
-                    <span class="menu-item">前往</span>
-                    <span class="menu-item">窗口</span>
-                    <span class="menu-item">帮助</span>
-                  </div>
-                  <div class="menu-right">
-                    <!-- 蓝牙图标 -->
-                    <svg class="menu-icon" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z" />
-                    </svg>
-                    <!-- Wi-Fi 图标 -->
-                    <svg class="menu-icon" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z" />
-                    </svg>
-                    <!-- 投屏图标 -->
-                    <svg class="menu-icon" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM4 6h4v2H4zm0 3h4v2H4zm0 3h4v2H4z" />
-                    </svg>
-                    <!-- 控制中心图标 -->
-                    <svg class="menu-icon" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M7 11h2v2H7v-2zm14-5v14c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2h1V2h2v2h8V2h2v2h1c1.1 0 2 .9 2 2zM5 8h14V6H5v2zm14 12V10H5v10h14zm-4-7h2v-2h-2v2zm-4 0h2v-2h-2v2z" />
-                    </svg>
-                    <!-- 时间 -->
-                    <span class="time">{{ currentTime }}</span>
-                  </div>
-                </div>
-              </div>
-              <!-- MacBook 外壳 -->
-              <img
-                src="https://dynamicwallpaper.club/landing-vids/mb3.png"
-                alt="MacBook Pro"
-                class="macbook-shell"
-                @load="handleShellLoad"
-              >
-            </div>
+              <template #loading>
+                <LoadingSpinner size="md" />
+              </template>
+            </DesktopImageStage>
           </div>
 
           <!-- 右侧：信息面板 -->
@@ -581,143 +474,20 @@ onUnmounted(() => {
   }
 
   &__preview {
-    flex-shrink: 0;
+    flex: 0 1 860px;
+    min-width: 0;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
   &__info {
-    flex: 1;
+    flex: 0 1 380px;
+    min-width: 320px;
     display: flex;
     flex-direction: column;
     gap: 24px;
     max-width: 380px;
-  }
-}
-
-// MacBook 真机预览
-.macbook-wrapper {
-  position: relative;
-  width: 700px;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-
-  &.is-hovered {
-    transform: scale(1.02) rotateY(-2deg) rotateX(1deg);
-
-    .macbook-shell {
-      filter: drop-shadow(0 35px 70px rgba(0, 0, 0, 0.6));
-    }
-  }
-}
-
-.macbook-shell {
-  display: block;
-  width: 100%;
-  height: auto;
-  position: relative;
-  z-index: 1;
-  pointer-events: none;
-  filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.5));
-  transition: filter 0.4s ease;
-}
-
-.screen-area {
-  position: absolute;
-  top: 3.1%;
-  left: 10.9%;
-  width: 78%;
-  height: 85.5%;
-  z-index: 10;
-  overflow: hidden;
-  border-radius: 3px;
-  background: #000;
-
-  .loading-placeholder {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  }
-}
-
-.wallpaper-img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-
-  &.loaded {
-    opacity: 1;
-  }
-}
-
-// macOS 菜单栏
-.menu-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3.8%;
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 1.2%;
-  font-size: 8px;
-  color: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  z-index: 20;
-  // 文字阴影确保在任何背景下都可读
-  text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.3);
-}
-
-.menu-left {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-
-  .apple-logo::before {
-    content: '\f8ff';
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 11px;
-  }
-
-  .menu-item {
-    opacity: 0.85;
-    font-weight: 400;
-
-    &.active {
-      font-weight: 600;
-    }
-  }
-}
-
-.menu-right {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  font-size: 9px;
-
-  .menu-icon {
-    width: 12px;
-    height: 12px;
-    opacity: 0.9;
-  }
-
-  .time {
-    font-weight: 500;
-    margin-left: 4px;
-    font-variant-numeric: tabular-nums;
   }
 }
 
@@ -1095,10 +865,6 @@ onUnmounted(() => {
       padding: 35px 40px;
     }
   }
-
-  .macbook-wrapper {
-    width: 580px;
-  }
 }
 
 @media (max-width: 1200px) {
@@ -1110,13 +876,10 @@ onUnmounted(() => {
   }
 
   .desktop-modal__info {
+    flex: 1 1 auto;
+    min-width: 0;
     max-width: 100%;
     width: 100%;
-  }
-
-  .macbook-wrapper {
-    width: 100%;
-    max-width: 600px;
   }
 }
 </style>

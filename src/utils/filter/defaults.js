@@ -5,7 +5,15 @@ export function getCurrentYearMonth(date = new Date()) {
 }
 
 export function getDefaultCategoryFilter(series, date = new Date()) {
-  return series === 'bing' ? getCurrentYearMonth(date) : 'all'
+  if (series === 'bing') {
+    return getCurrentYearMonth(date)
+  }
+
+  if (series === 'video') {
+    return 'desktop'
+  }
+
+  return 'all'
 }
 
 export function hasActiveSeriesFilters({
@@ -25,6 +33,10 @@ export function hasActiveSeriesFilters({
 
   if (sortBy !== defaultSort) {
     return true
+  }
+
+  if (currentSeries === 'video') {
+    return false
   }
 
   return categoryFilter !== getDefaultCategoryFilter(currentSeries, date)

@@ -136,6 +136,14 @@ export const usePopularityStore = defineStore('popularity', () => {
    * @param {boolean} forceRefresh - 是否强制刷新
    */
   async function fetchPopularityData(series, forceRefresh = false) {
+    if (series === 'video') {
+      statsMap.value = new Map()
+      likeCollectOverrides.value = new Map()
+      currentSeries.value = series
+      loading.value = false
+      return
+    }
+
     // 如果已加载且不强制刷新，直接返回
     if (!forceRefresh && currentSeries.value === series && hasData.value) {
       return

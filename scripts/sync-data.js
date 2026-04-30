@@ -33,6 +33,7 @@ const CONFIG = {
     desktop: { name: '电脑壁纸', isBing: false },
     mobile: { name: '手机壁纸', isBing: false },
     avatar: { name: '头像', isBing: false },
+    video: { name: '动态壁纸', isBing: false },
     bing: { name: '每日Bing', isBing: true },
   },
 }

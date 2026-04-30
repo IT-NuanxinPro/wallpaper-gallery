@@ -1,7 +1,7 @@
 <div align="center">
   <img src="https://wallpaper.061129.xyz/favicon.svg" width="120" height="120" alt="Wallpaper Gallery Logo" />
   <h1>Wallpaper Gallery</h1>
-  <p>一个专注精选 4K 高清壁纸质感与浏览体验的壁纸项目，覆盖电脑、手机、头像与每日 Bing 壁纸场景</p>
+  <p>一个专注精选 4K 高清壁纸质感与浏览体验的壁纸项目，覆盖电脑、手机、头像、动态壁纸与每日 Bing 壁纸场景</p>
 
   <p>
     <a href="https://wallpaper.061129.xyz"><img src="https://img.shields.io/badge/Deployed_with-Cloudflare_Pages-f38020?style=flat-square&logo=cloudflare&logoColor=white" alt="Cloudflare Pages"></a>
@@ -30,7 +30,7 @@
 ### 🎨 核心功能
 
 - **高清壁纸展示** - 支持 16K/8K/5K/4K 及更高分辨率壁纸
-- **四大系列** - 电脑壁纸、手机壁纸、头像、每日 Bing 壁纸
+- **五大系列** - 电脑壁纸、手机壁纸、头像、动态壁纸、每日 Bing 壁纸
 - **部署友好** - 默认可直接 fork、同步线上数据并部署，无需先搭建图床
 - **账号体系与个人中心** - 支持登录、注册、认证回调、账号资料查看与安全设置
   - 支持 `GitHub`、`Google`、`Linux.do` OAuth 登录
@@ -51,6 +51,12 @@
 - **每日 Bing 壁纸** - 从 2019年6月至今约 2400+ 张必应精选壁纸
   - 按年度分片加载，性能优异
   - 直连 Bing CDN，无需额外存储
+- **动态壁纸专区** - 提供视频壁纸独立路由与详情弹窗
+  - 支持视频元数据展示、循环播放与下载
+  - 视频资源优先走 `img.061129.xyz`，避免大文件依赖 GitHub CDN
+  - 电脑动态壁纸、手机动态壁纸、朋友圈封面三类内容统一归档到 `video` 系列
+  - 通过 `category=desktop / mobile / social-cover` 区分具体子系列
+  - 三类动态壁纸统一复用现有筛选、路由与用户交互体系
 - **智能裁剪与真机预览** - 电脑壁纸支持智能裁剪；手机壁纸与头像支持真机显示模式
   - 自动适配屏幕分辨率，提供多种比例预设与自定义尺寸
   - 支持实时预览、沉浸式全屏预览与高质量导出
@@ -70,7 +76,7 @@
 - **动态分类** - 自动从壁纸数据中提取分类，按数量排序
 - **格式筛选** - 按 JPG/PNG 格式筛选
 - **分辨率筛选** - 仅电脑壁纸系列支持，按 16K/8K/5K+/4K+/4K/2K/超清/高清/标清精确筛选
-- **一键下载** - 直接下载原图
+- **一键下载** - 图片下载原图，视频下载原始视频文件
 - **喜欢 / 收藏交互** - 登录后支持即时标记与跨页面状态同步
   - 首页卡片提供始终可见的状态角标
   - 首页筛选栏内显示 `已喜欢` / `已收藏` 汇总
@@ -214,9 +220,10 @@ pnpm test             # 运行测试
 
 ### 数据来源
 
-所有壁纸数据统一从线上 CDN 拉取：
+所有壁纸数据统一从线上 CDN / 图床仓库导出结果拉取：
 - **CDN 地址**：`https://wallpaper.061129.xyz/data`
-- **数据系列**：desktop（电脑壁纸）、mobile（手机壁纸）、avatar（头像）、bing（每日 Bing）
+- **数据系列**：desktop（电脑壁纸）、mobile（手机壁纸）、avatar（头像）、video（动态壁纸）、bing（每日 Bing）
+- **动态壁纸子系列**：`video/desktop`（电脑动态壁纸）、`video/mobile`（手机动态壁纸）、`video/social-cover`（朋友圈封面）
 - **更新方式**：GitHub Actions 自动部署
 - **本地缓存**：数据会缓存在 `public/data` 目录，支持离线开发
 
@@ -248,8 +255,8 @@ Fork 本项目后，无需任何配置即可使用：
    pnpm dev
    ```
 
-5. **部署到 GitHub Pages**
-   - 项目已配置 GitHub Actions 自动部署
+5. **部署到 Cloudflare Pages**
+   - 项目已配置 GitHub Actions + Cloudflare Pages 自动部署
    - 推送到 `main` 分支会自动触发部署
    - 或在 Actions 页面手动触发部署
 
@@ -289,6 +296,15 @@ Fork 本项目后，无需任何配置即可使用：
    - 本地执行 `pnpm sync:assets` 时额外需要：
      - `SUPABASE_SERVICE_ROLE_KEY`
 
+5. **执行前确认数据源是最新的**
+   - `pnpm sync:assets` 会把当前 `public/data` 解析出的全部资产全量 `upsert` 到远端 `wallpaper_assets`
+   - 动态壁纸同步到远端时统一使用 `series='video'`，再通过 `category` 标记 `desktop / mobile / social-cover`
+   - 这不是“只补新增”的脚本，错误或过旧的本地 `public/data` 会覆盖远端元数据
+   - 推荐做法：
+     - 先执行 `pnpm sync` 或使用 CI 从最新 `nuanXinProPic/data` 拷贝数据
+     - 再执行 `pnpm sync:assets`
+   - 如果你只是想排查线上数据库状态，优先做只读查询，不要直接执行同步脚本
+
 **注意**：这些能力都是渐进增强，不配置也不影响网站基础浏览与下载。
 
 #### 其他可选配置
@@ -312,6 +328,10 @@ wallpaper-gallery/
 │       ├── desktop/          # 电脑壁纸分类数据
 │       ├── mobile/           # 手机壁纸分类数据
 │       ├── avatar/           # 头像分类数据
+│       ├── video/            # 动态壁纸分类数据
+│       │   ├── desktop.json  # 电脑动态壁纸
+│       │   ├── mobile.json   # 手机动态壁纸
+│       │   └── social-cover.json # 朋友圈封面
 │       ├── bing/             # 每日 Bing 壁纸数据
 │       └── stats/            # 热门统计数据
 ├── scripts/
@@ -461,19 +481,21 @@ wallpaper-gallery/
 - Bing 手动搜索时会自动取消当前月份限制；清空搜索后再恢复到当前月份。
 - 热门标签数据可通过 `pnpm export:hot-tags` 重新导出。
 
-## 📱 四大系列
+## 📱 五大系列
 
 | 系列 | 路由 | 设备可见性 | 宽高比 | 数据来源 |
 | --- | --- | --- | --- | --- |
 | 电脑壁纸 | `/desktop` | PC 端 | 16:10 | 自有图床 |
+| 动态壁纸 | `/video` | PC / 平板优先 | 16:9 / 9:16 | 图床导出 + R2 资源 |
 | 手机壁纸 | `/mobile` | 移动端 | 9:16 | 自有图床 |
 | 头像 | `/avatar` | 全设备 | 1:1 | 自有图床 |
 | 每日 Bing 壁纸 | `/bing` | PC / 平板优先 | 16:9 | Bing CDN |
 
-- PC 端显示：电脑壁纸 + Bing + 手机壁纸 + 头像
-- 平板端显示：电脑壁纸 + Bing + 手机壁纸 + 头像
+- PC 端显示：电脑壁纸 + 动态壁纸 + Bing + 手机壁纸 + 头像
+- 平板端显示：电脑壁纸 + 动态壁纸 + Bing + 手机壁纸 + 头像
 - 移动端默认显示：手机壁纸 + 头像
-- Bing 和电脑壁纸在移动端可通过直达路由访问，但界面会给出大屏浏览提示
+- Bing、动态壁纸和电脑壁纸在移动端可通过直达路由访问，但界面会给出大屏浏览提示
+- 动态壁纸系列下再细分为：电脑、手机、朋友圈封面三个子系列
 
 ## 🎯 性能优化
 

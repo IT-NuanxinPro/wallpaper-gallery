@@ -4,7 +4,7 @@
  * 左侧：iPhone 14 Pro 真机预览（头像居中展示）
  * 右侧：头像信息和操作（支持圆形/圆角方形切换）
  */
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import WallpaperCardActions from '@/components/wallpaper/card/shared/WallpaperCardActions.vue'
@@ -161,27 +161,12 @@ function resetState() {
   imageLoaded.value = false
   imageDimensions.value = { width: 0, height: 0 }
 }
-
-function handleKeydown(e) {
-  if (!isVisible.value)
-    return
-  if (e.key === 'Escape')
-    handleClose()
-}
-
-onMounted(() => {
-  document.addEventListener('keydown', handleKeydown)
-})
-
-onUnmounted(() => {
-  document.removeEventListener('keydown', handleKeydown)
-})
 </script>
 
 <template>
   <Teleport to="body">
     <Transition name="modal" @after-leave="onModalAfterLeave">
-      <div v-if="isVisible && wallpaper" class="avatar-desktop-modal" @click.self="handleClose">
+      <div v-if="isVisible && wallpaper" class="avatar-desktop-modal">
         <div class="avatar-desktop-modal__content">
           <!-- 关闭按钮 -->
           <button class="avatar-desktop-modal__close" aria-label="关闭" @click="handleClose">
