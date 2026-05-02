@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>壁纸库 · 管理后台</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --bg3: #1a1a24;
+    --border: #2a2a3a;
+    --accent: #6c63ff;
+    --accent2: #a78bfa;
+    --text: #e2e2f0;
+    --text2: #9090b0;
+    --text3: #5a5a7a;
+    --green: #34d399;
+    --red: #f87171;
+    --yellow: #fbbf24;
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+  }
+
+  /* ---- 侧边栏 ---- */
+  .sidebar {
+    width: 220px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    z-index: 100;
+  }
+
+  .sidebar-logo {
+    padding: 24px 20px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-logo h1 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent2);
+    letter-spacing: 0.05em;
+  }
+  .sidebar-logo p {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 3px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .nav {
+    padding: 12px 10px;
+    flex: 1;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 13.5px;
+    color: var(--text2);
+    transition: all 0.15s;
+    margin-bottom: 2px;
+  }
+  .nav-item:hover { background: var(--bg3); color: var(--text); }
+  .nav-item.active { background: rgba(108,99,255,0.15); color: var(--accent2); }
+  .nav-item .icon { font-size: 16px; width: 20px; text-align: center; }
+
+  .sidebar-bottom {
+    padding: 12px 10px;
+    border-top: 1px solid var(--border);
+  }
+  .logout-btn {
+    width: 100%;
+    padding: 8px 12px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--text3);
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.15s;
+  }
+  .logout-btn:hover { border-color: var(--red); color: var(--red); }
+
+  /* ---- 主内容 ---- */
+  .main {
+    margin-left: 220px;
+    flex: 1;
+    padding: 32px 36px;
+    max-width: calc(100vw - 220px);
+  }
+
+  .page-header {
+    margin-bottom: 28px;
+  }
+  .page-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .page-header p {
+    color: var(--text3);
+    font-size: 13px;
+    margin-top: 4px;
+  }
+
+  /* ---- 卡片 ---- */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text2);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title::before {
+    content: '';
+    width: 3px; height: 14px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  /* ---- 表单 ---- */
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .form-group label {
+    font-size: 12px;
+    color: var(--text2);
+    font-weight: 500;
+  }
+  .form-group .hint {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 2px;
+  }
+  input[type="text"], input[type="password"], input[type="number"], select {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--text);
+    padding: 9px 12px;
+    font-size: 13px;
+    font-family: inherit;
+    width: 100%;
+    transition: border-color 0.15s;
+  }
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  select option { background: var(--bg3); }
+
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .toggle-row:last-child { border-bottom: none; }
+  .toggle-label { font-size: 13.5px; }
+  .toggle-desc { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+  .toggle {
+    position: relative;
+    width: 40px; height: 22px;
+    flex-shrink: 0;
+  }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider {
+    position: absolute;
+    inset: 0;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .toggle-slider::before {
+    content: '';
+    position: absolute;
+    width: 16px; height: 16px;
+    left: 2px; top: 2px;
+    background: var(--text3);
+    border-radius: 50%;
+    transition: 0.2s;
+  }
+  .toggle input:checked + .toggle-slider { background: var(--accent); border-color: var(--accent); }
+  .toggle input:checked + .toggle-slider::before {
+    transform: translateX(18px);
+    background: white;
+  }
+
+  /* ---- 按钮 ---- */
+  .btn {
+    padding: 9px 20px;
+    border-radius: 7px;
+    font-size: 13.5px;
+    font-family: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: none;
+  }
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-primary:hover { background: #5b53ee; }
+  .btn-secondary { background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
+  .btn-secondary:hover { color: var(--text); border-color: var(--text3); }
+  .btn-danger { background: transparent; color: var(--red); border: 1px solid var(--red); }
+  .btn-danger:hover { background: var(--red); color: white; }
+
+  .btn-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    align-items: center;
+  }
+
+  /* ---- 状态标签 ---- */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .badge-green { background: rgba(52,211,153,0.1); color: var(--green); }
+  .badge-yellow { background: rgba(251,191,36,0.1); color: var(--yellow); }
+  .badge-red { background: rgba(248,113,113,0.1); color: var(--red); }
+
+  /* ---- 统计卡片 ---- */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .stat-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+  }
+  .stat-value {
+    font-size: 26px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent2);
+  }
+  .stat-label { font-size: 12px; color: var(--text3); margin-top: 4px; }
+
+  /* ---- API 测试面板 ---- */
+  .api-url-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .api-url-bar input {
+    flex: 1;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+  .api-result {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    color: var(--text2);
+    min-height: 80px;
+    max-height: 300px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+  .api-preview-img {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 7px;
+    margin-top: 10px;
+    display: none;
+  }
+
+  /* ---- 筛选标签多选 ---- */
+  .tag-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+  .tag-opt {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .tag-opt:hover { border-color: var(--accent); color: var(--text); }
+  .tag-opt.selected { background: rgba(108,99,255,0.15); border-color: var(--accent); color: var(--accent2); }
+
+  /* ---- 登录页 ---- */
+  #login-page {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+  }
+  .login-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 40px;
+    width: 360px;
+  }
+  .login-card h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .login-card p {
+    font-size: 13px;
+    color: var(--text3);
+    margin-bottom: 28px;
+  }
+  .login-card .form-group { margin-bottom: 14px; }
+  .login-card .btn { width: 100%; margin-top: 8px; padding: 11px; }
+  .login-error {
+    color: var(--red);
+    font-size: 12px;
+    margin-top: 8px;
+    display: none;
+  }
+
+  /* ---- 吐司提示 ---- */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    padding: 12px 20px;
+    border-radius: 9px;
+    font-size: 13.5px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.25s;
+    z-index: 9999;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+  .toast.success { background: rgba(52,211,153,0.15); color: var(--green); border: 1px solid rgba(52,211,153,0.3); }
+  .toast.error { background: rgba(248,113,113,0.15); color: var(--red); border: 1px solid rgba(248,113,113,0.3); }
+
+  /* 分页隐藏时 */
+  .page-section { display: none; }
+  .page-section.active { display: block; }
+</style>
+</head>
+<body>
+
+<!-- 登录页 -->
+<div id="login-page">
+  <div class="login-card">
+    <h2>管理后台</h2>
+    <p>壁纸库 · WallpaperGallery Admin</p>
+    <div class="form-group">
+      <label>用户名</label>
+      <input type="text" id="login-user" placeholder="admin" />
+    </div>
+    <div class="form-group">
+      <label>密码</label>
+      <input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" />
+    </div>
+    <div class="login-error" id="login-error">用户名或密码错误</div>
+    <button class="btn btn-primary" onclick="doLogin()">登录</button>
+  </div>
+</div>
+
+<!-- 侧边栏 -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <h1>🖼 壁纸库</h1>
+    <p>Admin Dashboard</p>
+  </div>
+  <nav class="nav">
+    <div class="nav-item active" onclick="showPage('overview')" id="nav-overview">
+      <span class="icon">📊</span> 概览
+    </div>
+    <div class="nav-item" onclick="showPage('api-config')" id="nav-api-config">
+      <span class="icon">⚙️</span> API 配置
+    </div>
+    <div class="nav-item" onclick="showPage('api-test')" id="nav-api-test">
+      <span class="icon">🧪</span> API 测试
+    </div>
+    <div class="nav-item" onclick="showPage('bot-config')" id="nav-bot-config">
+      <span class="icon">🤖</span> Bot 配置
+    </div>
+  </nav>
+  <div class="sidebar-bottom">
+    <button class="logout-btn" onclick="doLogout()">退出登录</button>
+  </div>
+</div>
+
+<!-- 主内容 -->
+<div class="main">
+
+  <!-- 概览 -->
+  <div class="page-section active" id="page-overview">
+    <div class="page-header">
+      <h2>数据概览</h2>
+      <p>壁纸库当前数据统计</p>
+    </div>
+    <div class="stats-grid" id="stats-grid">
+      <div class="stat-card"><div class="stat-value" id="stat-total">-</div><div class="stat-label">总图片数</div></div>
+      <div class="stat-card"><div class="stat-value" id="stat-h">-</div><div class="stat-label">横图</div></div>
+      <div class="stat-card"><div class="stat-value" id="stat-v">-</div><div class="stat-label">竖图</div></div>
+      <div class="stat-card"><div class="stat-value" id="stat-s">-</div><div class="stat-label">方图</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">风格分布</div>
+      <div id="style-dist" style="display:flex;flex-wrap:wrap;gap:10px;"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">颜色分布</div>
+      <div id="color-dist" style="display:flex;flex-wrap:wrap;gap:10px;"></div>
+    </div>
+  </div>
+
+  <!-- API 配置 -->
+  <div class="page-section" id="page-api-config">
+    <div class="page-header">
+      <h2>API 配置</h2>
+      <p>配置对外公开的图片 API 行为，修改后立即生效</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">随机图 API 设置</div>
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-label">启用随机图 API</div>
+          <div class="toggle-desc">关闭后 /api/random 返回 403</div>
+        </div>
+        <label class="toggle"><input type="checkbox" id="cfg-random-enabled" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-label">默认返回缩略图</div>
+          <div class="toggle-desc">type=img 时，默认压缩为 WebP 输出</div>
+        </div>
+        <label class="toggle"><input type="checkbox" id="cfg-default-thumb" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="form-grid" style="margin-top:16px">
+        <div class="form-group">
+          <label>缩略图默认宽度（px）</label>
+          <input type="number" id="cfg-thumb-width" value="1920" min="400" max="3840" />
+          <div class="hint">推荐：背景图 1920，展示图 800，头图 400</div>
+        </div>
+        <div class="form-group">
+          <label>默认方向筛选</label>
+          <select id="cfg-default-orientation">
+            <option value="">不限</option>
+            <option value="horizontal">横图</option>
+            <option value="vertical">竖图</option>
+            <option value="square">方图</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">默认风格筛选</div>
+      <p style="font-size:12px;color:var(--text3);margin-bottom:12px">选中的风格会被包含在随机图返回范围内（不选=全部）</p>
+      <div class="tag-group" id="style-tags"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">默认颜色筛选</div>
+      <p style="font-size:12px;color:var(--text3);margin-bottom:12px">选中的颜色会被包含在随机图返回范围内（不选=全部）</p>
+      <div class="tag-group" id="color-tags"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="saveConfig()">保存配置</button>
+      <button class="btn btn-secondary" onclick="loadConfig()">重置</button>
+    </div>
+  </div>
+
+  <!-- API 测试 -->
+  <div class="page-section" id="page-api-test">
+    <div class="page-header">
+      <h2>API 测试</h2>
+      <p>在线测试各接口，验证配置是否生效</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">快捷测试</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px">
+        <button class="btn btn-secondary" onclick="testApi('/api/random?type=url')">随机图(JSON)</button>
+        <button class="btn btn-secondary" onclick="testApi('/api/random?type=img','img')">随机图(直出)</button>
+        <button class="btn btn-secondary" onclick="testApi('/api/random?type=img&orientation=horizontal','img')">横图随机</button>
+        <button class="btn btn-secondary" onclick="testApi('/api/random?type=img&style=自然_风景','img')">自然风景</button>
+        <button class="btn btn-secondary" onclick="testApi('/api/random?type=img&color=暗色','img')">暗色系</button>
+        <button class="btn btn-secondary" onclick="testApi('/api/wallpapers?limit=5')">图片列表</button>
+      </div>
+      <div class="api-url-bar">
+        <input type="text" id="api-url-input" placeholder="输入 API 路径，如 /api/random?type=url" />
+        <button class="btn btn-primary" onclick="testApiCustom()">发送</button>
+      </div>
+      <div class="api-result" id="api-result">点击上方按钮测试 API...</div>
+      <img class="api-preview-img" id="api-preview" />
+    </div>
+
+    <div class="card">
+      <div class="card-title">API 文档</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text2);line-height:2">
+        <div><span style="color:var(--accent2)">GET</span> /api/wallpapers<span style="color:var(--text3)">?orientation=horizontal&style=自然_风景&color=偏蓝&page=1&limit=30</span></div>
+        <div><span style="color:var(--accent2)">GET</span> /api/random<span style="color:var(--text3)">?type=url|img&orientation=&style=&color=&thumb=true&w=1920</span></div>
+        <div><span style="color:var(--accent2)">GET</span> /api/file/&lt;key&gt;<span style="color:var(--text3)">?w=800&q=80</span></div>
+        <div style="margin-top:12px;color:var(--text3)">
+          orientation: horizontal | vertical | square<br>
+          style: 动漫_二次元 | 魅力_迷人 | 自然_风景 | 自制_艺术 | 游戏_玩具 | 安逸_自由 | 科幻_星云 | 程序_代码<br>
+          color: 偏蓝 | 灰_白 | 暗色 | 紫_粉 | 偏黄 | 偏绿 | 偏红 | 其他颜色
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bot 配置 -->
+  <div class="page-section" id="page-bot-config">
+    <div class="page-header">
+      <h2>Bot 配置</h2>
+      <p>配置 Telegram Bot Token 与频道映射（存储在环境变量中，此处仅查看状态）</p>
+    </div>
+    <div class="card">
+      <div class="card-title">环境变量说明</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text2);line-height:2.2">
+        <div>在 <span style="color:var(--accent2)">CF Pages → 设置 → 环境变量</span> 中配置以下变量：</div>
+        <div style="margin-top:10px">
+          <div><span style="color:var(--yellow)">WG_BOT_TOKENS</span> <span style="color:var(--text3)">= JSON格式，chatId 映射到 botToken</span></div>
+          <div style="color:var(--text3);margin-left:16px">{"−1003814998799":"YOUR_BOT_TOKEN_1","−1003777271568":"YOUR_BOT_TOKEN_2","−1003718954682":"YOUR_BOT_TOKEN_3"}</div>
+          <div style="margin-top:8px"><span style="color:var(--yellow)">ADMIN_USER</span> <span style="color:var(--text3)">= 管理员用户名</span></div>
+          <div style="margin-top:2px"><span style="color:var(--yellow)">ADMIN_PASS</span> <span style="color:var(--text3)">= 管理员密码</span></div>
+          <div style="margin-top:2px"><span style="color:var(--yellow)">ADMIN_SECRET</span> <span style="color:var(--text3)">= JWT 签名密钥（32位随机字符串）</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">频道状态检测</div>
+      <button class="btn btn-secondary" onclick="checkBots()" style="margin-bottom:14px">检测频道连通性</button>
+      <div id="bot-status"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 吐司 -->
+<div class="toast" id="toast"></div>
+
+<script>
+// =========== 数据 ===========
+const STYLES = ['动漫_二次元','魅力_迷人','自然_风景','自制_艺术','游戏_玩具','安逸_自由','科幻_星云','程序_代码']
+const COLORS = ['偏蓝','灰_白','暗色','紫_粉','偏黄','偏绿','偏红','其他颜色']
+
+let currentConfig = {}
+
+// =========== 登录 ===========
+async function doLogin() {
+  const user = document.getElementById('login-user').value
+  const pass = document.getElementById('login-pass').value
+  const err = document.getElementById('login-error')
+  err.style.display = 'none'
+
+  try {
+    const resp = await fetch('/api/admin/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: user, password: pass }),
+      credentials: 'include'
+    })
+    const data = await resp.json()
+    if (data.success) {
+      document.getElementById('login-page').style.display = 'none'
+      init()
+    } else {
+      err.style.display = 'block'
+    }
+  } catch (e) {
+    err.textContent = '请求失败：' + e.message
+    err.style.display = 'block'
+  }
+}
+
+async function doLogout() {
+  await fetch('/api/admin/auth?action=logout', { credentials: 'include' })
+  location.reload()
+}
+
+// =========== 初始化 ===========
+async function init() {
+  // 验证会话
+  try {
+    const r = await fetch('/api/admin/verify', { credentials: 'include' })
+    const d = await r.json()
+    if (!d.valid) { document.getElementById('login-page').style.display = 'flex'; return }
+    document.getElementById('login-page').style.display = 'none'
+  } catch {}
+
+  loadOverview()
+  loadConfig()
+  buildTagSelectors()
+}
+
+// =========== 概览 ===========
+async function loadOverview() {
+  try {
+    const resp = await fetch('/api/wallpapers?limit=1')
+    const data = await resp.json()
+    document.getElementById('stat-total').textContent = data.total?.toLocaleString() || '-'
+
+    const [rH, rV, rS] = await Promise.all([
+      fetch('/api/wallpapers?orientation=horizontal&limit=1').then(r=>r.json()),
+      fetch('/api/wallpapers?orientation=vertical&limit=1').then(r=>r.json()),
+      fetch('/api/wallpapers?orientation=square&limit=1').then(r=>r.json()),
+    ])
+    document.getElementById('stat-h').textContent = rH.total?.toLocaleString() || '-'
+    document.getElementById('stat-v').textContent = rV.total?.toLocaleString() || '-'
+    document.getElementById('stat-s').textContent = rS.total?.toLocaleString() || '-'
+
+    // 风格分布
+    const styleDist = document.getElementById('style-dist')
+    styleDist.innerHTML = ''
+    for (const s of STYLES) {
+      const r = await fetch(`/api/wallpapers?style=${encodeURIComponent(s)}&limit=1`).then(r=>r.json())
+      const div = document.createElement('div')
+      div.style.cssText = 'display:flex;align-items:center;gap:8px;padding:6px 14px;background:var(--bg3);border-radius:20px;font-size:13px'
+      div.innerHTML = `<span style="color:var(--text2)">${s}</span><span style="color:var(--accent2);font-family:'JetBrains Mono',monospace;font-size:12px">${r.total}</span>`
+      styleDist.appendChild(div)
+    }
+  } catch(e) { console.error(e) }
+}
+
+// =========== API 配置 ===========
+async function loadConfig() {
+  try {
+    const resp = await fetch('/api/admin/config', { credentials: 'include' })
+    const data = await resp.json()
+    currentConfig = data
+
+    document.getElementById('cfg-random-enabled').checked = data.randomApi?.enabled !== false
+    document.getElementById('cfg-default-thumb').checked = data.randomApi?.defaultThumb !== false
+    document.getElementById('cfg-thumb-width').value = data.randomApi?.defaultThumbWidth || 1920
+    document.getElementById('cfg-default-orientation').value = data.randomApi?.defaultOrientation || ''
+
+    // 标签选中状态
+    updateTagSelection('style-tags', STYLES, data.randomApi?.defaultStyles || [])
+    updateTagSelection('color-tags', COLORS, data.randomApi?.defaultColors || [])
+  } catch(e) { console.error(e) }
+}
+
+function buildTagSelectors() {
+  const styleEl = document.getElementById('style-tags')
+  const colorEl = document.getElementById('color-tags')
+  styleEl.innerHTML = STYLES.map(s => `<div class="tag-opt" onclick="toggleTag(this,'style-tags')" data-val="${s}">${s}</div>`).join('')
+  colorEl.innerHTML = COLORS.map(c => `<div class="tag-opt" onclick="toggleTag(this,'color-tags')" data-val="${c}">${c}</div>`).join('')
+}
+
+function updateTagSelection(containerId, allTags, selectedTags) {
+  const container = document.getElementById(containerId)
+  container.innerHTML = allTags.map(t => {
+    const sel = selectedTags.length === 0 || selectedTags.includes(t) ? 'selected' : ''
+    return `<div class="tag-opt ${sel}" onclick="toggleTag(this,'${containerId}')" data-val="${t}">${t}</div>`
+  }).join('')
+}
+
+function toggleTag(el) {
+  el.classList.toggle('selected')
+}
+
+async function saveConfig() {
+  const selectedStyles = [...document.querySelectorAll('#style-tags .tag-opt.selected')].map(el => el.dataset.val)
+  const selectedColors = [...document.querySelectorAll('#color-tags .tag-opt.selected')].map(el => el.dataset.val)
+
+  const config = {
+    randomApi: {
+      enabled: document.getElementById('cfg-random-enabled').checked,
+      defaultThumb: document.getElementById('cfg-default-thumb').checked,
+      defaultThumbWidth: parseInt(document.getElementById('cfg-thumb-width').value),
+      defaultOrientation: document.getElementById('cfg-default-orientation').value,
+      defaultStyles: selectedStyles.length === STYLES.length ? [] : selectedStyles,
+      defaultColors: selectedColors.length === COLORS.length ? [] : selectedColors
+    }
+  }
+
+  try {
+    const resp = await fetch('/api/admin/config', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(config),
+      credentials: 'include'
+    })
+    const data = await resp.json()
+    if (data.success) {
+      showToast('配置已保存', 'success')
+    } else {
+      showToast('保存失败：' + (data.error || ''), 'error')
+    }
+  } catch(e) {
+    showToast('请求失败：' + e.message, 'error')
+  }
+}
+
+// =========== API 测试 ===========
+async function testApi(path, mode='json') {
+  document.getElementById('api-url-input').value = path
+  await executeTest(path, mode)
+}
+
+async function testApiCustom() {
+  const path = document.getElementById('api-url-input').value.trim()
+  if (!path) return
+  const mode = path.includes('type=img') ? 'img' : 'json'
+  await executeTest(path, mode)
+}
+
+async function executeTest(path, mode) {
+  const resultEl = document.getElementById('api-result')
+  const previewEl = document.getElementById('api-preview')
+  resultEl.textContent = '请求中...'
+  previewEl.style.display = 'none'
+
+  try {
+    const start = Date.now()
+    const resp = await fetch(path)
+    const elapsed = Date.now() - start
+
+    if (mode === 'img') {
+      const blob = await resp.blob()
+      const objUrl = URL.createObjectURL(blob)
+      previewEl.src = objUrl
+      previewEl.style.display = 'block'
+      resultEl.textContent = `HTTP ${resp.status} · ${elapsed}ms · ${(blob.size/1024).toFixed(1)}KB · ${blob.type}`
+    } else {
+      const text = await resp.text()
+      let formatted
+      try { formatted = JSON.stringify(JSON.parse(text), null, 2) }
+      catch { formatted = text }
+      resultEl.textContent = `HTTP ${resp.status} · ${elapsed}ms\n\n${formatted}`
+    }
+  } catch(e) {
+    resultEl.textContent = '请求失败：' + e.message
+  }
+}
+
+// =========== Bot 检测 ===========
+async function checkBots() {
+  const el = document.getElementById('bot-status')
+  el.innerHTML = '<div style="color:var(--text3);font-size:13px">检测中...</div>'
+  try {
+    const resp = await fetch('/api/random?type=url')
+    const data = await resp.json()
+    el.innerHTML = resp.ok
+      ? `<div class="badge badge-green">✓ 随机图 API 正常</div><div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);margin-top:8px">${data.id || ''}</div>`
+      : `<div class="badge badge-red">✗ 异常：${data.error || resp.status}</div>`
+  } catch(e) {
+    el.innerHTML = `<div class="badge badge-red">✗ 请求失败：${e.message}</div>`
+  }
+}
+
+// =========== 工具 ===========
+function showPage(name) {
+  document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'))
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'))
+  document.getElementById('page-' + name).classList.add('active')
+  document.getElementById('nav-' + name).classList.add('active')
+}
+
+function showToast(msg, type='success') {
+  const el = document.getElementById('toast')
+  el.textContent = msg
+  el.className = `toast ${type} show`
+  setTimeout(() => { el.classList.remove('show') }, 2500)
+}
+
+// 初始检测会话
+window.onload = () => {
+  fetch('/api/admin/verify', { credentials: 'include' })
+    .then(r => r.json())
+    .then(d => {
+      if (d.valid) {
+        document.getElementById('login-page').style.display = 'none'
+        init()
+      }
+    })
+    .catch(() => {})
+}
+</script>
+</body>
+</html>
