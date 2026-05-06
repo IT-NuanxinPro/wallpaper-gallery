@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-05-05T18:54:17.866Z",
+  "generatedAt": "2026-05-06T19:10:40.156Z",
   "series": "video",
   "total": 25,
   "tags": [
     {
       "tag": "desktop",
-      "score": 150,
-      "views": 163,
-      "downloads": 7,
+      "score": 154,
+      "views": 165,
+      "downloads": 8,
       "wallpaperCount": 6,
       "series": [
         "video"
@@ -88,6 +88,26 @@
       ]
     },
     {
+      "tag": "风景",
+      "score": 39,
+      "views": 42,
+      "downloads": 2,
+      "wallpaperCount": 2,
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/desktop/风景/晴空云朵笑脸_屋顶阳光.png",
+          "cdnTag": "v1.1.30"
+        },
+        {
+          "thumbnail": "/thumbnail/video/desktop/风景/雨滴玻璃_紫色光影.png",
+          "cdnTag": "v1.1.30"
+        }
+      ]
+    },
+    {
       "tag": "IP形象",
       "score": 37,
       "views": 39,
@@ -140,29 +160,9 @@
       ]
     },
     {
-      "tag": "风景",
-      "score": 35,
-      "views": 40,
-      "downloads": 1,
-      "wallpaperCount": 2,
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/desktop/风景/晴空云朵笑脸_屋顶阳光.png",
-          "cdnTag": "v1.1.30"
-        },
-        {
-          "thumbnail": "/thumbnail/video/desktop/风景/雨滴玻璃_紫色光影.png",
-          "cdnTag": "v1.1.30"
-        }
-      ]
-    },
-    {
       "tag": "国庆专属动态背景视频",
-      "score": 32,
-      "views": 34,
+      "score": 33,
+      "views": 35,
       "downloads": 0,
       "wallpaperCount": 1,
       "series": [
@@ -177,8 +177,8 @@
     },
     {
       "tag": "节日",
-      "score": 32,
-      "views": 34,
+      "score": 33,
+      "views": 35,
       "downloads": 0,
       "wallpaperCount": 1,
       "series": [
@@ -193,8 +193,8 @@
     },
     {
       "tag": "朋友圈背景",
-      "score": 32,
-      "views": 34,
+      "score": 33,
+      "views": 35,
       "downloads": 0,
       "wallpaperCount": 1,
       "series": [
@@ -209,8 +209,8 @@
     },
     {
       "tag": "我在这里告白祖国",
-      "score": 32,
-      "views": 34,
+      "score": 33,
+      "views": 35,
       "downloads": 0,
       "wallpaperCount": 1,
       "series": [
@@ -225,8 +225,8 @@
     },
     {
       "tag": "social cover",
-      "score": 32,
-      "views": 34,
+      "score": 33,
+      "views": 35,
       "downloads": 0,
       "wallpaperCount": 1,
       "series": [
@@ -272,9 +272,41 @@
       ]
     },
     {
+      "tag": "晴空云朵笑脸",
+      "score": 22,
+      "views": 24,
+      "downloads": 1,
+      "wallpaperCount": 1,
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/desktop/风景/晴空云朵笑脸_屋顶阳光.png",
+          "cdnTag": "v1.1.30"
+        }
+      ]
+    },
+    {
+      "tag": "屋顶阳光",
+      "score": 22,
+      "views": 24,
+      "downloads": 1,
+      "wallpaperCount": 1,
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/desktop/风景/晴空云朵笑脸_屋顶阳光.png",
+          "cdnTag": "v1.1.30"
+        }
+      ]
+    },
+    {
       "tag": "柴犬",
-      "score": 18,
-      "views": 22,
+      "score": 19,
+      "views": 24,
       "downloads": 0,
       "wallpaperCount": 1,
       "series": [
@@ -289,8 +321,8 @@
     },
     {
       "tag": "萌宠",
-      "score": 18,
-      "views": 22,
+      "score": 19,
+      "views": 24,
       "downloads": 0,
       "wallpaperCount": 1,
       "series": [
@@ -299,30 +331,14 @@
       "topWallpapers": [
         {
           "thumbnail": "/thumbnail/video/mobile/萌宠/柴犬_贴脸卖萌.png",
-          "cdnTag": "v1.1.30"
-        }
-      ]
-    },
-    {
-      "tag": "晴空云朵笑脸",
-      "score": 18,
-      "views": 22,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/desktop/风景/晴空云朵笑脸_屋顶阳光.png",
           "cdnTag": "v1.1.30"
         }
       ]
     },
     {
       "tag": "贴脸卖萌",
-      "score": 18,
-      "views": 22,
+      "score": 19,
+      "views": 24,
       "downloads": 0,
       "wallpaperCount": 1,
       "series": [
@@ -336,25 +352,9 @@
       ]
     },
     {
-      "tag": "屋顶阳光",
-      "score": 18,
-      "views": 22,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/desktop/风景/晴空云朵笑脸_屋顶阳光.png",
-          "cdnTag": "v1.1.30"
-        }
-      ]
-    },
-    {
       "tag": "mobile",
-      "score": 18,
-      "views": 22,
+      "score": 19,
+      "views": 24,
       "downloads": 0,
       "wallpaperCount": 1,
       "series": [
