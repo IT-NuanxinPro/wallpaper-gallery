@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-05-06T19:10:40.168Z",
+  "generatedAt": "2026-05-07T19:15:39.570Z",
   "series": "bing",
-  "total": 281,
+  "total": 280,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 294,
+      "score": 293,
       "views": 373,
       "downloads": 100,
       "wallpaperCount": 31,
@@ -56,7 +56,7 @@
     },
     {
       "tag": "2026 02",
-      "score": 73,
+      "score": 72,
       "views": 70,
       "downloads": 23,
       "wallpaperCount": 17,
@@ -64,8 +64,8 @@
         "bing"
       ],
       "topWallpapers": [
-        "bing-2026-02-06.jpg",
         "bing-2026-02-01.jpg",
+        "bing-2026-02-06.jpg",
         "bing-2026-02-25.jpg",
         "bing-2026-02-26.jpg",
         "bing-2026-02-20.jpg"
@@ -538,19 +538,6 @@
       ]
     },
     {
-      "tag": "拉古塞拉——奥运赛季的巅峰",
-      "score": 8,
-      "views": 6,
-      "downloads": 3,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-02-06.jpg"
-      ]
-    },
-    {
       "tag": "聚光灯下的番红花",
       "score": 8,
       "views": 5,
@@ -574,6 +561,19 @@
       ],
       "topWallpapers": [
         "bing-2026-01-08.jpg"
+      ]
+    },
+    {
+      "tag": "水獭之国爱沙尼亚",
+      "score": 8,
+      "views": 12,
+      "downloads": 2,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-12.jpg"
       ]
     }
   ]
