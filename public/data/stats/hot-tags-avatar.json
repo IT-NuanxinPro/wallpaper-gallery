@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-05-07T19:15:39.552Z",
+  "generatedAt": "2026-05-08T18:53:05.729Z",
   "series": "avatar",
   "total": 470,
   "tags": [
     {
       "tag": "人像",
-      "score": 561,
+      "score": 557,
       "views": 433,
       "downloads": 223,
       "wallpaperCount": 150,
@@ -69,7 +69,7 @@
     },
     {
       "tag": "氛围感",
-      "score": 263,
+      "score": 260,
       "views": 222,
       "downloads": 117,
       "wallpaperCount": 61,
@@ -101,7 +101,7 @@
     },
     {
       "tag": "萌宠",
-      "score": 187,
+      "score": 184,
       "views": 159,
       "downloads": 88,
       "wallpaperCount": 33,
@@ -165,7 +165,7 @@
     },
     {
       "tag": "猫咪",
-      "score": 151,
+      "score": 149,
       "views": 130,
       "downloads": 72,
       "wallpaperCount": 19,
@@ -261,7 +261,7 @@
     },
     {
       "tag": "背影",
-      "score": 96,
+      "score": 94,
       "views": 67,
       "downloads": 32,
       "wallpaperCount": 28,
@@ -282,12 +282,12 @@
           "cdnTag": "v1.2.34"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/背影/image_氛围感男头话题_热门头像话题_男..._3.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/人像/背影/image_向往自由的女生头像话题_氛围感头..._0.webp",
           "cdnTag": "v1.2.34"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/背影/646.webp",
+          "cdnTag": "v1.1.96"
         }
       ]
     },
@@ -453,7 +453,7 @@
     },
     {
       "tag": "戴耳机",
-      "score": 68,
+      "score": 67,
       "views": 55,
       "downloads": 35,
       "wallpaperCount": 1,
@@ -501,7 +501,7 @@
     },
     {
       "tag": "搞怪",
-      "score": 66,
+      "score": 65,
       "views": 77,
       "downloads": 22,
       "wallpaperCount": 31,
@@ -533,7 +533,7 @@
     },
     {
       "tag": "表情包",
-      "score": 61,
+      "score": 60,
       "views": 73,
       "downloads": 20,
       "wallpaperCount": 29,
@@ -693,7 +693,7 @@
     },
     {
       "tag": "少年",
-      "score": 44,
+      "score": 43,
       "views": 25,
       "downloads": 15,
       "wallpaperCount": 9,
@@ -714,12 +714,12 @@
           "cdnTag": "v1.2.33"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/背影/image_氛围感男头话题_热门头像话题_男..._3.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/人像/背影/646.webp",
           "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/背影/image_氛围感男头话题_热门头像话题_男..._3.webp",
+          "cdnTag": "v1.2.33"
         }
       ]
     },
@@ -821,7 +821,7 @@
     },
     {
       "tag": "狗狗",
-      "score": 34,
+      "score": 33,
       "views": 28,
       "downloads": 15,
       "wallpaperCount": 13,
@@ -834,12 +834,12 @@
           "cdnTag": "v1.1.53"
         },
         {
-          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/image_氛围感男头话题_热门头像话题_男..._6.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/萌宠/狗狗/655.webp",
           "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/image_氛围感男头话题_热门头像话题_男..._6.webp",
+          "cdnTag": "v1.2.33"
         },
         {
           "thumbnail": "/thumbnail/avatar/萌宠/狗狗/柯基_墨镜酷狗.webp",
@@ -900,38 +900,6 @@
       ]
     },
     {
-      "tag": "户外",
-      "score": 29,
-      "views": 20,
-      "downloads": 9,
-      "wallpaperCount": 10,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/image_氛围感男头话题_热门头像话题_男..._6.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/644.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/image_向往自由的女生头像话题_散落人间..._1.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/image_蜡笔小新话题_流浪春天话题_情头..._1.webp",
-          "cdnTag": "v1.1.85"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/背影/image_向往自由的女生头像话题_氛围感头..._4.webp",
-          "cdnTag": "v1.2.34"
-        }
-      ]
-    },
-    {
       "tag": "海贼王",
       "score": 28,
       "views": 27,
@@ -960,6 +928,38 @@
         {
           "thumbnail": "/thumbnail/avatar/动漫/海贼王/路飞_草帽剑士.webp",
           "cdnTag": "v1.1.24"
+        }
+      ]
+    },
+    {
+      "tag": "户外",
+      "score": 28,
+      "views": 20,
+      "downloads": 9,
+      "wallpaperCount": 10,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/644.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/image_氛围感男头话题_热门头像话题_男..._6.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/image_向往自由的女生头像话题_散落人间..._1.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/image_蜡笔小新话题_流浪春天话题_情头..._1.webp",
+          "cdnTag": "v1.1.85"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/背影/image_向往自由的女生头像话题_氛围感头..._4.webp",
+          "cdnTag": "v1.2.34"
         }
       ]
     },

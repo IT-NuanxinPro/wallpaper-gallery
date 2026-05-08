@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-05-07T19:15:39.570Z",
+  "generatedAt": "2026-05-08T18:53:05.746Z",
   "series": "bing",
   "total": 280,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 293,
+      "score": 291,
       "views": 373,
       "downloads": 100,
       "wallpaperCount": 31,
@@ -56,7 +56,7 @@
     },
     {
       "tag": "2026 02",
-      "score": 72,
+      "score": 71,
       "views": 70,
       "downloads": 23,
       "wallpaperCount": 17,
@@ -164,7 +164,7 @@
     },
     {
       "tag": "小村庄，大视野",
-      "score": 20,
+      "score": 19,
       "views": 23,
       "downloads": 7,
       "wallpaperCount": 1,
@@ -525,19 +525,6 @@
       ]
     },
     {
-      "tag": "帕拉米蒂的历史之阶",
-      "score": 8,
-      "views": 8,
-      "downloads": 3,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-14.jpg"
-      ]
-    },
-    {
       "tag": "聚光灯下的番红花",
       "score": 8,
       "views": 5,
@@ -574,6 +561,19 @@
       ],
       "topWallpapers": [
         "bing-2026-01-12.jpg"
+      ]
+    },
+    {
+      "tag": "古老岩石，现代灯光",
+      "score": 8,
+      "views": 8,
+      "downloads": 2,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-05.jpg"
       ]
     }
   ]

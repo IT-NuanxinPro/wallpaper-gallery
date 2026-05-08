@@ -1,15 +1,15 @@
 {
-  "exportedAt": "2026-05-07 19:15:35",
+  "exportedAt": "2026-05-08 18:53:02",
   "series": {
     "desktop": {
       "count": 500,
-      "totalViews": 14646,
-      "totalDownloads": 5024
+      "totalViews": 14684,
+      "totalDownloads": 5042
     },
     "mobile": {
       "count": 500,
-      "totalViews": 9298,
-      "totalDownloads": 2797
+      "totalViews": 9330,
+      "totalDownloads": 2796
     },
     "avatar": {
       "count": 393,
@@ -23,8 +23,8 @@
     },
     "bing": {
       "count": 497,
-      "totalViews": 1407,
-      "totalDownloads": 759
+      "totalViews": 1411,
+      "totalDownloads": 758
     }
   }
 }
