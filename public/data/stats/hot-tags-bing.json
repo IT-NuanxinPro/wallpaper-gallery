@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-05-10T18:32:52.091Z",
+  "generatedAt": "2026-05-11T19:16:35.987Z",
   "series": "bing",
   "total": 279,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 291,
+      "score": 287,
       "views": 373,
       "downloads": 100,
       "wallpaperCount": 31,
@@ -13,11 +13,11 @@
         "bing"
       ],
       "topWallpapers": [
-        "bing-2026-01-04.jpg",
         "bing-2026-01-03.jpg",
+        "bing-2026-01-04.jpg",
         "bing-2026-01-15.jpg",
         "bing-2026-01-09.jpg",
-        "bing-2026-01-06.jpg"
+        "bing-2026-01-01.jpg"
       ]
     },
     {
@@ -120,7 +120,7 @@
     },
     {
       "tag": "王者视野",
-      "score": 27,
+      "score": 26,
       "views": 43,
       "downloads": 7,
       "wallpaperCount": 1,
@@ -189,19 +189,6 @@
       ]
     },
     {
-      "tag": "时光在此处茁壮成长",
-      "score": 17,
-      "views": 18,
-      "downloads": 7,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-09.jpg"
-      ]
-    },
-    {
       "tag": "城市花开",
       "score": 17,
       "views": 12,
@@ -249,16 +236,16 @@
       ]
     },
     {
-      "tag": "努克的慵懒时光",
+      "tag": "时光在此处茁壮成长",
       "score": 16,
-      "views": 22,
-      "downloads": 5,
+      "views": 18,
+      "downloads": 7,
       "wallpaperCount": 1,
       "series": [
         "bing"
       ],
       "topWallpapers": [
-        "bing-2026-01-06.jpg"
+        "bing-2026-01-09.jpg"
       ]
     },
     {
@@ -272,6 +259,19 @@
       ],
       "topWallpapers": [
         "bing-2026-01-10.jpg"
+      ]
+    },
+    {
+      "tag": "努克的慵懒时光",
+      "score": 15,
+      "views": 22,
+      "downloads": 5,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-06.jpg"
       ]
     },
     {
