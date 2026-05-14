@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-05-13T19:19:07.264Z",
+  "generatedAt": "2026-05-14T19:19:56.915Z",
   "series": "avatar",
   "total": 475,
   "tags": [
     {
       "tag": "人像",
-      "score": 552,
-      "views": 434,
+      "score": 550,
+      "views": 436,
       "downloads": 223,
       "wallpaperCount": 150,
       "series": [
@@ -37,7 +37,7 @@
     },
     {
       "tag": "动漫",
-      "score": 299,
+      "score": 298,
       "views": 295,
       "downloads": 117,
       "wallpaperCount": 94,
@@ -46,11 +46,11 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/戴耳机麦当劳外卖.webp",
+          "thumbnail": "/thumbnail/avatar/动漫/哆啦A梦/办公电脑前皱眉.webp",
           "cdnTag": "v1.1.13"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/哆啦A梦/办公电脑前皱眉.webp",
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/戴耳机麦当劳外卖.webp",
           "cdnTag": "v1.1.13"
         },
         {
@@ -69,7 +69,7 @@
     },
     {
       "tag": "氛围感",
-      "score": 260,
+      "score": 258,
       "views": 223,
       "downloads": 117,
       "wallpaperCount": 61,
@@ -133,8 +133,8 @@
     },
     {
       "tag": "甜妹",
-      "score": 168,
-      "views": 105,
+      "score": 170,
+      "views": 107,
       "downloads": 62,
       "wallpaperCount": 52,
       "series": [
@@ -229,7 +229,7 @@
     },
     {
       "tag": "IP形象",
-      "score": 134,
+      "score": 133,
       "views": 146,
       "downloads": 52,
       "wallpaperCount": 43,
@@ -357,8 +357,8 @@
     },
     {
       "tag": "少女",
-      "score": 76,
-      "views": 46,
+      "score": 77,
+      "views": 47,
       "downloads": 27,
       "wallpaperCount": 23,
       "series": [
@@ -389,7 +389,7 @@
     },
     {
       "tag": "蜡笔小新",
-      "score": 75,
+      "score": 74,
       "views": 74,
       "downloads": 32,
       "wallpaperCount": 18,
@@ -757,7 +757,7 @@
     },
     {
       "tag": "卡通简笔画",
-      "score": 38,
+      "score": 36,
       "views": 44,
       "downloads": 13,
       "wallpaperCount": 11,
@@ -1021,7 +1021,7 @@
     },
     {
       "tag": "柔光金发女生",
-      "score": 26,
+      "score": 25,
       "views": 29,
       "downloads": 11,
       "wallpaperCount": 1,
@@ -1032,6 +1032,38 @@
         {
           "thumbnail": "/thumbnail/avatar/人像/氛围感/柔光金发女生.webp",
           "cdnTag": "v1.1.11"
+        }
+      ]
+    },
+    {
+      "tag": "自拍",
+      "score": 25,
+      "views": 17,
+      "downloads": 9,
+      "wallpaperCount": 7,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/655.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_20260119095918_477_4.webp",
+          "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/640 (1).webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152705_750.webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-02-05_111907_016.webp",
+          "cdnTag": "v1.1.74"
         }
       ]
     },
@@ -1073,7 +1105,7 @@
     },
     {
       "tag": "戴耳机麦当劳外卖",
-      "score": 24,
+      "score": 23,
       "views": 33,
       "downloads": 9,
       "wallpaperCount": 1,
@@ -1084,38 +1116,6 @@
         {
           "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/戴耳机麦当劳外卖.webp",
           "cdnTag": "v1.1.13"
-        }
-      ]
-    },
-    {
-      "tag": "自拍",
-      "score": 24,
-      "views": 16,
-      "downloads": 9,
-      "wallpaperCount": 7,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/655.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_20260119095918_477_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/640 (1).webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-02-05_111907_016.webp",
-          "cdnTag": "v1.1.74"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152618_896.webp",
-          "cdnTag": "v1.2.57"
         }
       ]
     },
@@ -1152,34 +1152,18 @@
       ]
     },
     {
-      "tag": "小八",
+      "tag": "蜜蜂",
       "score": 22,
-      "views": 24,
-      "downloads": 10,
-      "wallpaperCount": 13,
+      "views": 20,
+      "downloads": 6,
+      "wallpaperCount": 1,
       "series": [
         "avatar"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/IP形象/小八/举小丑面具.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/通用/微信图片_2026-01-23_165124_953.webp",
-          "cdnTag": "v1.1.53"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/通用/微信图片_2026-01-23_165048_375.webp",
-          "cdnTag": "v1.1.53"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/小八/抱鱼乖巧.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/小八/揣手站定.webp",
-          "cdnTag": "v1.1.4"
+          "thumbnail": "/thumbnail/avatar/IP形象/通用/微信图片_20260310202255_660_4.webp",
+          "cdnTag": "v1.2.8"
         }
       ]
     }
