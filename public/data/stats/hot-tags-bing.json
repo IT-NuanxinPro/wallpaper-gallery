@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-05-17T18:36:12.579Z",
+  "generatedAt": "2026-05-18T19:12:43.684Z",
   "series": "bing",
-  "total": 278,
+  "total": 274,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 281,
+      "score": 280,
       "views": 373,
       "downloads": 100,
       "wallpaperCount": 31,
@@ -538,19 +538,6 @@
       ]
     },
     {
-      "tag": "水獭之国爱沙尼亚",
-      "score": 8,
-      "views": 12,
-      "downloads": 2,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-12.jpg"
-      ]
-    },
-    {
       "tag": "古老岩石，现代灯光",
       "score": 8,
       "views": 8,
@@ -574,6 +561,19 @@
       ],
       "topWallpapers": [
         "bing-2026-03-17.jpg"
+      ]
+    },
+    {
+      "tag": "走进熊猫世界",
+      "score": 8,
+      "views": 10,
+      "downloads": 1,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-16.jpg"
       ]
     }
   ]
