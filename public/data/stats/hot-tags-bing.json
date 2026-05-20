@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-05-19T19:26:56.105Z",
+  "generatedAt": "2026-05-20T19:40:28.976Z",
   "series": "bing",
   "total": 274,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 278,
+      "score": 275,
       "views": 373,
       "downloads": 100,
       "wallpaperCount": 31,
@@ -13,11 +13,11 @@
         "bing"
       ],
       "topWallpapers": [
-        "bing-2026-01-04.jpg",
         "bing-2026-01-03.jpg",
+        "bing-2026-01-04.jpg",
         "bing-2026-01-15.jpg",
         "bing-2026-01-09.jpg",
-        "bing-2026-01-01.jpg"
+        "bing-2026-01-06.jpg"
       ]
     },
     {
@@ -39,7 +39,7 @@
     },
     {
       "tag": "2025 12",
-      "score": 94,
+      "score": 93,
       "views": 102,
       "downloads": 48,
       "wallpaperCount": 27,
@@ -119,19 +119,6 @@
       ]
     },
     {
-      "tag": "王者视野",
-      "score": 26,
-      "views": 43,
-      "downloads": 7,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-04.jpg"
-      ]
-    },
-    {
       "tag": "2025 07",
       "score": 25,
       "views": 27,
@@ -146,6 +133,19 @@
         "bing-2025-07-15.jpg",
         "bing-2025-07-04.jpg",
         "bing-2025-07-06.jpg"
+      ]
+    },
+    {
+      "tag": "王者视野",
+      "score": 25,
+      "views": 43,
+      "downloads": 7,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-04.jpg"
       ]
     },
     {
@@ -232,23 +232,6 @@
       ]
     },
     {
-      "tag": "2025 10",
-      "score": 15,
-      "views": 19,
-      "downloads": 12,
-      "wallpaperCount": 9,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2025-10-30.jpg",
-        "bing-2025-10-02.jpg",
-        "bing-2025-10-04.jpg",
-        "bing-2025-10-19.jpg",
-        "bing-2025-10-22.jpg"
-      ]
-    },
-    {
       "tag": "努克的慵懒时光",
       "score": 15,
       "views": 22,
@@ -262,16 +245,20 @@
       ]
     },
     {
-      "tag": "伸个懒腰，迈向新年！",
-      "score": 15,
-      "views": 22,
-      "downloads": 5,
-      "wallpaperCount": 1,
+      "tag": "2025 10",
+      "score": 14,
+      "views": 19,
+      "downloads": 12,
+      "wallpaperCount": 9,
       "series": [
         "bing"
       ],
       "topWallpapers": [
-        "bing-2026-01-01.jpg"
+        "bing-2025-10-30.jpg",
+        "bing-2025-10-02.jpg",
+        "bing-2025-10-04.jpg",
+        "bing-2025-10-19.jpg",
+        "bing-2025-10-27.jpg"
       ]
     },
     {
@@ -285,6 +272,19 @@
       ],
       "topWallpapers": [
         "bing-2026-01-10.jpg"
+      ]
+    },
+    {
+      "tag": "伸个懒腰，迈向新年！",
+      "score": 14,
+      "views": 22,
+      "downloads": 5,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-01.jpg"
       ]
     },
     {
@@ -311,19 +311,6 @@
       ],
       "topWallpapers": [
         "bing-2026-03-14.jpg"
-      ]
-    },
-    {
-      "tag": "大自然的波普艺术",
-      "score": 12,
-      "views": 12,
-      "downloads": 5,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-19.jpg"
       ]
     },
     {
@@ -380,6 +367,19 @@
         "bing-2025-05-22.jpg",
         "bing-2025-05-27.jpg",
         "bing-2025-05-04.jpg"
+      ]
+    },
+    {
+      "tag": "大自然的波普艺术",
+      "score": 11,
+      "views": 12,
+      "downloads": 5,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-19.jpg"
       ]
     },
     {
