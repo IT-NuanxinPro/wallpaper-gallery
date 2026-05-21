@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-20T19:40:28.976Z",
+  "generatedAt": "2026-05-21T19:26:48.285Z",
   "series": "bing",
   "total": 274,
   "tags": [
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 205,
+      "score": 202,
       "views": 170,
       "downloads": 63,
       "wallpaperCount": 25,
@@ -525,19 +525,6 @@
       ]
     },
     {
-      "tag": "聚光灯下的番红花",
-      "score": 8,
-      "views": 5,
-      "downloads": 3,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-04.jpg"
-      ]
-    },
-    {
       "tag": "古老岩石，现代灯光",
       "score": 8,
       "views": 8,
@@ -564,16 +551,33 @@
       ]
     },
     {
-      "tag": "走进熊猫世界",
-      "score": 8,
+      "tag": "2025 09",
+      "score": 7,
       "views": 10,
-      "downloads": 1,
+      "downloads": 7,
+      "wallpaperCount": 5,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2025-09-25.jpg",
+        "bing-2025-09-28.jpg",
+        "bing-2025-09-02.jpg",
+        "bing-2025-09-14.jpg",
+        "bing-2025-09-16.jpg"
+      ]
+    },
+    {
+      "tag": "冰山上天然形成的拱门  南极洲",
+      "score": 7,
+      "views": 5,
+      "downloads": 5,
       "wallpaperCount": 1,
       "series": [
         "bing"
       ],
       "topWallpapers": [
-        "bing-2026-03-16.jpg"
+        "bing-2025-12-01.jpg"
       ]
     }
   ]
