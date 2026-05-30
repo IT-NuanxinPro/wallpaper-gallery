@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-05-29T19:54:03.174Z",
+  "generatedAt": "2026-05-30T18:41:09.239Z",
   "series": "bing",
-  "total": 271,
+  "total": 270,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 268,
+      "score": 267,
       "views": 373,
       "downloads": 100,
       "wallpaperCount": 31,
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 192,
+      "score": 191,
       "views": 170,
       "downloads": 63,
       "wallpaperCount": 25,
@@ -73,7 +73,7 @@
     },
     {
       "tag": "2025 11",
-      "score": 40,
+      "score": 39,
       "views": 43,
       "downloads": 23,
       "wallpaperCount": 16,
@@ -85,7 +85,7 @@
         "bing-2025-11-11.jpg",
         "bing-2025-11-23.jpg",
         "bing-2025-11-12.jpg",
-        "bing-2025-11-13.jpg"
+        "bing-2025-11-19.jpg"
       ]
     },
     {
@@ -271,19 +271,6 @@
       ]
     },
     {
-      "tag": "每一步，都是传承",
-      "score": 14,
-      "views": 12,
-      "downloads": 5,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-01.jpg"
-      ]
-    },
-    {
       "tag": "2025 10",
       "score": 13,
       "views": 19,
@@ -298,6 +285,19 @@
         "bing-2025-10-04.jpg",
         "bing-2025-10-19.jpg",
         "bing-2025-10-01.jpg"
+      ]
+    },
+    {
+      "tag": "每一步，都是传承",
+      "score": 13,
+      "views": 12,
+      "downloads": 5,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-01.jpg"
       ]
     },
     {
@@ -499,19 +499,6 @@
       ]
     },
     {
-      "tag": "瑞士山间的短逃离",
-      "score": 8,
-      "views": 6,
-      "downloads": 4,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-24.jpg"
-      ]
-    },
-    {
       "tag": "一个美好的春天",
       "score": 8,
       "views": 6,
@@ -552,6 +539,19 @@
       ],
       "topWallpapers": [
         "bing-2025-12-01.jpg"
+      ]
+    },
+    {
+      "tag": "瑞士山间的短逃离",
+      "score": 7,
+      "views": 6,
+      "downloads": 4,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-24.jpg"
       ]
     },
     {
