@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-05-31T18:46:34.971Z",
+  "generatedAt": "2026-06-01T21:07:29.530Z",
   "series": "bing",
   "total": 269,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 264,
-      "views": 373,
-      "downloads": 100,
+      "score": 267,
+      "views": 375,
+      "downloads": 102,
       "wallpaperCount": 31,
       "series": [
         "bing"
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 191,
+      "score": 189,
       "views": 170,
       "downloads": 63,
       "wallpaperCount": 25,
@@ -73,7 +73,7 @@
     },
     {
       "tag": "2025 11",
-      "score": 39,
+      "score": 38,
       "views": 43,
       "downloads": 23,
       "wallpaperCount": 16,
@@ -396,19 +396,6 @@
       ]
     },
     {
-      "tag": "春日绯梦",
-      "score": 11,
-      "views": 13,
-      "downloads": 2,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-20.jpg"
-      ]
-    },
-    {
       "tag": "2025 02",
       "score": 10,
       "views": 21,
@@ -436,6 +423,19 @@
       ],
       "topWallpapers": [
         "bing-2026-01-11.jpg"
+      ]
+    },
+    {
+      "tag": "春日绯梦",
+      "score": 10,
+      "views": 13,
+      "downloads": 2,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-20.jpg"
       ]
     },
     {
@@ -512,6 +512,19 @@
       ]
     },
     {
+      "tag": "苹果韵，旧时光",
+      "score": 8,
+      "views": 15,
+      "downloads": 2,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-13.jpg"
+      ]
+    },
+    {
       "tag": "2025 09",
       "score": 7,
       "views": 10,
@@ -565,19 +578,6 @@
       ],
       "topWallpapers": [
         "bing-2025-12-31.jpg"
-      ]
-    },
-    {
-      "tag": "帕拉米蒂的历史之阶",
-      "score": 7,
-      "views": 8,
-      "downloads": 3,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-14.jpg"
       ]
     }
   ]

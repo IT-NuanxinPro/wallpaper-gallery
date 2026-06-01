@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-05-31T18:46:34.957Z",
+  "generatedAt": "2026-06-01T21:07:29.515Z",
   "series": "video",
   "total": 25,
   "tags": [
     {
       "tag": "desktop",
-      "score": 273,
-      "views": 321,
-      "downloads": 31,
+      "score": 277,
+      "views": 326,
+      "downloads": 32,
       "wallpaperCount": 6,
       "series": [
         "video"
@@ -38,7 +38,7 @@
     {
       "tag": "动漫",
       "score": 108,
-      "views": 137,
+      "views": 138,
       "downloads": 9,
       "wallpaperCount": 2,
       "series": [
@@ -57,9 +57,9 @@
     },
     {
       "tag": "风景",
-      "score": 99,
-      "views": 99,
-      "downloads": 17,
+      "score": 103,
+      "views": 103,
+      "downloads": 18,
       "wallpaperCount": 2,
       "series": [
         "video"
@@ -96,9 +96,41 @@
       ]
     },
     {
+      "tag": "晴空云朵笑脸",
+      "score": 58,
+      "views": 55,
+      "downloads": 11,
+      "wallpaperCount": 1,
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/desktop/风景/晴空云朵笑脸_屋顶阳光.png",
+          "cdnTag": "v1.1.30"
+        }
+      ]
+    },
+    {
+      "tag": "屋顶阳光",
+      "score": 58,
+      "views": 55,
+      "downloads": 11,
+      "wallpaperCount": 1,
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/desktop/风景/晴空云朵笑脸_屋顶阳光.png",
+          "cdnTag": "v1.1.30"
+        }
+      ]
+    },
+    {
       "tag": "彩瞳少女特写",
       "score": 58,
-      "views": 73,
+      "views": 74,
       "downloads": 5,
       "wallpaperCount": 1,
       "series": [
@@ -114,7 +146,7 @@
     {
       "tag": "碎光倒影",
       "score": 58,
-      "views": 73,
+      "views": 74,
       "downloads": 5,
       "wallpaperCount": 1,
       "series": [
@@ -123,38 +155,6 @@
       "topWallpapers": [
         {
           "thumbnail": "/thumbnail/video/desktop/动漫/彩瞳少女特写_碎光倒影.png",
-          "cdnTag": "v1.1.30"
-        }
-      ]
-    },
-    {
-      "tag": "晴空云朵笑脸",
-      "score": 57,
-      "views": 54,
-      "downloads": 11,
-      "wallpaperCount": 1,
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/desktop/风景/晴空云朵笑脸_屋顶阳光.png",
-          "cdnTag": "v1.1.30"
-        }
-      ]
-    },
-    {
-      "tag": "屋顶阳光",
-      "score": 57,
-      "views": 54,
-      "downloads": 11,
-      "wallpaperCount": 1,
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/desktop/风景/晴空云朵笑脸_屋顶阳光.png",
           "cdnTag": "v1.1.30"
         }
       ]
@@ -225,9 +225,9 @@
     },
     {
       "tag": "雨滴玻璃",
-      "score": 42,
-      "views": 45,
-      "downloads": 6,
+      "score": 45,
+      "views": 48,
+      "downloads": 7,
       "wallpaperCount": 1,
       "series": [
         "video"
@@ -241,9 +241,9 @@
     },
     {
       "tag": "紫色光影",
-      "score": 42,
-      "views": 45,
-      "downloads": 6,
+      "score": 45,
+      "views": 48,
+      "downloads": 7,
       "wallpaperCount": 1,
       "series": [
         "video"
@@ -257,7 +257,7 @@
     },
     {
       "tag": "国庆专属动态背景视频",
-      "score": 33,
+      "score": 32,
       "views": 44,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -273,7 +273,7 @@
     },
     {
       "tag": "节日",
-      "score": 33,
+      "score": 32,
       "views": 44,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -289,7 +289,7 @@
     },
     {
       "tag": "朋友圈背景",
-      "score": 33,
+      "score": 32,
       "views": 44,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -305,7 +305,7 @@
     },
     {
       "tag": "我在这里告白祖国",
-      "score": 33,
+      "score": 32,
       "views": 44,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -321,7 +321,7 @@
     },
     {
       "tag": "social cover",
-      "score": 33,
+      "score": 32,
       "views": 44,
       "downloads": 0,
       "wallpaperCount": 1,
