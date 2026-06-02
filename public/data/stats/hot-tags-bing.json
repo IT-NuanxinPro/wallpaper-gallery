@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-06-01T21:07:29.530Z",
+  "generatedAt": "2026-06-02T20:26:42.684Z",
   "series": "bing",
   "total": 269,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 267,
+      "score": 265,
       "views": 375,
       "downloads": 102,
       "wallpaperCount": 31,
@@ -74,7 +74,7 @@
     {
       "tag": "2025 11",
       "score": 38,
-      "views": 43,
+      "views": 44,
       "downloads": 23,
       "wallpaperCount": 16,
       "series": [
@@ -232,19 +232,6 @@
       ]
     },
     {
-      "tag": "纯粹的瑞士魔力",
-      "score": 14,
-      "views": 17,
-      "downloads": 6,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-10.jpg"
-      ]
-    },
-    {
       "tag": "努克的慵懒时光",
       "score": 14,
       "views": 22,
@@ -285,6 +272,19 @@
         "bing-2025-10-04.jpg",
         "bing-2025-10-19.jpg",
         "bing-2025-10-01.jpg"
+      ]
+    },
+    {
+      "tag": "纯粹的瑞士魔力",
+      "score": 13,
+      "views": 17,
+      "downloads": 6,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-10.jpg"
       ]
     },
     {

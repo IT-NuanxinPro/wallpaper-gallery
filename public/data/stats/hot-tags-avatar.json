@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-06-01T21:07:29.513Z",
+  "generatedAt": "2026-06-02T20:26:42.670Z",
   "series": "avatar",
   "total": 484,
   "tags": [
     {
       "tag": "人像",
-      "score": 523,
+      "score": 521,
       "views": 455,
       "downloads": 232,
       "wallpaperCount": 150,
@@ -37,7 +37,7 @@
     },
     {
       "tag": "动漫",
-      "score": 321,
+      "score": 320,
       "views": 331,
       "downloads": 137,
       "wallpaperCount": 97,
@@ -46,11 +46,11 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/动漫/哆啦A梦/办公电脑前皱眉.webp",
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/戴耳机麦当劳外卖.webp",
           "cdnTag": "v1.1.13"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/戴耳机麦当劳外卖.webp",
+          "thumbnail": "/thumbnail/avatar/动漫/哆啦A梦/办公电脑前皱眉.webp",
           "cdnTag": "v1.1.13"
         },
         {
@@ -69,7 +69,7 @@
     },
     {
       "tag": "氛围感",
-      "score": 247,
+      "score": 245,
       "views": 230,
       "downloads": 121,
       "wallpaperCount": 61,
@@ -101,7 +101,7 @@
     },
     {
       "tag": "萌宠",
-      "score": 186,
+      "score": 185,
       "views": 177,
       "downloads": 97,
       "wallpaperCount": 34,
@@ -565,7 +565,7 @@
     },
     {
       "tag": "哆啦A梦",
-      "score": 56,
+      "score": 55,
       "views": 61,
       "downloads": 25,
       "wallpaperCount": 11,
@@ -885,7 +885,7 @@
     },
     {
       "tag": "狗狗",
-      "score": 33,
+      "score": 32,
       "views": 30,
       "downloads": 16,
       "wallpaperCount": 13,
@@ -1040,22 +1040,6 @@
       ]
     },
     {
-      "tag": "办公电脑前皱眉",
-      "score": 24,
-      "views": 23,
-      "downloads": 14,
-      "wallpaperCount": 1,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/哆啦A梦/办公电脑前皱眉.webp",
-          "cdnTag": "v1.1.13"
-        }
-      ]
-    },
-    {
       "tag": "柔光金发女生",
       "score": 24,
       "views": 30,
@@ -1068,6 +1052,22 @@
         {
           "thumbnail": "/thumbnail/avatar/人像/氛围感/柔光金发女生.webp",
           "cdnTag": "v1.1.11"
+        }
+      ]
+    },
+    {
+      "tag": "办公电脑前皱眉",
+      "score": 23,
+      "views": 23,
+      "downloads": 14,
+      "wallpaperCount": 1,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/哆啦A梦/办公电脑前皱眉.webp",
+          "cdnTag": "v1.1.13"
         }
       ]
     },
