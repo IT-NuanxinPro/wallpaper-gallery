@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-02T20:26:42.670Z",
+  "generatedAt": "2026-06-03T20:39:01.352Z",
   "series": "avatar",
   "total": 484,
   "tags": [
@@ -101,7 +101,7 @@
     },
     {
       "tag": "萌宠",
-      "score": 185,
+      "score": 183,
       "views": 177,
       "downloads": 97,
       "wallpaperCount": 34,
@@ -165,7 +165,7 @@
     },
     {
       "tag": "猫咪",
-      "score": 151,
+      "score": 149,
       "views": 146,
       "downloads": 80,
       "wallpaperCount": 20,
@@ -516,22 +516,6 @@
       ]
     },
     {
-      "tag": "戴耳机",
-      "score": 63,
-      "views": 58,
-      "downloads": 36,
-      "wallpaperCount": 1,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴耳机.webp",
-          "cdnTag": "v1.1.11"
-        }
-      ]
-    },
-    {
       "tag": "搞怪",
       "score": 63,
       "views": 84,
@@ -560,6 +544,22 @@
         {
           "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_20260126155106_62_1186.webp",
           "cdnTag": "v1.1.53"
+        }
+      ]
+    },
+    {
+      "tag": "戴耳机",
+      "score": 62,
+      "views": 58,
+      "downloads": 36,
+      "wallpaperCount": 1,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴耳机.webp",
+          "cdnTag": "v1.1.11"
         }
       ]
     },
