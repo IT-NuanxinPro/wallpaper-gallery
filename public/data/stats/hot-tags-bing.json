@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-06-05T19:19:19.756Z",
+  "generatedAt": "2026-06-06T18:49:31.751Z",
   "series": "bing",
-  "total": 267,
+  "total": 266,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 264,
+      "score": 263,
       "views": 375,
       "downloads": 102,
       "wallpaperCount": 31,
@@ -17,12 +17,12 @@
         "bing-2026-01-03.jpg",
         "bing-2026-01-15.jpg",
         "bing-2026-01-09.jpg",
-        "bing-2026-01-01.jpg"
+        "bing-2026-01-06.jpg"
       ]
     },
     {
       "tag": "2026 03",
-      "score": 187,
+      "score": 185,
       "views": 170,
       "downloads": 63,
       "wallpaperCount": 25,
@@ -33,13 +33,13 @@
         "bing-2026-03-02.jpg",
         "bing-2026-03-18.jpg",
         "bing-2026-03-01.jpg",
-        "bing-2026-03-23.jpg",
-        "bing-2026-03-14.jpg"
+        "bing-2026-03-14.jpg",
+        "bing-2026-03-23.jpg"
       ]
     },
     {
       "tag": "2025 12",
-      "score": 87,
+      "score": 86,
       "views": 102,
       "downloads": 48,
       "wallpaperCount": 27,
@@ -48,9 +48,9 @@
       ],
       "topWallpapers": [
         "bing-2025-12-31.jpg",
-        "bing-2025-12-01.jpg",
         "bing-2025-12-30.jpg",
         "bing-2025-12-07.jpg",
+        "bing-2025-12-01.jpg",
         "bing-2025-12-19.jpg"
       ]
     },
@@ -150,7 +150,7 @@
     },
     {
       "tag": "当水划出界线",
-      "score": 19,
+      "score": 18,
       "views": 16,
       "downloads": 6,
       "wallpaperCount": 2,
@@ -193,19 +193,6 @@
       ]
     },
     {
-      "tag": "漂浮的传承",
-      "score": 16,
-      "views": 14,
-      "downloads": 6,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-02.jpg"
-      ]
-    },
-    {
       "tag": "时光在此处茁壮成长",
       "score": 15,
       "views": 18,
@@ -219,6 +206,19 @@
       ]
     },
     {
+      "tag": "漂浮的传承",
+      "score": 15,
+      "views": 14,
+      "downloads": 6,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-02.jpg"
+      ]
+    },
+    {
       "tag": "努克的慵懒时光",
       "score": 14,
       "views": 22,
@@ -229,19 +229,6 @@
       ],
       "topWallpapers": [
         "bing-2026-01-06.jpg"
-      ]
-    },
-    {
-      "tag": "伸个懒腰，迈向新年！",
-      "score": 14,
-      "views": 22,
-      "downloads": 5,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-01.jpg"
       ]
     },
     {
@@ -285,6 +272,19 @@
       ],
       "topWallpapers": [
         "bing-2026-01-10.jpg"
+      ]
+    },
+    {
+      "tag": "伸个懒腰，迈向新年！",
+      "score": 13,
+      "views": 22,
+      "downloads": 5,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-01.jpg"
       ]
     },
     {
@@ -542,19 +542,6 @@
       ]
     },
     {
-      "tag": "冰山上天然形成的拱门  南极洲",
-      "score": 7,
-      "views": 5,
-      "downloads": 5,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2025-12-01.jpg"
-      ]
-    },
-    {
       "tag": "瑞士山间的短逃离",
       "score": 7,
       "views": 6,
@@ -578,6 +565,19 @@
       ],
       "topWallpapers": [
         "bing-2025-12-31.jpg"
+      ]
+    },
+    {
+      "tag": "帕拉米蒂的历史之阶",
+      "score": 7,
+      "views": 8,
+      "downloads": 3,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-14.jpg"
       ]
     }
   ]

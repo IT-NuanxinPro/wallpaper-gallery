@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-06-05T19:19:19.732Z",
+  "generatedAt": "2026-06-06T18:49:31.733Z",
   "series": "avatar",
   "total": 486,
   "tags": [
     {
       "tag": "人像",
-      "score": 510,
+      "score": 509,
       "views": 456,
       "downloads": 232,
       "wallpaperCount": 150,
@@ -37,8 +37,8 @@
     },
     {
       "tag": "动漫",
-      "score": 323,
-      "views": 335,
+      "score": 324,
+      "views": 336,
       "downloads": 141,
       "wallpaperCount": 99,
       "series": [
@@ -54,12 +54,12 @@
           "cdnTag": "v1.1.13"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/哆啦A梦/微信图片_20260310202254_659_4.webp",
-          "cdnTag": "v1.2.8"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._14.webp",
           "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/哆啦A梦/微信图片_20260310202254_659_4.webp",
+          "cdnTag": "v1.2.8"
         },
         {
           "thumbnail": "/thumbnail/avatar/动漫/海贼王/微信图片_20260120161538_484_4.webp",
@@ -101,7 +101,7 @@
     },
     {
       "tag": "萌宠",
-      "score": 183,
+      "score": 180,
       "views": 179,
       "downloads": 97,
       "wallpaperCount": 34,
@@ -128,6 +128,38 @@
         {
           "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_20260126155110_65_1186.webp",
           "cdnTag": "v1.1.53"
+        }
+      ]
+    },
+    {
+      "tag": "插画",
+      "score": 150,
+      "views": 139,
+      "downloads": 77,
+      "wallpaperCount": 45,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/插画/二次元/银发蓝瞳男孩比耶蓝天背景.webp",
+          "cdnTag": "v1.1.4"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/插画/创意/登山少年眺望远方山景.webp",
+          "cdnTag": "v1.1.4"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/插画/二次元/640 (4).webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/插画/二次元/image_氛围感男头话题_热门头像话题_男..._13.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/插画/创意/闭眼冥想的小男孩阳光床.webp",
+          "cdnTag": "v1.1.4"
         }
       ]
     },
@@ -165,7 +197,7 @@
     },
     {
       "tag": "猫咪",
-      "score": 149,
+      "score": 147,
       "views": 147,
       "downloads": 80,
       "wallpaperCount": 20,
@@ -192,38 +224,6 @@
         {
           "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_20260126155110_65_1186.webp",
           "cdnTag": "v1.1.53"
-        }
-      ]
-    },
-    {
-      "tag": "插画",
-      "score": 149,
-      "views": 137,
-      "downloads": 77,
-      "wallpaperCount": 45,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/插画/二次元/银发蓝瞳男孩比耶蓝天背景.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/插画/创意/登山少年眺望远方山景.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/插画/二次元/640 (4).webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/插画/二次元/image_氛围感男头话题_热门头像话题_男..._13.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/插画/创意/闭眼冥想的小男孩阳光床.webp",
-          "cdnTag": "v1.1.4"
         }
       ]
     },
@@ -261,7 +261,7 @@
     },
     {
       "tag": "背影",
-      "score": 89,
+      "score": 88,
       "views": 75,
       "downloads": 35,
       "wallpaperCount": 28,
@@ -282,19 +282,19 @@
           "cdnTag": "v1.2.34"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/背影/image_氛围感男头话题_热门头像话题_男..._3.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/人像/背影/image_向往自由的女生头像话题_氛围感头..._0.webp",
           "cdnTag": "v1.2.34"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/背影/646.webp",
+          "cdnTag": "v1.1.96"
         }
       ]
     },
     {
       "tag": "二次元",
-      "score": 85,
-      "views": 78,
+      "score": 86,
+      "views": 80,
       "downloads": 43,
       "wallpaperCount": 24,
       "series": [
@@ -662,7 +662,7 @@
     {
       "tag": "少年",
       "score": 45,
-      "views": 30,
+      "views": 31,
       "downloads": 18,
       "wallpaperCount": 9,
       "series": [
@@ -682,12 +682,44 @@
           "cdnTag": "v1.2.33"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/背影/image_氛围感男头话题_热门头像话题_男..._3.webp",
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_20260119095918_477_4.webp",
+          "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/背影/646.webp",
+          "cdnTag": "v1.1.96"
+        }
+      ]
+    },
+    {
+      "tag": "清新",
+      "score": 40,
+      "views": 32,
+      "downloads": 15,
+      "wallpaperCount": 11,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._14.webp",
           "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_20260119095919_478_4.webp",
+          "cdnTag": "v1.1.42"
         },
         {
           "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_20260119095918_477_4.webp",
           "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/插画/二次元/image_氛围感男头话题_热门头像话题_男..._12.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152751_224.webp",
+          "cdnTag": "v1.2.57"
         }
       ]
     },
@@ -720,38 +752,6 @@
         {
           "thumbnail": "/thumbnail/avatar/人像/甜妹/643.webp",
           "cdnTag": "v1.1.96"
-        }
-      ]
-    },
-    {
-      "tag": "清新",
-      "score": 38,
-      "views": 29,
-      "downloads": 15,
-      "wallpaperCount": 11,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._14.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_20260119095919_478_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_20260119095918_477_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152751_224.webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/背影/image_向往自由的女生头像话题_氛围感头..._4.webp",
-          "cdnTag": "v1.2.34"
         }
       ]
     },
@@ -852,38 +852,6 @@
       ]
     },
     {
-      "tag": "狗狗",
-      "score": 32,
-      "views": 30,
-      "downloads": 16,
-      "wallpaperCount": 13,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/微信图片_2026-01-23_165009_180.webp",
-          "cdnTag": "v1.1.53"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/image_氛围感男头话题_热门头像话题_男..._6.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/柯基_墨镜酷狗.webp",
-          "cdnTag": "v1.1.11"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/655.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/可爱柯基.webp",
-          "cdnTag": "v1.1.24"
-        }
-      ]
-    },
-    {
       "tag": "微笑",
       "score": 32,
       "views": 20,
@@ -932,6 +900,38 @@
       ]
     },
     {
+      "tag": "狗狗",
+      "score": 31,
+      "views": 30,
+      "downloads": 16,
+      "wallpaperCount": 13,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/微信图片_2026-01-23_165009_180.webp",
+          "cdnTag": "v1.1.53"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/柯基_墨镜酷狗.webp",
+          "cdnTag": "v1.1.11"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/655.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/image_氛围感男头话题_热门头像话题_男..._6.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/可爱柯基.webp",
+          "cdnTag": "v1.1.24"
+        }
+      ]
+    },
+    {
       "tag": "侧脸",
       "score": 29,
       "views": 21,
@@ -965,7 +965,7 @@
     },
     {
       "tag": "户外",
-      "score": 27,
+      "score": 26,
       "views": 21,
       "downloads": 10,
       "wallpaperCount": 10,
@@ -974,12 +974,12 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/image_氛围感男头话题_热门头像话题_男..._6.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/人像/甜妹/644.webp",
           "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/image_氛围感男头话题_热门头像话题_男..._6.webp",
+          "cdnTag": "v1.2.33"
         },
         {
           "thumbnail": "/thumbnail/avatar/人像/氛围感/image_氛围感男头话题_热门头像话题_男..._11.webp",
@@ -1017,7 +1017,7 @@
     },
     {
       "tag": "搞笑",
-      "score": 25,
+      "score": 24,
       "views": 25,
       "downloads": 12,
       "wallpaperCount": 3,

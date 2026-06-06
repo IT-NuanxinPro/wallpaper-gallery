@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-06-05T19:19:19.735Z",
+  "generatedAt": "2026-06-06T18:49:31.735Z",
   "series": "video",
   "total": 25,
   "tags": [
     {
       "tag": "desktop",
-      "score": 306,
-      "views": 362,
+      "score": 305,
+      "views": 364,
       "downloads": 39,
       "wallpaperCount": 6,
       "series": [
@@ -14,11 +14,11 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/video/desktop/风景/晴空云朵笑脸_屋顶阳光.png",
+          "thumbnail": "/thumbnail/video/desktop/动漫/彩瞳少女特写_碎光倒影.png",
           "cdnTag": "v1.1.30"
         },
         {
-          "thumbnail": "/thumbnail/video/desktop/动漫/彩瞳少女特写_碎光倒影.png",
+          "thumbnail": "/thumbnail/video/desktop/风景/晴空云朵笑脸_屋顶阳光.png",
           "cdnTag": "v1.1.30"
         },
         {
@@ -37,8 +37,8 @@
     },
     {
       "tag": "动漫",
-      "score": 117,
-      "views": 150,
+      "score": 118,
+      "views": 152,
       "downloads": 11,
       "wallpaperCount": 2,
       "series": [
@@ -57,7 +57,7 @@
     },
     {
       "tag": "风景",
-      "score": 115,
+      "score": 114,
       "views": 117,
       "downloads": 21,
       "wallpaperCount": 2,
@@ -77,7 +77,7 @@
     },
     {
       "tag": "IP形象",
-      "score": 74,
+      "score": 73,
       "views": 95,
       "downloads": 7,
       "wallpaperCount": 2,
@@ -97,7 +97,7 @@
     },
     {
       "tag": "晴空云朵笑脸",
-      "score": 66,
+      "score": 65,
       "views": 64,
       "downloads": 13,
       "wallpaperCount": 1,
@@ -113,7 +113,7 @@
     },
     {
       "tag": "屋顶阳光",
-      "score": 66,
+      "score": 65,
       "views": 64,
       "downloads": 13,
       "wallpaperCount": 1,
@@ -161,8 +161,8 @@
     },
     {
       "tag": "晨光飞鸟",
-      "score": 52,
-      "views": 69,
+      "score": 53,
+      "views": 71,
       "downloads": 4,
       "wallpaperCount": 1,
       "series": [
@@ -177,8 +177,8 @@
     },
     {
       "tag": "窗边白发少女",
-      "score": 52,
-      "views": 69,
+      "score": 53,
+      "views": 71,
       "downloads": 4,
       "wallpaperCount": 1,
       "series": [
@@ -337,7 +337,7 @@
     },
     {
       "tag": "秋日秋千",
-      "score": 24,
+      "score": 23,
       "views": 31,
       "downloads": 2,
       "wallpaperCount": 1,
@@ -353,7 +353,7 @@
     },
     {
       "tag": "HelloKitty",
-      "score": 24,
+      "score": 23,
       "views": 31,
       "downloads": 2,
       "wallpaperCount": 1,
