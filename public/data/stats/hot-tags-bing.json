@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-06-08T19:40:00.721Z",
+  "generatedAt": "2026-06-09T19:34:18.294Z",
   "series": "bing",
   "total": 266,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 259,
+      "score": 257,
       "views": 375,
       "downloads": 102,
       "wallpaperCount": 31,
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 183,
+      "score": 182,
       "views": 170,
       "downloads": 63,
       "wallpaperCount": 25,
@@ -56,7 +56,7 @@
     },
     {
       "tag": "2026 02",
-      "score": 62,
+      "score": 61,
       "views": 70,
       "downloads": 23,
       "wallpaperCount": 17,
@@ -314,36 +314,6 @@
       ]
     },
     {
-      "tag": "2025 05",
-      "score": 11,
-      "views": 14,
-      "downloads": 12,
-      "wallpaperCount": 6,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2025-05-29.jpg",
-        "bing-2025-05-15.jpg",
-        "bing-2025-05-22.jpg",
-        "bing-2025-05-27.jpg",
-        "bing-2025-05-04.jpg"
-      ]
-    },
-    {
-      "tag": "大自然的波普艺术",
-      "score": 11,
-      "views": 12,
-      "downloads": 5,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-19.jpg"
-      ]
-    },
-    {
       "tag": "根系自由生长的地方",
       "score": 11,
       "views": 8,
@@ -367,19 +337,6 @@
       ],
       "topWallpapers": [
         "bing-2026-01-05.jpg"
-      ]
-    },
-    {
-      "tag": "威尼斯的灵魂",
-      "score": 11,
-      "views": 20,
-      "downloads": 3,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-02.jpg"
       ]
     },
     {
@@ -410,6 +367,49 @@
         "bing-2025-02-06.jpg",
         "bing-2025-02-08.jpg",
         "bing-2025-02-09.jpg"
+      ]
+    },
+    {
+      "tag": "2025 05",
+      "score": 10,
+      "views": 14,
+      "downloads": 12,
+      "wallpaperCount": 6,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2025-05-29.jpg",
+        "bing-2025-05-22.jpg",
+        "bing-2025-05-27.jpg",
+        "bing-2025-05-15.jpg",
+        "bing-2025-05-04.jpg"
+      ]
+    },
+    {
+      "tag": "大自然的波普艺术",
+      "score": 10,
+      "views": 12,
+      "downloads": 5,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-19.jpg"
+      ]
+    },
+    {
+      "tag": "威尼斯的灵魂",
+      "score": 10,
+      "views": 20,
+      "downloads": 3,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-02.jpg"
       ]
     },
     {
@@ -499,19 +499,6 @@
       ]
     },
     {
-      "tag": "一个美好的春天",
-      "score": 8,
-      "views": 6,
-      "downloads": 3,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-11.jpg"
-      ]
-    },
-    {
       "tag": "苹果韵，旧时光",
       "score": 8,
       "views": 15,
@@ -552,6 +539,19 @@
       ],
       "topWallpapers": [
         "bing-2026-01-24.jpg"
+      ]
+    },
+    {
+      "tag": "一个美好的春天",
+      "score": 7,
+      "views": 6,
+      "downloads": 3,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-11.jpg"
       ]
     },
     {
