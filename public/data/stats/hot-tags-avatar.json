@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-06-11T19:58:55.392Z",
+  "generatedAt": "2026-06-12T19:31:30.165Z",
   "series": "avatar",
-  "total": 486,
+  "total": 487,
   "tags": [
     {
       "tag": "人像",
-      "score": 491,
-      "views": 457,
+      "score": 493,
+      "views": 466,
       "downloads": 234,
-      "wallpaperCount": 150,
+      "wallpaperCount": 151,
       "series": [
         "avatar"
       ],
@@ -37,7 +37,7 @@
     },
     {
       "tag": "动漫",
-      "score": 316,
+      "score": 312,
       "views": 338,
       "downloads": 143,
       "wallpaperCount": 99,
@@ -69,7 +69,7 @@
     },
     {
       "tag": "氛围感",
-      "score": 228,
+      "score": 226,
       "views": 230,
       "downloads": 121,
       "wallpaperCount": 61,
@@ -94,8 +94,8 @@
           "cdnTag": "v1.1.11"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/逆光女生.webp",
-          "cdnTag": "v1.1.11"
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/659.webp",
+          "cdnTag": "v1.1.96"
         }
       ]
     },
@@ -128,6 +128,38 @@
         {
           "thumbnail": "/thumbnail/avatar/萌宠/狗狗/微信图片_2026-01-23_165009_180.webp",
           "cdnTag": "v1.1.53"
+        }
+      ]
+    },
+    {
+      "tag": "甜妹",
+      "score": 150,
+      "views": 121,
+      "downloads": 63,
+      "wallpaperCount": 53,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152818_396.webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/663.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_20260119095919_478_4.webp",
+          "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/image_向往自由的女生头像话题_散落人间..._7.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152758_334.webp",
+          "cdnTag": "v1.2.57"
         }
       ]
     },
@@ -165,7 +197,7 @@
     },
     {
       "tag": "插画",
-      "score": 146,
+      "score": 145,
       "views": 139,
       "downloads": 77,
       "wallpaperCount": 45,
@@ -178,12 +210,12 @@
           "cdnTag": "v1.1.4"
         },
         {
-          "thumbnail": "/thumbnail/avatar/插画/二次元/640 (4).webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/插画/创意/登山少年眺望远方山景.webp",
           "cdnTag": "v1.1.4"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/插画/二次元/640 (4).webp",
+          "cdnTag": "v1.2.57"
         },
         {
           "thumbnail": "/thumbnail/avatar/插画/二次元/image_氛围感男头话题_热门头像话题_男..._13.webp",
@@ -192,38 +224,6 @@
         {
           "thumbnail": "/thumbnail/avatar/插画/创意/闭眼冥想的小男孩阳光床.webp",
           "cdnTag": "v1.1.4"
-        }
-      ]
-    },
-    {
-      "tag": "甜妹",
-      "score": 144,
-      "views": 112,
-      "downloads": 63,
-      "wallpaperCount": 52,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152818_396.webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/663.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_20260119095919_478_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/image_向往自由的女生头像话题_散落人间..._7.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152758_334.webp",
-          "cdnTag": "v1.2.57"
         }
       ]
     },
@@ -261,7 +261,7 @@
     },
     {
       "tag": "背影",
-      "score": 91,
+      "score": 89,
       "views": 76,
       "downloads": 37,
       "wallpaperCount": 28,
@@ -293,7 +293,7 @@
     },
     {
       "tag": "二次元",
-      "score": 84,
+      "score": 83,
       "views": 80,
       "downloads": 43,
       "wallpaperCount": 24,
@@ -352,6 +352,38 @@
         {
           "thumbnail": "/thumbnail/avatar/人像/甜妹/665.webp",
           "cdnTag": "v1.1.96"
+        }
+      ]
+    },
+    {
+      "tag": "少女",
+      "score": 72,
+      "views": 55,
+      "downloads": 28,
+      "wallpaperCount": 23,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/插画/二次元/image_氛围感男头话题_热门头像话题_男..._13.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/663.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152758_334.webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/644.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/640.webp",
+          "cdnTag": "v1.2.57"
         }
       ]
     },
@@ -416,38 +448,6 @@
         {
           "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/比耶微笑.webp",
           "cdnTag": "v1.1.13"
-        }
-      ]
-    },
-    {
-      "tag": "少女",
-      "score": 70,
-      "views": 53,
-      "downloads": 28,
-      "wallpaperCount": 23,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/插画/二次元/image_氛围感男头话题_热门头像话题_男..._13.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/663.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152758_334.webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/644.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/642.webp",
-          "cdnTag": "v1.1.96"
         }
       ]
     },
@@ -597,7 +597,7 @@
     },
     {
       "tag": "表情包",
-      "score": 52,
+      "score": 51,
       "views": 77,
       "downloads": 22,
       "wallpaperCount": 31,
@@ -820,6 +820,38 @@
       ]
     },
     {
+      "tag": "微笑",
+      "score": 34,
+      "views": 22,
+      "downloads": 13,
+      "wallpaperCount": 10,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152818_396.webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152758_334.webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/640.webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/背影/646.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/658.webp",
+          "cdnTag": "v1.1.96"
+        }
+      ]
+    },
+    {
       "tag": "侧脸",
       "score": 33,
       "views": 22,
@@ -853,7 +885,7 @@
     },
     {
       "tag": "海贼王",
-      "score": 33,
+      "score": 32,
       "views": 34,
       "downloads": 13,
       "wallpaperCount": 12,
@@ -884,8 +916,24 @@
       ]
     },
     {
+      "tag": "银发蓝瞳男孩比耶蓝天背景",
+      "score": 30,
+      "views": 29,
+      "downloads": 19,
+      "wallpaperCount": 1,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/插画/二次元/银发蓝瞳男孩比耶蓝天背景.webp",
+          "cdnTag": "v1.1.4"
+        }
+      ]
+    },
+    {
       "tag": "猫和老鼠",
-      "score": 32,
+      "score": 30,
       "views": 37,
       "downloads": 17,
       "wallpaperCount": 10,
@@ -906,60 +954,12 @@
           "cdnTag": "v1.1.42"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/杰瑞_愤怒办公_猫和老鼠.webp",
-          "cdnTag": "v1.1.11"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/杰瑞大笑.webp",
           "cdnTag": "v1.1.26"
-        }
-      ]
-    },
-    {
-      "tag": "微笑",
-      "score": 32,
-      "views": 20,
-      "downloads": 13,
-      "wallpaperCount": 10,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152818_396.webp",
-          "cdnTag": "v1.2.57"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152758_334.webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/背影/646.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/658.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152637_531.webp",
-          "cdnTag": "v1.2.57"
-        }
-      ]
-    },
-    {
-      "tag": "银发蓝瞳男孩比耶蓝天背景",
-      "score": 30,
-      "views": 29,
-      "downloads": 19,
-      "wallpaperCount": 1,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/插画/二次元/银发蓝瞳男孩比耶蓝天背景.webp",
-          "cdnTag": "v1.1.4"
+          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/杰瑞_愤怒办公_猫和老鼠.webp",
+          "cdnTag": "v1.1.11"
         }
       ]
     },
