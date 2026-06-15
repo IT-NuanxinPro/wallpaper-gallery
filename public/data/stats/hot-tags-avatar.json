@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-06-14T18:51:52.345Z",
+  "generatedAt": "2026-06-15T20:37:48.023Z",
   "series": "avatar",
   "total": 487,
   "tags": [
     {
       "tag": "人像",
-      "score": 491,
+      "score": 488,
       "views": 466,
       "downloads": 234,
       "wallpaperCount": 151,
@@ -69,7 +69,7 @@
     },
     {
       "tag": "氛围感",
-      "score": 226,
+      "score": 225,
       "views": 230,
       "downloads": 121,
       "wallpaperCount": 61,
@@ -94,14 +94,14 @@
           "cdnTag": "v1.1.11"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/659.webp",
-          "cdnTag": "v1.1.96"
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/逆光女生.webp",
+          "cdnTag": "v1.1.11"
         }
       ]
     },
     {
       "tag": "萌宠",
-      "score": 184,
+      "score": 182,
       "views": 182,
       "downloads": 102,
       "wallpaperCount": 34,
@@ -127,38 +127,6 @@
         },
         {
           "thumbnail": "/thumbnail/avatar/萌宠/狗狗/微信图片_2026-01-23_165009_180.webp",
-          "cdnTag": "v1.1.53"
-        }
-      ]
-    },
-    {
-      "tag": "猫咪",
-      "score": 148,
-      "views": 149,
-      "downloads": 83,
-      "wallpaperCount": 20,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴耳机.webp",
-          "cdnTag": "v1.1.11"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴眼镜男孩肩上趴着小猫.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-01-23_165613_598.webp",
-          "cdnTag": "v1.1.53"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/浴室里的小黄鸭猫.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_20260126155110_65_1186.webp",
           "cdnTag": "v1.1.53"
         }
       ]
@@ -192,6 +160,38 @@
         {
           "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152758_334.webp",
           "cdnTag": "v1.2.57"
+        }
+      ]
+    },
+    {
+      "tag": "猫咪",
+      "score": 146,
+      "views": 149,
+      "downloads": 83,
+      "wallpaperCount": 20,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴耳机.webp",
+          "cdnTag": "v1.1.11"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴眼镜男孩肩上趴着小猫.webp",
+          "cdnTag": "v1.1.4"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-01-23_165613_598.webp",
+          "cdnTag": "v1.1.53"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/浴室里的小黄鸭猫.webp",
+          "cdnTag": "v1.1.4"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_20260126155110_65_1186.webp",
+          "cdnTag": "v1.1.53"
         }
       ]
     },
@@ -230,8 +230,8 @@
     {
       "tag": "IP形象",
       "score": 129,
-      "views": 157,
-      "downloads": 58,
+      "views": 158,
+      "downloads": 59,
       "wallpaperCount": 44,
       "series": [
         "avatar"
@@ -356,38 +356,6 @@
       ]
     },
     {
-      "tag": "水豚噜噜",
-      "score": 69,
-      "views": 82,
-      "downloads": 33,
-      "wallpaperCount": 17,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_20260310202253_658_4.webp",
-          "cdnTag": "v1.2.8"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/通用/微信图片_20260310202252_657_4.webp",
-          "cdnTag": "v1.2.8"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/冷脸持刀气场全开.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/深夜自习专注看书.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/比耶微笑.webp",
-          "cdnTag": "v1.1.13"
-        }
-      ]
-    },
-    {
       "tag": "少女",
       "score": 69,
       "views": 55,
@@ -452,6 +420,38 @@
       ]
     },
     {
+      "tag": "水豚噜噜",
+      "score": 67,
+      "views": 82,
+      "downloads": 33,
+      "wallpaperCount": 17,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_20260310202253_658_4.webp",
+          "cdnTag": "v1.2.8"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/通用/微信图片_20260310202252_657_4.webp",
+          "cdnTag": "v1.2.8"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/冷脸持刀气场全开.webp",
+          "cdnTag": "v1.1.4"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/深夜自习专注看书.webp",
+          "cdnTag": "v1.1.4"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/比耶微笑.webp",
+          "cdnTag": "v1.1.13"
+        }
+      ]
+    },
+    {
       "tag": "卡通",
       "score": 65,
       "views": 75,
@@ -485,7 +485,7 @@
     },
     {
       "tag": "戴耳机",
-      "score": 64,
+      "score": 63,
       "views": 60,
       "downloads": 39,
       "wallpaperCount": 1,
@@ -788,40 +788,40 @@
       ]
     },
     {
-      "tag": "卡通简笔画",
-      "score": 34,
-      "views": 45,
-      "downloads": 14,
-      "wallpaperCount": 11,
+      "tag": "微笑",
+      "score": 33,
+      "views": 22,
+      "downloads": 13,
+      "wallpaperCount": 10,
       "series": [
         "avatar"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/呆萌少女_猫耳头套.webp",
-          "cdnTag": "v1.1.26"
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152818_396.webp",
+          "cdnTag": "v1.2.57"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/红衣男孩贴福字.webp",
-          "cdnTag": "v1.1.11"
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152758_334.webp",
+          "cdnTag": "v1.2.57"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/围巾男孩举春联.webp",
-          "cdnTag": "v1.1.11"
+          "thumbnail": "/thumbnail/avatar/人像/背影/646.webp",
+          "cdnTag": "v1.1.96"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/微信图片_20260119095916_475_4.webp",
-          "cdnTag": "v1.1.40"
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/658.webp",
+          "cdnTag": "v1.1.96"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/黄夹女孩捧福字.webp",
-          "cdnTag": "v1.1.11"
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/640.webp",
+          "cdnTag": "v1.2.57"
         }
       ]
     },
     {
       "tag": "侧脸",
-      "score": 33,
+      "score": 32,
       "views": 22,
       "downloads": 15,
       "wallpaperCount": 7,
@@ -852,34 +852,34 @@
       ]
     },
     {
-      "tag": "微笑",
-      "score": 33,
-      "views": 22,
-      "downloads": 13,
-      "wallpaperCount": 10,
+      "tag": "卡通简笔画",
+      "score": 32,
+      "views": 45,
+      "downloads": 14,
+      "wallpaperCount": 11,
       "series": [
         "avatar"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152818_396.webp",
-          "cdnTag": "v1.2.57"
+          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/呆萌少女_猫耳头套.webp",
+          "cdnTag": "v1.1.26"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152758_334.webp",
-          "cdnTag": "v1.2.57"
+          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/红衣男孩贴福字.webp",
+          "cdnTag": "v1.1.11"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/背影/646.webp",
-          "cdnTag": "v1.1.96"
+          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/围巾男孩举春联.webp",
+          "cdnTag": "v1.1.11"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/658.webp",
-          "cdnTag": "v1.1.96"
+          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/微信图片_20260119095916_475_4.webp",
+          "cdnTag": "v1.1.40"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/640.webp",
-          "cdnTag": "v1.2.57"
+          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/圣诞帽麻花辫托腮.webp",
+          "cdnTag": "v1.1.11"
         }
       ]
     },
