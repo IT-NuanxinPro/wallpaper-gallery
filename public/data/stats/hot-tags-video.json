@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-06-15T20:37:48.025Z",
+  "generatedAt": "2026-06-16T20:25:28.634Z",
   "series": "video",
   "total": 25,
   "tags": [
     {
       "tag": "desktop",
-      "score": 319,
-      "views": 403,
-      "downloads": 44,
+      "score": 334,
+      "views": 420,
+      "downloads": 48,
       "wallpaperCount": 6,
       "series": [
         "video"
@@ -22,11 +22,11 @@
           "cdnTag": "v1.1.30"
         },
         {
-          "thumbnail": "/thumbnail/video/desktop/动漫/窗边白发少女_晨光飞鸟.png",
+          "thumbnail": "/thumbnail/video/desktop/IP形象/水豚噜噜_聚光帅舞.png",
           "cdnTag": "v1.1.30"
         },
         {
-          "thumbnail": "/thumbnail/video/desktop/IP形象/水豚噜噜_聚光帅舞.png",
+          "thumbnail": "/thumbnail/video/desktop/动漫/窗边白发少女_晨光飞鸟.png",
           "cdnTag": "v1.1.30"
         },
         {
@@ -37,8 +37,8 @@
     },
     {
       "tag": "动漫",
-      "score": 123,
-      "views": 170,
+      "score": 124,
+      "views": 174,
       "downloads": 12,
       "wallpaperCount": 2,
       "series": [
@@ -57,9 +57,9 @@
     },
     {
       "tag": "风景",
-      "score": 120,
-      "views": 129,
-      "downloads": 24,
+      "score": 123,
+      "views": 133,
+      "downloads": 25,
       "wallpaperCount": 2,
       "series": [
         "video"
@@ -77,9 +77,9 @@
     },
     {
       "tag": "IP形象",
-      "score": 76,
-      "views": 104,
-      "downloads": 8,
+      "score": 87,
+      "views": 113,
+      "downloads": 11,
       "wallpaperCount": 2,
       "series": [
         "video"
@@ -97,9 +97,9 @@
     },
     {
       "tag": "晴空云朵笑脸",
-      "score": 70,
-      "views": 72,
-      "downloads": 15,
+      "score": 73,
+      "views": 75,
+      "downloads": 16,
       "wallpaperCount": 1,
       "series": [
         "video"
@@ -113,9 +113,9 @@
     },
     {
       "tag": "屋顶阳光",
-      "score": 70,
-      "views": 72,
-      "downloads": 15,
+      "score": 73,
+      "views": 75,
+      "downloads": 16,
       "wallpaperCount": 1,
       "series": [
         "video"
@@ -129,8 +129,8 @@
     },
     {
       "tag": "彩瞳少女特写",
-      "score": 69,
-      "views": 92,
+      "score": 70,
+      "views": 95,
       "downloads": 8,
       "wallpaperCount": 1,
       "series": [
@@ -145,8 +145,8 @@
     },
     {
       "tag": "碎光倒影",
-      "score": 69,
-      "views": 92,
+      "score": 70,
+      "views": 95,
       "downloads": 8,
       "wallpaperCount": 1,
       "series": [
@@ -160,9 +160,41 @@
       ]
     },
     {
+      "tag": "聚光帅舞",
+      "score": 60,
+      "views": 77,
+      "downloads": 8,
+      "wallpaperCount": 1,
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/desktop/IP形象/水豚噜噜_聚光帅舞.png",
+          "cdnTag": "v1.1.30"
+        }
+      ]
+    },
+    {
+      "tag": "水豚噜噜",
+      "score": 60,
+      "views": 77,
+      "downloads": 8,
+      "wallpaperCount": 1,
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/desktop/IP形象/水豚噜噜_聚光帅舞.png",
+          "cdnTag": "v1.1.30"
+        }
+      ]
+    },
+    {
       "tag": "晨光飞鸟",
       "score": 54,
-      "views": 78,
+      "views": 79,
       "downloads": 4,
       "wallpaperCount": 1,
       "series": [
@@ -178,7 +210,7 @@
     {
       "tag": "窗边白发少女",
       "score": 54,
-      "views": 78,
+      "views": 79,
       "downloads": 4,
       "wallpaperCount": 1,
       "series": [
@@ -192,41 +224,9 @@
       ]
     },
     {
-      "tag": "聚光帅舞",
-      "score": 53,
-      "views": 71,
-      "downloads": 6,
-      "wallpaperCount": 1,
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/desktop/IP形象/水豚噜噜_聚光帅舞.png",
-          "cdnTag": "v1.1.30"
-        }
-      ]
-    },
-    {
-      "tag": "水豚噜噜",
-      "score": 53,
-      "views": 71,
-      "downloads": 6,
-      "wallpaperCount": 1,
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/desktop/IP形象/水豚噜噜_聚光帅舞.png",
-          "cdnTag": "v1.1.30"
-        }
-      ]
-    },
-    {
       "tag": "雨滴玻璃",
       "score": 50,
-      "views": 57,
+      "views": 58,
       "downloads": 9,
       "wallpaperCount": 1,
       "series": [
@@ -242,7 +242,7 @@
     {
       "tag": "紫色光影",
       "score": 50,
-      "views": 57,
+      "views": 58,
       "downloads": 9,
       "wallpaperCount": 1,
       "series": [
@@ -257,7 +257,7 @@
     },
     {
       "tag": "国庆专属动态背景视频",
-      "score": 30,
+      "score": 29,
       "views": 45,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -273,7 +273,7 @@
     },
     {
       "tag": "节日",
-      "score": 30,
+      "score": 29,
       "views": 45,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -289,7 +289,7 @@
     },
     {
       "tag": "朋友圈背景",
-      "score": 30,
+      "score": 29,
       "views": 45,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -305,7 +305,7 @@
     },
     {
       "tag": "我在这里告白祖国",
-      "score": 30,
+      "score": 29,
       "views": 45,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -321,7 +321,7 @@
     },
     {
       "tag": "social cover",
-      "score": 30,
+      "score": 29,
       "views": 45,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -337,9 +337,9 @@
     },
     {
       "tag": "秋日秋千",
-      "score": 23,
-      "views": 33,
-      "downloads": 2,
+      "score": 27,
+      "views": 36,
+      "downloads": 3,
       "wallpaperCount": 1,
       "series": [
         "video"
@@ -353,9 +353,9 @@
     },
     {
       "tag": "HelloKitty",
-      "score": 23,
-      "views": 33,
-      "downloads": 2,
+      "score": 27,
+      "views": 36,
+      "downloads": 3,
       "wallpaperCount": 1,
       "series": [
         "video"

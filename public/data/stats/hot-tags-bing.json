@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-06-15T20:37:48.039Z",
+  "generatedAt": "2026-06-16T20:25:28.649Z",
   "series": "bing",
   "total": 265,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 249,
+      "score": 248,
       "views": 375,
       "downloads": 102,
       "wallpaperCount": 31,
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 175,
+      "score": 173,
       "views": 170,
       "downloads": 63,
       "wallpaperCount": 25,
@@ -56,7 +56,7 @@
     },
     {
       "tag": "2026 02",
-      "score": 59,
+      "score": 58,
       "views": 70,
       "downloads": 23,
       "wallpaperCount": 17,
@@ -67,8 +67,8 @@
         "bing-2026-02-01.jpg",
         "bing-2026-02-06.jpg",
         "bing-2026-02-25.jpg",
-        "bing-2026-02-26.jpg",
-        "bing-2026-02-04.jpg"
+        "bing-2026-02-04.jpg",
+        "bing-2026-02-20.jpg"
       ]
     },
     {
@@ -219,19 +219,6 @@
       ]
     },
     {
-      "tag": "城市花开",
-      "score": 14,
-      "views": 12,
-      "downloads": 5,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-18.jpg"
-      ]
-    },
-    {
       "tag": "2025 10",
       "score": 13,
       "views": 19,
@@ -288,6 +275,19 @@
       ]
     },
     {
+      "tag": "城市花开",
+      "score": 13,
+      "views": 12,
+      "downloads": 5,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-18.jpg"
+      ]
+    },
+    {
       "tag": "每一步，都是传承",
       "score": 12,
       "views": 12,
@@ -328,23 +328,6 @@
         "bing-2025-02-06.jpg",
         "bing-2025-02-08.jpg",
         "bing-2025-02-09.jpg"
-      ]
-    },
-    {
-      "tag": "2025 05",
-      "score": 10,
-      "views": 14,
-      "downloads": 12,
-      "wallpaperCount": 6,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2025-05-29.jpg",
-        "bing-2025-05-22.jpg",
-        "bing-2025-05-27.jpg",
-        "bing-2025-05-15.jpg",
-        "bing-2025-05-04.jpg"
       ]
     },
     {
@@ -460,6 +443,23 @@
       ]
     },
     {
+      "tag": "2025 05",
+      "score": 9,
+      "views": 14,
+      "downloads": 12,
+      "wallpaperCount": 6,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2025-05-29.jpg",
+        "bing-2025-05-27.jpg",
+        "bing-2025-05-15.jpg",
+        "bing-2025-05-22.jpg",
+        "bing-2025-05-04.jpg"
+      ]
+    },
+    {
       "tag": "从抗拒到绽放",
       "score": 9,
       "views": 13,
@@ -555,19 +555,6 @@
       ]
     },
     {
-      "tag": "废墟之上，椋鸟群舞",
-      "score": 7,
-      "views": 12,
-      "downloads": 2,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-08.jpg"
-      ]
-    },
-    {
       "tag": "水獭之国爱沙尼亚",
       "score": 7,
       "views": 12,
@@ -578,6 +565,23 @@
       ],
       "topWallpapers": [
         "bing-2026-01-12.jpg"
+      ]
+    },
+    {
+      "tag": "2024 11",
+      "score": 6,
+      "views": 12,
+      "downloads": 7,
+      "wallpaperCount": 6,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2024-11-29.jpg",
+        "bing-2024-11-01.jpg",
+        "bing-2024-11-08.jpg",
+        "bing-2024-11-10.jpg",
+        "bing-2024-11-16.jpg"
       ]
     }
   ]
