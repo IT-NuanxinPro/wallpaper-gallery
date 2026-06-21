@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-06-20T18:55:31.258Z",
+  "generatedAt": "2026-06-21T19:03:23.726Z",
   "series": "video",
   "total": 25,
   "tags": [
     {
       "tag": "desktop",
-      "score": 332,
-      "views": 433,
-      "downloads": 48,
+      "score": 342,
+      "views": 441,
+      "downloads": 52,
       "wallpaperCount": 6,
       "series": [
         "video"
@@ -37,9 +37,9 @@
     },
     {
       "tag": "动漫",
-      "score": 124,
-      "views": 179,
-      "downloads": 12,
+      "score": 129,
+      "views": 182,
+      "downloads": 14,
       "wallpaperCount": 2,
       "series": [
         "video"
@@ -57,9 +57,9 @@
     },
     {
       "tag": "风景",
-      "score": 122,
-      "views": 137,
-      "downloads": 25,
+      "score": 124,
+      "views": 140,
+      "downloads": 26,
       "wallpaperCount": 2,
       "series": [
         "video"
@@ -77,9 +77,9 @@
     },
     {
       "tag": "IP形象",
-      "score": 86,
-      "views": 117,
-      "downloads": 11,
+      "score": 89,
+      "views": 119,
+      "downloads": 12,
       "wallpaperCount": 2,
       "series": [
         "video"
@@ -97,9 +97,9 @@
     },
     {
       "tag": "晴空云朵笑脸",
-      "score": 72,
-      "views": 77,
-      "downloads": 16,
+      "score": 74,
+      "views": 79,
+      "downloads": 17,
       "wallpaperCount": 1,
       "series": [
         "video"
@@ -113,9 +113,9 @@
     },
     {
       "tag": "屋顶阳光",
-      "score": 72,
-      "views": 77,
-      "downloads": 16,
+      "score": 74,
+      "views": 79,
+      "downloads": 17,
       "wallpaperCount": 1,
       "series": [
         "video"
@@ -129,9 +129,9 @@
     },
     {
       "tag": "彩瞳少女特写",
-      "score": 70,
-      "views": 98,
-      "downloads": 8,
+      "score": 73,
+      "views": 100,
+      "downloads": 9,
       "wallpaperCount": 1,
       "series": [
         "video"
@@ -145,9 +145,9 @@
     },
     {
       "tag": "碎光倒影",
-      "score": 70,
-      "views": 98,
-      "downloads": 8,
+      "score": 73,
+      "views": 100,
+      "downloads": 9,
       "wallpaperCount": 1,
       "series": [
         "video"
@@ -162,7 +162,7 @@
     {
       "tag": "聚光帅舞",
       "score": 60,
-      "views": 80,
+      "views": 81,
       "downloads": 8,
       "wallpaperCount": 1,
       "series": [
@@ -178,7 +178,7 @@
     {
       "tag": "水豚噜噜",
       "score": 60,
-      "views": 80,
+      "views": 81,
       "downloads": 8,
       "wallpaperCount": 1,
       "series": [
@@ -193,9 +193,9 @@
     },
     {
       "tag": "晨光飞鸟",
-      "score": 54,
-      "views": 81,
-      "downloads": 4,
+      "score": 56,
+      "views": 82,
+      "downloads": 5,
       "wallpaperCount": 1,
       "series": [
         "video"
@@ -209,9 +209,9 @@
     },
     {
       "tag": "窗边白发少女",
-      "score": 54,
-      "views": 81,
-      "downloads": 4,
+      "score": 56,
+      "views": 82,
+      "downloads": 5,
       "wallpaperCount": 1,
       "series": [
         "video"
@@ -226,7 +226,7 @@
     {
       "tag": "雨滴玻璃",
       "score": 50,
-      "views": 60,
+      "views": 61,
       "downloads": 9,
       "wallpaperCount": 1,
       "series": [
@@ -242,7 +242,7 @@
     {
       "tag": "紫色光影",
       "score": 50,
-      "views": 60,
+      "views": 61,
       "downloads": 9,
       "wallpaperCount": 1,
       "series": [
@@ -256,8 +256,40 @@
       ]
     },
     {
-      "tag": "国庆专属动态背景视频",
+      "tag": "秋日秋千",
       "score": 29,
+      "views": 38,
+      "downloads": 4,
+      "wallpaperCount": 1,
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/desktop/IP形象/HelloKitty_秋日秋千.png",
+          "cdnTag": "v1.1.30"
+        }
+      ]
+    },
+    {
+      "tag": "HelloKitty",
+      "score": 29,
+      "views": 38,
+      "downloads": 4,
+      "wallpaperCount": 1,
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/desktop/IP形象/HelloKitty_秋日秋千.png",
+          "cdnTag": "v1.1.30"
+        }
+      ]
+    },
+    {
+      "tag": "国庆专属动态背景视频",
+      "score": 28,
       "views": 45,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -273,7 +305,7 @@
     },
     {
       "tag": "节日",
-      "score": 29,
+      "score": 28,
       "views": 45,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -289,7 +321,7 @@
     },
     {
       "tag": "朋友圈背景",
-      "score": 29,
+      "score": 28,
       "views": 45,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -305,7 +337,7 @@
     },
     {
       "tag": "我在这里告白祖国",
-      "score": 29,
+      "score": 28,
       "views": 45,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -321,7 +353,7 @@
     },
     {
       "tag": "social cover",
-      "score": 29,
+      "score": 28,
       "views": 45,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -336,40 +368,8 @@
       ]
     },
     {
-      "tag": "秋日秋千",
-      "score": 26,
-      "views": 37,
-      "downloads": 3,
-      "wallpaperCount": 1,
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/desktop/IP形象/HelloKitty_秋日秋千.png",
-          "cdnTag": "v1.1.30"
-        }
-      ]
-    },
-    {
-      "tag": "HelloKitty",
-      "score": 26,
-      "views": 37,
-      "downloads": 3,
-      "wallpaperCount": 1,
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/desktop/IP形象/HelloKitty_秋日秋千.png",
-          "cdnTag": "v1.1.30"
-        }
-      ]
-    },
-    {
       "tag": "柴犬",
-      "score": 20,
+      "score": 19,
       "views": 34,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -385,7 +385,7 @@
     },
     {
       "tag": "萌宠",
-      "score": 20,
+      "score": 19,
       "views": 34,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -401,7 +401,7 @@
     },
     {
       "tag": "贴脸卖萌",
-      "score": 20,
+      "score": 19,
       "views": 34,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -417,7 +417,7 @@
     },
     {
       "tag": "mobile",
-      "score": 20,
+      "score": 19,
       "views": 34,
       "downloads": 0,
       "wallpaperCount": 1,
