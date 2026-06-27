@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-06-26T19:20:10.120Z",
+  "generatedAt": "2026-06-27T18:46:13.072Z",
   "series": "avatar",
   "total": 503,
   "tags": [
     {
       "tag": "人像",
-      "score": 457,
-      "views": 475,
+      "score": 454,
+      "views": 476,
       "downloads": 239,
       "wallpaperCount": 157,
       "series": [
@@ -37,7 +37,7 @@
     },
     {
       "tag": "动漫",
-      "score": 298,
+      "score": 296,
       "views": 347,
       "downloads": 150,
       "wallpaperCount": 100,
@@ -69,7 +69,7 @@
     },
     {
       "tag": "氛围感",
-      "score": 216,
+      "score": 214,
       "views": 231,
       "downloads": 121,
       "wallpaperCount": 61,
@@ -101,7 +101,7 @@
     },
     {
       "tag": "萌宠",
-      "score": 177,
+      "score": 176,
       "views": 186,
       "downloads": 106,
       "wallpaperCount": 35,
@@ -133,7 +133,7 @@
     },
     {
       "tag": "猫咪",
-      "score": 142,
+      "score": 141,
       "views": 152,
       "downloads": 86,
       "wallpaperCount": 21,
@@ -197,7 +197,7 @@
     },
     {
       "tag": "甜妹",
-      "score": 131,
+      "score": 130,
       "views": 125,
       "downloads": 67,
       "wallpaperCount": 57,
@@ -229,7 +229,7 @@
     },
     {
       "tag": "IP形象",
-      "score": 124,
+      "score": 123,
       "views": 158,
       "downloads": 59,
       "wallpaperCount": 44,
@@ -262,7 +262,7 @@
     {
       "tag": "背影",
       "score": 82,
-      "views": 79,
+      "views": 80,
       "downloads": 38,
       "wallpaperCount": 29,
       "series": [
@@ -325,7 +325,7 @@
     },
     {
       "tag": "水豚噜噜",
-      "score": 66,
+      "score": 65,
       "views": 82,
       "downloads": 33,
       "wallpaperCount": 17,
@@ -352,38 +352,6 @@
         {
           "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/比耶微笑.webp",
           "cdnTag": "v1.1.13"
-        }
-      ]
-    },
-    {
-      "tag": "蜡笔小新",
-      "score": 65,
-      "views": 77,
-      "downloads": 34,
-      "wallpaperCount": 18,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/戴耳机麦当劳外卖.webp",
-          "cdnTag": "v1.1.13"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/蜡笔小新_被书压倒.webp",
-          "cdnTag": "v1.1.22"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/滑雪小新.webp",
-          "cdnTag": "v1.1.24"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/吃饱再说.webp",
-          "cdnTag": "v1.1.22"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/我办事操心吧.webp",
-          "cdnTag": "v1.1.22"
         }
       ]
     },
@@ -420,8 +388,40 @@
       ]
     },
     {
-      "tag": "卡通",
+      "tag": "蜡笔小新",
       "score": 63,
+      "views": 77,
+      "downloads": 34,
+      "wallpaperCount": 18,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/戴耳机麦当劳外卖.webp",
+          "cdnTag": "v1.1.13"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/蜡笔小新_被书压倒.webp",
+          "cdnTag": "v1.1.22"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/滑雪小新.webp",
+          "cdnTag": "v1.1.24"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/微信图片_2026-03-27_135058_509.webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/image_蜡笔小新话题_流浪春天话题_情头..._0.webp",
+          "cdnTag": "v1.1.85"
+        }
+      ]
+    },
+    {
+      "tag": "卡通",
+      "score": 62,
       "views": 76,
       "downloads": 24,
       "wallpaperCount": 17,
@@ -448,22 +448,6 @@
         {
           "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/微信图片_2026-04-11_145953_146.webp",
           "cdnTag": "v1.2.57"
-        }
-      ]
-    },
-    {
-      "tag": "戴耳机",
-      "score": 61,
-      "views": 60,
-      "downloads": 39,
-      "wallpaperCount": 1,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴耳机.webp",
-          "cdnTag": "v1.1.11"
         }
       ]
     },
@@ -528,6 +512,22 @@
         {
           "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152758_334.webp",
           "cdnTag": "v1.2.57"
+        }
+      ]
+    },
+    {
+      "tag": "戴耳机",
+      "score": 60,
+      "views": 60,
+      "downloads": 39,
+      "wallpaperCount": 1,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴耳机.webp",
+          "cdnTag": "v1.1.11"
         }
       ]
     },
@@ -629,7 +629,7 @@
     },
     {
       "tag": "可爱",
-      "score": 44,
+      "score": 43,
       "views": 46,
       "downloads": 18,
       "wallpaperCount": 14,
@@ -1073,7 +1073,7 @@
     },
     {
       "tag": "柔光金发女生",
-      "score": 22,
+      "score": 21,
       "views": 30,
       "downloads": 11,
       "wallpaperCount": 1,
