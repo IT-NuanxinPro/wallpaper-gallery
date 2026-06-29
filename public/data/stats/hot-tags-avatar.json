@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-28T18:46:20.222Z",
+  "generatedAt": "2026-06-29T19:21:35.966Z",
   "series": "avatar",
   "total": 503,
   "tags": [
@@ -37,9 +37,9 @@
     },
     {
       "tag": "动漫",
-      "score": 296,
-      "views": 347,
-      "downloads": 150,
+      "score": 297,
+      "views": 348,
+      "downloads": 151,
       "wallpaperCount": 100,
       "series": [
         "avatar"
@@ -54,12 +54,12 @@
           "cdnTag": "v1.1.13"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/哆啦A梦/微信图片_20260310202254_659_4.webp",
-          "cdnTag": "v1.2.8"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._14.webp",
           "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/哆啦A梦/微信图片_20260310202254_659_4.webp",
+          "cdnTag": "v1.2.8"
         },
         {
           "thumbnail": "/thumbnail/avatar/动漫/海贼王/微信图片_20260120161538_484_4.webp",
@@ -165,7 +165,7 @@
     },
     {
       "tag": "插画",
-      "score": 138,
+      "score": 137,
       "views": 146,
       "downloads": 81,
       "wallpaperCount": 47,
@@ -293,7 +293,7 @@
     },
     {
       "tag": "二次元",
-      "score": 76,
+      "score": 75,
       "views": 82,
       "downloads": 43,
       "wallpaperCount": 25,
@@ -388,6 +388,38 @@
       ]
     },
     {
+      "tag": "卡通",
+      "score": 64,
+      "views": 77,
+      "downloads": 25,
+      "wallpaperCount": 17,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/通用/微信图片_20260310202255_660_4.webp",
+          "cdnTag": "v1.2.8"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_20260310202253_658_4.webp",
+          "cdnTag": "v1.2.8"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/海贼王/微信图片_2026-03-26_161050_310.webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/微信图片_20260120161539_485_4.webp",
+          "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/微信图片_2026-04-11_145953_146.webp",
+          "cdnTag": "v1.2.57"
+        }
+      ]
+    },
+    {
       "tag": "蜡笔小新",
       "score": 63,
       "views": 77,
@@ -416,38 +448,6 @@
         {
           "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/image_蜡笔小新话题_流浪春天话题_情头..._0.webp",
           "cdnTag": "v1.1.85"
-        }
-      ]
-    },
-    {
-      "tag": "卡通",
-      "score": 62,
-      "views": 76,
-      "downloads": 24,
-      "wallpaperCount": 17,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/通用/微信图片_20260310202255_660_4.webp",
-          "cdnTag": "v1.2.8"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_20260310202253_658_4.webp",
-          "cdnTag": "v1.2.8"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/海贼王/微信图片_2026-03-26_161050_310.webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/微信图片_20260120161539_485_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/微信图片_2026-04-11_145953_146.webp",
-          "cdnTag": "v1.2.57"
         }
       ]
     },
@@ -597,7 +597,7 @@
     },
     {
       "tag": "哆啦A梦",
-      "score": 52,
+      "score": 51,
       "views": 63,
       "downloads": 27,
       "wallpaperCount": 11,
@@ -852,6 +852,38 @@
       ]
     },
     {
+      "tag": "海贼王",
+      "score": 31,
+      "views": 35,
+      "downloads": 14,
+      "wallpaperCount": 12,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/海贼王/微信图片_20260120161538_484_4.webp",
+          "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/海贼王/微信图片_2026-03-26_161050_310.webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/海贼王/路飞打拳.webp",
+          "cdnTag": "v1.1.24"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/海贼王/微信图片_2026-03-26_161016_178.webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/海贼王/路飞_草帽剑士.webp",
+          "cdnTag": "v1.1.24"
+        }
+      ]
+    },
+    {
       "tag": "侧脸",
       "score": 30,
       "views": 22,
@@ -880,38 +912,6 @@
         {
           "thumbnail": "/thumbnail/avatar/人像/氛围感/660.webp",
           "cdnTag": "v1.1.96"
-        }
-      ]
-    },
-    {
-      "tag": "海贼王",
-      "score": 29,
-      "views": 34,
-      "downloads": 13,
-      "wallpaperCount": 12,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/海贼王/微信图片_20260120161538_484_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/海贼王/路飞打拳.webp",
-          "cdnTag": "v1.1.24"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/海贼王/微信图片_2026-03-26_161050_310.webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/海贼王/微信图片_2026-03-26_161016_178.webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/海贼王/路飞_草帽剑士.webp",
-          "cdnTag": "v1.1.24"
         }
       ]
     },

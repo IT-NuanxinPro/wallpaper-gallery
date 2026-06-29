@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-06-28T18:46:20.239Z",
+  "generatedAt": "2026-06-29T19:21:35.982Z",
   "series": "bing",
   "total": 258,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 236,
+      "score": 235,
       "views": 375,
       "downloads": 102,
       "wallpaperCount": 31,
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 165,
+      "score": 163,
       "views": 170,
       "downloads": 63,
       "wallpaperCount": 25,
@@ -33,13 +33,13 @@
         "bing-2026-03-02.jpg",
         "bing-2026-03-18.jpg",
         "bing-2026-03-01.jpg",
-        "bing-2026-03-14.jpg",
-        "bing-2026-03-23.jpg"
+        "bing-2026-03-23.jpg",
+        "bing-2026-03-24.jpg"
       ]
     },
     {
       "tag": "2025 12",
-      "score": 82,
+      "score": 81,
       "views": 102,
       "downloads": 48,
       "wallpaperCount": 27,
@@ -49,8 +49,8 @@
       "topWallpapers": [
         "bing-2025-12-31.jpg",
         "bing-2025-12-30.jpg",
-        "bing-2025-12-07.jpg",
         "bing-2025-12-01.jpg",
+        "bing-2025-12-07.jpg",
         "bing-2025-12-19.jpg"
       ]
     },
@@ -149,19 +149,6 @@
       ]
     },
     {
-      "tag": "小村庄，大视野",
-      "score": 16,
-      "views": 23,
-      "downloads": 7,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-15.jpg"
-      ]
-    },
-    {
       "tag": "当水划出界线",
       "score": 16,
       "views": 16,
@@ -190,6 +177,19 @@
         "bing-2025-03-20.jpg",
         "bing-2025-03-11.jpg",
         "bing-2025-03-12.jpg"
+      ]
+    },
+    {
+      "tag": "小村庄，大视野",
+      "score": 15,
+      "views": 23,
+      "downloads": 7,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-15.jpg"
       ]
     },
     {
@@ -301,19 +301,6 @@
       ]
     },
     {
-      "tag": "圆周率的古老启示",
-      "score": 11,
-      "views": 8,
-      "downloads": 5,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-14.jpg"
-      ]
-    },
-    {
       "tag": "2025 02",
       "score": 10,
       "views": 21,
@@ -341,6 +328,19 @@
       ],
       "topWallpapers": [
         "bing-2026-01-19.jpg"
+      ]
+    },
+    {
+      "tag": "圆周率的古老启示",
+      "score": 10,
+      "views": 8,
+      "downloads": 5,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-14.jpg"
       ]
     },
     {
@@ -473,19 +473,6 @@
       ]
     },
     {
-      "tag": "治愈、宁静且充满希望",
-      "score": 8,
-      "views": 5,
-      "downloads": 4,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-07.jpg"
-      ]
-    },
-    {
       "tag": "2025 09",
       "score": 7,
       "views": 10,
@@ -526,6 +513,19 @@
       ],
       "topWallpapers": [
         "bing-2026-01-24.jpg"
+      ]
+    },
+    {
+      "tag": "治愈、宁静且充满希望",
+      "score": 7,
+      "views": 5,
+      "downloads": 4,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-07.jpg"
       ]
     },
     {
