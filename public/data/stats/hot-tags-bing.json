@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-29T19:21:35.982Z",
+  "generatedAt": "2026-06-30T19:21:11.623Z",
   "series": "bing",
   "total": 258,
   "tags": [
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 163,
+      "score": 161,
       "views": 170,
       "downloads": 63,
       "wallpaperCount": 25,
@@ -107,7 +107,7 @@
     },
     {
       "tag": "2025 07",
-      "score": 24,
+      "score": 23,
       "views": 27,
       "downloads": 25,
       "wallpaperCount": 12,
@@ -115,8 +115,8 @@
         "bing"
       ],
       "topWallpapers": [
-        "bing-2025-07-23.jpg",
         "bing-2025-07-11.jpg",
+        "bing-2025-07-23.jpg",
         "bing-2025-07-15.jpg",
         "bing-2025-07-04.jpg",
         "bing-2025-07-06.jpg"
@@ -249,19 +249,6 @@
       ]
     },
     {
-      "tag": "城市花开",
-      "score": 13,
-      "views": 12,
-      "downloads": 5,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-18.jpg"
-      ]
-    },
-    {
       "tag": "纯粹的瑞士魔力",
       "score": 12,
       "views": 17,
@@ -288,8 +275,21 @@
       ]
     },
     {
-      "tag": "每一步，都是传承",
+      "tag": "城市花开",
       "score": 12,
+      "views": 12,
+      "downloads": 5,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-18.jpg"
+      ]
+    },
+    {
+      "tag": "每一步，都是传承",
+      "score": 11,
       "views": 12,
       "downloads": 5,
       "wallpaperCount": 1,
