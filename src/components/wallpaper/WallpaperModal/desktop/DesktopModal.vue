@@ -13,7 +13,7 @@ import { useWallpaperType } from '@/composables/useWallpaperType'
 import { usePopularityStore } from '@/stores/popularity'
 import { trackWallpaperDownload, trackWallpaperPreview } from '@/utils/common/analytics'
 import { copyText } from '@/utils/common/clipboard'
-import { buildProxyImageUrl, buildRawImageUrl, buildWallpaperDownloadFilename, downloadFile, formatDate, formatFileSize, formatRelativeTime, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/common/format'
+import { buildRawImageUrl, buildWallpaperDownloadFilename, downloadFile, formatDate, formatFileSize, formatRelativeTime, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/common/format'
 import { recordDownload, recordView } from '@/utils/integrations/supabase'
 import { resolveWallpaperSeries } from '@/utils/wallpaper/identity'
 import DesktopImageStage from './DesktopImageStage.vue'
@@ -148,8 +148,6 @@ const optimizedImageUrl = computed(() => {
 
   if (fallbackStage.value === 'raw')
     return buildRawImageUrl(primaryUrl)
-  if (fallbackStage.value === 'proxy')
-    return buildProxyImageUrl(primaryUrl)
 
   return primaryUrl
 })
@@ -227,12 +225,6 @@ function handleImageLoad(e) {
 function handleImageError() {
   if (fallbackStage.value === 'none') {
     fallbackStage.value = 'raw'
-    imageLoaded.value = false
-    return
-  }
-
-  if (fallbackStage.value === 'raw') {
-    fallbackStage.value = 'proxy'
     imageLoaded.value = false
   }
 }

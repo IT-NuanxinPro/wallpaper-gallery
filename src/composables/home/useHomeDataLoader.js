@@ -1,6 +1,6 @@
 import { computed, onMounted, ref, watch } from 'vue'
-import { buildProxyImageUrl, buildRawImageUrl } from '@/utils/common/format'
-import { IMAGE_PROXY, SERIES_CONFIG } from '@/utils/config/constants'
+import { buildRawImageUrl } from '@/utils/common/format'
+import { SERIES_CONFIG } from '@/utils/config/constants'
 
 const PRELOAD_COUNT = 20
 const PRELOAD_TIMEOUT_MS = 8000
@@ -39,16 +39,6 @@ export function useHomeDataLoader({
     ].filter(Boolean)
 
     candidates.push(...candidates.map(url => buildRawImageUrl(url)).filter(Boolean))
-
-    if (wallpaper.url) {
-      candidates.push(
-        buildProxyImageUrl(wallpaper.url, {
-          width: IMAGE_PROXY.THUMB_WIDTH,
-          quality: IMAGE_PROXY.THUMB_QUALITY,
-          format: IMAGE_PROXY.FORMAT,
-        }),
-      )
-    }
 
     return [...new Set(candidates)]
   }

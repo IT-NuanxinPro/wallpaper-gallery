@@ -143,16 +143,6 @@ export const VIDEO_USAGE_SHORT_LABELS = {
   'social-cover': '动态背景',
 }
 
-// ========================================
-// 图片代理服务配置（备用方案，如本地缩略图不可用时使用）
-// ========================================
-export const IMAGE_PROXY = {
-  BASE_URL: 'https://wsrv.nl/',
-  THUMB_WIDTH: 400,
-  THUMB_QUALITY: 80,
-  FORMAT: 'webp',
-}
-
 // 排序选项
 export const SORT_OPTIONS = [
   { value: 'newest', label: '🕐 最新优先', icon: 'clock' },

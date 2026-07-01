@@ -2,7 +2,7 @@
 // 格式化工具函数
 // ========================================
 
-import { CDN_VERSION, IMAGE_PROXY, RESOLUTION_THRESHOLDS, SERIES_CONFIG } from '@/utils/config/constants'
+import { CDN_VERSION, RESOLUTION_THRESHOLDS, SERIES_CONFIG } from '@/utils/config/constants'
 import { resolveWallpaperSeries } from '@/utils/wallpaper/identity'
 
 // URL 构建器（运行时动态拼接，防止静态分析提取完整 URL）
@@ -382,19 +382,6 @@ export function buildRawImageUrl(cdnUrl) {
   return cdnUrl
 }
 
-export function buildProxyImageUrl(imageUrl, options = {}) {
-  if (!imageUrl) {
-    return ''
-  }
-
-  const targetUrl = buildRawImageUrl(imageUrl)
-  const width = options.width || IMAGE_PROXY.THUMB_WIDTH
-  const quality = options.quality || IMAGE_PROXY.THUMB_QUALITY
-  const format = options.format || IMAGE_PROXY.FORMAT
-
-  return `${IMAGE_PROXY.BASE_URL}?url=${encodeURIComponent(targetUrl)}&w=${width}&q=${quality}&output=${format}`
-}
-
 export function buildWallpaperImageFallbackUrls(wallpaper, options = {}) {
   if (!wallpaper)
     return []
@@ -423,10 +410,6 @@ export function buildWallpaperImageFallbackUrls(wallpaper, options = {}) {
 
   if (originalUrl && originalUrl !== primaryUrl) {
     urls.push(originalUrl, buildRawImageUrl(originalUrl))
-  }
-
-  if (!options.skipProxy) {
-    urls.push(buildProxyImageUrl(originalUrl || primaryUrl, options.proxyOptions))
   }
 
   return [...new Set(urls.filter(Boolean))]

@@ -13,7 +13,7 @@ import { useWallpaperType } from '@/composables/useWallpaperType'
 import { usePopularityStore } from '@/stores/popularity'
 import { trackWallpaperDownload, trackWallpaperPreview } from '@/utils/common/analytics'
 import { copyText } from '@/utils/common/clipboard'
-import { buildProxyImageUrl, buildRawImageUrl, buildWallpaperDownloadFilename, downloadFile, formatDate, formatFileSize, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/common/format'
+import { buildRawImageUrl, buildWallpaperDownloadFilename, downloadFile, formatDate, formatFileSize, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/common/format'
 import { recordDownload, recordView } from '@/utils/integrations/supabase'
 import { resolveWallpaperSeries } from '@/utils/wallpaper/identity'
 
@@ -95,8 +95,6 @@ const optimizedImageUrl = computed(() => {
 
   if (fallbackStage.value === 'raw')
     return buildRawImageUrl(props.wallpaper.url)
-  if (fallbackStage.value === 'proxy')
-    return buildProxyImageUrl(props.wallpaper.url)
 
   return props.wallpaper.url
 })
@@ -163,12 +161,6 @@ function handleImageLoad(e) {
 function handleImageError() {
   if (fallbackStage.value === 'none') {
     fallbackStage.value = 'raw'
-    imageLoaded.value = false
-    return
-  }
-
-  if (fallbackStage.value === 'raw') {
-    fallbackStage.value = 'proxy'
     imageLoaded.value = false
   }
 }
