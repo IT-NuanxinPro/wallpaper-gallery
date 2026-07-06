@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-05T18:38:59.596Z",
+  "generatedAt": "2026-07-06T19:18:04.393Z",
   "series": "bing",
-  "total": 257,
+  "total": 256,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 233,
+      "score": 232,
       "views": 378,
       "downloads": 104,
       "wallpaperCount": 31,
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 166,
+      "score": 165,
       "views": 177,
       "downloads": 65,
       "wallpaperCount": 25,
@@ -39,7 +39,7 @@
     },
     {
       "tag": "2025 12",
-      "score": 81,
+      "score": 80,
       "views": 106,
       "downloads": 49,
       "wallpaperCount": 28,
@@ -48,15 +48,15 @@
       ],
       "topWallpapers": [
         "bing-2025-12-31.jpg",
-        "bing-2025-12-30.jpg",
         "bing-2025-12-01.jpg",
+        "bing-2025-12-30.jpg",
         "bing-2025-12-19.jpg",
         "bing-2025-12-07.jpg"
       ]
     },
     {
       "tag": "2026 02",
-      "score": 58,
+      "score": 57,
       "views": 75,
       "downloads": 25,
       "wallpaperCount": 18,
@@ -64,8 +64,8 @@
         "bing"
       ],
       "topWallpapers": [
-        "bing-2026-02-01.jpg",
         "bing-2026-02-06.jpg",
+        "bing-2026-02-01.jpg",
         "bing-2026-02-25.jpg",
         "bing-2026-02-08.jpg",
         "bing-2026-02-20.jpg"
@@ -150,7 +150,7 @@
     },
     {
       "tag": "小村庄，大视野",
-      "score": 17,
+      "score": 16,
       "views": 24,
       "downloads": 8,
       "wallpaperCount": 1,
@@ -555,19 +555,6 @@
       ]
     },
     {
-      "tag": "一个美好的春天",
-      "score": 7,
-      "views": 6,
-      "downloads": 3,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-11.jpg"
-      ]
-    },
-    {
       "tag": "苹果韵，旧时光",
       "score": 7,
       "views": 15,
@@ -578,6 +565,23 @@
       ],
       "topWallpapers": [
         "bing-2026-01-13.jpg"
+      ]
+    },
+    {
+      "tag": "2024 11",
+      "score": 6,
+      "views": 12,
+      "downloads": 7,
+      "wallpaperCount": 6,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2024-11-29.jpg",
+        "bing-2024-11-01.jpg",
+        "bing-2024-11-08.jpg",
+        "bing-2024-11-10.jpg",
+        "bing-2024-11-16.jpg"
       ]
     }
   ]
