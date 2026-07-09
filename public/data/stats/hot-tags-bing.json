@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T18:54:22.937Z",
+  "generatedAt": "2026-07-09T19:08:08.200Z",
   "series": "bing",
   "total": 256,
   "tags": [
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 161,
+      "score": 159,
       "views": 177,
       "downloads": 65,
       "wallpaperCount": 25,
@@ -413,19 +413,6 @@
       ]
     },
     {
-      "tag": "春日绯梦",
-      "score": 9,
-      "views": 13,
-      "downloads": 2,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-20.jpg"
-      ]
-    },
-    {
       "tag": "2025 01",
       "score": 8,
       "views": 19,
@@ -486,16 +473,16 @@
       ]
     },
     {
-      "tag": "古老岩石，现代灯光",
+      "tag": "春日绯梦",
       "score": 8,
-      "views": 9,
-      "downloads": 3,
+      "views": 13,
+      "downloads": 2,
       "wallpaperCount": 1,
       "series": [
         "bing"
       ],
       "topWallpapers": [
-        "bing-2026-03-05.jpg"
+        "bing-2026-03-20.jpg"
       ]
     },
     {
@@ -539,6 +526,19 @@
       ],
       "topWallpapers": [
         "bing-2026-03-07.jpg"
+      ]
+    },
+    {
+      "tag": "古老岩石，现代灯光",
+      "score": 7,
+      "views": 9,
+      "downloads": 3,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-05.jpg"
       ]
     },
     {

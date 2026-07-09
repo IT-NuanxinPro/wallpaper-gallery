@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T18:54:22.921Z",
+  "generatedAt": "2026-07-09T19:08:08.184Z",
   "series": "avatar",
   "total": 503,
   "tags": [
@@ -37,7 +37,7 @@
     },
     {
       "tag": "动漫",
-      "score": 361,
+      "score": 360,
       "views": 366,
       "downloads": 203,
       "wallpaperCount": 100,
@@ -101,7 +101,7 @@
     },
     {
       "tag": "插画",
-      "score": 180,
+      "score": 179,
       "views": 159,
       "downloads": 116,
       "wallpaperCount": 47,
@@ -133,7 +133,7 @@
     },
     {
       "tag": "萌宠",
-      "score": 180,
+      "score": 178,
       "views": 192,
       "downloads": 111,
       "wallpaperCount": 35,
@@ -165,7 +165,7 @@
     },
     {
       "tag": "猫咪",
-      "score": 145,
+      "score": 144,
       "views": 158,
       "downloads": 90,
       "wallpaperCount": 22,
@@ -229,7 +229,7 @@
     },
     {
       "tag": "IP形象",
-      "score": 123,
+      "score": 122,
       "views": 161,
       "downloads": 62,
       "wallpaperCount": 44,
@@ -325,7 +325,7 @@
     },
     {
       "tag": "二次元",
-      "score": 74,
+      "score": 73,
       "views": 82,
       "downloads": 43,
       "wallpaperCount": 25,
@@ -421,7 +421,7 @@
     },
     {
       "tag": "卡通",
-      "score": 68,
+      "score": 67,
       "views": 81,
       "downloads": 28,
       "wallpaperCount": 18,
@@ -857,7 +857,7 @@
     },
     {
       "tag": "狗狗",
-      "score": 36,
+      "score": 34,
       "views": 34,
       "downloads": 21,
       "wallpaperCount": 13,
@@ -870,12 +870,12 @@
           "cdnTag": "v1.1.53"
         },
         {
-          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/微信图片_2026-02-05_112219_990.webp",
-          "cdnTag": "v1.1.74"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/萌宠/狗狗/柯基_墨镜酷狗.webp",
           "cdnTag": "v1.1.11"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/微信图片_2026-02-05_112219_990.webp",
+          "cdnTag": "v1.1.74"
         },
         {
           "thumbnail": "/thumbnail/avatar/萌宠/狗狗/655.webp",
@@ -889,7 +889,7 @@
     },
     {
       "tag": "猫和老鼠",
-      "score": 34,
+      "score": 33,
       "views": 41,
       "downloads": 21,
       "wallpaperCount": 10,
@@ -902,15 +902,15 @@
           "cdnTag": "v1.1.26"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/微信图片_20260120161541_489_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/杰瑞大笑.webp",
           "cdnTag": "v1.1.26"
         },
         {
           "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/微信图片_20260120161539_485_4.webp",
+          "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/微信图片_20260120161541_489_4.webp",
           "cdnTag": "v1.1.42"
         },
         {
@@ -1097,7 +1097,7 @@
     },
     {
       "tag": "Q版",
-      "score": 27,
+      "score": 26,
       "views": 29,
       "downloads": 12,
       "wallpaperCount": 2,
