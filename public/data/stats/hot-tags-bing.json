@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-10T19:04:41.998Z",
+  "generatedAt": "2026-07-11T18:28:23.284Z",
   "series": "bing",
   "total": 256,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 230,
+      "score": 229,
       "views": 378,
       "downloads": 104,
       "wallpaperCount": 31,
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 158,
+      "score": 157,
       "views": 177,
       "downloads": 65,
       "wallpaperCount": 25,
@@ -33,13 +33,13 @@
         "bing-2026-03-02.jpg",
         "bing-2026-03-18.jpg",
         "bing-2026-03-01.jpg",
-        "bing-2026-03-24.jpg",
-        "bing-2026-03-14.jpg"
+        "bing-2026-03-14.jpg",
+        "bing-2026-03-23.jpg"
       ]
     },
     {
       "tag": "2025 12",
-      "score": 79,
+      "score": 78,
       "views": 106,
       "downloads": 49,
       "wallpaperCount": 28,
@@ -56,7 +56,7 @@
     },
     {
       "tag": "2026 02",
-      "score": 57,
+      "score": 56,
       "views": 75,
       "downloads": 25,
       "wallpaperCount": 18,
@@ -64,8 +64,8 @@
         "bing"
       ],
       "topWallpapers": [
-        "bing-2026-02-06.jpg",
         "bing-2026-02-01.jpg",
+        "bing-2026-02-06.jpg",
         "bing-2026-02-25.jpg",
         "bing-2026-02-08.jpg",
         "bing-2026-02-20.jpg"
@@ -331,19 +331,6 @@
       ]
     },
     {
-      "tag": "春天的形状",
-      "score": 10,
-      "views": 12,
-      "downloads": 3,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-24.jpg"
-      ]
-    },
-    {
       "tag": "2025 04",
       "score": 9,
       "views": 17,
@@ -410,6 +397,19 @@
       ],
       "topWallpapers": [
         "bing-2026-01-02.jpg"
+      ]
+    },
+    {
+      "tag": "春天的形状",
+      "score": 9,
+      "views": 12,
+      "downloads": 3,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-24.jpg"
       ]
     },
     {

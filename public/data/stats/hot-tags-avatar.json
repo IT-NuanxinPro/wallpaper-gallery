@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-10T19:04:41.981Z",
+  "generatedAt": "2026-07-11T18:28:23.267Z",
   "series": "avatar",
   "total": 503,
   "tags": [
@@ -37,7 +37,7 @@
     },
     {
       "tag": "动漫",
-      "score": 356,
+      "score": 355,
       "views": 366,
       "downloads": 203,
       "wallpaperCount": 100,
@@ -100,38 +100,6 @@
       ]
     },
     {
-      "tag": "萌宠",
-      "score": 177,
-      "views": 192,
-      "downloads": 111,
-      "wallpaperCount": 35,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴耳机.webp",
-          "cdnTag": "v1.1.11"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴眼镜男孩肩上趴着小猫.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-01-23_165613_598.webp",
-          "cdnTag": "v1.1.53"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/浴室里的小黄鸭猫.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/微信图片_2026-01-23_165009_180.webp",
-          "cdnTag": "v1.1.53"
-        }
-      ]
-    },
-    {
       "tag": "插画",
       "score": 176,
       "views": 159,
@@ -164,8 +132,40 @@
       ]
     },
     {
+      "tag": "萌宠",
+      "score": 176,
+      "views": 192,
+      "downloads": 111,
+      "wallpaperCount": 35,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴耳机.webp",
+          "cdnTag": "v1.1.11"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴眼镜男孩肩上趴着小猫.webp",
+          "cdnTag": "v1.1.4"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-01-23_165613_598.webp",
+          "cdnTag": "v1.1.53"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/浴室里的小黄鸭猫.webp",
+          "cdnTag": "v1.1.4"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/微信图片_2026-01-23_165009_180.webp",
+          "cdnTag": "v1.1.53"
+        }
+      ]
+    },
+    {
       "tag": "猫咪",
-      "score": 143,
+      "score": 142,
       "views": 158,
       "downloads": 90,
       "wallpaperCount": 22,
@@ -548,34 +548,6 @@
       ]
     },
     {
-      "tag": "治愈",
-      "score": 60,
-      "views": 26,
-      "downloads": 44,
-      "wallpaperCount": 4,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161545_493_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/插画/创意/微信图片_2026-04-11_145936_667.webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161544_492_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161546_495_4.webp",
-          "cdnTag": "v1.1.42"
-        }
-      ]
-    },
-    {
       "tag": "表情包",
       "score": 60,
       "views": 88,
@@ -604,6 +576,34 @@
         {
           "thumbnail": "/thumbnail/avatar/表情包/搞怪/微信图片_20260126155109_64_1186.webp",
           "cdnTag": "v1.1.53"
+        }
+      ]
+    },
+    {
+      "tag": "治愈",
+      "score": 59,
+      "views": 26,
+      "downloads": 44,
+      "wallpaperCount": 4,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161545_493_4.webp",
+          "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/插画/创意/微信图片_2026-04-11_145936_667.webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161544_492_4.webp",
+          "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161546_495_4.webp",
+          "cdnTag": "v1.1.42"
         }
       ]
     },
@@ -721,7 +721,7 @@
     },
     {
       "tag": "玫瑰",
-      "score": 44,
+      "score": 43,
       "views": 24,
       "downloads": 35,
       "wallpaperCount": 6,
@@ -753,7 +753,7 @@
     },
     {
       "tag": "小王子",
-      "score": 43,
+      "score": 42,
       "views": 19,
       "downloads": 36,
       "wallpaperCount": 5,

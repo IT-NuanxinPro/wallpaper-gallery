@@ -1,24 +1,24 @@
 {
-  "generatedAt": "2026-07-10T19:04:41.983Z",
+  "generatedAt": "2026-07-11T18:28:23.269Z",
   "series": "video",
   "total": 25,
   "tags": [
     {
       "tag": "desktop",
-      "score": 377,
-      "views": 550,
-      "downloads": 63,
+      "score": 378,
+      "views": 551,
+      "downloads": 64,
       "wallpaperCount": 6,
       "series": [
         "video"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/video/desktop/风景/晴空云朵笑脸_屋顶阳光.png",
+          "thumbnail": "/thumbnail/video/desktop/动漫/彩瞳少女特写_碎光倒影.png",
           "cdnTag": "v1.1.30"
         },
         {
-          "thumbnail": "/thumbnail/video/desktop/动漫/彩瞳少女特写_碎光倒影.png",
+          "thumbnail": "/thumbnail/video/desktop/风景/晴空云朵笑脸_屋顶阳光.png",
           "cdnTag": "v1.1.30"
         },
         {
@@ -57,7 +57,7 @@
     },
     {
       "tag": "风景",
-      "score": 137,
+      "score": 136,
       "views": 175,
       "downloads": 31,
       "wallpaperCount": 2,
@@ -77,9 +77,9 @@
     },
     {
       "tag": "IP形象",
-      "score": 101,
-      "views": 153,
-      "downloads": 15,
+      "score": 103,
+      "views": 154,
+      "downloads": 16,
       "wallpaperCount": 2,
       "series": [
         "video"
@@ -97,7 +97,7 @@
     },
     {
       "tag": "晴空云朵笑脸",
-      "score": 84,
+      "score": 83,
       "views": 101,
       "downloads": 21,
       "wallpaperCount": 1,
@@ -113,7 +113,7 @@
     },
     {
       "tag": "屋顶阳光",
-      "score": 84,
+      "score": 83,
       "views": 101,
       "downloads": 21,
       "wallpaperCount": 1,
@@ -161,9 +161,9 @@
     },
     {
       "tag": "聚光帅舞",
-      "score": 69,
-      "views": 102,
-      "downloads": 11,
+      "score": 71,
+      "views": 103,
+      "downloads": 12,
       "wallpaperCount": 1,
       "series": [
         "video"
@@ -177,9 +177,9 @@
     },
     {
       "tag": "水豚噜噜",
-      "score": 69,
-      "views": 102,
-      "downloads": 11,
+      "score": 71,
+      "views": 103,
+      "downloads": 12,
       "wallpaperCount": 1,
       "series": [
         "video"
