@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-15T18:39:29.393Z",
+  "generatedAt": "2026-07-16T18:42:08.487Z",
   "series": "avatar",
   "total": 504,
   "tags": [
     {
       "tag": "人像",
-      "score": 432,
+      "score": 429,
       "views": 477,
       "downloads": 239,
       "wallpaperCount": 157,
@@ -101,9 +101,9 @@
     },
     {
       "tag": "萌宠",
-      "score": 175,
-      "views": 192,
-      "downloads": 111,
+      "score": 177,
+      "views": 194,
+      "downloads": 113,
       "wallpaperCount": 35,
       "series": [
         "avatar"
@@ -165,9 +165,9 @@
     },
     {
       "tag": "猫咪",
-      "score": 141,
-      "views": 158,
-      "downloads": 90,
+      "score": 143,
+      "views": 160,
+      "downloads": 92,
       "wallpaperCount": 22,
       "series": [
         "avatar"
@@ -197,7 +197,7 @@
     },
     {
       "tag": "甜妹",
-      "score": 123,
+      "score": 122,
       "views": 125,
       "downloads": 67,
       "wallpaperCount": 57,
@@ -214,16 +214,16 @@
           "cdnTag": "v1.1.96"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/image_向往自由的女生头像话题_散落人间..._7.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_20260119095919_478_4.webp",
           "cdnTag": "v1.1.42"
         },
         {
           "thumbnail": "/thumbnail/avatar/人像/甜妹/甜妹_M&Ms彩妆.webp",
           "cdnTag": "v1.1.22"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/image_向往自由的女生头像话题_散落人间..._7.webp",
+          "cdnTag": "v1.2.33"
         }
       ]
     },
@@ -389,7 +389,7 @@
     },
     {
       "tag": "搞怪",
-      "score": 68,
+      "score": 66,
       "views": 97,
       "downloads": 32,
       "wallpaperCount": 35,
@@ -608,38 +608,6 @@
       ]
     },
     {
-      "tag": "表情包",
-      "score": 58,
-      "views": 88,
-      "downloads": 27,
-      "wallpaperCount": 33,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/戴墨镜帽子的Q版男孩.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/线条兔_墨镜酷酷.webp",
-          "cdnTag": "v1.1.11"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/通用/image_高级头像话题_趣味头像话题_头像..._2.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/微信图片_2026-01-23_165024_232.webp",
-          "cdnTag": "v1.1.53"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/微信图片_20260310202244_646_4.webp",
-          "cdnTag": "v1.2.8"
-        }
-      ]
-    },
-    {
       "tag": "戴耳机",
       "score": 57,
       "views": 61,
@@ -684,6 +652,38 @@
         {
           "thumbnail": "/thumbnail/avatar/人像/甜妹/640.webp",
           "cdnTag": "v1.2.57"
+        }
+      ]
+    },
+    {
+      "tag": "表情包",
+      "score": 56,
+      "views": 88,
+      "downloads": 27,
+      "wallpaperCount": 33,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/戴墨镜帽子的Q版男孩.webp",
+          "cdnTag": "v1.1.4"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/线条兔_墨镜酷酷.webp",
+          "cdnTag": "v1.1.11"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/通用/image_高级头像话题_趣味头像话题_头像..._2.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/微信图片_2026-01-23_165024_232.webp",
+          "cdnTag": "v1.1.53"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/微信图片_20260310202244_646_4.webp",
+          "cdnTag": "v1.2.8"
         }
       ]
     },
@@ -920,38 +920,6 @@
       ]
     },
     {
-      "tag": "卡通简笔画",
-      "score": 30,
-      "views": 46,
-      "downloads": 14,
-      "wallpaperCount": 12,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/呆萌少女_猫耳头套.webp",
-          "cdnTag": "v1.1.26"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/红衣男孩贴福字.webp",
-          "cdnTag": "v1.1.11"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/围巾男孩举春联.webp",
-          "cdnTag": "v1.1.11"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/微信图片_20260119095916_475_4.webp",
-          "cdnTag": "v1.1.40"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/圣诞帽麻花辫托腮.webp",
-          "cdnTag": "v1.1.11"
-        }
-      ]
-    },
-    {
       "tag": "长发",
       "score": 30,
       "views": 34,
@@ -1012,6 +980,38 @@
         {
           "thumbnail": "/thumbnail/avatar/动漫/海贼王/路飞_草帽剑士.webp",
           "cdnTag": "v1.1.24"
+        }
+      ]
+    },
+    {
+      "tag": "卡通简笔画",
+      "score": 28,
+      "views": 46,
+      "downloads": 14,
+      "wallpaperCount": 12,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/呆萌少女_猫耳头套.webp",
+          "cdnTag": "v1.1.26"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/红衣男孩贴福字.webp",
+          "cdnTag": "v1.1.11"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/围巾男孩举春联.webp",
+          "cdnTag": "v1.1.11"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/微信图片_20260119095916_475_4.webp",
+          "cdnTag": "v1.1.40"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/圣诞帽麻花辫托腮.webp",
+          "cdnTag": "v1.1.11"
         }
       ]
     },
@@ -1117,9 +1117,9 @@
     },
     {
       "tag": "搞笑",
-      "score": 24,
-      "views": 26,
-      "downloads": 14,
+      "score": 25,
+      "views": 27,
+      "downloads": 15,
       "wallpaperCount": 3,
       "series": [
         "avatar"

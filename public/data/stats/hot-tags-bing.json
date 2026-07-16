@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-15T18:39:29.410Z",
+  "generatedAt": "2026-07-16T18:42:08.503Z",
   "series": "bing",
   "total": 253,
   "tags": [
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 166,
+      "score": 163,
       "views": 184,
       "downloads": 69,
       "wallpaperCount": 25,
@@ -31,8 +31,8 @@
       ],
       "topWallpapers": [
         "bing-2026-03-02.jpg",
-        "bing-2026-03-01.jpg",
         "bing-2026-03-18.jpg",
+        "bing-2026-03-01.jpg",
         "bing-2026-03-14.jpg",
         "bing-2026-03-23.jpg"
       ]
@@ -262,19 +262,6 @@
       ]
     },
     {
-      "tag": "每一步，都是传承",
-      "score": 12,
-      "views": 14,
-      "downloads": 5,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-01.jpg"
-      ]
-    },
-    {
       "tag": "城市花开",
       "score": 12,
       "views": 13,
@@ -298,6 +285,19 @@
       ],
       "topWallpapers": [
         "bing-2026-01-10.jpg"
+      ]
+    },
+    {
+      "tag": "每一步，都是传承",
+      "score": 11,
+      "views": 14,
+      "downloads": 5,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-01.jpg"
       ]
     },
     {
