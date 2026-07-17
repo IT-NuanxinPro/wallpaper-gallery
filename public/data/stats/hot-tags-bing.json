@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-16T18:42:08.503Z",
+  "generatedAt": "2026-07-17T18:35:52.821Z",
   "series": "bing",
   "total": 253,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 228,
+      "score": 227,
       "views": 379,
       "downloads": 105,
       "wallpaperCount": 31,
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 163,
+      "score": 160,
       "views": 184,
       "downloads": 69,
       "wallpaperCount": 25,
@@ -90,7 +90,7 @@
     },
     {
       "tag": "2025 11",
-      "score": 32,
+      "score": 31,
       "views": 48,
       "downloads": 23,
       "wallpaperCount": 16,
@@ -100,9 +100,9 @@
       "topWallpapers": [
         "bing-2025-11-24.jpg",
         "bing-2025-11-23.jpg",
-        "bing-2025-11-25.jpg",
         "bing-2025-11-11.jpg",
-        "bing-2025-11-12.jpg"
+        "bing-2025-11-12.jpg",
+        "bing-2025-11-25.jpg"
       ]
     },
     {
@@ -361,19 +361,6 @@
       ]
     },
     {
-      "tag": "治愈、宁静且充满希望",
-      "score": 9,
-      "views": 6,
-      "downloads": 5,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-07.jpg"
-      ]
-    },
-    {
       "tag": "古老岩石，现代灯光",
       "score": 9,
       "views": 11,
@@ -473,16 +460,16 @@
       ]
     },
     {
-      "tag": "瑞士山间的短逃离",
+      "tag": "治愈、宁静且充满希望",
       "score": 8,
-      "views": 7,
+      "views": 6,
       "downloads": 5,
       "wallpaperCount": 1,
       "series": [
         "bing"
       ],
       "topWallpapers": [
-        "bing-2026-01-24.jpg"
+        "bing-2026-03-07.jpg"
       ]
     },
     {
@@ -526,6 +513,19 @@
         "bing-2025-09-02.jpg",
         "bing-2025-09-14.jpg",
         "bing-2025-09-16.jpg"
+      ]
+    },
+    {
+      "tag": "瑞士山间的短逃离",
+      "score": 7,
+      "views": 7,
+      "downloads": 5,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-24.jpg"
       ]
     },
     {
