@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-19T18:29:53.417Z",
+  "generatedAt": "2026-07-20T19:14:07.813Z",
   "series": "bing",
   "total": 251,
   "tags": [
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 159,
+      "score": 156,
       "views": 184,
       "downloads": 69,
       "wallpaperCount": 25,
@@ -33,13 +33,13 @@
         "bing-2026-03-02.jpg",
         "bing-2026-03-18.jpg",
         "bing-2026-03-01.jpg",
-        "bing-2026-03-14.jpg",
-        "bing-2026-03-23.jpg"
+        "bing-2026-03-23.jpg",
+        "bing-2026-03-24.jpg"
       ]
     },
     {
       "tag": "2025 12",
-      "score": 76,
+      "score": 75,
       "views": 108,
       "downloads": 51,
       "wallpaperCount": 28,
@@ -56,7 +56,7 @@
     },
     {
       "tag": "2026 02",
-      "score": 58,
+      "score": 57,
       "views": 78,
       "downloads": 27,
       "wallpaperCount": 18,
@@ -73,7 +73,7 @@
     },
     {
       "tag": "2025 06",
-      "score": 32,
+      "score": 31,
       "views": 45,
       "downloads": 36,
       "wallpaperCount": 24,
@@ -318,19 +318,6 @@
       ]
     },
     {
-      "tag": "圆周率的古老启示",
-      "score": 10,
-      "views": 8,
-      "downloads": 5,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-14.jpg"
-      ]
-    },
-    {
       "tag": "2025 04",
       "score": 9,
       "views": 17,
@@ -361,6 +348,19 @@
       ]
     },
     {
+      "tag": "圆周率的古老启示",
+      "score": 9,
+      "views": 8,
+      "downloads": 5,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-14.jpg"
+      ]
+    },
+    {
       "tag": "古老岩石，现代灯光",
       "score": 9,
       "views": 11,
@@ -371,19 +371,6 @@
       ],
       "topWallpapers": [
         "bing-2026-03-05.jpg"
-      ]
-    },
-    {
-      "tag": "根系自由生长的地方",
-      "score": 9,
-      "views": 8,
-      "downloads": 4,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-21.jpg"
       ]
     },
     {
@@ -486,6 +473,19 @@
       ]
     },
     {
+      "tag": "根系自由生长的地方",
+      "score": 8,
+      "views": 8,
+      "downloads": 4,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-21.jpg"
+      ]
+    },
+    {
       "tag": "春日绯梦",
       "score": 8,
       "views": 13,
@@ -529,19 +529,6 @@
       ]
     },
     {
-      "tag": "一个美好的春天",
-      "score": 7,
-      "views": 7,
-      "downloads": 3,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-11.jpg"
-      ]
-    },
-    {
       "tag": "苹果韵，旧时光",
       "score": 7,
       "views": 15,
@@ -582,6 +569,19 @@
       ],
       "topWallpapers": [
         "bing-2025-12-07.jpg"
+      ]
+    },
+    {
+      "tag": "冰山上天然形成的拱门  南极洲",
+      "score": 6,
+      "views": 5,
+      "downloads": 5,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2025-12-01.jpg"
       ]
     }
   ]
