@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-22T18:43:04.441Z",
+  "generatedAt": "2026-07-23T18:46:42.798Z",
   "series": "avatar",
   "total": 504,
   "tags": [
     {
       "tag": "人像",
-      "score": 428,
+      "score": 426,
       "views": 483,
       "downloads": 240,
       "wallpaperCount": 158,
@@ -101,7 +101,7 @@
     },
     {
       "tag": "插画",
-      "score": 175,
+      "score": 174,
       "views": 166,
       "downloads": 117,
       "wallpaperCount": 47,
@@ -197,7 +197,7 @@
     },
     {
       "tag": "甜妹",
-      "score": 123,
+      "score": 121,
       "views": 128,
       "downloads": 68,
       "wallpaperCount": 58,
@@ -218,18 +218,18 @@
           "cdnTag": "v1.1.42"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/甜妹_M&Ms彩妆.webp",
-          "cdnTag": "v1.1.22"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/人像/甜妹/image_向往自由的女生头像话题_散落人间..._7.webp",
           "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152758_334.webp",
+          "cdnTag": "v1.2.57"
         }
       ]
     },
     {
       "tag": "IP形象",
-      "score": 115,
+      "score": 114,
       "views": 162,
       "downloads": 62,
       "wallpaperCount": 45,
@@ -325,7 +325,7 @@
     },
     {
       "tag": "二次元",
-      "score": 73,
+      "score": 72,
       "views": 86,
       "downloads": 43,
       "wallpaperCount": 25,
@@ -346,12 +346,12 @@
           "cdnTag": "v1.2.33"
         },
         {
-          "thumbnail": "/thumbnail/avatar/插画/二次元/红包祝福.webp",
-          "cdnTag": "v1.1.22"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/插画/二次元/image_氛围感男头话题_热门头像话题_男..._12.webp",
           "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/插画/二次元/红包祝福.webp",
+          "cdnTag": "v1.1.22"
         }
       ]
     },
@@ -517,7 +517,7 @@
     },
     {
       "tag": "水豚噜噜",
-      "score": 60,
+      "score": 59,
       "views": 83,
       "downloads": 34,
       "wallpaperCount": 17,
