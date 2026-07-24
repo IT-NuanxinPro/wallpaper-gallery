@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-23T18:46:42.798Z",
+  "generatedAt": "2026-07-24T19:00:29.199Z",
   "series": "avatar",
   "total": 504,
   "tags": [
@@ -37,7 +37,7 @@
     },
     {
       "tag": "动漫",
-      "score": 352,
+      "score": 351,
       "views": 374,
       "downloads": 208,
       "wallpaperCount": 100,
@@ -101,7 +101,7 @@
     },
     {
       "tag": "插画",
-      "score": 174,
+      "score": 173,
       "views": 166,
       "downloads": 117,
       "wallpaperCount": 47,
@@ -549,7 +549,7 @@
     },
     {
       "tag": "治愈",
-      "score": 58,
+      "score": 57,
       "views": 27,
       "downloads": 44,
       "wallpaperCount": 4,
@@ -721,7 +721,7 @@
     },
     {
       "tag": "玫瑰",
-      "score": 43,
+      "score": 42,
       "views": 25,
       "downloads": 35,
       "wallpaperCount": 6,
@@ -753,7 +753,7 @@
     },
     {
       "tag": "小王子",
-      "score": 42,
+      "score": 41,
       "views": 20,
       "downloads": 36,
       "wallpaperCount": 5,
@@ -816,8 +816,24 @@
       ]
     },
     {
-      "tag": "星空",
+      "tag": "饮品",
       "score": 37,
+      "views": 10,
+      "downloads": 25,
+      "wallpaperCount": 1,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._14.webp",
+          "cdnTag": "v1.2.33"
+        }
+      ]
+    },
+    {
+      "tag": "星空",
+      "score": 36,
       "views": 14,
       "downloads": 31,
       "wallpaperCount": 3,
@@ -836,22 +852,6 @@
         {
           "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161546_494_4.webp",
           "cdnTag": "v1.1.42"
-        }
-      ]
-    },
-    {
-      "tag": "饮品",
-      "score": 37,
-      "views": 10,
-      "downloads": 25,
-      "wallpaperCount": 1,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._14.webp",
-          "cdnTag": "v1.2.33"
         }
       ]
     },

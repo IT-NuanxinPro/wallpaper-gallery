@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-23T18:46:42.814Z",
+  "generatedAt": "2026-07-24T19:00:29.215Z",
   "series": "bing",
   "total": 250,
   "tags": [
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 163,
+      "score": 162,
       "views": 191,
       "downloads": 73,
       "wallpaperCount": 25,
@@ -301,19 +301,6 @@
       ]
     },
     {
-      "tag": "古老岩石，现代灯光",
-      "score": 11,
-      "views": 12,
-      "downloads": 5,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-05.jpg"
-      ]
-    },
-    {
       "tag": "2025 02",
       "score": 10,
       "views": 21,
@@ -341,6 +328,19 @@
       ],
       "topWallpapers": [
         "bing-2026-01-19.jpg"
+      ]
+    },
+    {
+      "tag": "古老岩石，现代灯光",
+      "score": 10,
+      "views": 12,
+      "downloads": 5,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-05.jpg"
       ]
     },
     {
