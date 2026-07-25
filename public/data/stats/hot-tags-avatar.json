@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-24T19:00:29.199Z",
+  "generatedAt": "2026-07-25T18:28:57.328Z",
   "series": "avatar",
   "total": 504,
   "tags": [
     {
       "tag": "人像",
-      "score": 426,
+      "score": 424,
       "views": 483,
       "downloads": 240,
       "wallpaperCount": 158,
@@ -26,18 +26,18 @@
           "cdnTag": "v1.1.4"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/街角回眸男生.webp",
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/车窗黄昏凝望女生.webp",
           "cdnTag": "v1.1.11"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/车窗黄昏凝望女生.webp",
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/街角回眸男生.webp",
           "cdnTag": "v1.1.11"
         }
       ]
     },
     {
       "tag": "动漫",
-      "score": 351,
+      "score": 350,
       "views": 374,
       "downloads": 208,
       "wallpaperCount": 100,
@@ -62,14 +62,14 @@
           "cdnTag": "v1.1.13"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._10.webp",
+          "thumbnail": "/thumbnail/avatar/动漫/通用/image_高级头像话题_趣味头像话题_头像..._10.webp",
           "cdnTag": "v1.2.33"
         }
       ]
     },
     {
       "tag": "氛围感",
-      "score": 205,
+      "score": 203,
       "views": 235,
       "downloads": 121,
       "wallpaperCount": 61,
@@ -86,11 +86,11 @@
           "cdnTag": "v1.1.11"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/街角回眸男生.webp",
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/车窗黄昏凝望女生.webp",
           "cdnTag": "v1.1.11"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/车窗黄昏凝望女生.webp",
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/街角回眸男生.webp",
           "cdnTag": "v1.1.11"
         },
         {
@@ -101,7 +101,7 @@
     },
     {
       "tag": "插画",
-      "score": 173,
+      "score": 172,
       "views": 166,
       "downloads": 117,
       "wallpaperCount": 47,
@@ -325,7 +325,7 @@
     },
     {
       "tag": "二次元",
-      "score": 72,
+      "score": 71,
       "views": 86,
       "downloads": 43,
       "wallpaperCount": 25,
@@ -357,7 +357,7 @@
     },
     {
       "tag": "少年",
-      "score": 71,
+      "score": 70,
       "views": 40,
       "downloads": 43,
       "wallpaperCount": 9,
@@ -370,11 +370,11 @@
           "cdnTag": "v1.2.33"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._10.webp",
+          "thumbnail": "/thumbnail/avatar/动漫/通用/image_高级头像话题_趣味头像话题_头像..._10.webp",
           "cdnTag": "v1.2.33"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/通用/image_高级头像话题_趣味头像话题_头像..._10.webp",
+          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._10.webp",
           "cdnTag": "v1.2.33"
         },
         {
@@ -389,7 +389,7 @@
     },
     {
       "tag": "搞怪",
-      "score": 65,
+      "score": 63,
       "views": 97,
       "downloads": 32,
       "wallpaperCount": 35,
@@ -640,8 +640,24 @@
       ]
     },
     {
+      "tag": "戴耳机",
+      "score": 55,
+      "views": 61,
+      "downloads": 39,
+      "wallpaperCount": 1,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴耳机.webp",
+          "cdnTag": "v1.1.11"
+        }
+      ]
+    },
+    {
       "tag": "表情包",
-      "score": 56,
+      "score": 54,
       "views": 89,
       "downloads": 27,
       "wallpaperCount": 33,
@@ -668,22 +684,6 @@
         {
           "thumbnail": "/thumbnail/avatar/表情包/搞怪/微信图片_20260310202244_646_4.webp",
           "cdnTag": "v1.2.8"
-        }
-      ]
-    },
-    {
-      "tag": "戴耳机",
-      "score": 55,
-      "views": 61,
-      "downloads": 39,
-      "wallpaperCount": 1,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴耳机.webp",
-          "cdnTag": "v1.1.11"
         }
       ]
     },
