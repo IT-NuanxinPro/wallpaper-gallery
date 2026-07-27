@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-26T18:34:10.276Z",
+  "generatedAt": "2026-07-27T18:57:15.233Z",
   "series": "bing",
-  "total": 245,
+  "total": 244,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 228,
+      "score": 227,
       "views": 384,
       "downloads": 110,
       "wallpaperCount": 31,
@@ -150,7 +150,7 @@
     },
     {
       "tag": "小村庄，大视野",
-      "score": 17,
+      "score": 16,
       "views": 25,
       "downloads": 9,
       "wallpaperCount": 1,
@@ -206,23 +206,6 @@
       ]
     },
     {
-      "tag": "2025 10",
-      "score": 13,
-      "views": 19,
-      "downloads": 12,
-      "wallpaperCount": 9,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2025-10-30.jpg",
-        "bing-2025-10-02.jpg",
-        "bing-2025-10-04.jpg",
-        "bing-2025-10-19.jpg",
-        "bing-2025-10-01.jpg"
-      ]
-    },
-    {
       "tag": "城市花开",
       "score": 13,
       "views": 15,
@@ -233,6 +216,23 @@
       ],
       "topWallpapers": [
         "bing-2026-03-18.jpg"
+      ]
+    },
+    {
+      "tag": "2025 10",
+      "score": 12,
+      "views": 19,
+      "downloads": 12,
+      "wallpaperCount": 9,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2025-10-02.jpg",
+        "bing-2025-10-04.jpg",
+        "bing-2025-10-19.jpg",
+        "bing-2025-10-30.jpg",
+        "bing-2025-10-01.jpg"
       ]
     },
     {
