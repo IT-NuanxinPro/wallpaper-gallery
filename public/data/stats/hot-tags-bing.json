@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-27T18:57:15.233Z",
+  "generatedAt": "2026-07-28T18:54:14.371Z",
   "series": "bing",
   "total": 244,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 227,
+      "score": 226,
       "views": 384,
       "downloads": 110,
       "wallpaperCount": 31,
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 161,
+      "score": 160,
       "views": 191,
       "downloads": 73,
       "wallpaperCount": 25,
@@ -137,7 +137,7 @@
     },
     {
       "tag": "王者视野",
-      "score": 20,
+      "score": 19,
       "views": 43,
       "downloads": 7,
       "wallpaperCount": 1,
@@ -162,19 +162,6 @@
       ]
     },
     {
-      "tag": "漂浮的传承",
-      "score": 16,
-      "views": 17,
-      "downloads": 8,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-02.jpg"
-      ]
-    },
-    {
       "tag": "2025 03",
       "score": 15,
       "views": 31,
@@ -189,6 +176,19 @@
         "bing-2025-03-20.jpg",
         "bing-2025-03-11.jpg",
         "bing-2025-03-12.jpg"
+      ]
+    },
+    {
+      "tag": "漂浮的传承",
+      "score": 15,
+      "views": 17,
+      "downloads": 8,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-02.jpg"
       ]
     },
     {
