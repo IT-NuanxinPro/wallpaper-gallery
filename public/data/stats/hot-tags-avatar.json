@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-28T18:54:14.357Z",
+  "generatedAt": "2026-07-29T18:32:30.800Z",
   "series": "avatar",
   "total": 504,
   "tags": [
     {
       "tag": "人像",
-      "score": 420,
+      "score": 418,
       "views": 486,
       "downloads": 242,
       "wallpaperCount": 158,
@@ -37,7 +37,7 @@
     },
     {
       "tag": "动漫",
-      "score": 349,
+      "score": 347,
       "views": 376,
       "downloads": 210,
       "wallpaperCount": 100,
@@ -69,7 +69,7 @@
     },
     {
       "tag": "氛围感",
-      "score": 198,
+      "score": 196,
       "views": 235,
       "downloads": 121,
       "wallpaperCount": 61,
@@ -133,7 +133,7 @@
     },
     {
       "tag": "萌宠",
-      "score": 169,
+      "score": 168,
       "views": 194,
       "downloads": 113,
       "wallpaperCount": 35,
@@ -165,7 +165,7 @@
     },
     {
       "tag": "猫咪",
-      "score": 138,
+      "score": 137,
       "views": 160,
       "downloads": 92,
       "wallpaperCount": 22,
@@ -421,7 +421,7 @@
     },
     {
       "tag": "卡通",
-      "score": 63,
+      "score": 62,
       "views": 82,
       "downloads": 29,
       "wallpaperCount": 18,
@@ -442,12 +442,12 @@
           "cdnTag": "v1.2.57"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/微信图片_20260120161539_485_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/微信图片_2026-04-11_145953_146.webp",
           "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/微信图片_20260120161539_485_4.webp",
+          "cdnTag": "v1.1.42"
         }
       ]
     },
@@ -689,7 +689,7 @@
     },
     {
       "tag": "哆啦A梦",
-      "score": 48,
+      "score": 47,
       "views": 63,
       "downloads": 27,
       "wallpaperCount": 11,
@@ -857,7 +857,7 @@
     },
     {
       "tag": "猫和老鼠",
-      "score": 32,
+      "score": 31,
       "views": 41,
       "downloads": 21,
       "wallpaperCount": 10,
@@ -870,10 +870,6 @@
           "cdnTag": "v1.1.26"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/微信图片_20260120161539_485_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/微信图片_20260120161541_489_4.webp",
           "cdnTag": "v1.1.42"
         },
@@ -884,6 +880,10 @@
         {
           "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/杰瑞大笑.webp",
           "cdnTag": "v1.1.26"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/微信图片_20260120161539_485_4.webp",
+          "cdnTag": "v1.1.42"
         }
       ]
     },
@@ -1156,18 +1156,34 @@
       ]
     },
     {
-      "tag": "办公电脑前皱眉",
+      "tag": "户外",
       "score": 22,
       "views": 25,
-      "downloads": 16,
-      "wallpaperCount": 1,
+      "downloads": 11,
+      "wallpaperCount": 11,
       "series": [
         "avatar"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/动漫/哆啦A梦/办公电脑前皱眉.webp",
-          "cdnTag": "v1.1.13"
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/image_氛围感男头话题_热门头像话题_男..._11.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/644.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/image_向往自由的女生头像话题_散落人间..._1.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/image_氛围感男头话题_热门头像话题_男..._6.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/背影/微信图片_20260310202246_648_4.webp",
+          "cdnTag": "v1.2.8"
         }
       ]
     }
