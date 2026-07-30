@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-29T18:32:30.800Z",
+  "generatedAt": "2026-07-30T18:56:24.021Z",
   "series": "avatar",
   "total": 504,
   "tags": [
@@ -37,7 +37,7 @@
     },
     {
       "tag": "动漫",
-      "score": 347,
+      "score": 343,
       "views": 376,
       "downloads": 210,
       "wallpaperCount": 100,
@@ -101,9 +101,9 @@
     },
     {
       "tag": "插画",
-      "score": 170,
-      "views": 166,
-      "downloads": 117,
+      "score": 171,
+      "views": 167,
+      "downloads": 118,
       "wallpaperCount": 47,
       "series": [
         "avatar"
@@ -293,9 +293,9 @@
     },
     {
       "tag": "创意",
-      "score": 73,
-      "views": 73,
-      "downloads": 46,
+      "score": 74,
+      "views": 74,
+      "downloads": 47,
       "wallpaperCount": 20,
       "series": [
         "avatar"
@@ -390,8 +390,8 @@
     {
       "tag": "搞怪",
       "score": 65,
-      "views": 98,
-      "downloads": 33,
+      "views": 99,
+      "downloads": 34,
       "wallpaperCount": 35,
       "series": [
         "avatar"
@@ -410,12 +410,12 @@
           "cdnTag": "v1.1.53"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/微信图片_2026-04-11_150149_668.webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/表情包/搞怪/微信图片_2026-01-23_165024_232.webp",
           "cdnTag": "v1.1.53"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/微信图片_2026-04-11_150149_668.webp",
+          "cdnTag": "v1.2.57"
         }
       ]
     },
@@ -640,26 +640,10 @@
       ]
     },
     {
-      "tag": "戴耳机",
-      "score": 54,
-      "views": 61,
-      "downloads": 39,
-      "wallpaperCount": 1,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴耳机.webp",
-          "cdnTag": "v1.1.11"
-        }
-      ]
-    },
-    {
       "tag": "表情包",
-      "score": 54,
-      "views": 89,
-      "downloads": 27,
+      "score": 55,
+      "views": 90,
+      "downloads": 28,
       "wallpaperCount": 33,
       "series": [
         "avatar"
@@ -688,8 +672,24 @@
       ]
     },
     {
+      "tag": "戴耳机",
+      "score": 54,
+      "views": 61,
+      "downloads": 39,
+      "wallpaperCount": 1,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴耳机.webp",
+          "cdnTag": "v1.1.11"
+        }
+      ]
+    },
+    {
       "tag": "哆啦A梦",
-      "score": 47,
+      "score": 46,
       "views": 63,
       "downloads": 27,
       "wallpaperCount": 11,
@@ -816,8 +816,24 @@
       ]
     },
     {
-      "tag": "星空",
+      "tag": "饮品",
       "score": 36,
+      "views": 10,
+      "downloads": 25,
+      "wallpaperCount": 1,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._14.webp",
+          "cdnTag": "v1.2.33"
+        }
+      ]
+    },
+    {
+      "tag": "星空",
+      "score": 35,
       "views": 14,
       "downloads": 31,
       "wallpaperCount": 3,
@@ -836,22 +852,6 @@
         {
           "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161546_494_4.webp",
           "cdnTag": "v1.1.42"
-        }
-      ]
-    },
-    {
-      "tag": "饮品",
-      "score": 36,
-      "views": 10,
-      "downloads": 25,
-      "wallpaperCount": 1,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._14.webp",
-          "cdnTag": "v1.2.33"
         }
       ]
     },
@@ -985,7 +985,7 @@
     },
     {
       "tag": "海贼王",
-      "score": 28,
+      "score": 27,
       "views": 35,
       "downloads": 14,
       "wallpaperCount": 12,
