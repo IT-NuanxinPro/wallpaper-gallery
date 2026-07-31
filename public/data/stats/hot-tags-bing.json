@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-30T18:56:24.036Z",
+  "generatedAt": "2026-07-31T18:54:35.387Z",
   "series": "bing",
-  "total": 244,
+  "total": 243,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 230,
+      "score": 228,
       "views": 390,
       "downloads": 113,
       "wallpaperCount": 31,
@@ -22,8 +22,8 @@
     },
     {
       "tag": "2026 03",
-      "score": 158,
-      "views": 191,
+      "score": 159,
+      "views": 192,
       "downloads": 73,
       "wallpaperCount": 25,
       "series": [
@@ -107,7 +107,7 @@
     },
     {
       "tag": "2025 07",
-      "score": 22,
+      "score": 21,
       "views": 27,
       "downloads": 25,
       "wallpaperCount": 12,
@@ -118,8 +118,8 @@
         "bing-2025-07-11.jpg",
         "bing-2025-07-23.jpg",
         "bing-2025-07-15.jpg",
-        "bing-2025-07-06.jpg",
-        "bing-2025-07-09.jpg"
+        "bing-2025-07-09.jpg",
+        "bing-2025-07-10.jpg"
       ]
     },
     {
@@ -447,19 +447,6 @@
       ]
     },
     {
-      "tag": "巴伐利亚的瑰宝",
-      "score": 8,
-      "views": 8,
-      "downloads": 5,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-26.jpg"
-      ]
-    },
-    {
       "tag": "治愈、宁静且充满希望",
       "score": 8,
       "views": 6,
@@ -539,6 +526,19 @@
       ],
       "topWallpapers": [
         "bing-2025-12-07.jpg"
+      ]
+    },
+    {
+      "tag": "巴伐利亚的瑰宝",
+      "score": 7,
+      "views": 8,
+      "downloads": 5,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-26.jpg"
       ]
     },
     {
