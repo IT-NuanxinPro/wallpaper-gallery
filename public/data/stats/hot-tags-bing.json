@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-31T18:54:35.387Z",
+  "generatedAt": "2026-08-01T18:31:49.276Z",
   "series": "bing",
-  "total": 243,
+  "total": 241,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 228,
+      "score": 225,
       "views": 390,
       "downloads": 113,
       "wallpaperCount": 31,
@@ -16,8 +16,8 @@
         "bing-2026-01-03.jpg",
         "bing-2026-01-04.jpg",
         "bing-2026-01-15.jpg",
-        "bing-2026-01-06.jpg",
-        "bing-2026-01-09.jpg"
+        "bing-2026-01-09.jpg",
+        "bing-2026-01-10.jpg"
       ]
     },
     {
@@ -150,7 +150,7 @@
     },
     {
       "tag": "小村庄，大视野",
-      "score": 18,
+      "score": 17,
       "views": 26,
       "downloads": 10,
       "wallpaperCount": 1,
@@ -262,19 +262,6 @@
       ]
     },
     {
-      "tag": "努克的慵懒时光",
-      "score": 12,
-      "views": 23,
-      "downloads": 5,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-06.jpg"
-      ]
-    },
-    {
       "tag": "2025 02",
       "score": 11,
       "views": 23,
@@ -306,6 +293,19 @@
         "bing-2025-01-17.jpg",
         "bing-2025-01-19.jpg",
         "bing-2025-01-25.jpg"
+      ]
+    },
+    {
+      "tag": "努克的慵懒时光",
+      "score": 11,
+      "views": 23,
+      "downloads": 5,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-06.jpg"
       ]
     },
     {
@@ -555,19 +555,6 @@
       ]
     },
     {
-      "tag": "苹果韵，旧时光",
-      "score": 7,
-      "views": 15,
-      "downloads": 2,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-13.jpg"
-      ]
-    },
-    {
       "tag": "2024 11",
       "score": 6,
       "views": 12,
@@ -582,6 +569,19 @@
         "bing-2024-11-08.jpg",
         "bing-2024-11-10.jpg",
         "bing-2024-11-16.jpg"
+      ]
+    },
+    {
+      "tag": "晨光透过结霜的树木洒下，瑞典",
+      "score": 6,
+      "views": 9,
+      "downloads": 4,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2025-12-30.jpg"
       ]
     }
   ]
