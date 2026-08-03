@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-08-02T18:31:38.741Z",
+  "generatedAt": "2026-08-03T19:07:29.622Z",
   "series": "avatar",
   "total": 504,
   "tags": [
     {
       "tag": "人像",
-      "score": 412,
-      "views": 489,
-      "downloads": 242,
+      "score": 414,
+      "views": 490,
+      "downloads": 243,
       "wallpaperCount": 158,
       "series": [
         "avatar"
@@ -18,12 +18,12 @@
           "cdnTag": "v1.1.11"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/仰光捧花女生.webp",
-          "cdnTag": "v1.1.11"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/人像/背影/车窗边夕阳下的少年背影.webp",
           "cdnTag": "v1.1.4"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/仰光捧花女生.webp",
+          "cdnTag": "v1.1.11"
         },
         {
           "thumbnail": "/thumbnail/avatar/人像/氛围感/车窗黄昏凝望女生.webp",
@@ -37,9 +37,9 @@
     },
     {
       "tag": "动漫",
-      "score": 339,
-      "views": 376,
-      "downloads": 210,
+      "score": 336,
+      "views": 377,
+      "downloads": 211,
       "wallpaperCount": 100,
       "series": [
         "avatar"
@@ -101,7 +101,7 @@
     },
     {
       "tag": "萌宠",
-      "score": 171,
+      "score": 169,
       "views": 198,
       "downloads": 116,
       "wallpaperCount": 36,
@@ -165,7 +165,7 @@
     },
     {
       "tag": "猫咪",
-      "score": 139,
+      "score": 138,
       "views": 163,
       "downloads": 94,
       "wallpaperCount": 22,
@@ -230,7 +230,7 @@
     {
       "tag": "IP形象",
       "score": 112,
-      "views": 162,
+      "views": 163,
       "downloads": 62,
       "wallpaperCount": 45,
       "series": [
@@ -261,9 +261,9 @@
     },
     {
       "tag": "背影",
-      "score": 76,
-      "views": 81,
-      "downloads": 40,
+      "score": 78,
+      "views": 82,
+      "downloads": 41,
       "wallpaperCount": 29,
       "series": [
         "avatar"
@@ -324,6 +324,38 @@
       ]
     },
     {
+      "tag": "少年",
+      "score": 69,
+      "views": 41,
+      "downloads": 44,
+      "wallpaperCount": 9,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._14.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/通用/image_高级头像话题_趣味头像话题_头像..._10.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._10.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_20260119095918_477_4.webp",
+          "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/背影/646.webp",
+          "cdnTag": "v1.1.96"
+        }
+      ]
+    },
+    {
       "tag": "二次元",
       "score": 68,
       "views": 86,
@@ -352,38 +384,6 @@
         {
           "thumbnail": "/thumbnail/avatar/插画/二次元/水彩少女.webp",
           "cdnTag": "v1.1.11"
-        }
-      ]
-    },
-    {
-      "tag": "少年",
-      "score": 67,
-      "views": 40,
-      "downloads": 43,
-      "wallpaperCount": 9,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._14.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/通用/image_高级头像话题_趣味头像话题_头像..._10.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._10.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_20260119095918_477_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/背影/646.webp",
-          "cdnTag": "v1.1.96"
         }
       ]
     },
@@ -422,7 +422,7 @@
     {
       "tag": "卡通",
       "score": 62,
-      "views": 83,
+      "views": 84,
       "downloads": 29,
       "wallpaperCount": 18,
       "series": [
@@ -448,6 +448,38 @@
         {
           "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/微信图片_20260120161539_485_4.webp",
           "cdnTag": "v1.1.42"
+        }
+      ]
+    },
+    {
+      "tag": "清新",
+      "score": 60,
+      "views": 39,
+      "downloads": 37,
+      "wallpaperCount": 11,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._14.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_20260119095919_478_4.webp",
+          "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_20260119095918_477_4.webp",
+          "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152751_224.webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/插画/二次元/image_氛围感男头话题_热门头像话题_男..._12.webp",
+          "cdnTag": "v1.2.33"
         }
       ]
     },
@@ -512,54 +544,6 @@
         {
           "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/image_蜡笔小新话题_流浪春天话题_情头..._0.webp",
           "cdnTag": "v1.1.85"
-        }
-      ]
-    },
-    {
-      "tag": "清新",
-      "score": 58,
-      "views": 38,
-      "downloads": 36,
-      "wallpaperCount": 11,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._14.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_20260119095919_478_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_20260119095918_477_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152751_224.webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/插画/二次元/image_氛围感男头话题_热门头像话题_男..._12.webp",
-          "cdnTag": "v1.2.33"
-        }
-      ]
-    },
-    {
-      "tag": "戴耳机",
-      "score": 55,
-      "views": 62,
-      "downloads": 40,
-      "wallpaperCount": 1,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴耳机.webp",
-          "cdnTag": "v1.1.11"
         }
       ]
     },
@@ -656,6 +640,22 @@
       ]
     },
     {
+      "tag": "戴耳机",
+      "score": 54,
+      "views": 62,
+      "downloads": 40,
+      "wallpaperCount": 1,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴耳机.webp",
+          "cdnTag": "v1.1.11"
+        }
+      ]
+    },
+    {
       "tag": "甜美",
       "score": 54,
       "views": 53,
@@ -689,7 +689,7 @@
     },
     {
       "tag": "哆啦A梦",
-      "score": 46,
+      "score": 44,
       "views": 63,
       "downloads": 27,
       "wallpaperCount": 11,
@@ -817,9 +817,9 @@
     },
     {
       "tag": "饮品",
-      "score": 35,
-      "views": 10,
-      "downloads": 25,
+      "score": 37,
+      "views": 11,
+      "downloads": 26,
       "wallpaperCount": 1,
       "series": [
         "avatar"
@@ -857,7 +857,7 @@
     },
     {
       "tag": "狗狗",
-      "score": 32,
+      "score": 31,
       "views": 35,
       "downloads": 22,
       "wallpaperCount": 14,
@@ -870,12 +870,12 @@
           "cdnTag": "v1.1.53"
         },
         {
-          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/柯基_墨镜酷狗.webp",
-          "cdnTag": "v1.1.11"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/萌宠/狗狗/微信图片_2026-02-05_112219_990.webp",
           "cdnTag": "v1.1.74"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/柯基_墨镜酷狗.webp",
+          "cdnTag": "v1.1.11"
         },
         {
           "thumbnail": "/thumbnail/avatar/萌宠/狗狗/655.webp",
@@ -1122,7 +1122,7 @@
     {
       "tag": "Q版",
       "score": 24,
-      "views": 29,
+      "views": 30,
       "downloads": 12,
       "wallpaperCount": 2,
       "series": [

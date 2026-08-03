@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-02T18:31:38.757Z",
+  "generatedAt": "2026-08-03T19:07:29.638Z",
   "series": "bing",
-  "total": 241,
+  "total": 240,
   "tags": [
     {
       "tag": "2026 01",
@@ -106,23 +106,6 @@
       ]
     },
     {
-      "tag": "2025 07",
-      "score": 21,
-      "views": 27,
-      "downloads": 25,
-      "wallpaperCount": 12,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2025-07-11.jpg",
-        "bing-2025-07-23.jpg",
-        "bing-2025-07-15.jpg",
-        "bing-2025-07-09.jpg",
-        "bing-2025-07-10.jpg"
-      ]
-    },
-    {
       "tag": "传奇故事前的篇章",
       "score": 21,
       "views": 36,
@@ -133,6 +116,23 @@
       ],
       "topWallpapers": [
         "bing-2026-01-03.jpg"
+      ]
+    },
+    {
+      "tag": "2025 07",
+      "score": 20,
+      "views": 27,
+      "downloads": 25,
+      "wallpaperCount": 12,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2025-07-11.jpg",
+        "bing-2025-07-23.jpg",
+        "bing-2025-07-15.jpg",
+        "bing-2025-07-10.jpg",
+        "bing-2025-07-21.jpg"
       ]
     },
     {
