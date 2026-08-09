@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-08-08T17:58:55.007Z",
+  "generatedAt": "2026-08-09T18:00:13.442Z",
   "series": "bing",
   "total": 239,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 221,
+      "score": 220,
       "views": 390,
       "downloads": 113,
       "wallpaperCount": 31,
@@ -39,7 +39,7 @@
     },
     {
       "tag": "2025 12",
-      "score": 76,
+      "score": 75,
       "views": 114,
       "downloads": 55,
       "wallpaperCount": 28,
@@ -48,8 +48,8 @@
       ],
       "topWallpapers": [
         "bing-2025-12-07.jpg",
-        "bing-2025-12-31.jpg",
         "bing-2025-12-30.jpg",
+        "bing-2025-12-31.jpg",
         "bing-2025-12-19.jpg",
         "bing-2025-12-01.jpg"
       ]
@@ -460,19 +460,6 @@
       ]
     },
     {
-      "tag": "从抗拒到绽放",
-      "score": 8,
-      "views": 13,
-      "downloads": 4,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-11.jpg"
-      ]
-    },
-    {
       "tag": "根系自由生长的地方",
       "score": 8,
       "views": 8,
@@ -552,6 +539,19 @@
       ],
       "topWallpapers": [
         "bing-2026-01-24.jpg"
+      ]
+    },
+    {
+      "tag": "从抗拒到绽放",
+      "score": 7,
+      "views": 13,
+      "downloads": 4,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-11.jpg"
       ]
     },
     {

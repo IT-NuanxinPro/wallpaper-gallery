@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-08-08T17:58:54.929Z",
+  "generatedAt": "2026-08-09T18:00:13.363Z",
   "series": "mobile",
   "total": 724,
   "tags": [
     {
       "tag": "人像",
-      "score": 4368,
-      "views": 5965,
+      "score": 4357,
+      "views": 5980,
       "downloads": 1862,
       "wallpaperCount": 150,
       "series": [
@@ -37,9 +37,9 @@
     },
     {
       "tag": "插画",
-      "score": 1900,
-      "views": 2243,
-      "downloads": 909,
+      "score": 1897,
+      "views": 2257,
+      "downloads": 910,
       "wallpaperCount": 86,
       "series": [
         "mobile"
@@ -69,8 +69,8 @@
     },
     {
       "tag": "魅力",
-      "score": 1818,
-      "views": 2524,
+      "score": 1816,
+      "views": 2533,
       "downloads": 717,
       "wallpaperCount": 37,
       "series": [
@@ -101,9 +101,9 @@
     },
     {
       "tag": "风景",
-      "score": 1732,
-      "views": 2247,
-      "downloads": 932,
+      "score": 1730,
+      "views": 2256,
+      "downloads": 937,
       "wallpaperCount": 81,
       "series": [
         "mobile"
@@ -122,19 +122,19 @@
           "cdnTag": "v1.1.4"
         },
         {
-          "thumbnail": "/thumbnail/mobile/风景/星空/1_1690290878.webp",
+          "thumbnail": "/thumbnail/mobile/风景/花卉/1_1744545188.webp",
           "cdnTag": "v1.2.19"
         },
         {
-          "thumbnail": "/thumbnail/mobile/风景/花卉/1_1744545188.webp",
+          "thumbnail": "/thumbnail/mobile/风景/星空/1_1690290878.webp",
           "cdnTag": "v1.2.19"
         }
       ]
     },
     {
       "tag": "清新",
-      "score": 1361,
-      "views": 1710,
+      "score": 1355,
+      "views": 1715,
       "downloads": 620,
       "wallpaperCount": 49,
       "series": [
@@ -165,8 +165,8 @@
     },
     {
       "tag": "长发",
-      "score": 1087,
-      "views": 1323,
+      "score": 1082,
+      "views": 1325,
       "downloads": 419,
       "wallpaperCount": 21,
       "series": [
@@ -197,8 +197,8 @@
     },
     {
       "tag": "氛围感",
-      "score": 1047,
-      "views": 1400,
+      "score": 1043,
+      "views": 1404,
       "downloads": 498,
       "wallpaperCount": 52,
       "series": [
@@ -222,15 +222,15 @@
           "cdnTag": "v1.1.57"
         },
         {
-          "thumbnail": "/thumbnail/mobile/插画/氛围感/1_1774514885.webp",
-          "cdnTag": "v1.2.30"
+          "thumbnail": "/thumbnail/mobile/插画/氛围感/小清新-简洁.webp",
+          "cdnTag": "v1.2.33"
         }
       ]
     },
     {
       "tag": "创意",
-      "score": 996,
-      "views": 1338,
+      "score": 999,
+      "views": 1346,
       "downloads": 513,
       "wallpaperCount": 69,
       "series": [
@@ -261,21 +261,21 @@
     },
     {
       "tag": "动漫",
-      "score": 934,
-      "views": 1336,
-      "downloads": 472,
+      "score": 938,
+      "views": 1340,
+      "downloads": 476,
       "wallpaperCount": 72,
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/动漫/插画/三月七-个性穿搭.webp",
-          "cdnTag": "v1.1.98"
-        },
-        {
           "thumbnail": "/thumbnail/mobile/动漫/海贼王/image_神图壁纸_锁屏壁纸_壁纸_该换壁..._17.webp",
           "cdnTag": "v1.1.84"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/插画/三月七-个性穿搭.webp",
+          "cdnTag": "v1.1.98"
         },
         {
           "thumbnail": "/thumbnail/mobile/动漫/蜡笔小新/image_可爱搞怪卡通手机壁纸简约文字壁纸..._1.webp",
@@ -293,8 +293,8 @@
     },
     {
       "tag": "阳光",
-      "score": 683,
-      "views": 680,
+      "score": 679,
+      "views": 681,
       "downloads": 315,
       "wallpaperCount": 11,
       "series": [
@@ -325,8 +325,8 @@
     },
     {
       "tag": "漫画风格",
-      "score": 645,
-      "views": 880,
+      "score": 644,
+      "views": 884,
       "downloads": 248,
       "wallpaperCount": 3,
       "series": [
@@ -350,7 +350,7 @@
     {
       "tag": "黑丝",
       "score": 538,
-      "views": 723,
+      "views": 726,
       "downloads": 193,
       "wallpaperCount": 11,
       "series": [
@@ -381,8 +381,8 @@
     },
     {
       "tag": "紧身衣",
-      "score": 517,
-      "views": 761,
+      "score": 516,
+      "views": 764,
       "downloads": 192,
       "wallpaperCount": 4,
       "series": [
@@ -409,7 +409,7 @@
     },
     {
       "tag": "星空",
-      "score": 486,
+      "score": 484,
       "views": 625,
       "downloads": 249,
       "wallpaperCount": 14,
@@ -441,8 +441,8 @@
     },
     {
       "tag": "蓝天",
-      "score": 463,
-      "views": 547,
+      "score": 462,
+      "views": 549,
       "downloads": 172,
       "wallpaperCount": 6,
       "series": [
@@ -473,8 +473,8 @@
     },
     {
       "tag": "梦幻",
-      "score": 427,
-      "views": 465,
+      "score": 425,
+      "views": 466,
       "downloads": 202,
       "wallpaperCount": 10,
       "series": [
@@ -505,8 +505,8 @@
     },
     {
       "tag": "少女",
-      "score": 402,
-      "views": 502,
+      "score": 399,
+      "views": 503,
       "downloads": 176,
       "wallpaperCount": 16,
       "series": [
@@ -537,8 +537,8 @@
     },
     {
       "tag": "丝袜",
-      "score": 400,
-      "views": 595,
+      "score": 399,
+      "views": 597,
       "downloads": 146,
       "wallpaperCount": 1,
       "series": [
@@ -553,9 +553,9 @@
     },
     {
       "tag": "萌宠",
-      "score": 355,
-      "views": 466,
-      "downloads": 149,
+      "score": 362,
+      "views": 470,
+      "downloads": 155,
       "wallpaperCount": 23,
       "series": [
         "mobile"
@@ -585,7 +585,7 @@
     },
     {
       "tag": "背影",
-      "score": 306,
+      "score": 305,
       "views": 377,
       "downloads": 108,
       "wallpaperCount": 4,
@@ -614,7 +614,7 @@
     {
       "tag": "身材曲线",
       "score": 294,
-      "views": 357,
+      "views": 359,
       "downloads": 95,
       "wallpaperCount": 1,
       "series": [
@@ -629,7 +629,7 @@
     },
     {
       "tag": "室内",
-      "score": 281,
+      "score": 280,
       "views": 399,
       "downloads": 98,
       "wallpaperCount": 4,
@@ -658,7 +658,7 @@
     {
       "tag": "甜美",
       "score": 277,
-      "views": 418,
+      "views": 420,
       "downloads": 64,
       "wallpaperCount": 4,
       "series": [
@@ -684,9 +684,41 @@
       ]
     },
     {
+      "tag": "花卉",
+      "score": 257,
+      "views": 323,
+      "downloads": 137,
+      "wallpaperCount": 11,
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/风景/花卉/1_1744545188.webp",
+          "cdnTag": "v1.2.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/风景/海滨/image_高级全面屏4k超清手机壁纸_景深..._15.webp",
+          "cdnTag": "v1.1.84"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/风景/花卉/树枝-植物-海棠树.webp",
+          "cdnTag": "v1.1.22"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/风景/花卉/手捧花-暖调-清新.webp",
+          "cdnTag": "v1.2.68"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/风景/花卉/微信图片_20260204204955_555_4.webp",
+          "cdnTag": "v1.1.68"
+        }
+      ]
+    },
+    {
       "tag": "写真",
       "score": 257,
-      "views": 367,
+      "views": 369,
       "downloads": 71,
       "wallpaperCount": 3,
       "series": [
@@ -709,7 +741,7 @@
     },
     {
       "tag": "雪山",
-      "score": 255,
+      "score": 251,
       "views": 360,
       "downloads": 130,
       "wallpaperCount": 10,
@@ -740,41 +772,9 @@
       ]
     },
     {
-      "tag": "花卉",
-      "score": 252,
-      "views": 319,
-      "downloads": 132,
-      "wallpaperCount": 11,
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/风景/花卉/1_1744545188.webp",
-          "cdnTag": "v1.2.19"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/风景/海滨/image_高级全面屏4k超清手机壁纸_景深..._15.webp",
-          "cdnTag": "v1.1.84"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/风景/花卉/树枝-植物-海棠树.webp",
-          "cdnTag": "v1.1.22"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/风景/花卉/手捧花-暖调-清新.webp",
-          "cdnTag": "v1.2.68"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/风景/花卉/微信图片_20260204204955_555_4.webp",
-          "cdnTag": "v1.1.68"
-        }
-      ]
-    },
-    {
       "tag": "影视",
       "score": 247,
-      "views": 375,
+      "views": 377,
       "downloads": 118,
       "wallpaperCount": 19,
       "series": [
@@ -806,7 +806,7 @@
     {
       "tag": "艺术",
       "score": 234,
-      "views": 275,
+      "views": 276,
       "downloads": 116,
       "wallpaperCount": 4,
       "series": [
@@ -833,7 +833,7 @@
     },
     {
       "tag": "日落",
-      "score": 233,
+      "score": 232,
       "views": 168,
       "downloads": 136,
       "wallpaperCount": 4,
@@ -860,30 +860,10 @@
       ]
     },
     {
-      "tag": "城市",
-      "score": 223,
-      "views": 144,
-      "downloads": 128,
-      "wallpaperCount": 2,
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/插画/风景/20260406201625.webp",
-          "cdnTag": "v1.2.47"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/风景/城市/品红色-城市-天空.webp",
-          "cdnTag": "v1.2.68"
-        }
-      ]
-    },
-    {
       "tag": "海滨",
-      "score": 222,
-      "views": 310,
-      "downloads": 122,
+      "score": 228,
+      "views": 314,
+      "downloads": 127,
       "wallpaperCount": 12,
       "series": [
         "mobile"
@@ -912,9 +892,29 @@
       ]
     },
     {
+      "tag": "城市",
+      "score": 223,
+      "views": 145,
+      "downloads": 128,
+      "wallpaperCount": 2,
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/插画/风景/20260406201625.webp",
+          "cdnTag": "v1.2.47"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/风景/城市/品红色-城市-天空.webp",
+          "cdnTag": "v1.2.68"
+        }
+      ]
+    },
+    {
       "tag": "魅力人像",
       "score": 202,
-      "views": 283,
+      "views": 284,
       "downloads": 118,
       "wallpaperCount": 10,
       "series": [
@@ -945,8 +945,8 @@
     },
     {
       "tag": "卡通",
-      "score": 201,
-      "views": 252,
+      "score": 202,
+      "views": 253,
       "downloads": 91,
       "wallpaperCount": 13,
       "series": [
@@ -976,25 +976,9 @@
       ]
     },
     {
-      "tag": "街道",
-      "score": 195,
-      "views": 111,
-      "downloads": 118,
-      "wallpaperCount": 1,
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/插画/风景/20260406201625.webp",
-          "cdnTag": "v1.2.47"
-        }
-      ]
-    },
-    {
       "tag": "时尚女孩",
       "score": 195,
-      "views": 229,
+      "views": 231,
       "downloads": 74,
       "wallpaperCount": 1,
       "series": [
@@ -1010,7 +994,7 @@
     {
       "tag": "自拍",
       "score": 195,
-      "views": 229,
+      "views": 231,
       "downloads": 74,
       "wallpaperCount": 1,
       "series": [
@@ -1024,8 +1008,24 @@
       ]
     },
     {
+      "tag": "街道",
+      "score": 194,
+      "views": 111,
+      "downloads": 118,
+      "wallpaperCount": 1,
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/插画/风景/20260406201625.webp",
+          "cdnTag": "v1.2.47"
+        }
+      ]
+    },
+    {
       "tag": "文字",
-      "score": 192,
+      "score": 190,
       "views": 247,
       "downloads": 111,
       "wallpaperCount": 17,
@@ -1056,9 +1056,41 @@
       ]
     },
     {
+      "tag": "蜡笔小新",
+      "score": 186,
+      "views": 242,
+      "downloads": 95,
+      "wallpaperCount": 10,
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/蜡笔小新/image_可爱搞怪卡通手机壁纸简约文字壁纸..._1.webp",
+          "cdnTag": "v1.2.41"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/蜡笔小新/image_神图壁纸_锁屏壁纸_手机壁纸_壁..._6.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/蜡笔小新/image_可爱搞怪卡通手机壁纸简约文字壁纸..._14.webp",
+          "cdnTag": "v1.2.41"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/蜡笔小新/微信图片_2026-01-26_085008_556.webp",
+          "cdnTag": "v1.1.53"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/蜡笔小新/拼接小新.webp",
+          "cdnTag": "v1.1.24"
+        }
+      ]
+    },
+    {
       "tag": "夜景",
       "score": 184,
-      "views": 268,
+      "views": 269,
       "downloads": 75,
       "wallpaperCount": 11,
       "series": [
@@ -1088,40 +1120,8 @@
       ]
     },
     {
-      "tag": "蜡笔小新",
-      "score": 183,
-      "views": 241,
-      "downloads": 93,
-      "wallpaperCount": 10,
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/动漫/蜡笔小新/image_可爱搞怪卡通手机壁纸简约文字壁纸..._1.webp",
-          "cdnTag": "v1.2.41"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/动漫/蜡笔小新/image_神图壁纸_锁屏壁纸_手机壁纸_壁..._6.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/动漫/蜡笔小新/image_可爱搞怪卡通手机壁纸简约文字壁纸..._14.webp",
-          "cdnTag": "v1.2.41"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/动漫/蜡笔小新/微信图片_2026-01-26_085008_556.webp",
-          "cdnTag": "v1.1.53"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/动漫/蜡笔小新/拼接小新.webp",
-          "cdnTag": "v1.1.24"
-        }
-      ]
-    },
-    {
       "tag": "爱国主题",
-      "score": 174,
+      "score": 173,
       "views": 256,
       "downloads": 75,
       "wallpaperCount": 15,
