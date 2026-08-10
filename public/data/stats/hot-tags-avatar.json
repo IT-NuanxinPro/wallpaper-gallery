@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-08-09T18:00:13.426Z",
+  "generatedAt": "2026-08-10T18:24:58.336Z",
   "series": "avatar",
   "total": 507,
   "tags": [
     {
       "tag": "人像",
-      "score": 409,
+      "score": 403,
       "views": 497,
       "downloads": 243,
       "wallpaperCount": 158,
@@ -37,7 +37,7 @@
     },
     {
       "tag": "动漫",
-      "score": 348,
+      "score": 344,
       "views": 392,
       "downloads": 221,
       "wallpaperCount": 101,
@@ -69,7 +69,7 @@
     },
     {
       "tag": "氛围感",
-      "score": 191,
+      "score": 186,
       "views": 237,
       "downloads": 121,
       "wallpaperCount": 61,
@@ -101,7 +101,7 @@
     },
     {
       "tag": "萌宠",
-      "score": 169,
+      "score": 168,
       "views": 200,
       "downloads": 118,
       "wallpaperCount": 36,
@@ -165,7 +165,7 @@
     },
     {
       "tag": "猫咪",
-      "score": 138,
+      "score": 137,
       "views": 165,
       "downloads": 96,
       "wallpaperCount": 22,
@@ -517,7 +517,7 @@
     },
     {
       "tag": "蜡笔小新",
-      "score": 58,
+      "score": 57,
       "views": 82,
       "downloads": 37,
       "wallpaperCount": 18,
@@ -952,8 +952,32 @@
       ]
     },
     {
+      "tag": "搞笑",
+      "score": 26,
+      "views": 30,
+      "downloads": 17,
+      "wallpaperCount": 3,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-01-23_165613_598.webp",
+          "cdnTag": "v1.1.53"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/微信图片_2026-01-23_165009_180.webp",
+          "cdnTag": "v1.1.53"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/通用/微信图片_2026-01-23_165101_406.webp",
+          "cdnTag": "v1.1.53"
+        }
+      ]
+    },
+    {
       "tag": "卡通简笔画",
-      "score": 27,
+      "score": 26,
       "views": 47,
       "downloads": 14,
       "wallpaperCount": 12,
@@ -980,30 +1004,6 @@
         {
           "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/圣诞帽麻花辫托腮.webp",
           "cdnTag": "v1.1.11"
-        }
-      ]
-    },
-    {
-      "tag": "搞笑",
-      "score": 26,
-      "views": 30,
-      "downloads": 17,
-      "wallpaperCount": 3,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-01-23_165613_598.webp",
-          "cdnTag": "v1.1.53"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/微信图片_2026-01-23_165009_180.webp",
-          "cdnTag": "v1.1.53"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/通用/微信图片_2026-01-23_165101_406.webp",
-          "cdnTag": "v1.1.53"
         }
       ]
     },
