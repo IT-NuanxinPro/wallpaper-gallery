@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-08-12T18:27:49.850Z",
+  "generatedAt": "2026-08-13T18:28:38.990Z",
   "series": "bing",
   "total": 235,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 216,
+      "score": 214,
       "views": 390,
       "downloads": 113,
       "wallpaperCount": 31,
@@ -16,13 +16,13 @@
         "bing-2026-01-03.jpg",
         "bing-2026-01-04.jpg",
         "bing-2026-01-15.jpg",
-        "bing-2026-01-10.jpg",
-        "bing-2026-01-01.jpg"
+        "bing-2026-01-01.jpg",
+        "bing-2026-01-06.jpg"
       ]
     },
     {
       "tag": "2026 03",
-      "score": 153,
+      "score": 152,
       "views": 192,
       "downloads": 73,
       "wallpaperCount": 25,
@@ -137,7 +137,7 @@
     },
     {
       "tag": "王者视野",
-      "score": 19,
+      "score": 18,
       "views": 43,
       "downloads": 7,
       "wallpaperCount": 1,
@@ -180,7 +180,7 @@
     },
     {
       "tag": "漂浮的传承",
-      "score": 15,
+      "score": 14,
       "views": 17,
       "downloads": 8,
       "wallpaperCount": 1,
@@ -220,19 +220,6 @@
         "bing-2025-10-19.jpg",
         "bing-2025-10-30.jpg",
         "bing-2025-10-01.jpg"
-      ]
-    },
-    {
-      "tag": "纯粹的瑞士魔力",
-      "score": 12,
-      "views": 18,
-      "downloads": 7,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-10.jpg"
       ]
     },
     {
@@ -280,6 +267,19 @@
         "bing-2025-01-17.jpg",
         "bing-2025-01-19.jpg",
         "bing-2025-01-25.jpg"
+      ]
+    },
+    {
+      "tag": "纯粹的瑞士魔力",
+      "score": 11,
+      "views": 18,
+      "downloads": 7,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-10.jpg"
       ]
     },
     {

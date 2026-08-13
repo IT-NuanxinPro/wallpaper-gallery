@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-12T18:27:49.837Z",
+  "generatedAt": "2026-08-13T18:28:38.945Z",
   "series": "avatar",
   "total": 507,
   "tags": [
@@ -37,7 +37,7 @@
     },
     {
       "tag": "动漫",
-      "score": 342,
+      "score": 341,
       "views": 393,
       "downloads": 222,
       "wallpaperCount": 101,
@@ -229,7 +229,7 @@
     },
     {
       "tag": "IP形象",
-      "score": 112,
+      "score": 111,
       "views": 165,
       "downloads": 63,
       "wallpaperCount": 45,
@@ -388,38 +388,6 @@
       ]
     },
     {
-      "tag": "卡通",
-      "score": 65,
-      "views": 86,
-      "downloads": 30,
-      "wallpaperCount": 18,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/通用/微信图片_20260310202255_660_4.webp",
-          "cdnTag": "v1.2.8"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_20260310202253_658_4.webp",
-          "cdnTag": "v1.2.8"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/海贼王/微信图片_2026-03-26_161050_310.webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/微信图片_2026-04-11_145953_146.webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/微信图片_20260120161539_485_4.webp",
-          "cdnTag": "v1.1.42"
-        }
-      ]
-    },
-    {
       "tag": "搞怪",
       "score": 64,
       "views": 100,
@@ -448,6 +416,38 @@
         {
           "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/微信图片_2026-04-11_150149_668.webp",
           "cdnTag": "v1.2.57"
+        }
+      ]
+    },
+    {
+      "tag": "卡通",
+      "score": 64,
+      "views": 86,
+      "downloads": 30,
+      "wallpaperCount": 18,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/通用/微信图片_20260310202255_660_4.webp",
+          "cdnTag": "v1.2.8"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_20260310202253_658_4.webp",
+          "cdnTag": "v1.2.8"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/海贼王/微信图片_2026-03-26_161050_310.webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/微信图片_2026-04-11_145953_146.webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/微信图片_20260120161539_485_4.webp",
+          "cdnTag": "v1.1.42"
         }
       ]
     },
@@ -689,7 +689,7 @@
     },
     {
       "tag": "哆啦A梦",
-      "score": 46,
+      "score": 45,
       "views": 65,
       "downloads": 29,
       "wallpaperCount": 12,
@@ -1088,26 +1088,6 @@
       ]
     },
     {
-      "tag": "Q版",
-      "score": 24,
-      "views": 30,
-      "downloads": 12,
-      "wallpaperCount": 2,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/通用/微信图片_20260310202255_660_4.webp",
-          "cdnTag": "v1.2.8"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/微信图片_20260119095916_475_4.webp",
-          "cdnTag": "v1.1.40"
-        }
-      ]
-    },
-    {
       "tag": "户外",
       "score": 24,
       "views": 27,
@@ -1184,6 +1164,26 @@
         {
           "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/戴耳机麦当劳外卖.webp",
           "cdnTag": "v1.1.13"
+        }
+      ]
+    },
+    {
+      "tag": "Q版",
+      "score": 23,
+      "views": 30,
+      "downloads": 12,
+      "wallpaperCount": 2,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/通用/微信图片_20260310202255_660_4.webp",
+          "cdnTag": "v1.2.8"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/微信图片_20260119095916_475_4.webp",
+          "cdnTag": "v1.1.40"
         }
       ]
     }
