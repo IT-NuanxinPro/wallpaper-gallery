@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-08-13T18:28:38.945Z",
+  "generatedAt": "2026-08-14T18:26:05.621Z",
   "series": "avatar",
   "total": 507,
   "tags": [
     {
       "tag": "人像",
-      "score": 416,
+      "score": 415,
       "views": 506,
       "downloads": 252,
       "wallpaperCount": 158,
@@ -69,7 +69,7 @@
     },
     {
       "tag": "氛围感",
-      "score": 188,
+      "score": 187,
       "views": 239,
       "downloads": 123,
       "wallpaperCount": 61,
@@ -133,7 +133,7 @@
     },
     {
       "tag": "插画",
-      "score": 163,
+      "score": 162,
       "views": 170,
       "downloads": 120,
       "wallpaperCount": 48,
@@ -357,7 +357,7 @@
     },
     {
       "tag": "二次元",
-      "score": 66,
+      "score": 65,
       "views": 86,
       "downloads": 43,
       "wallpaperCount": 25,
@@ -549,7 +549,7 @@
     },
     {
       "tag": "少女",
-      "score": 57,
+      "score": 56,
       "views": 59,
       "downloads": 30,
       "wallpaperCount": 23,
@@ -558,12 +558,12 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/插画/二次元/image_氛围感男头话题_热门头像话题_男..._13.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/人像/甜妹/663.webp",
           "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/插画/二次元/image_氛围感男头话题_热门头像话题_男..._13.webp",
+          "cdnTag": "v1.2.33"
         },
         {
           "thumbnail": "/thumbnail/avatar/人像/背影/image_氛围感女头话题_精选女头话题_高..._12.webp",

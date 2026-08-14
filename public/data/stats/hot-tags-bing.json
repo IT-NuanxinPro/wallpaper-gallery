@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-13T18:28:38.990Z",
+  "generatedAt": "2026-08-14T18:26:05.637Z",
   "series": "bing",
   "total": 235,
   "tags": [
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 152,
+      "score": 150,
       "views": 192,
       "downloads": 73,
       "wallpaperCount": 25,
@@ -34,7 +34,7 @@
         "bing-2026-03-18.jpg",
         "bing-2026-03-01.jpg",
         "bing-2026-03-05.jpg",
-        "bing-2026-03-24.jpg"
+        "bing-2026-03-23.jpg"
       ]
     },
     {
@@ -395,19 +395,6 @@
       ]
     },
     {
-      "tag": "圆周率的古老启示",
-      "score": 9,
-      "views": 8,
-      "downloads": 5,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-14.jpg"
-      ]
-    },
-    {
       "tag": "威尼斯的灵魂",
       "score": 9,
       "views": 21,
@@ -421,16 +408,16 @@
       ]
     },
     {
-      "tag": "春天的形状",
-      "score": 9,
-      "views": 13,
-      "downloads": 3,
+      "tag": "圆周率的古老启示",
+      "score": 8,
+      "views": 8,
+      "downloads": 5,
       "wallpaperCount": 1,
       "series": [
         "bing"
       ],
       "topWallpapers": [
-        "bing-2026-03-24.jpg"
+        "bing-2026-03-14.jpg"
       ]
     },
     {
@@ -470,6 +457,19 @@
       ],
       "topWallpapers": [
         "bing-2026-01-05.jpg"
+      ]
+    },
+    {
+      "tag": "春天的形状",
+      "score": 8,
+      "views": 13,
+      "downloads": 3,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-24.jpg"
       ]
     },
     {
