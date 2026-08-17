@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-16T17:48:05.084Z",
+  "generatedAt": "2026-08-17T17:56:20.249Z",
   "series": "bing",
   "total": 235,
   "tags": [
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 149,
+      "score": 148,
       "views": 192,
       "downloads": 73,
       "wallpaperCount": 25,
@@ -460,19 +460,6 @@
       ]
     },
     {
-      "tag": "春日绯梦",
-      "score": 8,
-      "views": 14,
-      "downloads": 2,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-20.jpg"
-      ]
-    },
-    {
       "tag": "2025 09",
       "score": 7,
       "views": 10,
@@ -552,6 +539,19 @@
       ],
       "topWallpapers": [
         "bing-2026-01-11.jpg"
+      ]
+    },
+    {
+      "tag": "春日绯梦",
+      "score": 7,
+      "views": 14,
+      "downloads": 2,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-20.jpg"
       ]
     },
     {
