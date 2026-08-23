@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-22T17:48:50.580Z",
+  "generatedAt": "2026-08-23T17:48:32.189Z",
   "series": "avatar",
   "total": 507,
   "tags": [
@@ -37,7 +37,7 @@
     },
     {
       "tag": "动漫",
-      "score": 334,
+      "score": 332,
       "views": 399,
       "downloads": 227,
       "wallpaperCount": 101,
@@ -689,7 +689,7 @@
     },
     {
       "tag": "哆啦A梦",
-      "score": 47,
+      "score": 46,
       "views": 67,
       "downloads": 30,
       "wallpaperCount": 12,
@@ -1072,8 +1072,24 @@
       ]
     },
     {
+      "tag": "银发蓝瞳男孩比耶蓝天背景",
+      "score": 24,
+      "views": 32,
+      "downloads": 19,
+      "wallpaperCount": 1,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/插画/二次元/银发蓝瞳男孩比耶蓝天背景.webp",
+          "cdnTag": "v1.1.4"
+        }
+      ]
+    },
+    {
       "tag": "海贼王",
-      "score": 25,
+      "score": 24,
       "views": 35,
       "downloads": 14,
       "wallpaperCount": 12,
@@ -1100,22 +1116,6 @@
         {
           "thumbnail": "/thumbnail/avatar/动漫/海贼王/路飞_草帽剑士.webp",
           "cdnTag": "v1.1.24"
-        }
-      ]
-    },
-    {
-      "tag": "银发蓝瞳男孩比耶蓝天背景",
-      "score": 24,
-      "views": 32,
-      "downloads": 19,
-      "wallpaperCount": 1,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/插画/二次元/银发蓝瞳男孩比耶蓝天背景.webp",
-          "cdnTag": "v1.1.4"
         }
       ]
     },
