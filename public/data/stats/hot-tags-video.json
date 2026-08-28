@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-08-26T19:23:39.546Z",
+  "generatedAt": "2026-08-28T01:37:00.833Z",
   "series": "video",
   "total": 25,
   "tags": [
     {
       "tag": "desktop",
-      "score": 530,
-      "views": 928,
-      "downloads": 129,
+      "score": 537,
+      "views": 947,
+      "downloads": 131,
       "wallpaperCount": 6,
       "series": [
         "video"
@@ -37,8 +37,8 @@
     },
     {
       "tag": "动漫",
-      "score": 207,
-      "views": 383,
+      "score": 210,
+      "views": 391,
       "downloads": 44,
       "wallpaperCount": 2,
       "series": [
@@ -57,9 +57,9 @@
     },
     {
       "tag": "风景",
-      "score": 180,
-      "views": 288,
-      "downloads": 53,
+      "score": 183,
+      "views": 294,
+      "downloads": 54,
       "wallpaperCount": 2,
       "series": [
         "video"
@@ -77,9 +77,9 @@
     },
     {
       "tag": "IP形象",
-      "score": 143,
-      "views": 257,
-      "downloads": 32,
+      "score": 144,
+      "views": 262,
+      "downloads": 33,
       "wallpaperCount": 2,
       "series": [
         "video"
@@ -97,8 +97,8 @@
     },
     {
       "tag": "彩瞳少女特写",
-      "score": 119,
-      "views": 218,
+      "score": 121,
+      "views": 223,
       "downloads": 26,
       "wallpaperCount": 1,
       "series": [
@@ -113,8 +113,8 @@
     },
     {
       "tag": "碎光倒影",
-      "score": 119,
-      "views": 218,
+      "score": 121,
+      "views": 223,
       "downloads": 26,
       "wallpaperCount": 1,
       "series": [
@@ -129,9 +129,9 @@
     },
     {
       "tag": "晴空云朵笑脸",
-      "score": 110,
-      "views": 166,
-      "downloads": 36,
+      "score": 112,
+      "views": 169,
+      "downloads": 37,
       "wallpaperCount": 1,
       "series": [
         "video"
@@ -145,9 +145,9 @@
     },
     {
       "tag": "屋顶阳光",
-      "score": 110,
-      "views": 166,
-      "downloads": 36,
+      "score": 112,
+      "views": 169,
+      "downloads": 37,
       "wallpaperCount": 1,
       "series": [
         "video"
@@ -161,9 +161,9 @@
     },
     {
       "tag": "聚光帅舞",
-      "score": 99,
-      "views": 176,
-      "downloads": 23,
+      "score": 100,
+      "views": 178,
+      "downloads": 24,
       "wallpaperCount": 1,
       "series": [
         "video"
@@ -177,9 +177,9 @@
     },
     {
       "tag": "水豚噜噜",
-      "score": 99,
-      "views": 176,
-      "downloads": 23,
+      "score": 100,
+      "views": 178,
+      "downloads": 24,
       "wallpaperCount": 1,
       "series": [
         "video"
@@ -193,8 +193,8 @@
     },
     {
       "tag": "晨光飞鸟",
-      "score": 88,
-      "views": 165,
+      "score": 89,
+      "views": 168,
       "downloads": 18,
       "wallpaperCount": 1,
       "series": [
@@ -209,8 +209,8 @@
     },
     {
       "tag": "窗边白发少女",
-      "score": 88,
-      "views": 165,
+      "score": 89,
+      "views": 168,
       "downloads": 18,
       "wallpaperCount": 1,
       "series": [
@@ -225,8 +225,8 @@
     },
     {
       "tag": "雨滴玻璃",
-      "score": 70,
-      "views": 122,
+      "score": 71,
+      "views": 125,
       "downloads": 17,
       "wallpaperCount": 1,
       "series": [
@@ -241,8 +241,8 @@
     },
     {
       "tag": "紫色光影",
-      "score": 70,
-      "views": 122,
+      "score": 71,
+      "views": 125,
       "downloads": 17,
       "wallpaperCount": 1,
       "series": [
@@ -258,7 +258,7 @@
     {
       "tag": "秋日秋千",
       "score": 44,
-      "views": 81,
+      "views": 84,
       "downloads": 9,
       "wallpaperCount": 1,
       "series": [
@@ -274,7 +274,7 @@
     {
       "tag": "HelloKitty",
       "score": 44,
-      "views": 81,
+      "views": 84,
       "downloads": 9,
       "wallpaperCount": 1,
       "series": [
@@ -284,86 +284,6 @@
         {
           "thumbnail": "/thumbnail/video/desktop/IP形象/HelloKitty_秋日秋千.png",
           "cdnTag": "v1.1.30"
-        }
-      ]
-    },
-    {
-      "tag": "国庆专属动态背景视频",
-      "score": 22,
-      "views": 50,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/social-cover/节日/我在这里告白祖国.png",
-          "cdnTag": "v1.2.79"
-        }
-      ]
-    },
-    {
-      "tag": "节日",
-      "score": 22,
-      "views": 50,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/social-cover/节日/我在这里告白祖国.png",
-          "cdnTag": "v1.2.79"
-        }
-      ]
-    },
-    {
-      "tag": "朋友圈背景",
-      "score": 22,
-      "views": 50,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/social-cover/节日/我在这里告白祖国.png",
-          "cdnTag": "v1.2.79"
-        }
-      ]
-    },
-    {
-      "tag": "我在这里告白祖国",
-      "score": 22,
-      "views": 50,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/social-cover/节日/我在这里告白祖国.png",
-          "cdnTag": "v1.2.79"
-        }
-      ]
-    },
-    {
-      "tag": "social cover",
-      "score": 22,
-      "views": 50,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/social-cover/节日/我在这里告白祖国.png",
-          "cdnTag": "v1.2.79"
         }
       ]
     },
@@ -428,6 +348,86 @@
         {
           "thumbnail": "/thumbnail/video/mobile/萌宠/柴犬_贴脸卖萌.png",
           "cdnTag": "v1.1.30"
+        }
+      ]
+    },
+    {
+      "tag": "国庆专属动态背景视频",
+      "score": 21,
+      "views": 50,
+      "downloads": 0,
+      "wallpaperCount": 1,
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/social-cover/节日/我在这里告白祖国.png",
+          "cdnTag": "v1.2.79"
+        }
+      ]
+    },
+    {
+      "tag": "节日",
+      "score": 21,
+      "views": 50,
+      "downloads": 0,
+      "wallpaperCount": 1,
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/social-cover/节日/我在这里告白祖国.png",
+          "cdnTag": "v1.2.79"
+        }
+      ]
+    },
+    {
+      "tag": "朋友圈背景",
+      "score": 21,
+      "views": 50,
+      "downloads": 0,
+      "wallpaperCount": 1,
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/social-cover/节日/我在这里告白祖国.png",
+          "cdnTag": "v1.2.79"
+        }
+      ]
+    },
+    {
+      "tag": "我在这里告白祖国",
+      "score": 21,
+      "views": 50,
+      "downloads": 0,
+      "wallpaperCount": 1,
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/social-cover/节日/我在这里告白祖国.png",
+          "cdnTag": "v1.2.79"
+        }
+      ]
+    },
+    {
+      "tag": "social cover",
+      "score": 21,
+      "views": 50,
+      "downloads": 0,
+      "wallpaperCount": 1,
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/social-cover/节日/我在这里告白祖国.png",
+          "cdnTag": "v1.2.79"
         }
       ]
     }

@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-08-26T19:23:39.544Z",
+  "generatedAt": "2026-08-28T01:37:00.830Z",
   "series": "avatar",
   "total": 507,
   "tags": [
     {
       "tag": "人像",
-      "score": 402,
-      "views": 516,
+      "score": 401,
+      "views": 517,
       "downloads": 262,
       "wallpaperCount": 158,
       "series": [
@@ -37,7 +37,7 @@
     },
     {
       "tag": "动漫",
-      "score": 332,
+      "score": 331,
       "views": 401,
       "downloads": 229,
       "wallpaperCount": 101,
@@ -70,7 +70,7 @@
     {
       "tag": "氛围感",
       "score": 180,
-      "views": 243,
+      "views": 244,
       "downloads": 127,
       "wallpaperCount": 61,
       "series": [
@@ -96,38 +96,6 @@
         {
           "thumbnail": "/thumbnail/avatar/人像/氛围感/街角回眸男生.webp",
           "cdnTag": "v1.1.11"
-        }
-      ]
-    },
-    {
-      "tag": "萌宠",
-      "score": 155,
-      "views": 200,
-      "downloads": 118,
-      "wallpaperCount": 36,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴耳机.webp",
-          "cdnTag": "v1.1.11"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴眼镜男孩肩上趴着小猫.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-01-23_165613_598.webp",
-          "cdnTag": "v1.1.53"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/浴室里的小黄鸭猫.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/微信图片_2026-01-23_165009_180.webp",
-          "cdnTag": "v1.1.53"
         }
       ]
     },
@@ -164,8 +132,40 @@
       ]
     },
     {
+      "tag": "萌宠",
+      "score": 154,
+      "views": 200,
+      "downloads": 118,
+      "wallpaperCount": 36,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴耳机.webp",
+          "cdnTag": "v1.1.11"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴眼镜男孩肩上趴着小猫.webp",
+          "cdnTag": "v1.1.4"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-01-23_165613_598.webp",
+          "cdnTag": "v1.1.53"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/浴室里的小黄鸭猫.webp",
+          "cdnTag": "v1.1.4"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/微信图片_2026-01-23_165009_180.webp",
+          "cdnTag": "v1.1.53"
+        }
+      ]
+    },
+    {
       "tag": "猫咪",
-      "score": 126,
+      "score": 125,
       "views": 165,
       "downloads": 96,
       "wallpaperCount": 22,
@@ -197,7 +197,7 @@
     },
     {
       "tag": "甜妹",
-      "score": 123,
+      "score": 122,
       "views": 139,
       "downloads": 74,
       "wallpaperCount": 58,
@@ -218,11 +218,11 @@
           "cdnTag": "v1.2.57"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_20260119095919_478_4.webp",
-          "cdnTag": "v1.1.42"
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/664.webp",
+          "cdnTag": "v1.1.96"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/664.webp",
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/665.webp",
           "cdnTag": "v1.1.96"
         }
       ]
@@ -261,8 +261,8 @@
     },
     {
       "tag": "背影",
-      "score": 77,
-      "views": 93,
+      "score": 78,
+      "views": 94,
       "downloads": 48,
       "wallpaperCount": 29,
       "series": [
@@ -278,16 +278,16 @@
           "cdnTag": "v1.2.34"
         },
         {
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/image_氛围感女头话题_精选女头话题_高..._16.webp",
+          "cdnTag": "v1.2.34"
+        },
+        {
           "thumbnail": "/thumbnail/avatar/人像/背影/image_向往自由的女生头像话题_氛围感头..._0.webp",
           "cdnTag": "v1.2.34"
         },
         {
           "thumbnail": "/thumbnail/avatar/人像/背影/image_向往自由的女生头像话题_氛围感头..._2.webp",
           "cdnTag": "v1.2.34"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/背影/image_氛围感男头话题_热门头像话题_男..._4.webp",
-          "cdnTag": "v1.2.33"
         }
       ]
     },
@@ -453,7 +453,7 @@
     },
     {
       "tag": "清新",
-      "score": 59,
+      "score": 58,
       "views": 43,
       "downloads": 40,
       "wallpaperCount": 11,
@@ -644,22 +644,6 @@
       ]
     },
     {
-      "tag": "戴耳机",
-      "score": 51,
-      "views": 62,
-      "downloads": 40,
-      "wallpaperCount": 1,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴耳机.webp",
-          "cdnTag": "v1.1.11"
-        }
-      ]
-    },
-    {
       "tag": "治愈",
       "score": 50,
       "views": 27,
@@ -684,6 +668,22 @@
         {
           "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161546_495_4.webp",
           "cdnTag": "v1.1.42"
+        }
+      ]
+    },
+    {
+      "tag": "戴耳机",
+      "score": 50,
+      "views": 62,
+      "downloads": 40,
+      "wallpaperCount": 1,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴耳机.webp",
+          "cdnTag": "v1.1.11"
         }
       ]
     },
@@ -785,7 +785,7 @@
     },
     {
       "tag": "玫瑰",
-      "score": 38,
+      "score": 37,
       "views": 25,
       "downloads": 35,
       "wallpaperCount": 6,
