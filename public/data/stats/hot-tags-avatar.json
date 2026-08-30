@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-29T19:57:22.323Z",
+  "generatedAt": "2026-08-30T19:59:12.161Z",
   "series": "avatar",
   "total": 507,
   "tags": [
@@ -37,7 +37,7 @@
     },
     {
       "tag": "动漫",
-      "score": 332,
+      "score": 331,
       "views": 403,
       "downloads": 231,
       "wallpaperCount": 101,
@@ -133,7 +133,7 @@
     },
     {
       "tag": "萌宠",
-      "score": 153,
+      "score": 152,
       "views": 200,
       "downloads": 118,
       "wallpaperCount": 36,
@@ -146,12 +146,12 @@
           "cdnTag": "v1.1.11"
         },
         {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴眼镜男孩肩上趴着小猫.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-01-23_165613_598.webp",
           "cdnTag": "v1.1.53"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴眼镜男孩肩上趴着小猫.webp",
+          "cdnTag": "v1.1.4"
         },
         {
           "thumbnail": "/thumbnail/avatar/萌宠/猫咪/浴室里的小黄鸭猫.webp",
@@ -165,7 +165,7 @@
     },
     {
       "tag": "猫咪",
-      "score": 124,
+      "score": 123,
       "views": 165,
       "downloads": 96,
       "wallpaperCount": 22,
@@ -178,12 +178,12 @@
           "cdnTag": "v1.1.11"
         },
         {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴眼镜男孩肩上趴着小猫.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-01-23_165613_598.webp",
           "cdnTag": "v1.1.53"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴眼镜男孩肩上趴着小猫.webp",
+          "cdnTag": "v1.1.4"
         },
         {
           "thumbnail": "/thumbnail/avatar/萌宠/猫咪/浴室里的小黄鸭猫.webp",
@@ -292,38 +292,6 @@
       ]
     },
     {
-      "tag": "少年",
-      "score": 68,
-      "views": 45,
-      "downloads": 47,
-      "wallpaperCount": 9,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._14.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._10.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/通用/image_高级头像话题_趣味头像话题_头像..._10.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_20260119095918_477_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/背影/646.webp",
-          "cdnTag": "v1.1.96"
-        }
-      ]
-    },
-    {
       "tag": "创意",
       "score": 67,
       "views": 78,
@@ -352,6 +320,38 @@
         {
           "thumbnail": "/thumbnail/avatar/插画/创意/煎蛋_抱番茄.webp",
           "cdnTag": "v1.1.22"
+        }
+      ]
+    },
+    {
+      "tag": "少年",
+      "score": 67,
+      "views": 45,
+      "downloads": 47,
+      "wallpaperCount": 9,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._14.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._10.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/通用/image_高级头像话题_趣味头像话题_头像..._10.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_20260119095918_477_4.webp",
+          "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/背影/646.webp",
+          "cdnTag": "v1.1.96"
         }
       ]
     },
@@ -452,38 +452,6 @@
       ]
     },
     {
-      "tag": "清新",
-      "score": 58,
-      "views": 43,
-      "downloads": 40,
-      "wallpaperCount": 11,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._14.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_20260119095919_478_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/656.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_20260119095918_477_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/背影/image_向往自由的女生头像话题_氛围感头..._4.webp",
-          "cdnTag": "v1.2.34"
-        }
-      ]
-    },
-    {
       "tag": "表情包",
       "score": 58,
       "views": 94,
@@ -512,6 +480,38 @@
         {
           "thumbnail": "/thumbnail/avatar/表情包/搞怪/微信图片_20260310202259_665_4.webp",
           "cdnTag": "v1.2.8"
+        }
+      ]
+    },
+    {
+      "tag": "清新",
+      "score": 57,
+      "views": 43,
+      "downloads": 40,
+      "wallpaperCount": 11,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._14.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_20260119095919_478_4.webp",
+          "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/656.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_20260119095918_477_4.webp",
+          "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/背影/image_向往自由的女生头像话题_氛围感头..._4.webp",
+          "cdnTag": "v1.2.34"
         }
       ]
     },
@@ -816,22 +816,6 @@
       ]
     },
     {
-      "tag": "饮品",
-      "score": 35,
-      "views": 13,
-      "downloads": 27,
-      "wallpaperCount": 1,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._14.webp",
-          "cdnTag": "v1.2.33"
-        }
-      ]
-    },
-    {
       "tag": "星空",
       "score": 34,
       "views": 16,
@@ -852,6 +836,22 @@
         {
           "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161546_494_4.webp",
           "cdnTag": "v1.1.42"
+        }
+      ]
+    },
+    {
+      "tag": "饮品",
+      "score": 34,
+      "views": 13,
+      "downloads": 27,
+      "wallpaperCount": 1,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._14.webp",
+          "cdnTag": "v1.2.33"
         }
       ]
     },
