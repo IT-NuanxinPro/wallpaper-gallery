@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-08-30T19:59:12.161Z",
+  "generatedAt": "2026-08-31T22:00:34.076Z",
   "series": "avatar",
   "total": 507,
   "tags": [
     {
       "tag": "人像",
-      "score": 401,
+      "score": 400,
       "views": 517,
       "downloads": 262,
       "wallpaperCount": 158,
@@ -37,7 +37,7 @@
     },
     {
       "tag": "动漫",
-      "score": 331,
+      "score": 329,
       "views": 403,
       "downloads": 231,
       "wallpaperCount": 101,
@@ -62,7 +62,7 @@
           "cdnTag": "v1.1.13"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._10.webp",
+          "thumbnail": "/thumbnail/avatar/动漫/通用/image_高级头像话题_趣味头像话题_头像..._2.webp",
           "cdnTag": "v1.2.33"
         }
       ]
@@ -101,7 +101,7 @@
     },
     {
       "tag": "插画",
-      "score": 155,
+      "score": 154,
       "views": 172,
       "downloads": 121,
       "wallpaperCount": 48,
@@ -293,7 +293,7 @@
     },
     {
       "tag": "创意",
-      "score": 67,
+      "score": 66,
       "views": 78,
       "downloads": 49,
       "wallpaperCount": 21,
@@ -325,7 +325,7 @@
     },
     {
       "tag": "少年",
-      "score": 67,
+      "score": 66,
       "views": 45,
       "downloads": 47,
       "wallpaperCount": 9,
@@ -338,11 +338,11 @@
           "cdnTag": "v1.2.33"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._10.webp",
+          "thumbnail": "/thumbnail/avatar/动漫/通用/image_高级头像话题_趣味头像话题_头像..._10.webp",
           "cdnTag": "v1.2.33"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/通用/image_高级头像话题_趣味头像话题_头像..._10.webp",
+          "thumbnail": "/thumbnail/avatar/动漫/通用/image_氛围感男头话题_热门头像话题_男..._10.webp",
           "cdnTag": "v1.2.33"
         },
         {
@@ -549,7 +549,7 @@
     },
     {
       "tag": "蜡笔小新",
-      "score": 55,
+      "score": 54,
       "views": 83,
       "downloads": 38,
       "wallpaperCount": 18,
@@ -1016,8 +1016,24 @@
       ]
     },
     {
+      "tag": "银发蓝瞳男孩比耶蓝天背景",
+      "score": 24,
+      "views": 32,
+      "downloads": 19,
+      "wallpaperCount": 1,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/插画/二次元/银发蓝瞳男孩比耶蓝天背景.webp",
+          "cdnTag": "v1.1.4"
+        }
+      ]
+    },
+    {
       "tag": "卡通简笔画",
-      "score": 25,
+      "score": 24,
       "views": 47,
       "downloads": 14,
       "wallpaperCount": 12,
@@ -1044,22 +1060,6 @@
         {
           "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/黄夹女孩捧福字.webp",
           "cdnTag": "v1.1.11"
-        }
-      ]
-    },
-    {
-      "tag": "银发蓝瞳男孩比耶蓝天背景",
-      "score": 24,
-      "views": 32,
-      "downloads": 19,
-      "wallpaperCount": 1,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/插画/二次元/银发蓝瞳男孩比耶蓝天背景.webp",
-          "cdnTag": "v1.1.4"
         }
       ]
     },
@@ -1152,22 +1152,6 @@
       ]
     },
     {
-      "tag": "戴耳机麦当劳外卖",
-      "score": 22,
-      "views": 39,
-      "downloads": 14,
-      "wallpaperCount": 1,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/戴耳机麦当劳外卖.webp",
-          "cdnTag": "v1.1.13"
-        }
-      ]
-    },
-    {
       "tag": "Q版",
       "score": 22,
       "views": 30,
@@ -1184,6 +1168,22 @@
         {
           "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/微信图片_20260119095916_475_4.webp",
           "cdnTag": "v1.1.40"
+        }
+      ]
+    },
+    {
+      "tag": "戴耳机麦当劳外卖",
+      "score": 21,
+      "views": 39,
+      "downloads": 14,
+      "wallpaperCount": 1,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/戴耳机麦当劳外卖.webp",
+          "cdnTag": "v1.1.13"
         }
       ]
     }
