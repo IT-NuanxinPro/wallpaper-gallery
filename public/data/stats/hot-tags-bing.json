@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-01T20:06:42.854Z",
+  "generatedAt": "2026-09-02T20:02:56.458Z",
   "series": "bing",
   "total": 232,
   "tags": [
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 141,
+      "score": 140,
       "views": 194,
       "downloads": 73,
       "wallpaperCount": 25,
@@ -39,7 +39,7 @@
     },
     {
       "tag": "2025 12",
-      "score": 72,
+      "score": 71,
       "views": 117,
       "downloads": 55,
       "wallpaperCount": 28,
@@ -236,19 +236,6 @@
       ]
     },
     {
-      "tag": "城市花开",
-      "score": 12,
-      "views": 15,
-      "downloads": 6,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-18.jpg"
-      ]
-    },
-    {
       "tag": "2025 02",
       "score": 11,
       "views": 23,
@@ -306,6 +293,19 @@
       ],
       "topWallpapers": [
         "bing-2026-01-09.jpg"
+      ]
+    },
+    {
+      "tag": "城市花开",
+      "score": 11,
+      "views": 15,
+      "downloads": 6,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-18.jpg"
       ]
     },
     {
