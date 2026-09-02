@@ -11,6 +11,7 @@ import {
   toggleCollect,
   toggleLike,
 } from '@/services/interactionService'
+import { formatInteractionError } from '@/utils/interaction/errors'
 import { buildWallpaperAssetKey, normalizeWallpaperFilename } from '@/utils/wallpaper/identity'
 
 export const useInteractionStore = defineStore('interaction', () => {
@@ -132,33 +133,9 @@ export const useInteractionStore = defineStore('interaction', () => {
     return groupInteractionsBySeries(allLikes.value)
   })
 
-  // Library 按系列分组的收藏数据
   const collectionsBySeries = computed(() => {
     return groupInteractionsBySeries(allCollectionItems.value)
   })
-
-  function formatInteractionError(err) {
-    const message = err?.message || err?.details || err?.hint || ''
-
-    if (message === '未登录') {
-      return {
-        message: '请先登录后再操作',
-        type: 'warning',
-      }
-    }
-
-    if (message === 'Supabase 未配置') {
-      return {
-        message,
-        type: 'warning',
-      }
-    }
-
-    return {
-      message: message || '操作失败，请稍后重试',
-      type: 'error',
-    }
-  }
 
   // ========================================
   // Actions
@@ -202,7 +179,6 @@ export const useInteractionStore = defineStore('interaction', () => {
     const wasLiked = seriesSet.has(assetKey)
     const nextLiked = !wasLiked
 
-    // 乐观更新
     updateSeriesSet(likedBySeriesMap, series, assetKey, nextLiked)
     syncLikesSnapshot(assetKey, nextLiked)
 
@@ -210,12 +186,11 @@ export const useInteractionStore = defineStore('interaction', () => {
 
     try {
       const liked = await toggleLike(filename, series)
-      // 同步更新统计
       stats.value = {
         ...stats.value,
         likes: stats.value.likes + (liked ? 1 : -1),
       }
-      // 乐观更新壁纸级聚合计数
+
       const { usePopularityStore } = await import('@/stores/popularity')
       const popularityStore = usePopularityStore()
       const normalizedFilename = normalizeWallpaperFilename(filename, series)
@@ -224,7 +199,6 @@ export const useInteractionStore = defineStore('interaction', () => {
       return { success: true, liked }
     }
     catch (err) {
-      // 回滚
       updateSeriesSet(likedBySeriesMap, series, assetKey, wasLiked)
       syncLikesSnapshot(assetKey, wasLiked)
       console.warn('[interactionStore] toggleLike failed:', err)
@@ -245,28 +219,30 @@ export const useInteractionStore = defineStore('interaction', () => {
     if (!assetKey || pendingOperations.value.has(`collect:${assetKey}`))
       return { success: false, ignored: true }
 
-    // 确保有默认收藏夹 ID
-    if (!defaultCollectionId.value) {
-      defaultCollectionId.value = await fetchDefaultCollectionId()
-    }
-
     const seriesSet = collectedBySeriesMap.value[series] || new Set()
     const wasCollected = seriesSet.has(assetKey)
     const nextCollected = !wasCollected
 
-    // 乐观更新
-    updateSeriesSet(collectedBySeriesMap, series, assetKey, nextCollected)
-    syncCollectionsSnapshot(assetKey, nextCollected, defaultCollectionId.value)
-
     pendingOperations.value.add(`collect:${assetKey}`)
 
     try {
+      if (!defaultCollectionId.value) {
+        defaultCollectionId.value = await fetchDefaultCollectionId()
+      }
+
+      if (!defaultCollectionId.value) {
+        throw new Error('未找到默认收藏夹')
+      }
+
+      updateSeriesSet(collectedBySeriesMap, series, assetKey, nextCollected)
+      syncCollectionsSnapshot(assetKey, nextCollected, defaultCollectionId.value)
+
       const collected = await toggleCollect(filename, series, defaultCollectionId.value)
       stats.value = {
         ...stats.value,
         collections: stats.value.collections + (collected ? 1 : -1),
       }
-      // 乐观更新壁纸级聚合计数
+
       const { usePopularityStore } = await import('@/stores/popularity')
       const popularityStore = usePopularityStore()
       const normalizedFilename = normalizeWallpaperFilename(filename, series)
@@ -275,7 +251,6 @@ export const useInteractionStore = defineStore('interaction', () => {
       return { success: true, collected }
     }
     catch (err) {
-      // 回滚
       updateSeriesSet(collectedBySeriesMap, series, assetKey, wasCollected)
       syncCollectionsSnapshot(assetKey, wasCollected, defaultCollectionId.value)
       console.warn('[interactionStore] toggleCollect failed:', err)
@@ -305,7 +280,6 @@ export const useInteractionStore = defineStore('interaction', () => {
       stats.value = statsData
       statsLoaded.value = true
 
-      // 同步更新系列级缓存
       const likeMap = {}
       const collectMap = {}
 
@@ -323,7 +297,6 @@ export const useInteractionStore = defineStore('interaction', () => {
         collectMap[series].add(asset_key)
       })
 
-      // 合并到系列缓存（保留已有系列的数据，覆盖新数据）
       Object.keys(likeMap).forEach((series) => {
         likedBySeriesMap.value[series] = likeMap[series]
         loadedSeries.value.add(series)
@@ -377,7 +350,6 @@ export const useInteractionStore = defineStore('interaction', () => {
   }
 
   return {
-    // State
     likedBySeriesMap,
     collectedBySeriesMap,
     loading,
@@ -387,14 +359,12 @@ export const useInteractionStore = defineStore('interaction', () => {
     allLikes,
     allCollectionItems,
 
-    // Getters
     isLiked,
     isCollected,
     isPending,
     likesBySeries,
     collectionsBySeries,
 
-    // Actions
     prefetchForSeries,
     handleToggleLike,
     handleToggleCollect,
