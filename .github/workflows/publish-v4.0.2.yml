@@ -1,0 +1,53 @@
+name: Publish v4.0.2 Release
+
+on:
+  push:
+    branches:
+      - fix/issue-14-error-message
+    paths:
+      - .github/workflows/publish-v4.0.2.yml
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cat > release-notes.md <<'EOF'
+          ## 🚀 版本概览
+
+          `v4.0.2` 是一次交互错误提示修复版本，主要优化点赞与收藏操作异常时的用户反馈。
+
+          ## 🐛 修复内容
+
+          - 修复部分 Supabase / PostgREST 原始错误直接展示给用户的问题
+          - 统一点赞、收藏操作错误提示
+          - 优化未登录、登录失效、网络异常、权限/RLS、外键约束、重复操作、限流等场景提示
+          - 修复默认收藏夹获取异常可能绕过统一错误提示的问题
+          - 补充交互错误映射单元测试
+
+          ## 🛠 工程调整
+
+          - 项目版本更新至 `4.0.2`
+
+          ## 📌 关联
+
+          - 修复 #14
+          - 合并 PR #19
+          EOF
+
+          if gh release view v4.0.2 --repo IT-NuanxinPro/wallpaper-gallery >/dev/null 2>&1; then
+            echo "v4.0.2 already exists, skipping"
+            exit 0
+          fi
+
+          gh release create v4.0.2 \
+            --repo IT-NuanxinPro/wallpaper-gallery \
+            --target ed97ca22989f00213090e2644bd0fd86a2077072 \
+            --title "v4.0.2" \
+            --notes-file release-notes.md
