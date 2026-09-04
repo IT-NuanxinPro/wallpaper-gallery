@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-03T20:04:21.211Z",
+  "generatedAt": "2026-09-04T19:48:36.958Z",
   "series": "avatar",
   "total": 508,
   "tags": [
     {
       "tag": "人像",
-      "score": 397,
+      "score": 396,
       "views": 519,
       "downloads": 263,
       "wallpaperCount": 158,
@@ -37,7 +37,7 @@
     },
     {
       "tag": "动漫",
-      "score": 335,
+      "score": 333,
       "views": 410,
       "downloads": 235,
       "wallpaperCount": 104,
@@ -197,7 +197,7 @@
     },
     {
       "tag": "甜妹",
-      "score": 121,
+      "score": 120,
       "views": 139,
       "downloads": 74,
       "wallpaperCount": 58,
@@ -356,38 +356,6 @@
       ]
     },
     {
-      "tag": "卡通",
-      "score": 62,
-      "views": 91,
-      "downloads": 33,
-      "wallpaperCount": 20,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/通用/微信图片_20260310202255_660_4.webp",
-          "cdnTag": "v1.2.8"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/海贼王/微信图片_2026-03-26_161050_310.webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_20260310202253_658_4.webp",
-          "cdnTag": "v1.2.8"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/微信图片_20260120161539_485_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/微信图片_2026-04-11_145953_146.webp",
-          "cdnTag": "v1.2.57"
-        }
-      ]
-    },
-    {
       "tag": "二次元",
       "score": 61,
       "views": 87,
@@ -452,8 +420,40 @@
       ]
     },
     {
+      "tag": "卡通",
+      "score": 61,
+      "views": 91,
+      "downloads": 33,
+      "wallpaperCount": 20,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/通用/微信图片_20260310202255_660_4.webp",
+          "cdnTag": "v1.2.8"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/海贼王/微信图片_2026-03-26_161050_310.webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_20260310202253_658_4.webp",
+          "cdnTag": "v1.2.8"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/微信图片_20260120161539_485_4.webp",
+          "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/微信图片_2026-04-11_145953_146.webp",
+          "cdnTag": "v1.2.57"
+        }
+      ]
+    },
+    {
       "tag": "甜美",
-      "score": 60,
+      "score": 59,
       "views": 60,
       "downloads": 37,
       "wallpaperCount": 24,
@@ -485,7 +485,7 @@
     },
     {
       "tag": "蜡笔小新",
-      "score": 59,
+      "score": 58,
       "views": 89,
       "downloads": 41,
       "wallpaperCount": 21,
@@ -506,11 +506,11 @@
           "cdnTag": "v1.1.24"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/image_蜡笔小新话题_流浪春天话题_情头..._0.webp",
-          "cdnTag": "v1.1.85"
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/吃饱再说.webp",
+          "cdnTag": "v1.1.22"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/吃饱再说.webp",
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/我办事操心吧.webp",
           "cdnTag": "v1.1.22"
         }
       ]
@@ -580,38 +580,6 @@
       ]
     },
     {
-      "tag": "少女",
-      "score": 54,
-      "views": 60,
-      "downloads": 31,
-      "wallpaperCount": 23,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/663.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/插画/二次元/image_氛围感男头话题_热门头像话题_男..._13.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/644.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/背影/image_氛围感女头话题_精选女头话题_高..._12.webp",
-          "cdnTag": "v1.2.34"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/背影/image_向往自由的女生头像话题_氛围感头..._4.webp",
-          "cdnTag": "v1.2.34"
-        }
-      ]
-    },
-    {
       "tag": "水豚噜噜",
       "score": 53,
       "views": 84,
@@ -640,6 +608,38 @@
         {
           "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/趴在栏杆上看日出.webp",
           "cdnTag": "v1.1.4"
+        }
+      ]
+    },
+    {
+      "tag": "少女",
+      "score": 53,
+      "views": 60,
+      "downloads": 31,
+      "wallpaperCount": 23,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/663.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/插画/二次元/image_氛围感男头话题_热门头像话题_男..._13.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/644.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/背影/image_氛围感女头话题_精选女头话题_高..._12.webp",
+          "cdnTag": "v1.2.34"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/背影/image_向往自由的女生头像话题_氛围感头..._4.webp",
+          "cdnTag": "v1.2.34"
         }
       ]
     },
@@ -889,7 +889,7 @@
     },
     {
       "tag": "长发",
-      "score": 30,
+      "score": 29,
       "views": 38,
       "downloads": 15,
       "wallpaperCount": 14,
