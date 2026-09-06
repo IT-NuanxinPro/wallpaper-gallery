@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-05T19:20:44.325Z",
+  "generatedAt": "2026-09-06T19:26:31.811Z",
   "series": "avatar",
   "total": 508,
   "tags": [
     {
       "tag": "人像",
-      "score": 396,
+      "score": 394,
       "views": 519,
       "downloads": 263,
       "wallpaperCount": 158,
@@ -69,7 +69,7 @@
     },
     {
       "tag": "氛围感",
-      "score": 177,
+      "score": 176,
       "views": 245,
       "downloads": 127,
       "wallpaperCount": 61,
@@ -261,7 +261,7 @@
     },
     {
       "tag": "背影",
-      "score": 79,
+      "score": 78,
       "views": 95,
       "downloads": 49,
       "wallpaperCount": 29,
@@ -1104,38 +1104,6 @@
       ]
     },
     {
-      "tag": "户外",
-      "score": 24,
-      "views": 28,
-      "downloads": 13,
-      "wallpaperCount": 11,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/image_蜡笔小新话题_流浪春天话题_情头..._1.webp",
-          "cdnTag": "v1.1.85"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/image_氛围感男头话题_热门头像话题_男..._11.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/644.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/背影/image_向往自由的女生头像话题_氛围感头..._4.webp",
-          "cdnTag": "v1.2.34"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/image_氛围感男头话题_热门头像话题_男..._6.webp",
-          "cdnTag": "v1.2.33"
-        }
-      ]
-    },
-    {
       "tag": "银发蓝瞳男孩比耶蓝天背景",
       "score": 23,
       "views": 32,
@@ -1148,6 +1116,38 @@
         {
           "thumbnail": "/thumbnail/avatar/插画/二次元/银发蓝瞳男孩比耶蓝天背景.webp",
           "cdnTag": "v1.1.4"
+        }
+      ]
+    },
+    {
+      "tag": "户外",
+      "score": 23,
+      "views": 28,
+      "downloads": 13,
+      "wallpaperCount": 11,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/image_蜡笔小新话题_流浪春天话题_情头..._1.webp",
+          "cdnTag": "v1.1.85"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/644.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/背影/image_向往自由的女生头像话题_氛围感头..._4.webp",
+          "cdnTag": "v1.2.34"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/image_氛围感男头话题_热门头像话题_男..._6.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/image_氛围感男头话题_热门头像话题_男..._11.webp",
+          "cdnTag": "v1.2.33"
         }
       ]
     },
