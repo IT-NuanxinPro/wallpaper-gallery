@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-06T19:26:31.827Z",
+  "generatedAt": "2026-09-07T20:44:45.952Z",
   "series": "bing",
   "total": 225,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 209,
+      "score": 207,
       "views": 399,
       "downloads": 116,
       "wallpaperCount": 31,
@@ -40,7 +40,7 @@
     {
       "tag": "2025 12",
       "score": 69,
-      "views": 117,
+      "views": 119,
       "downloads": 55,
       "wallpaperCount": 28,
       "series": [
@@ -56,7 +56,7 @@
     },
     {
       "tag": "2026 02",
-      "score": 54,
+      "score": 53,
       "views": 83,
       "downloads": 30,
       "wallpaperCount": 18,
@@ -68,7 +68,7 @@
         "bing-2026-02-28.jpg",
         "bing-2026-02-01.jpg",
         "bing-2026-02-06.jpg",
-        "bing-2026-02-26.jpg"
+        "bing-2026-02-04.jpg"
       ]
     },
     {
@@ -90,10 +90,10 @@
     },
     {
       "tag": "2025 11",
-      "score": 27,
-      "views": 51,
-      "downloads": 26,
-      "wallpaperCount": 17,
+      "score": 29,
+      "views": 54,
+      "downloads": 27,
+      "wallpaperCount": 18,
       "series": [
         "bing"
       ],
@@ -101,8 +101,8 @@
         "bing-2025-11-24.jpg",
         "bing-2025-11-11.jpg",
         "bing-2025-11-23.jpg",
-        "bing-2025-11-03.jpg",
-        "bing-2025-11-12.jpg"
+        "bing-2025-11-27.jpg",
+        "bing-2025-11-03.jpg"
       ]
     },
     {
@@ -129,19 +129,6 @@
       ],
       "topWallpapers": [
         "bing-2026-01-04.jpg"
-      ]
-    },
-    {
-      "tag": "小村庄，大视野",
-      "score": 16,
-      "views": 26,
-      "downloads": 10,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-15.jpg"
       ]
     },
     {
@@ -176,6 +163,19 @@
         "bing-2025-07-15.jpg",
         "bing-2025-07-04.jpg",
         "bing-2025-07-06.jpg"
+      ]
+    },
+    {
+      "tag": "小村庄，大视野",
+      "score": 15,
+      "views": 26,
+      "downloads": 10,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-15.jpg"
       ]
     },
     {
