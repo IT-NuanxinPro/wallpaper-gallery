@@ -7,7 +7,7 @@ on:
       - main
     paths:
       - "public/pake-auth-navigation.js"
-      - "public/apple-touch-icon.png"
+      - "public/favicon.svg"
       - ".github/workflows/desktop-release.yml"
 
 permissions:
