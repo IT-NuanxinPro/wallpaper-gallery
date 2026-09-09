@@ -2,6 +2,13 @@ name: Build Desktop Apps
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "public/pake-auth-navigation.js"
+      - "public/apple-touch-icon.png"
+      - ".github/workflows/desktop-release.yml"
 
 permissions:
   contents: write
