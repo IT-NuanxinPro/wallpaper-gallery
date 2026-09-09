@@ -309,8 +309,31 @@ export function buildWallpaperDownloadFilename(wallpaper) {
   return `${baseName}.${extension}`
 }
 
+function getPakeInvoke() {
+  if (typeof window === 'undefined')
+    return null
+
+  const invoke = window.__TAURI__?.core?.invoke
+  return typeof invoke === 'function' ? invoke : null
+}
+
+function triggerBrowserBlobDownload(blob, filename) {
+  const blobUrl = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = blobUrl
+  link.download = filename
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+
+  // WebView2 / Chromium may start the download asynchronously. Revoking the
+  // blob URL immediately after click() can race with the actual download.
+  setTimeout(() => URL.revokeObjectURL(blobUrl), 1000)
+}
+
 /**
  * 下载文件
+ * 浏览器使用 Blob 下载；Pake/Tauri 桌面端直接调用原生下载命令写入系统 Downloads。
  * @param {string} url - 文件 URL
  * @param {string} filename - 保存的文件名
  */
@@ -321,6 +344,25 @@ export async function downloadFile(url, filename) {
     if (url.includes('@main')) {
       const path = extractPathFromUrl(url)
       finalUrl = buildImageUrl(path)
+    }
+
+    // Pake 已内置跨平台原生下载能力。直接交给 Rust 下载真实 HTTP(S)
+    // 资源，避免 Windows WebView2 对 blob: 下载时序处理不同导致文件丢失。
+    const pakeInvoke = getPakeInvoke()
+    if (pakeInvoke) {
+      try {
+        await pakeInvoke('download_file', {
+          params: {
+            url: finalUrl,
+            filename,
+            language: navigator.language || 'zh-CN',
+          },
+        })
+        return
+      }
+      catch (error) {
+        console.warn('[downloadFile] Pake 原生下载失败，回退浏览器下载:', error)
+      }
     }
 
     const response = await fetch(finalUrl)
@@ -336,27 +378,11 @@ export async function downloadFile(url, filename) {
       }
 
       const blob = await fallbackResponse.blob()
-      const blobUrl = URL.createObjectURL(blob)
-
-      const link = document.createElement('a')
-      link.href = blobUrl
-      link.download = filename
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      URL.revokeObjectURL(blobUrl)
+      triggerBrowserBlobDownload(blob, filename)
     }
     else {
       const blob = await response.blob()
-      const blobUrl = URL.createObjectURL(blob)
-
-      const link = document.createElement('a')
-      link.href = blobUrl
-      link.download = filename
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      URL.revokeObjectURL(blobUrl)
+      triggerBrowserBlobDownload(blob, filename)
     }
   }
   catch {
