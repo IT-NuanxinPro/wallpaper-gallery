@@ -1,0 +1,33 @@
+name: Build Desktop Apps
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing Wallpaper Gallery release tag to rebuild, for example v4.0.2"
+        required: true
+        default: "v4.0.2"
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: desktop-release-${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  desktop:
+    name: Build macOS / Windows / Linux
+    uses: IT-NuanxinPro/Pake/.github/workflows/wallpaper-gallery.yaml@main
+    permissions:
+      contents: write
+    with:
+      source_repository: ${{ github.repository }}
+      release_tag: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+      url: "https://wallpaper.061129.xyz/"
+      width: 1600
+      height: 900
