@@ -4,6 +4,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import PageLoadingScene from '@/components/common/feedback/PageLoadingScene.vue'
 import UpdateNotification from '@/components/common/feedback/UpdateNotification.vue'
+import DesktopBackButton from '@/components/common/navigation/DesktopBackButton.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import GridSkeleton from '@/components/wallpaper/WallpaperGrid/GridSkeleton.vue'
 import { useVersionCheck } from '@/composables/useVersionCheck'
@@ -29,6 +30,9 @@ const compactMain = computed(() => route.meta?.compactMain === true)
   <ElConfigProvider :locale="zhCn">
     <div class="app" :class="{ 'compact-main': compactMain, 'no-header': hideHeader }">
       <AppHeader v-if="!hideHeader" />
+
+      <!-- 仅在 Pake 桌面端显示返回按钮，普通网页不显示 -->
+      <DesktopBackButton />
 
       <main class="main-content" :class="{ 'compact-page': compactMain, 'no-padding': hideHeader }">
         <RouterView v-slot="{ Component }">
