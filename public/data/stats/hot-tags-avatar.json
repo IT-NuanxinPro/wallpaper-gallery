@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-09-08T20:09:43.430Z",
+  "generatedAt": "2026-09-09T19:58:34.780Z",
   "series": "avatar",
   "total": 508,
   "tags": [
     {
       "tag": "人像",
       "score": 388,
-      "views": 521,
-      "downloads": 263,
+      "views": 523,
+      "downloads": 264,
       "wallpaperCount": 158,
       "series": [
         "avatar"
@@ -38,8 +38,8 @@
     {
       "tag": "动漫",
       "score": 332,
-      "views": 414,
-      "downloads": 237,
+      "views": 415,
+      "downloads": 238,
       "wallpaperCount": 104,
       "series": [
         "avatar"
@@ -69,7 +69,7 @@
     },
     {
       "tag": "氛围感",
-      "score": 175,
+      "score": 174,
       "views": 245,
       "downloads": 127,
       "wallpaperCount": 61,
@@ -101,7 +101,7 @@
     },
     {
       "tag": "萌宠",
-      "score": 151,
+      "score": 150,
       "views": 201,
       "downloads": 119,
       "wallpaperCount": 36,
@@ -165,7 +165,7 @@
     },
     {
       "tag": "猫咪",
-      "score": 123,
+      "score": 122,
       "views": 166,
       "downloads": 97,
       "wallpaperCount": 22,
@@ -197,24 +197,20 @@
     },
     {
       "tag": "甜妹",
-      "score": 115,
-      "views": 141,
-      "downloads": 74,
+      "score": 116,
+      "views": 143,
+      "downloads": 75,
       "wallpaperCount": 58,
       "series": [
         "avatar"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/663.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/人像/甜妹/image_向往自由的女生头像话题_散落人间..._4.webp",
           "cdnTag": "v1.2.33"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/664.webp",
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/663.webp",
           "cdnTag": "v1.1.96"
         },
         {
@@ -224,12 +220,16 @@
         {
           "thumbnail": "/thumbnail/avatar/人像/甜妹/image_向往自由的女生头像话题_散落人间..._7.webp",
           "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152818_396.webp",
+          "cdnTag": "v1.2.57"
         }
       ]
     },
     {
       "tag": "IP形象",
-      "score": 103,
+      "score": 102,
       "views": 165,
       "downloads": 63,
       "wallpaperCount": 45,
@@ -388,38 +388,6 @@
       ]
     },
     {
-      "tag": "蜡笔小新",
-      "score": 59,
-      "views": 92,
-      "downloads": 42,
-      "wallpaperCount": 21,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/戴耳机麦当劳外卖.webp",
-          "cdnTag": "v1.1.13"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/蜡笔小新_被书压倒.webp",
-          "cdnTag": "v1.1.22"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/滑雪小新.webp",
-          "cdnTag": "v1.1.24"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/吃饱再说.webp",
-          "cdnTag": "v1.1.22"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/我办事操心吧.webp",
-          "cdnTag": "v1.1.22"
-        }
-      ]
-    },
-    {
       "tag": "搞怪",
       "score": 59,
       "views": 101,
@@ -452,8 +420,40 @@
       ]
     },
     {
+      "tag": "蜡笔小新",
+      "score": 58,
+      "views": 92,
+      "downloads": 42,
+      "wallpaperCount": 21,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/戴耳机麦当劳外卖.webp",
+          "cdnTag": "v1.1.13"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/蜡笔小新_被书压倒.webp",
+          "cdnTag": "v1.1.22"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/滑雪小新.webp",
+          "cdnTag": "v1.1.24"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/吃饱再说.webp",
+          "cdnTag": "v1.1.22"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/我办事操心吧.webp",
+          "cdnTag": "v1.1.22"
+        }
+      ]
+    },
+    {
       "tag": "卡通",
-      "score": 59,
+      "score": 58,
       "views": 91,
       "downloads": 33,
       "wallpaperCount": 20,
@@ -516,6 +516,38 @@
       ]
     },
     {
+      "tag": "甜美",
+      "score": 57,
+      "views": 63,
+      "downloads": 38,
+      "wallpaperCount": 24,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/image_向往自由的女生头像话题_散落人间..._4.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/663.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/665.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152818_396.webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/664.webp",
+          "cdnTag": "v1.1.96"
+        }
+      ]
+    },
+    {
       "tag": "表情包",
       "score": 57,
       "views": 94,
@@ -544,38 +576,6 @@
         {
           "thumbnail": "/thumbnail/avatar/表情包/搞怪/微信图片_20260310202259_665_4.webp",
           "cdnTag": "v1.2.8"
-        }
-      ]
-    },
-    {
-      "tag": "甜美",
-      "score": 56,
-      "views": 61,
-      "downloads": 37,
-      "wallpaperCount": 24,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/663.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/image_向往自由的女生头像话题_散落人间..._4.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/664.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/665.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152818_396.webp",
-          "cdnTag": "v1.2.57"
         }
       ]
     },
@@ -673,7 +673,7 @@
     },
     {
       "tag": "戴耳机",
-      "score": 49,
+      "score": 48,
       "views": 62,
       "downloads": 40,
       "wallpaperCount": 1,
@@ -857,9 +857,9 @@
     },
     {
       "tag": "猫和老鼠",
-      "score": 32,
-      "views": 43,
-      "downloads": 23,
+      "score": 33,
+      "views": 44,
+      "downloads": 24,
       "wallpaperCount": 10,
       "series": [
         "avatar"
@@ -884,6 +884,38 @@
         {
           "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/微信图片_20260120161539_485_4.webp",
           "cdnTag": "v1.1.42"
+        }
+      ]
+    },
+    {
+      "tag": "微笑",
+      "score": 29,
+      "views": 31,
+      "downloads": 18,
+      "wallpaperCount": 11,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/image_向往自由的女生头像话题_散落人间..._4.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/658.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152818_396.webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/背影/646.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152758_334.webp",
+          "cdnTag": "v1.2.57"
         }
       ]
     },
@@ -952,40 +984,8 @@
       ]
     },
     {
-      "tag": "微笑",
-      "score": 27,
-      "views": 29,
-      "downloads": 17,
-      "wallpaperCount": 11,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/image_向往自由的女生头像话题_散落人间..._4.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/658.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152818_396.webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/背影/646.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152758_334.webp",
-          "cdnTag": "v1.2.57"
-        }
-      ]
-    },
-    {
       "tag": "侧脸",
-      "score": 26,
+      "score": 25,
       "views": 25,
       "downloads": 17,
       "wallpaperCount": 7,
@@ -998,12 +998,12 @@
           "cdnTag": "v1.1.96"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/660.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/人像/背影/image_氛围感男头话题_热门头像话题_男..._4.webp",
           "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/660.webp",
+          "cdnTag": "v1.1.96"
         },
         {
           "thumbnail": "/thumbnail/avatar/人像/氛围感/651.webp",
@@ -1121,7 +1121,7 @@
     },
     {
       "tag": "戴耳机麦当劳外卖",
-      "score": 23,
+      "score": 22,
       "views": 42,
       "downloads": 15,
       "wallpaperCount": 1,
@@ -1169,7 +1169,7 @@
     },
     {
       "tag": "Q版",
-      "score": 22,
+      "score": 21,
       "views": 30,
       "downloads": 12,
       "wallpaperCount": 2,

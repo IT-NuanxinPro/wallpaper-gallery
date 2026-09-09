@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-08T20:09:43.447Z",
+  "generatedAt": "2026-09-09T19:58:34.797Z",
   "series": "bing",
   "total": 225,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 207,
+      "score": 205,
       "views": 399,
       "downloads": 116,
       "wallpaperCount": 31,
@@ -39,7 +39,7 @@
     },
     {
       "tag": "2025 12",
-      "score": 69,
+      "score": 68,
       "views": 119,
       "downloads": 55,
       "wallpaperCount": 28,
@@ -47,9 +47,9 @@
         "bing"
       ],
       "topWallpapers": [
-        "bing-2025-12-30.jpg",
         "bing-2025-12-07.jpg",
         "bing-2025-12-31.jpg",
+        "bing-2025-12-30.jpg",
         "bing-2025-12-01.jpg",
         "bing-2025-12-19.jpg"
       ]
@@ -209,19 +209,6 @@
       ]
     },
     {
-      "tag": "努克的慵懒时光",
-      "score": 12,
-      "views": 25,
-      "downloads": 6,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-06.jpg"
-      ]
-    },
-    {
       "tag": "当水划出界线",
       "score": 12,
       "views": 17,
@@ -293,6 +280,19 @@
       ],
       "topWallpapers": [
         "bing-2026-01-09.jpg"
+      ]
+    },
+    {
+      "tag": "努克的慵懒时光",
+      "score": 11,
+      "views": 25,
+      "downloads": 6,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-06.jpg"
       ]
     },
     {
@@ -477,19 +477,6 @@
       ]
     },
     {
-      "tag": "瑞士山间的短逃离",
-      "score": 7,
-      "views": 8,
-      "downloads": 5,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-24.jpg"
-      ]
-    },
-    {
       "tag": "治愈、宁静且充满希望",
       "score": 7,
       "views": 6,
@@ -572,16 +559,29 @@
       ]
     },
     {
-      "tag": "晨光透过结霜的树木洒下，瑞典",
+      "tag": "瑞士山间的短逃离",
       "score": 6,
-      "views": 9,
-      "downloads": 4,
+      "views": 8,
+      "downloads": 5,
       "wallpaperCount": 1,
       "series": [
         "bing"
       ],
       "topWallpapers": [
-        "bing-2025-12-30.jpg"
+        "bing-2026-01-24.jpg"
+      ]
+    },
+    {
+      "tag": "苹果韵，旧时光",
+      "score": 6,
+      "views": 15,
+      "downloads": 2,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-13.jpg"
       ]
     }
   ]
