@@ -1,15 +1,34 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { isPakeDesktop, navigateDesktopBack } from '@/utils/platform/pake'
 
 const router = useRouter()
 const route = useRoute()
-const visible = ref(false)
+const isDesktopShell = ref(false)
+
+// 主浏览页（首页 / 各系列列表）不显示返回按钮
+const HOME_OR_SERIES_PATHS = new Set([
+  '/',
+  '/desktop',
+  '/mobile',
+  '/avatar',
+  '/bing',
+  '/video',
+])
 
 onMounted(() => {
-  // Only show inside Pake / Tauri desktop app, never on normal web
-  visible.value = isPakeDesktop()
+  // Only enable inside Pake / Tauri desktop app, never on normal web
+  isDesktopShell.value = isPakeDesktop()
+})
+
+const visible = computed(() => {
+  if (!isDesktopShell.value) {
+    return false
+  }
+
+  const path = route.path.replace(/\/$/, '') || '/'
+  return !HOME_OR_SERIES_PATHS.has(path)
 })
 
 function handleBack() {
