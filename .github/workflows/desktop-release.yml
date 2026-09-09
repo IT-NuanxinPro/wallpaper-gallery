@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - "v*"
+  release:
+    types: [published]
   workflow_dispatch:
     inputs:
       tag:
@@ -16,8 +18,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: desktop-release-${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
-  cancel-in-progress: false
+  group: desktop-release-${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.event_name == 'release' && github.event.release.tag_name || github.ref_name }}
+  cancel-in-progress: true
 
 jobs:
   desktop:
@@ -27,7 +29,7 @@ jobs:
       contents: write
     with:
       source_repository: ${{ github.repository }}
-      release_tag: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+      release_tag: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.event_name == 'release' && github.event.release.tag_name || github.ref_name }}
       url: "https://wallpaper.061129.xyz/"
       width: 1600
       height: 900
