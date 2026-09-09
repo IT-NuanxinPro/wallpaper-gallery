@@ -414,6 +414,8 @@ watch(isMobile, () => {
           </button>
         </div>
 
+        <HeaderDesktopDownload />
+
         <!-- Fullscreen Toggle -->
         <button
           class="fullscreen-toggle"
