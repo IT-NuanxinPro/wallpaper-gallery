@@ -1,24 +1,13 @@
 name: Build Desktop Apps
 
 on:
-  push:
-    tags:
-      - "v*"
-  release:
-    types: [published]
   workflow_dispatch:
-    inputs:
-      tag:
-        description: "Existing Wallpaper Gallery release tag to rebuild, for example v4.0.2"
-        required: true
-        default: "v4.0.2"
-        type: string
 
 permissions:
   contents: write
 
 concurrency:
-  group: desktop-release-${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.event_name == 'release' && github.event.release.tag_name || github.ref_name }}
+  group: desktop-release
   cancel-in-progress: true
 
 jobs:
@@ -29,7 +18,8 @@ jobs:
       contents: write
     with:
       source_repository: ${{ github.repository }}
-      release_tag: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.event_name == 'release' && github.event.release.tag_name || github.ref_name }}
+      source_ref: main
+      release_tag: desktop
       url: "https://wallpaper.061129.xyz/"
       width: 1600
       height: 900
