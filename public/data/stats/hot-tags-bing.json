@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-09T19:58:34.797Z",
+  "generatedAt": "2026-09-10T19:59:13.023Z",
   "series": "bing",
-  "total": 225,
+  "total": 224,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 205,
+      "score": 204,
       "views": 399,
       "downloads": 116,
       "wallpaperCount": 31,
@@ -17,7 +17,7 @@
         "bing-2026-01-04.jpg",
         "bing-2026-01-15.jpg",
         "bing-2026-01-06.jpg",
-        "bing-2026-01-09.jpg"
+        "bing-2026-01-10.jpg"
       ]
     },
     {
@@ -270,19 +270,6 @@
       ]
     },
     {
-      "tag": "时光在此处茁壮成长",
-      "score": 11,
-      "views": 18,
-      "downloads": 7,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-09.jpg"
-      ]
-    },
-    {
       "tag": "努克的慵懒时光",
       "score": 11,
       "views": 25,
@@ -340,6 +327,19 @@
         "bing-2025-04-03.jpg",
         "bing-2025-04-05.jpg",
         "bing-2025-04-06.jpg"
+      ]
+    },
+    {
+      "tag": "时光在此处茁壮成长",
+      "score": 10,
+      "views": 18,
+      "downloads": 7,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-09.jpg"
       ]
     },
     {
