@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-09-11T19:58:14.972Z",
+  "generatedAt": "2026-09-12T19:35:58.425Z",
   "series": "avatar",
   "total": 508,
   "tags": [
     {
       "tag": "人像",
       "score": 385,
-      "views": 523,
+      "views": 524,
       "downloads": 264,
       "wallpaperCount": 158,
       "series": [
@@ -30,14 +30,14 @@
           "cdnTag": "v1.1.11"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/659.webp",
-          "cdnTag": "v1.1.96"
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/街角回眸男生.webp",
+          "cdnTag": "v1.1.11"
         }
       ]
     },
     {
       "tag": "动漫",
-      "score": 329,
+      "score": 328,
       "views": 416,
       "downloads": 238,
       "wallpaperCount": 104,
@@ -70,7 +70,7 @@
     {
       "tag": "氛围感",
       "score": 172,
-      "views": 245,
+      "views": 246,
       "downloads": 127,
       "wallpaperCount": 61,
       "series": [
@@ -90,18 +90,18 @@
           "cdnTag": "v1.1.11"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/659.webp",
-          "cdnTag": "v1.1.96"
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/街角回眸男生.webp",
+          "cdnTag": "v1.1.11"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/街角回眸男生.webp",
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/逆光女生.webp",
           "cdnTag": "v1.1.11"
         }
       ]
     },
     {
       "tag": "萌宠",
-      "score": 150,
+      "score": 149,
       "views": 201,
       "downloads": 119,
       "wallpaperCount": 36,
@@ -165,7 +165,7 @@
     },
     {
       "tag": "猫咪",
-      "score": 122,
+      "score": 121,
       "views": 166,
       "downloads": 97,
       "wallpaperCount": 22,
@@ -689,7 +689,7 @@
     },
     {
       "tag": "哆啦A梦",
-      "score": 45,
+      "score": 44,
       "views": 67,
       "downloads": 30,
       "wallpaperCount": 12,
@@ -984,38 +984,6 @@
       ]
     },
     {
-      "tag": "侧脸",
-      "score": 25,
-      "views": 25,
-      "downloads": 17,
-      "wallpaperCount": 7,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/659.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/背影/image_氛围感男头话题_热门头像话题_男..._4.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/660.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/651.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/背影/646.webp",
-          "cdnTag": "v1.1.96"
-        }
-      ]
-    },
-    {
       "tag": "海贼王",
       "score": 25,
       "views": 36,
@@ -1048,26 +1016,34 @@
       ]
     },
     {
-      "tag": "搞笑",
+      "tag": "侧脸",
       "score": 24,
-      "views": 31,
-      "downloads": 18,
-      "wallpaperCount": 3,
+      "views": 25,
+      "downloads": 17,
+      "wallpaperCount": 7,
       "series": [
         "avatar"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-01-23_165613_598.webp",
-          "cdnTag": "v1.1.53"
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/659.webp",
+          "cdnTag": "v1.1.96"
         },
         {
-          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/微信图片_2026-01-23_165009_180.webp",
-          "cdnTag": "v1.1.53"
+          "thumbnail": "/thumbnail/avatar/人像/背影/image_氛围感男头话题_热门头像话题_男..._4.webp",
+          "cdnTag": "v1.2.33"
         },
         {
-          "thumbnail": "/thumbnail/avatar/通用/微信图片_2026-01-23_165101_406.webp",
-          "cdnTag": "v1.1.53"
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/660.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/651.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/背影/646.webp",
+          "cdnTag": "v1.1.96"
         }
       ]
     },
@@ -1116,6 +1092,30 @@
         {
           "thumbnail": "/thumbnail/avatar/插画/二次元/银发蓝瞳男孩比耶蓝天背景.webp",
           "cdnTag": "v1.1.4"
+        }
+      ]
+    },
+    {
+      "tag": "搞笑",
+      "score": 23,
+      "views": 31,
+      "downloads": 18,
+      "wallpaperCount": 3,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-01-23_165613_598.webp",
+          "cdnTag": "v1.1.53"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/微信图片_2026-01-23_165009_180.webp",
+          "cdnTag": "v1.1.53"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/通用/微信图片_2026-01-23_165101_406.webp",
+          "cdnTag": "v1.1.53"
         }
       ]
     },
