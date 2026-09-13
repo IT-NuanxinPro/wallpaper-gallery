@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-12T19:35:58.425Z",
+  "generatedAt": "2026-09-13T19:41:37.091Z",
   "series": "avatar",
   "total": 508,
   "tags": [
     {
       "tag": "人像",
-      "score": 385,
+      "score": 384,
       "views": 524,
       "downloads": 264,
       "wallpaperCount": 158,
@@ -37,7 +37,7 @@
     },
     {
       "tag": "动漫",
-      "score": 328,
+      "score": 327,
       "views": 416,
       "downloads": 238,
       "wallpaperCount": 104,
@@ -69,7 +69,7 @@
     },
     {
       "tag": "氛围感",
-      "score": 172,
+      "score": 171,
       "views": 246,
       "downloads": 127,
       "wallpaperCount": 61,
@@ -229,7 +229,7 @@
     },
     {
       "tag": "IP形象",
-      "score": 101,
+      "score": 100,
       "views": 165,
       "downloads": 63,
       "wallpaperCount": 45,
@@ -422,7 +422,7 @@
     {
       "tag": "搞怪",
       "score": 58,
-      "views": 101,
+      "views": 103,
       "downloads": 35,
       "wallpaperCount": 35,
       "series": [
@@ -550,7 +550,7 @@
     {
       "tag": "表情包",
       "score": 55,
-      "views": 94,
+      "views": 96,
       "downloads": 33,
       "wallpaperCount": 33,
       "series": [
@@ -581,7 +581,7 @@
     },
     {
       "tag": "水豚噜噜",
-      "score": 53,
+      "score": 52,
       "views": 84,
       "downloads": 35,
       "wallpaperCount": 17,
@@ -689,7 +689,7 @@
     },
     {
       "tag": "哆啦A梦",
-      "score": 44,
+      "score": 43,
       "views": 67,
       "downloads": 30,
       "wallpaperCount": 12,
@@ -832,30 +832,6 @@
       ]
     },
     {
-      "tag": "星空",
-      "score": 33,
-      "views": 16,
-      "downloads": 32,
-      "wallpaperCount": 3,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161545_493_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/哆啦A梦/640 (5).webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161546_494_4.webp",
-          "cdnTag": "v1.1.42"
-        }
-      ]
-    },
-    {
       "tag": "猫和老鼠",
       "score": 33,
       "views": 45,
@@ -883,6 +859,30 @@
         },
         {
           "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/微信图片_20260120161539_485_4.webp",
+          "cdnTag": "v1.1.42"
+        }
+      ]
+    },
+    {
+      "tag": "星空",
+      "score": 32,
+      "views": 16,
+      "downloads": 32,
+      "wallpaperCount": 3,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161545_493_4.webp",
+          "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/哆啦A梦/640 (5).webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161546_494_4.webp",
           "cdnTag": "v1.1.42"
         }
       ]
