@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-14T21:01:34.562Z",
+  "generatedAt": "2026-09-15T20:23:59.092Z",
   "series": "avatar",
   "total": 508,
   "tags": [
     {
       "tag": "人像",
-      "score": 380,
+      "score": 378,
       "views": 524,
       "downloads": 264,
       "wallpaperCount": 158,
@@ -37,7 +37,7 @@
     },
     {
       "tag": "动漫",
-      "score": 327,
+      "score": 326,
       "views": 416,
       "downloads": 238,
       "wallpaperCount": 104,
@@ -69,7 +69,7 @@
     },
     {
       "tag": "氛围感",
-      "score": 171,
+      "score": 169,
       "views": 246,
       "downloads": 127,
       "wallpaperCount": 61,
@@ -133,7 +133,7 @@
     },
     {
       "tag": "插画",
-      "score": 146,
+      "score": 145,
       "views": 172,
       "downloads": 121,
       "wallpaperCount": 48,
@@ -612,34 +612,6 @@
       ]
     },
     {
-      "tag": "治愈",
-      "score": 48,
-      "views": 27,
-      "downloads": 44,
-      "wallpaperCount": 4,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161545_493_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/插画/创意/微信图片_2026-04-11_145936_667.webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161544_492_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161546_495_4.webp",
-          "cdnTag": "v1.1.42"
-        }
-      ]
-    },
-    {
       "tag": "戴耳机",
       "score": 48,
       "views": 62,
@@ -688,6 +660,34 @@
       ]
     },
     {
+      "tag": "治愈",
+      "score": 47,
+      "views": 27,
+      "downloads": 44,
+      "wallpaperCount": 4,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161545_493_4.webp",
+          "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/插画/创意/微信图片_2026-04-11_145936_667.webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161544_492_4.webp",
+          "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161546_495_4.webp",
+          "cdnTag": "v1.1.42"
+        }
+      ]
+    },
+    {
       "tag": "哆啦A梦",
       "score": 43,
       "views": 67,
@@ -721,7 +721,7 @@
     },
     {
       "tag": "小王子",
-      "score": 37,
+      "score": 36,
       "views": 22,
       "downloads": 37,
       "wallpaperCount": 5,
@@ -744,38 +744,6 @@
         {
           "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161547_496_4.webp",
           "cdnTag": "v1.1.42"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161546_494_4.webp",
-          "cdnTag": "v1.1.42"
-        }
-      ]
-    },
-    {
-      "tag": "玫瑰",
-      "score": 36,
-      "views": 25,
-      "downloads": 35,
-      "wallpaperCount": 6,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161545_493_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161544_492_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_20260119095919_478_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_20260310202249_652_4.webp",
-          "cdnTag": "v1.2.8"
         },
         {
           "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161546_494_4.webp",
@@ -812,6 +780,38 @@
         {
           "thumbnail": "/thumbnail/avatar/通用/微信图片_2026-01-23_165124_953.webp",
           "cdnTag": "v1.1.53"
+        }
+      ]
+    },
+    {
+      "tag": "玫瑰",
+      "score": 35,
+      "views": 25,
+      "downloads": 35,
+      "wallpaperCount": 6,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161545_493_4.webp",
+          "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161544_492_4.webp",
+          "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_20260119095919_478_4.webp",
+          "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_20260310202249_652_4.webp",
+          "cdnTag": "v1.2.8"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161546_494_4.webp",
+          "cdnTag": "v1.1.42"
         }
       ]
     },
@@ -865,7 +865,7 @@
     },
     {
       "tag": "星空",
-      "score": 32,
+      "score": 31,
       "views": 16,
       "downloads": 32,
       "wallpaperCount": 3,
