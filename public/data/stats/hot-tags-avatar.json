@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-15T20:23:59.092Z",
+  "generatedAt": "2026-09-16T20:22:00.963Z",
   "series": "avatar",
-  "total": 508,
+  "total": 509,
   "tags": [
     {
       "tag": "人像",
-      "score": 378,
+      "score": 377,
       "views": 524,
       "downloads": 264,
       "wallpaperCount": 158,
@@ -37,8 +37,8 @@
     },
     {
       "tag": "动漫",
-      "score": 326,
-      "views": 416,
+      "score": 325,
+      "views": 418,
       "downloads": 238,
       "wallpaperCount": 104,
       "series": [
@@ -101,7 +101,7 @@
     },
     {
       "tag": "萌宠",
-      "score": 149,
+      "score": 148,
       "views": 201,
       "downloads": 119,
       "wallpaperCount": 36,
@@ -230,9 +230,9 @@
     {
       "tag": "IP形象",
       "score": 100,
-      "views": 165,
+      "views": 166,
       "downloads": 63,
-      "wallpaperCount": 45,
+      "wallpaperCount": 46,
       "series": [
         "avatar"
       ],
@@ -261,7 +261,7 @@
     },
     {
       "tag": "背影",
-      "score": 76,
+      "score": 75,
       "views": 95,
       "downloads": 49,
       "wallpaperCount": 29,
@@ -388,38 +388,6 @@
       ]
     },
     {
-      "tag": "蜡笔小新",
-      "score": 58,
-      "views": 92,
-      "downloads": 42,
-      "wallpaperCount": 21,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/戴耳机麦当劳外卖.webp",
-          "cdnTag": "v1.1.13"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/蜡笔小新_被书压倒.webp",
-          "cdnTag": "v1.1.22"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/滑雪小新.webp",
-          "cdnTag": "v1.1.24"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/吃饱再说.webp",
-          "cdnTag": "v1.1.22"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/我办事操心吧.webp",
-          "cdnTag": "v1.1.22"
-        }
-      ]
-    },
-    {
       "tag": "搞怪",
       "score": 58,
       "views": 103,
@@ -480,6 +448,38 @@
         {
           "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/微信图片_2026-04-11_145953_146.webp",
           "cdnTag": "v1.2.57"
+        }
+      ]
+    },
+    {
+      "tag": "蜡笔小新",
+      "score": 57,
+      "views": 92,
+      "downloads": 42,
+      "wallpaperCount": 21,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/戴耳机麦当劳外卖.webp",
+          "cdnTag": "v1.1.13"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/蜡笔小新_被书压倒.webp",
+          "cdnTag": "v1.1.22"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/滑雪小新.webp",
+          "cdnTag": "v1.1.24"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/吃饱再说.webp",
+          "cdnTag": "v1.1.22"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/我办事操心吧.webp",
+          "cdnTag": "v1.1.22"
         }
       ]
     },
@@ -582,9 +582,9 @@
     {
       "tag": "水豚噜噜",
       "score": 52,
-      "views": 84,
+      "views": 85,
       "downloads": 35,
-      "wallpaperCount": 17,
+      "wallpaperCount": 18,
       "series": [
         "avatar"
       ],
@@ -690,7 +690,7 @@
     {
       "tag": "哆啦A梦",
       "score": 43,
-      "views": 67,
+      "views": 69,
       "downloads": 30,
       "wallpaperCount": 12,
       "series": [
@@ -888,38 +888,6 @@
       ]
     },
     {
-      "tag": "狗狗",
-      "score": 28,
-      "views": 35,
-      "downloads": 22,
-      "wallpaperCount": 14,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/微信图片_2026-01-23_165009_180.webp",
-          "cdnTag": "v1.1.53"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/微信图片_2026-02-05_112219_990.webp",
-          "cdnTag": "v1.1.74"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/柯基_墨镜酷狗.webp",
-          "cdnTag": "v1.1.11"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/655.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/image_氛围感男头话题_热门头像话题_男..._6.webp",
-          "cdnTag": "v1.2.33"
-        }
-      ]
-    },
-    {
       "tag": "微笑",
       "score": 28,
       "views": 31,
@@ -948,6 +916,38 @@
         {
           "thumbnail": "/thumbnail/avatar/人像/甜妹/640.webp",
           "cdnTag": "v1.2.57"
+        }
+      ]
+    },
+    {
+      "tag": "狗狗",
+      "score": 27,
+      "views": 35,
+      "downloads": 22,
+      "wallpaperCount": 14,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/微信图片_2026-01-23_165009_180.webp",
+          "cdnTag": "v1.1.53"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/柯基_墨镜酷狗.webp",
+          "cdnTag": "v1.1.11"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/微信图片_2026-02-05_112219_990.webp",
+          "cdnTag": "v1.1.74"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/655.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/狗狗/image_氛围感男头话题_热门头像话题_男..._6.webp",
+          "cdnTag": "v1.2.33"
         }
       ]
     },
