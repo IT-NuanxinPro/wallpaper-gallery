@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-09-17T20:30:08.458Z",
+  "generatedAt": "2026-09-18T19:54:14.471Z",
   "series": "bing",
   "total": 260,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 201,
-      "views": 402,
+      "score": 200,
+      "views": 403,
       "downloads": 118,
       "wallpaperCount": 31,
       "series": [
@@ -39,7 +39,7 @@
     },
     {
       "tag": "2025 12",
-      "score": 69,
+      "score": 68,
       "views": 120,
       "downloads": 55,
       "wallpaperCount": 28,
@@ -386,19 +386,6 @@
       ]
     },
     {
-      "tag": "威尼斯的灵魂",
-      "score": 9,
-      "views": 21,
-      "downloads": 4,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-02.jpg"
-      ]
-    },
-    {
       "tag": "2024 11",
       "score": 8,
       "views": 16,
@@ -439,6 +426,19 @@
       ],
       "topWallpapers": [
         "bing-2026-03-05.jpg"
+      ]
+    },
+    {
+      "tag": "威尼斯的灵魂",
+      "score": 8,
+      "views": 21,
+      "downloads": 4,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-02.jpg"
       ]
     },
     {
