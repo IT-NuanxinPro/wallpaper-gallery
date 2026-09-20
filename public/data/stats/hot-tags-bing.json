@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-19T19:31:54.966Z",
+  "generatedAt": "2026-09-20T19:40:41.142Z",
   "series": "bing",
   "total": 260,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 200,
+      "score": 198,
       "views": 403,
       "downloads": 118,
       "wallpaperCount": 31,
@@ -39,7 +39,7 @@
     },
     {
       "tag": "2025 12",
-      "score": 68,
+      "score": 67,
       "views": 120,
       "downloads": 55,
       "wallpaperCount": 28,
@@ -119,19 +119,6 @@
       ]
     },
     {
-      "tag": "王者视野",
-      "score": 17,
-      "views": 43,
-      "downloads": 7,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-04.jpg"
-      ]
-    },
-    {
       "tag": "2025 07",
       "score": 16,
       "views": 29,
@@ -146,6 +133,19 @@
         "bing-2025-07-15.jpg",
         "bing-2025-07-04.jpg",
         "bing-2025-07-06.jpg"
+      ]
+    },
+    {
+      "tag": "王者视野",
+      "score": 16,
+      "views": 43,
+      "downloads": 7,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-04.jpg"
       ]
     },
     {
@@ -442,19 +442,6 @@
       ]
     },
     {
-      "tag": "高角羚群紧急戒备",
-      "score": 8,
-      "views": 20,
-      "downloads": 3,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-05.jpg"
-      ]
-    },
-    {
       "tag": "圆周率的古老启示",
       "score": 7,
       "views": 8,
@@ -504,6 +491,19 @@
       ],
       "topWallpapers": [
         "bing-2026-03-21.jpg"
+      ]
+    },
+    {
+      "tag": "高角羚群紧急戒备",
+      "score": 7,
+      "views": 20,
+      "downloads": 3,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-05.jpg"
       ]
     },
     {
