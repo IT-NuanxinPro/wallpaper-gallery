@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-20T19:40:41.125Z",
+  "generatedAt": "2026-09-21T21:12:15.488Z",
   "series": "avatar",
-  "total": 509,
+  "total": 510,
   "tags": [
     {
       "tag": "人像",
-      "score": 374,
+      "score": 371,
       "views": 524,
       "downloads": 264,
       "wallpaperCount": 158,
@@ -26,18 +26,18 @@
           "cdnTag": "v1.1.11"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/车窗黄昏凝望女生.webp",
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/街角回眸男生.webp",
           "cdnTag": "v1.1.11"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/街角回眸男生.webp",
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/车窗黄昏凝望女生.webp",
           "cdnTag": "v1.1.11"
         }
       ]
     },
     {
       "tag": "动漫",
-      "score": 325,
+      "score": 323,
       "views": 422,
       "downloads": 238,
       "wallpaperCount": 104,
@@ -69,7 +69,7 @@
     },
     {
       "tag": "氛围感",
-      "score": 168,
+      "score": 166,
       "views": 246,
       "downloads": 127,
       "wallpaperCount": 61,
@@ -86,11 +86,11 @@
           "cdnTag": "v1.1.11"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/车窗黄昏凝望女生.webp",
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/街角回眸男生.webp",
           "cdnTag": "v1.1.11"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/街角回眸男生.webp",
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/车窗黄昏凝望女生.webp",
           "cdnTag": "v1.1.11"
         },
         {
@@ -101,10 +101,10 @@
     },
     {
       "tag": "萌宠",
-      "score": 146,
-      "views": 201,
-      "downloads": 119,
-      "wallpaperCount": 36,
+      "score": 147,
+      "views": 202,
+      "downloads": 120,
+      "wallpaperCount": 37,
       "series": [
         "avatar"
       ],
@@ -165,10 +165,10 @@
     },
     {
       "tag": "猫咪",
-      "score": 119,
-      "views": 166,
-      "downloads": 97,
-      "wallpaperCount": 22,
+      "score": 120,
+      "views": 167,
+      "downloads": 98,
+      "wallpaperCount": 23,
       "series": [
         "avatar"
       ],
@@ -229,7 +229,7 @@
     },
     {
       "tag": "IP形象",
-      "score": 98,
+      "score": 95,
       "views": 168,
       "downloads": 63,
       "wallpaperCount": 46,
@@ -246,12 +246,12 @@
           "cdnTag": "v1.2.8"
         },
         {
-          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/冷脸持刀气场全开.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/IP形象/通用/微信图片_20260310202252_657_4.webp",
           "cdnTag": "v1.2.8"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/冷脸持刀气场全开.webp",
+          "cdnTag": "v1.1.4"
         },
         {
           "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/深夜自习专注看书.webp",
@@ -261,7 +261,7 @@
     },
     {
       "tag": "背影",
-      "score": 75,
+      "score": 74,
       "views": 95,
       "downloads": 49,
       "wallpaperCount": 29,
@@ -581,7 +581,7 @@
     },
     {
       "tag": "水豚噜噜",
-      "score": 53,
+      "score": 50,
       "views": 86,
       "downloads": 35,
       "wallpaperCount": 18,
@@ -594,12 +594,12 @@
           "cdnTag": "v1.2.8"
         },
         {
-          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/冷脸持刀气场全开.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/IP形象/通用/微信图片_20260310202252_657_4.webp",
           "cdnTag": "v1.2.8"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/冷脸持刀气场全开.webp",
+          "cdnTag": "v1.1.4"
         },
         {
           "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/深夜自习专注看书.webp",
@@ -832,38 +832,6 @@
       ]
     },
     {
-      "tag": "猫和老鼠",
-      "score": 33,
-      "views": 45,
-      "downloads": 24,
-      "wallpaperCount": 10,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/汤姆捂脸.webp",
-          "cdnTag": "v1.1.26"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/微信图片_20260120161541_489_4.webp",
-          "cdnTag": "v1.1.42"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/杰瑞_愤怒办公_猫和老鼠.webp",
-          "cdnTag": "v1.1.11"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/杰瑞大笑.webp",
-          "cdnTag": "v1.1.26"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/微信图片_20260120161539_485_4.webp",
-          "cdnTag": "v1.1.42"
-        }
-      ]
-    },
-    {
       "tag": "星空",
       "score": 31,
       "views": 16,
@@ -883,6 +851,38 @@
         },
         {
           "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161546_494_4.webp",
+          "cdnTag": "v1.1.42"
+        }
+      ]
+    },
+    {
+      "tag": "猫和老鼠",
+      "score": 31,
+      "views": 45,
+      "downloads": 24,
+      "wallpaperCount": 10,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/汤姆捂脸.webp",
+          "cdnTag": "v1.1.26"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/杰瑞_愤怒办公_猫和老鼠.webp",
+          "cdnTag": "v1.1.11"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/杰瑞大笑.webp",
+          "cdnTag": "v1.1.26"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/微信图片_20260120161539_485_4.webp",
+          "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/微信图片_20260120161541_489_4.webp",
           "cdnTag": "v1.1.42"
         }
       ]
