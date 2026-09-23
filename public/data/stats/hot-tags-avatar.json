@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-22T20:26:06.341Z",
+  "generatedAt": "2026-09-23T20:38:32.660Z",
   "series": "avatar",
   "total": 510,
   "tags": [
@@ -37,7 +37,7 @@
     },
     {
       "tag": "动漫",
-      "score": 323,
+      "score": 320,
       "views": 422,
       "downloads": 238,
       "wallpaperCount": 104,
@@ -101,7 +101,7 @@
     },
     {
       "tag": "萌宠",
-      "score": 147,
+      "score": 145,
       "views": 202,
       "downloads": 120,
       "wallpaperCount": 37,
@@ -165,7 +165,7 @@
     },
     {
       "tag": "猫咪",
-      "score": 120,
+      "score": 118,
       "views": 167,
       "downloads": 98,
       "wallpaperCount": 23,
@@ -857,7 +857,7 @@
     },
     {
       "tag": "猫和老鼠",
-      "score": 31,
+      "score": 29,
       "views": 45,
       "downloads": 24,
       "wallpaperCount": 10,
@@ -870,10 +870,6 @@
           "cdnTag": "v1.1.26"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/杰瑞_愤怒办公_猫和老鼠.webp",
-          "cdnTag": "v1.1.11"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/杰瑞大笑.webp",
           "cdnTag": "v1.1.26"
         },
@@ -884,6 +880,10 @@
         {
           "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/微信图片_20260120161541_489_4.webp",
           "cdnTag": "v1.1.42"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/杰瑞_愤怒办公_猫和老鼠.webp",
+          "cdnTag": "v1.1.11"
         }
       ]
     },
