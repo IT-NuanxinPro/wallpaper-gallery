@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-26T20:05:24.413Z",
+  "generatedAt": "2026-09-27T20:20:30.131Z",
   "series": "bing",
   "total": 257,
   "tags": [
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 138,
+      "score": 137,
       "views": 200,
       "downloads": 78,
       "wallpaperCount": 25,
@@ -283,36 +283,6 @@
       ]
     },
     {
-      "tag": "城市花开",
-      "score": 11,
-      "views": 15,
-      "downloads": 6,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-18.jpg"
-      ]
-    },
-    {
-      "tag": "2025 05",
-      "score": 10,
-      "views": 18,
-      "downloads": 16,
-      "wallpaperCount": 8,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2025-05-29.jpg",
-        "bing-2025-05-15.jpg",
-        "bing-2025-05-22.jpg",
-        "bing-2025-05-23.jpg",
-        "bing-2025-05-25.jpg"
-      ]
-    },
-    {
       "tag": "2025 04",
       "score": 10,
       "views": 19,
@@ -360,6 +330,19 @@
       ]
     },
     {
+      "tag": "城市花开",
+      "score": 10,
+      "views": 15,
+      "downloads": 6,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-18.jpg"
+      ]
+    },
+    {
       "tag": "伸个懒腰，迈向新年！",
       "score": 10,
       "views": 23,
@@ -370,6 +353,23 @@
       ],
       "topWallpapers": [
         "bing-2026-01-01.jpg"
+      ]
+    },
+    {
+      "tag": "2025 05",
+      "score": 9,
+      "views": 18,
+      "downloads": 16,
+      "wallpaperCount": 8,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2025-05-29.jpg",
+        "bing-2025-05-15.jpg",
+        "bing-2025-05-22.jpg",
+        "bing-2025-05-23.jpg",
+        "bing-2025-05-25.jpg"
       ]
     },
     {
