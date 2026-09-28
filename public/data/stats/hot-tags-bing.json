@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-27T20:20:30.131Z",
+  "generatedAt": "2026-09-28T22:37:04.730Z",
   "series": "bing",
   "total": 257,
   "tags": [
     {
       "tag": "2026 01",
-      "score": 211,
+      "score": 210,
       "views": 420,
       "downloads": 134,
       "wallpaperCount": 31,
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 137,
+      "score": 136,
       "views": 200,
       "downloads": 78,
       "wallpaperCount": 25,
@@ -196,19 +196,6 @@
       ]
     },
     {
-      "tag": "漂浮的传承",
-      "score": 14,
-      "views": 18,
-      "downloads": 9,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-02.jpg"
-      ]
-    },
-    {
       "tag": "2025 02",
       "score": 13,
       "views": 25,
@@ -223,6 +210,19 @@
         "bing-2025-02-04.jpg",
         "bing-2025-02-06.jpg",
         "bing-2025-02-08.jpg"
+      ]
+    },
+    {
+      "tag": "漂浮的传承",
+      "score": 13,
+      "views": 18,
+      "downloads": 9,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-02.jpg"
       ]
     },
     {
@@ -343,19 +343,6 @@
       ]
     },
     {
-      "tag": "伸个懒腰，迈向新年！",
-      "score": 10,
-      "views": 23,
-      "downloads": 5,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-01-01.jpg"
-      ]
-    },
-    {
       "tag": "2025 05",
       "score": 9,
       "views": 18,
@@ -370,6 +357,19 @@
         "bing-2025-05-22.jpg",
         "bing-2025-05-23.jpg",
         "bing-2025-05-25.jpg"
+      ]
+    },
+    {
+      "tag": "伸个懒腰，迈向新年！",
+      "score": 9,
+      "views": 23,
+      "downloads": 5,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-01-01.jpg"
       ]
     },
     {

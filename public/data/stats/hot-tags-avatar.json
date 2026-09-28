@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-27T20:20:30.118Z",
+  "generatedAt": "2026-09-28T22:37:04.713Z",
   "series": "avatar",
   "total": 510,
   "tags": [
@@ -133,7 +133,7 @@
     },
     {
       "tag": "插画",
-      "score": 143,
+      "score": 142,
       "views": 172,
       "downloads": 121,
       "wallpaperCount": 48,
@@ -292,38 +292,6 @@
       ]
     },
     {
-      "tag": "创意",
-      "score": 61,
-      "views": 78,
-      "downloads": 49,
-      "wallpaperCount": 21,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/插画/创意/微信图片_2026-04-11_145936_667.webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/插画/创意/登山少年眺望远方山景.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/插画/创意/闭眼冥想的小男孩阳光床.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/通用/微信图片_20260310202252_657_4.webp",
-          "cdnTag": "v1.2.8"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/插画/创意/煎蛋_抱番茄.webp",
-          "cdnTag": "v1.1.22"
-        }
-      ]
-    },
-    {
       "tag": "少年",
       "score": 61,
       "views": 46,
@@ -352,6 +320,38 @@
         {
           "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_20260119095918_477_4.webp",
           "cdnTag": "v1.1.42"
+        }
+      ]
+    },
+    {
+      "tag": "创意",
+      "score": 60,
+      "views": 78,
+      "downloads": 49,
+      "wallpaperCount": 21,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/插画/创意/微信图片_2026-04-11_145936_667.webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/插画/创意/登山少年眺望远方山景.webp",
+          "cdnTag": "v1.1.4"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/插画/创意/闭眼冥想的小男孩阳光床.webp",
+          "cdnTag": "v1.1.4"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/通用/微信图片_20260310202252_657_4.webp",
+          "cdnTag": "v1.2.8"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/插画/创意/煎蛋_抱番茄.webp",
+          "cdnTag": "v1.1.22"
         }
       ]
     },
@@ -644,8 +644,24 @@
       ]
     },
     {
-      "tag": "治愈",
+      "tag": "戴耳机",
       "score": 46,
+      "views": 63,
+      "downloads": 40,
+      "wallpaperCount": 1,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴耳机.webp",
+          "cdnTag": "v1.1.11"
+        }
+      ]
+    },
+    {
+      "tag": "治愈",
+      "score": 45,
       "views": 27,
       "downloads": 44,
       "wallpaperCount": 4,
@@ -668,22 +684,6 @@
         {
           "thumbnail": "/thumbnail/avatar/动漫/小王子/微信图片_20260120161546_495_4.webp",
           "cdnTag": "v1.1.42"
-        }
-      ]
-    },
-    {
-      "tag": "戴耳机",
-      "score": 46,
-      "views": 63,
-      "downloads": 40,
-      "wallpaperCount": 1,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴耳机.webp",
-          "cdnTag": "v1.1.11"
         }
       ]
     },
