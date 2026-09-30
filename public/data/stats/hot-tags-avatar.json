@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-29T21:30:50.685Z",
+  "generatedAt": "2026-09-30T21:30:59.348Z",
   "series": "avatar",
   "total": 510,
   "tags": [
@@ -37,9 +37,9 @@
     },
     {
       "tag": "动漫",
-      "score": 311,
-      "views": 422,
-      "downloads": 238,
+      "score": 312,
+      "views": 423,
+      "downloads": 239,
       "wallpaperCount": 104,
       "series": [
         "avatar"
@@ -133,7 +133,7 @@
     },
     {
       "tag": "插画",
-      "score": 140,
+      "score": 139,
       "views": 172,
       "downloads": 121,
       "wallpaperCount": 48,
@@ -158,8 +158,8 @@
           "cdnTag": "v1.1.4"
         },
         {
-          "thumbnail": "/thumbnail/avatar/插画/二次元/640 (4).webp",
-          "cdnTag": "v1.2.57"
+          "thumbnail": "/thumbnail/avatar/插画/创意/闭眼冥想的小男孩阳光床.webp",
+          "cdnTag": "v1.1.4"
         }
       ]
     },
@@ -357,7 +357,7 @@
     },
     {
       "tag": "二次元",
-      "score": 58,
+      "score": 57,
       "views": 87,
       "downloads": 44,
       "wallpaperCount": 25,
@@ -370,12 +370,12 @@
           "cdnTag": "v1.1.4"
         },
         {
-          "thumbnail": "/thumbnail/avatar/插画/二次元/640 (4).webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/插画/二次元/image_氛围感男头话题_热门头像话题_男..._13.webp",
           "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/插画/二次元/640 (4).webp",
+          "cdnTag": "v1.2.57"
         },
         {
           "thumbnail": "/thumbnail/avatar/插画/二次元/红包祝福.webp",
@@ -689,9 +689,9 @@
     },
     {
       "tag": "哆啦A梦",
-      "score": 42,
-      "views": 70,
-      "downloads": 30,
+      "score": 43,
+      "views": 71,
+      "downloads": 31,
       "wallpaperCount": 12,
       "series": [
         "avatar"
@@ -706,12 +706,12 @@
           "cdnTag": "v1.2.8"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/哆啦A梦/640 (5).webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/动漫/哆啦A梦/躺椅举杯悠闲.webp",
           "cdnTag": "v1.1.11"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/哆啦A梦/640 (5).webp",
+          "cdnTag": "v1.2.57"
         },
         {
           "thumbnail": "/thumbnail/avatar/动漫/哆啦A梦/秋叶闭眼.webp",
