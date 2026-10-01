@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-30T21:30:59.348Z",
+  "generatedAt": "2026-10-01T21:57:21.938Z",
   "series": "avatar",
   "total": 510,
   "tags": [
     {
       "tag": "人像",
-      "score": 370,
+      "score": 369,
       "views": 526,
       "downloads": 265,
       "wallpaperCount": 158,
@@ -101,7 +101,7 @@
     },
     {
       "tag": "萌宠",
-      "score": 144,
+      "score": 143,
       "views": 205,
       "downloads": 120,
       "wallpaperCount": 38,
@@ -165,7 +165,7 @@
     },
     {
       "tag": "猫咪",
-      "score": 117,
+      "score": 116,
       "views": 168,
       "downloads": 98,
       "wallpaperCount": 23,
@@ -197,7 +197,7 @@
     },
     {
       "tag": "甜妹",
-      "score": 111,
+      "score": 110,
       "views": 145,
       "downloads": 76,
       "wallpaperCount": 58,
@@ -549,7 +549,7 @@
     },
     {
       "tag": "甜美",
-      "score": 53,
+      "score": 52,
       "views": 64,
       "downloads": 38,
       "wallpaperCount": 24,
@@ -920,38 +920,6 @@
       ]
     },
     {
-      "tag": "微笑",
-      "score": 27,
-      "views": 32,
-      "downloads": 18,
-      "wallpaperCount": 11,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/image_向往自由的女生头像话题_散落人间..._4.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/658.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152818_396.webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152758_334.webp",
-          "cdnTag": "v1.2.57"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/640.webp",
-          "cdnTag": "v1.2.57"
-        }
-      ]
-    },
-    {
       "tag": "长发",
       "score": 27,
       "views": 40,
@@ -980,6 +948,38 @@
         {
           "thumbnail": "/thumbnail/avatar/人像/甜妹/image_向往自由的女生头像话题_散落人间..._1.webp",
           "cdnTag": "v1.2.33"
+        }
+      ]
+    },
+    {
+      "tag": "微笑",
+      "score": 26,
+      "views": 32,
+      "downloads": 18,
+      "wallpaperCount": 11,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/image_向往自由的女生头像话题_散落人间..._4.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/658.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152818_396.webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152758_334.webp",
+          "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/甜妹/640.webp",
+          "cdnTag": "v1.2.57"
         }
       ]
     },
