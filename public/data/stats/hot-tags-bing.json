@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-03T20:07:49.092Z",
+  "generatedAt": "2026-10-04T20:22:13.391Z",
   "series": "bing",
   "total": 257,
   "tags": [
@@ -22,7 +22,7 @@
     },
     {
       "tag": "2026 03",
-      "score": 133,
+      "score": 132,
       "views": 200,
       "downloads": 78,
       "wallpaperCount": 25,
@@ -386,19 +386,6 @@
       ]
     },
     {
-      "tag": "每一步，都是传承",
-      "score": 9,
-      "views": 14,
-      "downloads": 5,
-      "wallpaperCount": 1,
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-03-01.jpg"
-      ]
-    },
-    {
       "tag": "2024 11",
       "score": 8,
       "views": 16,
@@ -439,6 +426,19 @@
       ],
       "topWallpapers": [
         "bing-2026-03-14.jpg"
+      ]
+    },
+    {
+      "tag": "每一步，都是传承",
+      "score": 8,
+      "views": 14,
+      "downloads": 5,
+      "wallpaperCount": 1,
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-03-01.jpg"
       ]
     },
     {
