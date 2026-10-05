@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-04T20:22:13.375Z",
+  "generatedAt": "2026-10-05T23:18:44.122Z",
   "series": "avatar",
   "total": 511,
   "tags": [
     {
       "tag": "人像",
-      "score": 373,
-      "views": 534,
+      "score": 374,
+      "views": 540,
       "downloads": 272,
       "wallpaperCount": 158,
       "series": [
@@ -70,7 +70,7 @@
     {
       "tag": "氛围感",
       "score": 162,
-      "views": 249,
+      "views": 253,
       "downloads": 128,
       "wallpaperCount": 61,
       "series": [
@@ -197,8 +197,8 @@
     },
     {
       "tag": "甜妹",
-      "score": 111,
-      "views": 147,
+      "score": 112,
+      "views": 149,
       "downloads": 77,
       "wallpaperCount": 58,
       "series": [
@@ -486,7 +486,7 @@
     {
       "tag": "清新",
       "score": 53,
-      "views": 46,
+      "views": 47,
       "downloads": 42,
       "wallpaperCount": 12,
       "series": [
@@ -517,8 +517,8 @@
     },
     {
       "tag": "甜美",
-      "score": 52,
-      "views": 65,
+      "score": 53,
+      "views": 66,
       "downloads": 38,
       "wallpaperCount": 24,
       "series": [
@@ -754,7 +754,7 @@
     {
       "tag": "玫瑰",
       "score": 34,
-      "views": 26,
+      "views": 27,
       "downloads": 36,
       "wallpaperCount": 6,
       "series": [
@@ -954,7 +954,7 @@
     {
       "tag": "微笑",
       "score": 26,
-      "views": 33,
+      "views": 34,
       "downloads": 18,
       "wallpaperCount": 11,
       "series": [
@@ -966,12 +966,12 @@
           "cdnTag": "v1.2.33"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/658.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152818_396.webp",
           "cdnTag": "v1.2.57"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/658.webp",
+          "cdnTag": "v1.1.96"
         },
         {
           "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-04-09_152758_334.webp",
