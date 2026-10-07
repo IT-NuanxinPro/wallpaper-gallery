@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-10-06T21:50:51.020Z",
+  "generatedAt": "2026-10-07T22:12:34.677Z",
   "series": "avatar",
   "total": 511,
   "tags": [
     {
       "tag": "人像",
-      "score": 373,
+      "score": 368,
       "views": 540,
       "downloads": 272,
       "wallpaperCount": 158,
@@ -69,7 +69,7 @@
     },
     {
       "tag": "氛围感",
-      "score": 162,
+      "score": 161,
       "views": 253,
       "downloads": 128,
       "wallpaperCount": 61,
@@ -101,9 +101,9 @@
     },
     {
       "tag": "萌宠",
-      "score": 141,
-      "views": 205,
-      "downloads": 120,
+      "score": 142,
+      "views": 206,
+      "downloads": 121,
       "wallpaperCount": 38,
       "series": [
         "avatar"
@@ -114,12 +114,12 @@
           "cdnTag": "v1.1.11"
         },
         {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-01-23_165613_598.webp",
-          "cdnTag": "v1.1.53"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴眼镜男孩肩上趴着小猫.webp",
           "cdnTag": "v1.1.4"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-01-23_165613_598.webp",
+          "cdnTag": "v1.1.53"
         },
         {
           "thumbnail": "/thumbnail/avatar/萌宠/猫咪/浴室里的小黄鸭猫.webp",
@@ -165,9 +165,9 @@
     },
     {
       "tag": "猫咪",
-      "score": 114,
-      "views": 168,
-      "downloads": 98,
+      "score": 115,
+      "views": 169,
+      "downloads": 99,
       "wallpaperCount": 23,
       "series": [
         "avatar"
@@ -178,12 +178,12 @@
           "cdnTag": "v1.1.11"
         },
         {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-01-23_165613_598.webp",
-          "cdnTag": "v1.1.53"
-        },
-        {
           "thumbnail": "/thumbnail/avatar/萌宠/猫咪/戴眼镜男孩肩上趴着小猫.webp",
           "cdnTag": "v1.1.4"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-01-23_165613_598.webp",
+          "cdnTag": "v1.1.53"
         },
         {
           "thumbnail": "/thumbnail/avatar/萌宠/猫咪/浴室里的小黄鸭猫.webp",
@@ -261,7 +261,7 @@
     },
     {
       "tag": "背影",
-      "score": 78,
+      "score": 74,
       "views": 98,
       "downloads": 54,
       "wallpaperCount": 29,
@@ -282,11 +282,11 @@
           "cdnTag": "v1.2.33"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/背影/image_向往自由的女生头像话题_氛围感头..._0.webp",
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/image_氛围感女头话题_精选女头话题_高..._16.webp",
           "cdnTag": "v1.2.34"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/背影/image_向往自由的女生头像话题_氛围感头..._2.webp",
+          "thumbnail": "/thumbnail/avatar/人像/背影/image_向往自由的女生头像话题_氛围感头..._0.webp",
           "cdnTag": "v1.2.34"
         }
       ]
@@ -1048,38 +1048,6 @@
       ]
     },
     {
-      "tag": "侧脸",
-      "score": 23,
-      "views": 25,
-      "downloads": 17,
-      "wallpaperCount": 7,
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/659.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/背影/image_氛围感男头话题_热门头像话题_男..._4.webp",
-          "cdnTag": "v1.2.33"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/660.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/651.webp",
-          "cdnTag": "v1.1.96"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/背影/653.webp",
-          "cdnTag": "v1.1.96"
-        }
-      ]
-    },
-    {
       "tag": "搞笑",
       "score": 22,
       "views": 31,
@@ -1100,6 +1068,38 @@
         {
           "thumbnail": "/thumbnail/avatar/通用/微信图片_2026-01-23_165101_406.webp",
           "cdnTag": "v1.1.53"
+        }
+      ]
+    },
+    {
+      "tag": "侧脸",
+      "score": 22,
+      "views": 25,
+      "downloads": 17,
+      "wallpaperCount": 7,
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/659.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/660.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/651.webp",
+          "cdnTag": "v1.1.96"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/背影/image_氛围感男头话题_热门头像话题_男..._4.webp",
+          "cdnTag": "v1.2.33"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/人像/背影/653.webp",
+          "cdnTag": "v1.1.96"
         }
       ]
     },
