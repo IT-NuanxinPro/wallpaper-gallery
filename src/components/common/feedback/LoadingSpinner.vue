@@ -9,7 +9,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="loading-spinner" :class="[`size-${size}`]">
+  <div class="loading-spinner" :class="[`size-${size}`]" aria-hidden="true">
     <div class="spinner" />
   </div>
 </template>
@@ -38,9 +38,9 @@ defineProps({
 
   &.size-lg {
     .spinner {
-      width: 48px;
-      height: 48px;
-      border-width: 4px;
+      width: 36px;
+      height: 36px;
+      border-width: 3px;
     }
   }
 }
@@ -50,7 +50,14 @@ defineProps({
   border-style: solid;
   border-color: var(--color-border);
   border-top-color: var(--color-accent);
-  animation: spin 0.8s linear infinite;
+  border-right-color: var(--color-accent);
+  animation: spin 0.85s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
 }
 
 @keyframes spin {

@@ -175,14 +175,14 @@ function handleHeightInput(event) {
   gap: 3px;
   padding: 10px 11px;
   text-align: left;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--crop-control-surface);
+  border: 1px solid var(--crop-control-border);
   border-radius: 10px;
   transition: all 0.2s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: var(--crop-control-surface-hover);
+    border-color: var(--crop-control-border-hover);
   }
 
   &--active {
@@ -203,13 +203,13 @@ function handleHeightInput(event) {
 .format-chip__label {
   font-size: 12px;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.92);
+  color: var(--crop-control-text);
 }
 
 .format-chip__hint {
   font-size: 9px;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.42);
+  color: var(--crop-control-hint);
 }
 
 .quality-group {

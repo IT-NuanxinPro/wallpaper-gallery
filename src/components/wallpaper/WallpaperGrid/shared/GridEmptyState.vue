@@ -1,6 +1,4 @@
 <script setup>
-import LottieScene from '@/components/common/ui/LottieScene.vue'
-
 defineProps({
   alternativeSeries: {
     type: Array,
@@ -26,13 +24,11 @@ const emit = defineEmits(['navigate', 'resetFilters'])
 <template>
   <div v-if="type === 'no-series-data'" class="grid-empty series-empty">
     <div class="empty-icon">
-      <LottieScene
-        class="empty-icon__lottie"
-        src="/lottie/Empty box.lottie"
-        :autoplay="true"
-        :loop="true"
-        :speed="1"
-      />
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <rect x="7" y="9" width="34" height="30" rx="5" />
+        <circle cx="17" cy="19" r="3" />
+        <path d="m8 32 10-8 8 7 6-5 8 7" />
+      </svg>
     </div>
     <h3>暂无{{ currentSeriesName }}</h3>
     <p>该分类暂时没有内容，敬请期待~</p>
@@ -50,13 +46,11 @@ const emit = defineEmits(['navigate', 'resetFilters'])
 
   <div v-else class="grid-empty filter-empty">
     <div class="empty-icon">
-      <LottieScene
-        class="empty-icon__lottie"
-        src="/lottie/Empty box.lottie"
-        :autoplay="true"
-        :loop="true"
-        :speed="1"
-      />
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <rect x="7" y="9" width="34" height="30" rx="5" />
+        <circle cx="17" cy="19" r="3" />
+        <path d="m8 32 10-8 8 7 6-5 8 7" />
+      </svg>
     </div>
     <h3>没有找到匹配的壁纸</h3>
     <p>尝试调整搜索条件或筛选器</p>
@@ -80,8 +74,8 @@ const emit = defineEmits(['navigate', 'resetFilters'])
 
   .empty-icon {
     position: relative;
-    width: 168px;
-    height: 168px;
+    width: 72px;
+    height: 72px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -89,11 +83,10 @@ const emit = defineEmits(['navigate', 'resetFilters'])
     border-radius: 0;
     margin-bottom: $spacing-md;
 
-    .empty-icon__lottie {
-      position: absolute;
-      inset: 0;
-      opacity: 1;
-      pointer-events: none;
+    svg {
+      width: 100%;
+      height: 100%;
+      color: var(--color-text-secondary);
     }
   }
 
@@ -118,7 +111,7 @@ const emit = defineEmits(['navigate', 'resetFilters'])
 
   &.filter-empty {
     .empty-icon {
-      .empty-icon__lottie {
+      svg {
         opacity: 0.96;
       }
     }
@@ -130,8 +123,8 @@ const emit = defineEmits(['navigate', 'resetFilters'])
     padding: $spacing-xl $spacing-md;
 
     .empty-icon {
-      width: 144px;
-      height: 144px;
+      width: 64px;
+      height: 64px;
     }
   }
 }

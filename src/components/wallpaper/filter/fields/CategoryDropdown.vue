@@ -223,6 +223,7 @@ onUnmounted(() => {
 .category-dropdown {
   position: relative;
   z-index: 100;
+  min-width: 0;
 }
 
 // 触发器按钮 - 与 Element Plus 风格一致
@@ -270,6 +271,7 @@ onUnmounted(() => {
 
 .trigger-text {
   flex: 1;
+  min-width: 0;
   text-align: left;
   white-space: nowrap;
   overflow: hidden;

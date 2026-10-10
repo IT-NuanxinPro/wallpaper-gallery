@@ -157,46 +157,6 @@
   }
 }
 
-// 列表项动画
-.list-enter-active,
-.list-leave-active {
-  transition: all var(--transition-normal);
-}
-
-.list-enter-from,
-.list-leave-to {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.list-move {
-  transition: transform var(--transition-normal);
-}
-
-// 卡片网格动画
-.grid-enter-active {
-  transition: all var(--transition-slow);
-}
-
-.grid-enter-from {
-  opacity: 0;
-  transform: translateY(30px) scale(0.95);
-}
-
-.grid-leave-active {
-  position: absolute;
-  transition: all var(--transition-normal);
-}
-
-.grid-leave-to {
-  opacity: 0;
-  transform: scale(0.9);
-}
-
-.grid-move {
-  transition: transform var(--transition-slow);
-}
-
 // ========================================
 // 工具类
 // ========================================

@@ -1,1169 +1,1300 @@
 {
-  "generatedAt": "2026-10-09T21:50:48.670Z",
+  "generatedAt": "2026-10-10T05:43:38.310Z",
+  "windowDays": 90,
+  "halfLifeDays": 30,
+  "windowStart": "2026-07-12T05:43:38.310Z",
   "series": "desktop",
-  "total": 666,
+  "total": 494,
   "tags": [
     {
       "tag": "风景",
-      "score": 4661,
-      "views": 7349,
-      "downloads": 3105,
-      "wallpaperCount": 80,
+      "score": 39.61212,
+      "views": 725,
+      "downloads": 312,
+      "wallpaperCount": 58,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
       "series": [
         "desktop"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/desktop/风景/星空/云层-地球-夜景.webp",
-          "cdnTag": "v1.1.4"
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-09-09_25178.webp",
+          "cdnTag": "v1.4.36"
         },
         {
-          "thumbnail": "/thumbnail/desktop/风景/天空/云海-城堡-天空.webp",
-          "cdnTag": "v1.1.4"
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-09-07_43913.webp",
+          "cdnTag": "v1.4.36"
         },
         {
-          "thumbnail": "/thumbnail/desktop/风景/海滨/房屋-树木-海边.webp",
-          "cdnTag": "v1.2.24"
+          "thumbnail": "/thumbnail/desktop/风景/星空/2026-08-14_43601.webp",
+          "cdnTag": "v1.4.36"
         },
         {
-          "thumbnail": "/thumbnail/desktop/风景/雪山/雪山之巅_晨曦.webp",
-          "cdnTag": "v1.1.9"
+          "thumbnail": "/thumbnail/desktop/风景/日落/2023-12-29_10460.webp",
+          "cdnTag": "v1.4.61"
         },
         {
-          "thumbnail": "/thumbnail/desktop/风景/日落/简约风_日落.webp",
-          "cdnTag": "v1.1.4"
-        }
-      ]
-    },
-    {
-      "tag": "人像",
-      "score": 3415,
-      "views": 7021,
-      "downloads": 1743,
-      "wallpaperCount": 93,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/girl.webp",
-          "cdnTag": "v1.2.39"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/清新/20260406200537.webp",
-          "cdnTag": "v1.2.52"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/丝袜-壁纸-室内.webp",
-          "cdnTag": "v1.1.9"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/20260420213344.webp",
-          "cdnTag": "v1.2.73"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/20260408171457.webp",
-          "cdnTag": "v1.2.59"
-        }
-      ]
-    },
-    {
-      "tag": "动漫",
-      "score": 2565,
-      "views": 4860,
-      "downloads": 1657,
-      "wallpaperCount": 106,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/鬼灭之刃/剑客-动漫角色.webp",
-          "cdnTag": "v1.2.24"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/云层飞行-天空背景.webp",
-          "cdnTag": "v1.2.23"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/蜡笔小新/雪夜遛狗场景.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/名侦探柯南/名侦探柯南-嘘-神秘感.webp",
-          "cdnTag": "v1.1.13"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/动漫角色-眼睛特写.webp",
-          "cdnTag": "v1.2.68"
+          "thumbnail": "/thumbnail/desktop/风景/雪山/2024-04-11_10816.webp",
+          "cdnTag": "v1.4.61"
         }
       ]
     },
     {
       "tag": "插画",
-      "score": 2421,
-      "views": 4230,
-      "downloads": 1487,
-      "wallpaperCount": 92,
+      "score": 37.107277,
+      "views": 367,
+      "downloads": 106,
+      "wallpaperCount": 55,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
       "series": [
         "desktop"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/desktop/插画/卡通/20260406201217.webp",
-          "cdnTag": "v1.2.47"
+          "thumbnail": "/thumbnail/desktop/插画/卡通/2026-08-11_38398.webp",
+          "cdnTag": "v1.4.36"
         },
         {
-          "thumbnail": "/thumbnail/desktop/插画/场景/书房-书桌.webp",
-          "cdnTag": "v1.1.9"
+          "thumbnail": "/thumbnail/desktop/插画/卡通/2026-08-07_43556.webp",
+          "cdnTag": "v1.4.36"
         },
         {
-          "thumbnail": "/thumbnail/desktop/插画/文字/中国风-书法艺术.webp",
-          "cdnTag": "v1.1.9"
+          "thumbnail": "/thumbnail/desktop/插画/卡通/2026-08-13_43597.webp",
+          "cdnTag": "v1.4.36"
         },
         {
-          "thumbnail": "/thumbnail/desktop/插画/国风/20260424165827.webp",
-          "cdnTag": "v1.2.73"
+          "thumbnail": "/thumbnail/desktop/插画/国风/2026-08-09_43588.webp",
+          "cdnTag": "v1.4.36"
         },
         {
-          "thumbnail": "/thumbnail/desktop/插画/国风/20260406200642.webp",
-          "cdnTag": "v1.2.47"
+          "thumbnail": "/thumbnail/desktop/插画/创意/2023-12-21_10265.webp",
+          "cdnTag": "v1.4.61"
         }
       ]
     },
     {
-      "tag": "魅力",
-      "score": 1860,
-      "views": 3955,
-      "downloads": 870,
-      "wallpaperCount": 31,
+      "tag": "人像",
+      "score": 25.439022,
+      "views": 456,
+      "downloads": 78,
+      "wallpaperCount": 46,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
       "series": [
         "desktop"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/girl.webp",
-          "cdnTag": "v1.2.39"
+          "thumbnail": "/thumbnail/desktop/人像/清新/2026-08-06_43581.webp",
+          "cdnTag": "v1.4.36"
         },
         {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/丝袜-壁纸-室内.webp",
-          "cdnTag": "v1.1.9"
+          "thumbnail": "/thumbnail/desktop/人像/魅力/2025-09-05_1649.webp",
+          "cdnTag": "v1.4.61"
         },
         {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/20260420213344.webp",
-          "cdnTag": "v1.2.73"
+          "thumbnail": "/thumbnail/desktop/人像/魅力/2026-03-18_4841.webp",
+          "cdnTag": "v1.4.60"
         },
         {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/20260408171457.webp",
-          "cdnTag": "v1.2.59"
+          "thumbnail": "/thumbnail/desktop/人像/清新/2026-04-04_2500.webp",
+          "cdnTag": "v1.4.60"
         },
         {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/2026040620060.webp",
-          "cdnTag": "v1.2.59"
-        }
-      ]
-    },
-    {
-      "tag": "二次元",
-      "score": 1279,
-      "views": 2475,
-      "downloads": 759,
-      "wallpaperCount": 61,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/云层飞行-天空背景.webp",
-          "cdnTag": "v1.2.23"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/动漫角色-眼睛特写.webp",
-          "cdnTag": "v1.2.68"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/美少女-大长腿.webp",
-          "cdnTag": "v1.1.31"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/打工人.webp",
-          "cdnTag": "v1.1.9"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/二次元风格的未来感少女形象.webp",
-          "cdnTag": "v1.2.3"
-        }
-      ]
-    },
-    {
-      "tag": "清新",
-      "score": 1150,
-      "views": 2037,
-      "downloads": 627,
-      "wallpaperCount": 30,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/人像/清新/20260406200537.webp",
-          "cdnTag": "v1.2.52"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/20260408171457.webp",
-          "cdnTag": "v1.2.59"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/花卉/20260424165234.webp",
-          "cdnTag": "v1.2.73"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/氛围感/晴天-蓝天白云.webp",
-          "cdnTag": "v1.1.13"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/清新/20260424_165629.webp",
-          "cdnTag": "v1.2.73"
-        }
-      ]
-    },
-    {
-      "tag": "日落",
-      "score": 1135,
-      "views": 1674,
-      "downloads": 704,
-      "wallpaperCount": 22,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/风景/日落/简约风_日落.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/日落/20260420203706.webp",
-          "cdnTag": "v1.2.68"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/湖泊/20260406200329.webp",
-          "cdnTag": "v1.2.47"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/20260406201149.webp",
-          "cdnTag": "v1.2.59"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/日落/层峦-山脉-日落.webp",
-          "cdnTag": "v1.2.41"
-        }
-      ]
-    },
-    {
-      "tag": "雪山",
-      "score": 936,
-      "views": 1581,
-      "downloads": 659,
-      "wallpaperCount": 16,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/风景/雪山/雪山之巅_晨曦.webp",
-          "cdnTag": "v1.1.9"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/雪山/雪山湖泊晚霞.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/雪山/20260406200436.webp",
-          "cdnTag": "v1.2.52"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/雪山/雪山_日照金山.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/雪山/草原_雪山.webp",
-          "cdnTag": "v1.1.4"
-        }
-      ]
-    },
-    {
-      "tag": "海滨",
-      "score": 756,
-      "views": 1108,
-      "downloads": 460,
-      "wallpaperCount": 12,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/风景/海滨/房屋-树木-海边.webp",
-          "cdnTag": "v1.2.24"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/海滨/咖啡屋-夏日-插画.webp",
-          "cdnTag": "v1.2.24"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/海滨/海边_杂货铺.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/海滨/20260408171714.webp",
-          "cdnTag": "v1.2.59"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/海滨/20260424_165945.webp",
-          "cdnTag": "v1.2.73"
-        }
-      ]
-    },
-    {
-      "tag": "国风",
-      "score": 754,
-      "views": 1376,
-      "downloads": 400,
-      "wallpaperCount": 29,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/插画/国风/20260424165827.webp",
-          "cdnTag": "v1.2.73"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/国风/20260406200642.webp",
-          "cdnTag": "v1.2.47"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/国风/20260408171652.webp",
-          "cdnTag": "v1.2.59"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/国风/cg美女-佳人.webp",
-          "cdnTag": "v1.2.24"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/国风/20260424_165941.webp",
-          "cdnTag": "v1.2.73"
-        }
-      ]
-    },
-    {
-      "tag": "场景",
-      "score": 743,
-      "views": 1359,
-      "downloads": 462,
-      "wallpaperCount": 30,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/插画/场景/书房-书桌.webp",
-          "cdnTag": "v1.1.9"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/场景/20260424_165959.webp",
-          "cdnTag": "v1.2.73"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/场景/20260406201428.webp",
-          "cdnTag": "v1.2.52"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/场景/吊床-宁静环境.webp",
-          "cdnTag": "v1.1.32"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/场景/安静氛围-森林.webp",
-          "cdnTag": "v1.1.13"
-        }
-      ]
-    },
-    {
-      "tag": "星空",
-      "score": 701,
-      "views": 1142,
-      "downloads": 488,
-      "wallpaperCount": 11,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/风景/星空/云层-地球-夜景.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/星空/image_wallpaper话题_ipad..._0.webp",
-          "cdnTag": "v1.2.35"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/星空/夜晚-夜景-山.webp",
-          "cdnTag": "v1.2.41"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/星空/浩瀚宇宙.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/星空/云层-云景-夜晚.webp",
-          "cdnTag": "v1.1.52"
-        }
-      ]
-    },
-    {
-      "tag": "夜景",
-      "score": 686,
-      "views": 1152,
-      "downloads": 463,
-      "wallpaperCount": 10,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/风景/星空/云层-地球-夜景.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/花卉/云层-春花-暖色调.webp",
-          "cdnTag": "v1.2.68"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/星空/夜晚-夜景-山.webp",
-          "cdnTag": "v1.2.41"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/wallhaven-5g6g33.webp",
-          "cdnTag": "v1.1.67"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/场景/卧室-夜景.webp",
-          "cdnTag": "v1.1.22"
-        }
-      ]
-    },
-    {
-      "tag": "花卉",
-      "score": 643,
-      "views": 879,
-      "downloads": 391,
-      "wallpaperCount": 10,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/风景/花卉/20260424165234.webp",
-          "cdnTag": "v1.2.73"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/花卉/云层-春花-暖色调.webp",
-          "cdnTag": "v1.2.68"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/花卉/20260424165858.webp",
-          "cdnTag": "v1.2.73"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/花卉/20260406201201.webp",
-          "cdnTag": "v1.2.47"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/花卉/天空-晴空-树.webp",
-          "cdnTag": "v1.2.68"
-        }
-      ]
-    },
-    {
-      "tag": "湖泊",
-      "score": 596,
-      "views": 911,
-      "downloads": 382,
-      "wallpaperCount": 14,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/风景/湖泊/20260406200329.webp",
-          "cdnTag": "v1.2.47"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/湖泊/image_风景壁纸话题_每日更新壁纸话题_..._0.webp",
-          "cdnTag": "v1.2.35"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/湖泊/image_电脑平板双端适配超清壁纸分享ah..._4.webp",
-          "cdnTag": "v1.2.35"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/湖泊/孤树-山峰-山脉.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/星空/夜晚-夜景-山.webp",
-          "cdnTag": "v1.2.41"
-        }
-      ]
-    },
-    {
-      "tag": "少女",
-      "score": 564,
-      "views": 908,
-      "downloads": 321,
-      "wallpaperCount": 15,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/人像/清新/20260406200537.webp",
-          "cdnTag": "v1.2.52"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/清新/20260424_165629.webp",
-          "cdnTag": "v1.2.73"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/清新/夏日-度假-棕榈树.webp",
-          "cdnTag": "v1.1.52"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/清新/少女-少女清纯.webp",
-          "cdnTag": "v1.2.24"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/清新/20260406195935.webp",
-          "cdnTag": "v1.2.49"
-        }
-      ]
-    },
-    {
-      "tag": "文字",
-      "score": 559,
-      "views": 1048,
-      "downloads": 359,
-      "wallpaperCount": 23,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/插画/文字/中国风-书法艺术.webp",
-          "cdnTag": "v1.1.9"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/文字/程序员日常_代码没写完.webp",
-          "cdnTag": "v1.1.9"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/文字/Chris插画.webp",
-          "cdnTag": "v1.2.68"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/文字/20260406200458.webp",
-          "cdnTag": "v1.2.59"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/文字/中国风-传统纹样.webp",
-          "cdnTag": "v1.1.13"
-        }
-      ]
-    },
-    {
-      "tag": "政治",
-      "score": 517,
-      "views": 869,
-      "downloads": 371,
-      "wallpaperCount": 10,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/政治/通用/共产主义接班人.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/政治/通用/励志语录-历史人物.webp",
-          "cdnTag": "v1.1.57"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/政治/通用/20260406201304.webp",
-          "cdnTag": "v1.2.59"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/政治/通用/中华人民共和国-五角星.webp",
-          "cdnTag": "v1.1.57"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/政治/通用/中式建筑国徽装饰.webp",
-          "cdnTag": "v1.1.9"
-        }
-      ]
-    },
-    {
-      "tag": "天空",
-      "score": 481,
-      "views": 804,
-      "downloads": 364,
-      "wallpaperCount": 6,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/风景/天空/云海-城堡-天空.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/天空/image_风景壁纸话题_每日更新壁纸话题_..._7.webp",
-          "cdnTag": "v1.2.35"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/天空/山-山景.webp",
-          "cdnTag": "v1.1.27"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/天空/树影天空_夏日云海_宁静.webp",
-          "cdnTag": "v1.1.32"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/天空/云端.webp",
-          "cdnTag": "v1.1.4"
-        }
-      ]
-    },
-    {
-      "tag": "卡通",
-      "score": 463,
-      "views": 645,
-      "downloads": 290,
-      "wallpaperCount": 15,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/插画/卡通/20260406201217.webp",
-          "cdnTag": "v1.2.47"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/IP形象/线条小狗/20260406200517.webp",
-          "cdnTag": "v1.2.52"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/卡通/20260406200057.webp",
-          "cdnTag": "v1.2.47"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/喜洋洋与灰太狼/20260406201250.webp",
-          "cdnTag": "v1.2.59"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/卡通/image_桌面壁纸话题_电脑壁纸话题_意境..._3.webp",
-          "cdnTag": "v1.2.35"
-        }
-      ]
-    },
-    {
-      "tag": "蜡笔小新",
-      "score": 432,
-      "views": 723,
-      "downloads": 350,
-      "wallpaperCount": 12,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/蜡笔小新/雪夜遛狗场景.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/蜡笔小新/卧室-夜晚-小新.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/蜡笔小新/小新与小白_海边睡觉.webp",
-          "cdnTag": "v1.1.13"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/蜡笔小新/小新_河边吃西瓜.webp",
-          "cdnTag": "v1.1.13"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/蜡笔小新/荷叶休息.webp",
-          "cdnTag": "v1.1.4"
-        }
-      ]
-    },
-    {
-      "tag": "丝袜",
-      "score": 414,
-      "views": 963,
-      "downloads": 165,
-      "wallpaperCount": 2,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/girl.webp",
-          "cdnTag": "v1.2.39"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/丝袜-壁纸-室内.webp",
-          "cdnTag": "v1.1.9"
-        }
-      ]
-    },
-    {
-      "tag": "优雅",
-      "score": 411,
-      "views": 1033,
-      "downloads": 216,
-      "wallpaperCount": 8,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/丝袜-壁纸-室内.webp",
-          "cdnTag": "v1.1.9"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/优雅姿势-光影美女.webp",
-          "cdnTag": "v1.1.13"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/国风/中式建筑-低胸裙.webp",
-          "cdnTag": "v1.1.22"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/清新/优雅-夕阳-少女.webp",
-          "cdnTag": "v1.1.27"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/、玫瑰少女.webp",
-          "cdnTag": "v1.1.13"
-        }
-      ]
-    },
-    {
-      "tag": "小屋",
-      "score": 354,
-      "views": 522,
-      "downloads": 208,
-      "wallpaperCount": 3,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/风景/海滨/房屋-树木-海边.webp",
-          "cdnTag": "v1.2.24"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/海滨/咖啡屋-夏日-插画.webp",
-          "cdnTag": "v1.2.24"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/场景/image_桌面壁纸话题_电脑壁纸话题_意境..._5.webp",
-          "cdnTag": "v1.2.35"
-        }
-      ]
-    },
-    {
-      "tag": "创意",
-      "score": 352,
-      "views": 636,
-      "downloads": 227,
-      "wallpaperCount": 13,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/插画/创意/城市夜景_东京塔雨夜_室内视角.webp",
-          "cdnTag": "v1.1.32"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/创意/李佳航_请坐手势.webp",
-          "cdnTag": "v1.1.22"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/创意/田园小屋插画.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/创意/Chris插画-插画.webp",
-          "cdnTag": "v1.2.68"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/创意/20260406201407.webp",
-          "cdnTag": "v1.2.52"
-        }
-      ]
-    },
-    {
-      "tag": "IP形象",
-      "score": 351,
-      "views": 553,
-      "downloads": 236,
-      "wallpaperCount": 15,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/IP形象/线条小狗/20260406200517.webp",
-          "cdnTag": "v1.2.52"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/IP形象/线条小狗/人生格言-励志文案.webp",
-          "cdnTag": "v1.1.13"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/IP形象/乌萨奇/Chiikawa-冬季.webp",
-          "cdnTag": "v1.2.41"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/IP形象/线条小狗/光影倒影-可爱小狗.webp",
-          "cdnTag": "v1.1.13"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/IP形象/乌萨奇/Chiikawa-二次元.webp",
-          "cdnTag": "v1.2.41"
-        }
-      ]
-    },
-    {
-      "tag": "氛围感",
-      "score": 349,
-      "views": 759,
-      "downloads": 201,
-      "wallpaperCount": 16,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/人像/氛围感/晴天-蓝天白云.webp",
-          "cdnTag": "v1.1.13"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/氛围感/休闲-室内-居家.webp",
-          "cdnTag": "v1.2.23"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/氛围感/室内纯欲女生.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/氛围感/街头公主_金色头饰_阳光午后.webp",
-          "cdnTag": "v1.1.32"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/氛围感/粉发少女办公场景.webp",
-          "cdnTag": "v1.1.4"
+          "thumbnail": "/thumbnail/desktop/人像/清新/2026-09-02_382.webp",
+          "cdnTag": "v1.4.60"
         }
       ]
     },
     {
       "tag": "自然",
-      "score": 347,
-      "views": 526,
-      "downloads": 194,
+      "score": 20.957293,
+      "views": 264,
+      "downloads": 115,
+      "wallpaperCount": 28,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-09-09_25178.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-09-07_43913.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2025-09-24_188.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2025-11-01_3625.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-01-19_3622.webp",
+          "cdnTag": "v1.4.60"
+        }
+      ]
+    },
+    {
+      "tag": "动漫",
+      "score": 17.997475,
+      "views": 380,
+      "downloads": 124,
+      "wallpaperCount": 30,
+      "latestCreatedAt": "2026-10-10T03:01:54.110Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/2026-09-04_38304.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/2026-09-05_43749.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/2026-02-24_2863.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/2026-10-06_3959.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/2026-08-22_43686.webp",
+          "cdnTag": "v1.4.21"
+        }
+      ]
+    },
+    {
+      "tag": "二次元",
+      "score": 15.576286,
+      "views": 346,
+      "downloads": 114,
+      "wallpaperCount": 26,
+      "latestCreatedAt": "2026-10-10T03:01:54.110Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/2026-09-04_38304.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/2026-09-05_43749.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/2026-02-24_2863.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/2026-10-06_3959.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/2026-08-22_43686.webp",
+          "cdnTag": "v1.4.21"
+        }
+      ]
+    },
+    {
+      "tag": "创意",
+      "score": 14.523954,
+      "views": 30,
+      "downloads": 14,
+      "wallpaperCount": 21,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/插画/创意/2023-12-21_10265.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/创意/2023-12-31_10485.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/创意/2024-01-05_10537.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/创意/2024-01-05_10541.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/创意/2024-01-20_190.webp",
+          "cdnTag": "v1.4.61"
+        }
+      ]
+    },
+    {
+      "tag": "自然风光",
+      "score": 12.516991,
+      "views": 158,
+      "downloads": 70,
+      "wallpaperCount": 16,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/2026-09-05_43749.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/日落/2023-12-29_10460.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-01-19_3622.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-02-20_8049.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-02-25_8009.webp",
+          "cdnTag": "v1.4.60"
+        }
+      ]
+    },
+    {
+      "tag": "场景",
+      "score": 11.325114,
+      "views": 116,
+      "downloads": 33,
+      "wallpaperCount": 19,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/插画/场景/2025-09-03_10289.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/场景/2025-09-04_4041.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/场景/2026-01-11_4912.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/场景/2026-09-09_9594.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/场景/2026-08-20_43665.webp",
+          "cdnTag": "v1.4.21"
+        }
+      ]
+    },
+    {
+      "tag": "清新",
+      "score": 10.230054,
+      "views": 89,
+      "downloads": 15,
+      "wallpaperCount": 17,
+      "latestCreatedAt": "2026-10-10T03:01:54.110Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/人像/清新/2026-08-06_43581.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/清新/2026-04-04_2500.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/清新/2026-09-02_382.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/清新/2026-09-04_9964.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/清新/2026-08-27_43690.webp",
+          "cdnTag": "v1.4.21"
+        }
+      ]
+    },
+    {
+      "tag": "夜晚",
+      "score": 9.604951,
+      "views": 111,
+      "downloads": 25,
+      "wallpaperCount": 13,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/风景/星空/2026-08-14_43601.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/创意/2023-12-31_10485.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/雪山/2024-04-11_10816.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-02-21_1.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/魅力/2026-03-18_4841.webp",
+          "cdnTag": "v1.4.60"
+        }
+      ]
+    },
+    {
+      "tag": "日落",
+      "score": 9.398175,
+      "views": 111,
+      "downloads": 38,
+      "wallpaperCount": 15,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/风景/日落/2023-12-29_10460.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-01-20_10225.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-02-25_8009.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/海滨/2026-10-02_5363.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/日落/2026-07-14_10249.webp",
+          "cdnTag": "v1.4.19"
+        }
+      ]
+    },
+    {
+      "tag": "魅力",
+      "score": 9.159738,
+      "views": 295,
+      "downloads": 42,
+      "wallpaperCount": 16,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/人像/魅力/2025-09-05_1649.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/魅力/2026-03-18_4841.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/魅力/2026-08-15_43655.webp",
+          "cdnTag": "v1.4.21"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/魅力/%E3%80%90%E6%81%8B%E9%A3%8E%E3%80%9120260819161247.webp",
+          "cdnTag": "v1.3.97"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/魅力/2025-06-23_15355.webp",
+          "cdnTag": "v1.4.0"
+        }
+      ]
+    },
+    {
+      "tag": "阳光",
+      "score": 8.698007,
+      "views": 103,
+      "downloads": 33,
+      "wallpaperCount": 11,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/人像/清新/2026-08-06_43581.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/场景/2025-09-03_10289.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/清新/2026-09-02_382.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/清新/2026-09-04_9964.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/场景/2026-09-09_9594.webp",
+          "cdnTag": "v1.4.60"
+        }
+      ]
+    },
+    {
+      "tag": "卡通",
+      "score": 7.407336,
+      "views": 111,
+      "downloads": 35,
       "wallpaperCount": 9,
+      "latestCreatedAt": "2026-10-10T03:01:54.110Z",
       "series": [
         "desktop"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/desktop/风景/湖泊/image_电脑平板双端适配超清壁纸分享ah..._4.webp",
-          "cdnTag": "v1.2.35"
+          "thumbnail": "/thumbnail/desktop/插画/卡通/2026-08-11_38398.webp",
+          "cdnTag": "v1.4.36"
         },
         {
-          "thumbnail": "/thumbnail/desktop/风景/天空/image_风景壁纸话题_每日更新壁纸话题_..._7.webp",
-          "cdnTag": "v1.2.35"
+          "thumbnail": "/thumbnail/desktop/插画/卡通/2026-08-07_43556.webp",
+          "cdnTag": "v1.4.36"
         },
         {
-          "thumbnail": "/thumbnail/desktop/风景/花卉/image_电脑分区壁纸话题_电脑桌面话题_..._4.webp",
-          "cdnTag": "v1.2.39"
+          "thumbnail": "/thumbnail/desktop/插画/卡通/2026-08-13_43597.webp",
+          "cdnTag": "v1.4.36"
         },
         {
-          "thumbnail": "/thumbnail/desktop/风景/海滨/20260424_165948.webp",
-          "cdnTag": "v1.2.73"
+          "thumbnail": "/thumbnail/desktop/插画/卡通/2026-10-05_514.webp",
+          "cdnTag": "v1.4.60"
         },
         {
-          "thumbnail": "/thumbnail/desktop/插画/场景/image_风景壁纸话题_每日更新壁纸话题_..._2.webp",
-          "cdnTag": "v1.2.35"
+          "thumbnail": "/thumbnail/desktop/插画/卡通/2026-08-08_43589.webp",
+          "cdnTag": "v1.4.36"
         }
       ]
     },
     {
-      "tag": "云海",
-      "score": 332,
-      "views": 541,
-      "downloads": 268,
-      "wallpaperCount": 3,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/风景/天空/云海-城堡-天空.webp",
-          "cdnTag": "v1.1.4"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/雪山/img3.wallspic.com-duo_shan_de_de_mao-shan_mai-dong_tian-bing_chuan_de_mao-gao_de-4878x3252.webp",
-          "cdnTag": "v1.1.84"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/星空/云层-云景-夜晚.webp",
-          "cdnTag": "v1.1.52"
-        }
-      ]
-    },
-    {
-      "tag": "萌宠",
-      "score": 328,
-      "views": 465,
-      "downloads": 221,
+      "tag": "星空",
+      "score": 7.173111,
+      "views": 127,
+      "downloads": 49,
       "wallpaperCount": 10,
+      "latestCreatedAt": "2026-10-10T03:01:54.110Z",
       "series": [
         "desktop"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/desktop/萌宠/猫咪/雨中绿意小猫.webp",
-          "cdnTag": "v1.2.49"
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-09-09_25178.webp",
+          "cdnTag": "v1.4.36"
         },
         {
-          "thumbnail": "/thumbnail/desktop/插画/卡通/20260406200057.webp",
-          "cdnTag": "v1.2.47"
+          "thumbnail": "/thumbnail/desktop/风景/星空/2026-08-14_43601.webp",
+          "cdnTag": "v1.4.36"
         },
         {
-          "thumbnail": "/thumbnail/desktop/萌宠/猫咪/晴空-治愈-猫.webp",
-          "cdnTag": "v1.1.22"
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-02-21_1.webp",
+          "cdnTag": "v1.4.60"
         },
         {
-          "thumbnail": "/thumbnail/desktop/萌宠/猫咪/image_桌面壁纸话题_电脑壁纸话题_意境..._1.webp",
-          "cdnTag": "v1.2.35"
+          "thumbnail": "/thumbnail/desktop/风景/星空/2026-07-16_9978.webp",
+          "cdnTag": "v1.4.19"
         },
         {
-          "thumbnail": "/thumbnail/desktop/萌宠/狗狗/image_桌面壁纸话题_电脑壁纸话题_意境..._4.webp",
-          "cdnTag": "v1.2.35"
+          "thumbnail": "/thumbnail/desktop/风景/星空/2026-08-27_7999.webp",
+          "cdnTag": "v1.4.20"
         }
       ]
     },
     {
-      "tag": "地球",
-      "score": 316,
-      "views": 567,
-      "downloads": 250,
-      "wallpaperCount": 1,
+      "tag": "宁静",
+      "score": 6.810708,
+      "views": 27,
+      "downloads": 12,
+      "wallpaperCount": 8,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
       "series": [
         "desktop"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/desktop/风景/星空/云层-地球-夜景.webp",
-          "cdnTag": "v1.1.4"
+          "thumbnail": "/thumbnail/desktop/风景/自然/2025-11-01_3625.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-01-19_3622.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-02-18_3806.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-03-12_5109.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/场景/2026-09-09_9594.webp",
+          "cdnTag": "v1.4.60"
         }
       ]
     },
     {
-      "tag": "云层",
-      "score": 316,
-      "views": 567,
-      "downloads": 250,
-      "wallpaperCount": 1,
+      "tag": "优雅",
+      "score": 6.625059,
+      "views": 118,
+      "downloads": 25,
+      "wallpaperCount": 12,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
       "series": [
         "desktop"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/desktop/风景/星空/云层-地球-夜景.webp",
-          "cdnTag": "v1.1.4"
+          "thumbnail": "/thumbnail/desktop/人像/魅力/2025-09-05_1649.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/魅力/2026-08-15_43655.webp",
+          "cdnTag": "v1.4.21"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/国风/2026-08-24_43667.webp",
+          "cdnTag": "v1.4.21"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/魅力/2026-08-15_9886.webp",
+          "cdnTag": "v1.4.0"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/魅力/2026-08-30_43722.webp",
+          "cdnTag": "v1.4.21"
+        }
+      ]
+    },
+    {
+      "tag": "国风",
+      "score": 6.516353,
+      "views": 62,
+      "downloads": 14,
+      "wallpaperCount": 13,
+      "latestCreatedAt": "2026-09-17T17:37:39.998Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/插画/国风/2026-08-09_43588.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/国风/2026-08-24_43667.webp",
+          "cdnTag": "v1.4.21"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/国风/2026-08-06_43562.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/国风/2026-08-18_43653.webp",
+          "cdnTag": "v1.4.21"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/国风/2026-08-19_43652.webp",
+          "cdnTag": "v1.4.21"
+        }
+      ]
+    },
+    {
+      "tag": "夜景",
+      "score": 6.504925,
+      "views": 142,
+      "downloads": 48,
+      "wallpaperCount": 11,
+      "latestCreatedAt": "2026-09-17T17:35:04.763Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-09-09_25178.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/星空/2026-07-16_9978.webp",
+          "cdnTag": "v1.4.19"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/城市/2026-07-20_4977.webp",
+          "cdnTag": "v1.4.19"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/2026-09-15_43979.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/城市/%E3%80%90%E6%81%8B%E9%A3%8E%E3%80%9120260819161145.webp",
+          "cdnTag": "v1.3.97"
         }
       ]
     },
     {
       "tag": "山脉",
-      "score": 316,
-      "views": 466,
-      "downloads": 205,
-      "wallpaperCount": 5,
+      "score": 5.833071,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 7,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
       "series": [
         "desktop"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/desktop/风景/日落/层峦-山脉-日落.webp",
-          "cdnTag": "v1.2.41"
+          "thumbnail": "/thumbnail/desktop/风景/日落/2023-12-29_10460.webp",
+          "cdnTag": "v1.4.61"
         },
         {
-          "thumbnail": "/thumbnail/desktop/风景/湖泊/image_风景壁纸话题_每日更新壁纸话题_..._0.webp",
-          "cdnTag": "v1.2.35"
+          "thumbnail": "/thumbnail/desktop/风景/自然/2025-09-24_188.webp",
+          "cdnTag": "v1.4.61"
         },
         {
-          "thumbnail": "/thumbnail/desktop/风景/湖泊/孤树-山峰-山脉.webp",
-          "cdnTag": "v1.1.4"
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-01-20_10225.webp",
+          "cdnTag": "v1.4.60"
         },
         {
-          "thumbnail": "/thumbnail/desktop/风景/星空/夜晚-夜景-山.webp",
-          "cdnTag": "v1.2.41"
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-02-20_8049.webp",
+          "cdnTag": "v1.4.60"
         },
         {
-          "thumbnail": "/thumbnail/desktop/风景/雪山/云海-云雾-冰川.webp",
-          "cdnTag": "v1.1.52"
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-02-25_8009.webp",
+          "cdnTag": "v1.4.60"
         }
       ]
     },
     {
-      "tag": "时尚",
-      "score": 296,
-      "views": 564,
-      "downloads": 134,
-      "wallpaperCount": 4,
+      "tag": "氛围感",
+      "score": 5.538537,
+      "views": 226,
+      "downloads": 55,
+      "wallpaperCount": 10,
+      "latestCreatedAt": "2026-09-17T17:35:04.763Z",
       "series": [
         "desktop"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/girl.webp",
-          "cdnTag": "v1.2.39"
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-09-09_25178.webp",
+          "cdnTag": "v1.4.36"
         },
         {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/OL穿搭.webp",
-          "cdnTag": "v1.1.9"
+          "thumbnail": "/thumbnail/desktop/人像/魅力/%E3%80%90%E6%81%8B%E9%A3%8E%E3%80%9120260819161247.webp",
+          "cdnTag": "v1.3.97"
         },
         {
-          "thumbnail": "/thumbnail/desktop/人像/明星/时代少年团合照.webp",
-          "cdnTag": "v1.1.57"
+          "thumbnail": "/thumbnail/desktop/人像/魅力/2026-08-15_9886.webp",
+          "cdnTag": "v1.4.0"
         },
         {
-          "thumbnail": "/thumbnail/desktop/插画/通用/漆皮靴酷飒少女天台闲坐.webp",
-          "cdnTag": "v1.1.41"
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/%E3%80%90%E6%81%8B%E9%A3%8E%E3%80%9120260819161119.webp",
+          "cdnTag": "v1.3.97"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/氛围感/%E3%80%90%E6%81%8B%E9%A3%8E%E3%80%9120260819161700.webp",
+          "cdnTag": "v1.3.97"
         }
       ]
     },
     {
-      "tag": "光影",
-      "score": 274,
-      "views": 541,
-      "downloads": 160,
+      "tag": "夕阳",
+      "score": 5.426247,
+      "views": 121,
+      "downloads": 50,
+      "wallpaperCount": 7,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-09-07_43913.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/卡通/2026-08-13_43597.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/创意/2023-12-21_10265.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/2026-08-17_43666.webp",
+          "cdnTag": "v1.4.21"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/日落/2025-06-22_15228.webp",
+          "cdnTag": "v1.4.0"
+        }
+      ]
+    },
+    {
+      "tag": "自然景观",
+      "score": 5.413884,
+      "views": 34,
+      "downloads": 15,
       "wallpaperCount": 6,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
       "series": [
         "desktop"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/优雅姿势-光影美女.webp",
-          "cdnTag": "v1.1.13"
+          "thumbnail": "/thumbnail/desktop/风景/自然/2025-11-01_3625.webp",
+          "cdnTag": "v1.4.61"
         },
         {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/20260406201056.webp",
-          "cdnTag": "v1.2.52"
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-01-20_10225.webp",
+          "cdnTag": "v1.4.60"
         },
         {
-          "thumbnail": "/thumbnail/desktop/人像/国风/中式古装-光影美女.webp",
-          "cdnTag": "v1.1.4"
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-02-18_3806.webp",
+          "cdnTag": "v1.4.60"
         },
         {
-          "thumbnail": "/thumbnail/desktop/人像/清新/20260406200444.webp",
-          "cdnTag": "v1.2.52"
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-02-21_1.webp",
+          "cdnTag": "v1.4.60"
         },
         {
-          "thumbnail": "/thumbnail/desktop/IP形象/线条小狗/光影倒影-可爱小狗.webp",
-          "cdnTag": "v1.1.13"
+          "thumbnail": "/thumbnail/desktop/风景/星空/2026-07-16_9978.webp",
+          "cdnTag": "v1.4.19"
+        }
+      ]
+    },
+    {
+      "tag": "海滨",
+      "score": 5.267865,
+      "views": 75,
+      "downloads": 29,
+      "wallpaperCount": 7,
+      "latestCreatedAt": "2026-10-10T03:01:54.110Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-09-09_25178.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/场景/2026-01-11_4912.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/海滨/2026-10-02_5363.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/海滨/2026-06-14_3854.webp",
+          "cdnTag": "v1.4.19"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/海滨/2026-04-22_4755.webp",
+          "cdnTag": "v1.4.19"
+        }
+      ]
+    },
+    {
+      "tag": "长发",
+      "score": 4.670877,
+      "views": 97,
+      "downloads": 27,
+      "wallpaperCount": 8,
+      "latestCreatedAt": "2026-10-10T03:01:54.110Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/人像/魅力/2026-03-18_4841.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/国风/2026-08-24_43667.webp",
+          "cdnTag": "v1.4.21"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/魅力/2026-08-15_9886.webp",
+          "cdnTag": "v1.4.0"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/场景/%E3%80%90%E6%81%8B%E9%A3%8E%E3%80%9120260819161049.webp",
+          "cdnTag": "v1.3.97"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/魅力/2026-08-31_43707.webp",
+          "cdnTag": "v1.4.21"
+        }
+      ]
+    },
+    {
+      "tag": "日出",
+      "score": 4.232498,
+      "views": 102,
+      "downloads": 45,
+      "wallpaperCount": 6,
+      "latestCreatedAt": "2026-10-10T03:01:54.110Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-02-18_3806.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-02-20_8049.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/7722_wallhaven%E5%A3%81%E7%BA%B8_%237742.webp",
+          "cdnTag": "v1.4.15"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/天空/2025-06-20_15567.webp",
+          "cdnTag": "v1.4.0"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/日落/2026-07-15_3856.webp",
+          "cdnTag": "v1.4.19"
+        }
+      ]
+    },
+    {
+      "tag": "宇宙",
+      "score": 4.125678,
+      "views": 79,
+      "downloads": 32,
+      "wallpaperCount": 5,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/风景/星空/2026-08-14_43601.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/创意/2024-01-05_10541.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/星空/2026-07-16_9978.webp",
+          "cdnTag": "v1.4.19"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/星空/2026-08-27_7999.webp",
+          "cdnTag": "v1.4.20"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/星空/7721_wallhaven%E5%A3%81%E7%BA%B8_%237741.webp",
+          "cdnTag": "v1.4.15"
+        }
+      ]
+    },
+    {
+      "tag": "山谷",
+      "score": 3.946582,
+      "views": 56,
+      "downloads": 26,
+      "wallpaperCount": 4,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-09-07_43913.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2025-09-24_188.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-01-19_3622.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-08-25_7971.webp",
+          "cdnTag": "v1.4.20"
+        }
+      ]
+    },
+    {
+      "tag": "草地",
+      "score": 3.768695,
+      "views": 78,
+      "downloads": 39,
+      "wallpaperCount": 5,
+      "latestCreatedAt": "2026-09-17T17:34:17.768Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/IP形象/线条小狗/2026-09-06_42236.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-08-29_31171.webp",
+          "cdnTag": "v1.4.21"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/卡通/2026-09-02_42184.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/IP形象/线条小狗/2026-09-10_41787.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/IP形象/线条小狗/2026-09-11_39930.webp",
+          "cdnTag": "v1.4.36"
+        }
+      ]
+    },
+    {
+      "tag": "卡通风格",
+      "score": 3.506621,
+      "views": 132,
+      "downloads": 42,
+      "wallpaperCount": 3,
+      "latestCreatedAt": "2026-09-17T17:37:39.998Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/影视/海绵宝宝/2026-09-18_43431.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/卡通/2026-08-11_38398.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/卡通/2026-08-07_43556.webp",
+          "cdnTag": "v1.4.36"
+        }
+      ]
+    },
+    {
+      "tag": "动漫风格",
+      "score": 3.378339,
+      "views": 115,
+      "downloads": 29,
+      "wallpaperCount": 6,
+      "latestCreatedAt": "2026-09-17T17:35:04.763Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/2026-09-04_38304.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/2025-06-17_15239.webp",
+          "cdnTag": "v1.4.0"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/场景/%E3%80%90%E6%81%8B%E9%A3%8E%E3%80%9120260819161049.webp",
+          "cdnTag": "v1.3.97"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/2026-07-13_3741.webp",
+          "cdnTag": "v1.4.19"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/2025-06-25_15247.webp",
+          "cdnTag": "v1.4.0"
+        }
+      ]
+    },
+    {
+      "tag": "雪山",
+      "score": 3.368687,
+      "views": 71,
+      "downloads": 36,
+      "wallpaperCount": 5,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/风景/雪山/2024-04-11_10816.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-02-18_3806.webp",
+          "cdnTag": "v1.4.60"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/雪山/2025-06-17_15573.webp",
+          "cdnTag": "v1.4.0"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/雪山/2026-05-07_3808.webp",
+          "cdnTag": "v1.4.19"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/雪山/2024-10-31_15185.webp",
+          "cdnTag": "v1.4.0"
+        }
+      ]
+    },
+    {
+      "tag": "抽象",
+      "score": 3.235506,
+      "views": 37,
+      "downloads": 10,
+      "wallpaperCount": 4,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/插画/创意/2023-12-31_10485.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/科技/抽象/2024-01-05_10529.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/文字/2026-08-28_3449.webp",
+          "cdnTag": "v1.4.20"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/创意/2026-08-31_10464.webp",
+          "cdnTag": "v1.4.20"
         }
       ]
     },
     {
       "tag": "蓝天",
-      "score": 272,
-      "views": 372,
-      "downloads": 187,
-      "wallpaperCount": 3,
+      "score": 3.225833,
+      "views": 57,
+      "downloads": 22,
+      "wallpaperCount": 5,
+      "latestCreatedAt": "2026-10-10T03:01:54.110Z",
       "series": [
         "desktop"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/desktop/人像/清新/20260406200537.webp",
-          "cdnTag": "v1.2.52"
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-03-12_5109.webp",
+          "cdnTag": "v1.4.60"
         },
         {
-          "thumbnail": "/thumbnail/desktop/人像/氛围感/晴天-蓝天白云.webp",
-          "cdnTag": "v1.1.13"
+          "thumbnail": "/thumbnail/desktop/风景/海滨/2026-06-14_3854.webp",
+          "cdnTag": "v1.4.19"
         },
         {
-          "thumbnail": "/thumbnail/desktop/风景/花卉/花朵-蓝天.webp",
-          "cdnTag": "v1.1.13"
+          "thumbnail": "/thumbnail/desktop/插画/场景/%E3%80%90%E6%81%8B%E9%A3%8E%E3%80%9120260819161049.webp",
+          "cdnTag": "v1.3.97"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/湖泊/2026-06-20_3631.webp",
+          "cdnTag": "v1.4.19"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/天空/7755_wallhaven%E5%A3%81%E7%BA%B8_%237710.webp",
+          "cdnTag": "v1.4.17"
         }
       ]
     },
     {
-      "tag": "群像",
-      "score": 263,
-      "views": 495,
-      "downloads": 114,
-      "wallpaperCount": 2,
+      "tag": "云海",
+      "score": 3.069767,
+      "views": 76,
+      "downloads": 40,
+      "wallpaperCount": 5,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
       "series": [
         "desktop"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/girl.webp",
-          "cdnTag": "v1.2.39"
+          "thumbnail": "/thumbnail/desktop/插画/场景/2025-09-04_4041.webp",
+          "cdnTag": "v1.4.61"
         },
         {
-          "thumbnail": "/thumbnail/desktop/动漫/百炼成神/角色群像.webp",
-          "cdnTag": "v1.1.4"
+          "thumbnail": "/thumbnail/desktop/风景/天空/2025-06-20_15567.webp",
+          "cdnTag": "v1.4.0"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-09-14_43968.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/日落/2026-07-15_3856.webp",
+          "cdnTag": "v1.4.19"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/创意/7735_wallhaven%E5%A3%81%E7%BA%B8_%237730.webp",
+          "cdnTag": "v1.4.15"
         }
       ]
     },
     {
-      "tag": "御姐风",
-      "score": 252,
-      "views": 462,
-      "downloads": 110,
-      "wallpaperCount": 1,
+      "tag": "地球",
+      "score": 3.062105,
+      "views": 67,
+      "downloads": 26,
+      "wallpaperCount": 4,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
       "series": [
         "desktop"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/girl.webp",
-          "cdnTag": "v1.2.39"
+          "thumbnail": "/thumbnail/desktop/插画/创意/2025-09-26_3522.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/星空/2026-07-16_9978.webp",
+          "cdnTag": "v1.4.19"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/2026-09-01_43713.webp",
+          "cdnTag": "v1.4.21"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/星空/7746_wallhaven%E5%A3%81%E7%BA%B8_%237719.webp",
+          "cdnTag": "v1.4.15"
         }
       ]
     },
     {
-      "tag": "城堡",
-      "score": 247,
-      "views": 417,
-      "downloads": 204,
-      "wallpaperCount": 1,
+      "tag": "城市",
+      "score": 3.023882,
+      "views": 60,
+      "downloads": 16,
+      "wallpaperCount": 6,
+      "latestCreatedAt": "2026-09-03T06:03:32.926Z",
       "series": [
         "desktop"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/desktop/风景/天空/云海-城堡-天空.webp",
-          "cdnTag": "v1.1.4"
+          "thumbnail": "/thumbnail/desktop/风景/城市/2026-07-20_4977.webp",
+          "cdnTag": "v1.4.19"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/城市/%E3%80%90%E6%81%8B%E9%A3%8E%E3%80%9120260819161145.webp",
+          "cdnTag": "v1.3.97"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/城市/7750_wallhaven%E5%A3%81%E7%BA%B8_%237715.webp",
+          "cdnTag": "v1.4.17"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/城市/141647_%E6%98%9F%E5%BD%A2%E5%9F%8E%E5%B8%82%E7%9A%84%E5%87%A0%E4%BD%95%E4%B9%8B%E7%BE%8E.webp",
+          "cdnTag": "v1.4.13"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/城市/7713_wallhaven%E5%A3%81%E7%BA%B8_%237753.webp",
+          "cdnTag": "v1.4.14"
+        }
+      ]
+    },
+    {
+      "tag": "天空",
+      "score": 2.906671,
+      "views": 129,
+      "downloads": 66,
+      "wallpaperCount": 4,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/插画/创意/2023-12-21_10265.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-08-29_31171.webp",
+          "cdnTag": "v1.4.21"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/天空/2025-06-20_15567.webp",
+          "cdnTag": "v1.4.0"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/天空/7755_wallhaven%E5%A3%81%E7%BA%B8_%237710.webp",
+          "cdnTag": "v1.4.17"
+        }
+      ]
+    },
+    {
+      "tag": "山水",
+      "score": 2.870638,
+      "views": 62,
+      "downloads": 29,
+      "wallpaperCount": 4,
+      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2025-11-01_3625.webp",
+          "cdnTag": "v1.4.61"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/湖泊/2026-08-28_31451.webp",
+          "cdnTag": "v1.4.21"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/场景/2026-09-13_43956.webp",
+          "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-08-26_10450.webp",
+          "cdnTag": "v1.4.20"
         }
       ]
     }

@@ -53,8 +53,8 @@ const emit = defineEmits([
         class="batch-card"
         :class="{
           'batch-card--active': selectedBatchPresetIds.includes(preset.id),
-          'batch-card--recommended': preset.recommended,
         }"
+        :aria-pressed="selectedBatchPresetIds.includes(preset.id)"
         @click="emit('togglePreset', preset.id)"
       >
         <div class="batch-card__top">
@@ -79,7 +79,7 @@ const emit = defineEmits([
         <path d="M4 17V7a2 2 0 0 1 2-2h4M20 7v10a2 2 0 0 1-2 2h-4M12 3v12M7 10l5 5 5-5" />
       </svg>
       <span>
-        {{ isProcessing ? '正在导出...' : `一键导出 ${selectedBatchPresetIds.length || ''} 个版本` }}
+        {{ isProcessing ? '正在导出...' : selectedBatchPresetIds.length ? `一键导出 ${selectedBatchPresetIds.length} 个版本` : '请选择导出尺寸' }}
       </span>
     </button>
   </div>
@@ -160,25 +160,29 @@ const emit = defineEmits([
   gap: 4px;
   padding: 10px 12px;
   text-align: left;
-  background: var(--crop-panel-surface);
-  border: 1px solid var(--crop-pill-border);
+  background: var(--crop-control-surface);
+  border: 1px solid var(--crop-control-border);
   border-radius: 10px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
   transition: all 0.22s ease;
 
   &:hover {
-    background: var(--crop-panel-surface-strong);
-    border-color: var(--crop-pill-border-strong);
+    background: var(--crop-control-surface-hover);
+    border-color: var(--crop-control-border-hover);
   }
 
   &--active {
     background: var(--accent-gradient-soft);
     border-color: var(--accent-border-strong);
     box-shadow: 0 0 0 1px var(--accent-ring) inset;
-  }
 
-  &--recommended:not(.batch-card--active) {
-    border-color: var(--accent-border);
+    .batch-card__label,
+    .batch-card__size {
+      color: var(--accent-contrast-soft);
+    }
+
+    .batch-card__desc {
+      color: rgba(var(--color-accent-rgb), 0.92);
+    }
   }
 }
 
@@ -192,7 +196,7 @@ const emit = defineEmits([
 .batch-card__label {
   font-size: 12px;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.92);
+  color: var(--crop-control-text);
 }
 
 .batch-card__badge {
@@ -200,21 +204,21 @@ const emit = defineEmits([
   font-size: 9px;
   font-weight: 700;
   color: var(--accent-contrast-soft);
-  background: var(--crop-chip-surface);
-  border: 1px solid var(--crop-chip-border);
+  background: var(--accent-surface);
+  border: 1px solid var(--accent-border);
   border-radius: 999px;
 }
 
 .batch-card__size {
   font-size: 11px;
   font-weight: 700;
-  color: var(--accent-contrast-soft);
+  color: var(--crop-control-text);
   font-family: 'SF Mono', Monaco, monospace;
 }
 
 .batch-card__desc {
   font-size: 10px;
-  color: rgba(255, 255, 255, 0.42);
+  color: var(--crop-control-hint);
   line-height: 1.5;
 }
 
@@ -228,11 +232,11 @@ const emit = defineEmits([
   padding: 11px 14px;
   font-size: 12px;
   font-weight: 700;
-  color: var(--accent-contrast-soft);
-  background: var(--crop-panel-surface);
-  border: 1px solid var(--accent-border);
+  color: white;
+  background: var(--accent-gradient);
+  border: none;
   border-radius: 10px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  box-shadow: 0 4px 16px var(--accent-shadow);
   transition: all 0.22s ease;
 
   svg {
@@ -242,15 +246,14 @@ const emit = defineEmits([
 
   &:hover:not(:disabled) {
     transform: translateY(-1px);
-    color: #fff;
-    background: var(--crop-panel-surface-strong);
-    border-color: var(--accent-border-strong);
+    background: var(--accent-gradient-hover);
+    box-shadow: 0 8px 24px var(--accent-shadow-strong);
   }
 
   &:disabled {
-    color: rgba(255, 255, 255, 0.32);
-    background: rgba(9, 16, 32, 0.7);
-    border-color: rgba(255, 255, 255, 0.05);
+    opacity: 0.45;
+    transform: none;
+    box-shadow: none;
     cursor: not-allowed;
   }
 }

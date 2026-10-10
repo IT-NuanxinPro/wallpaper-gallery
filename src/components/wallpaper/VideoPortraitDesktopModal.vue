@@ -116,11 +116,11 @@ function handleOpen() {
 }
 
 function handleClose() {
-  releaseVideoResources()
   isVisible.value = false
 }
 
 function onAfterLeave() {
+  releaseVideoResources()
   restoreScroll()
   emit('close')
 }
@@ -224,7 +224,7 @@ onUnmounted(() => {
 
 <template>
   <Teleport to="body">
-    <Transition name="modal" @after-leave="onAfterLeave">
+    <Transition name="gallery-modal" appear @after-leave="onAfterLeave">
       <div v-if="isVisible && wallpaper" class="desktop-modal">
         <div class="desktop-modal__content">
           <button class="desktop-modal__close" aria-label="关闭" @click="handleClose">
@@ -381,6 +381,7 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss" scoped>
+@use '@/assets/styles/modal' as modal;
 .desktop-modal {
   position: fixed;
   inset: 0;
@@ -770,27 +771,6 @@ onUnmounted(() => {
   height: 84px;
 }
 
-.modal-enter-active,
-.modal-leave-active {
-  transition: opacity 0.28s ease;
-
-  .desktop-modal__content {
-    transition:
-      opacity 0.28s ease,
-      transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-}
-
-.modal-enter-from,
-.modal-leave-to {
-  opacity: 0;
-
-  .desktop-modal__content {
-    opacity: 0;
-    transform: translateY(18px) scale(0.985);
-  }
-}
-
 @media (max-width: 960px) {
   .desktop-modal {
     padding: 20px;
@@ -807,4 +787,6 @@ onUnmounted(() => {
     height: 514px;
   }
 }
+
+@include modal.modal-transition('.desktop-modal__content');
 </style>

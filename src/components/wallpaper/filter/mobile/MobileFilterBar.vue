@@ -1,6 +1,4 @@
 <script setup>
-import ViewModeToggle from '@/components/wallpaper/filter/shared/ViewModeToggle.vue'
-
 defineProps({
   currentCategoryLabel: {
     type: String,
@@ -14,27 +12,13 @@ defineProps({
     type: Boolean,
     default: false,
   },
-  viewMode: {
-    type: String,
-    default: 'grid',
-  },
-  allowListMode: {
-    type: Boolean,
-    default: true,
-  },
-  hideViewMode: {
-    type: Boolean,
-    default: false,
-  },
 })
 
-defineEmits(['openCategory', 'openFilter', 'viewModeChange'])
+defineEmits(['openCategory', 'openFilter'])
 </script>
 
 <template>
   <div class="filter-right-mobile">
-    <ViewModeToggle v-if="!hideViewMode" :mode="viewMode" :allow-list-mode="allowListMode" mobile @change="$emit('viewModeChange', $event)" />
-
     <button
       v-if="!hideCategoryFilter"
       class="category-btn"

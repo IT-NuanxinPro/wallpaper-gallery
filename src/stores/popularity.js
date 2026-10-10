@@ -58,10 +58,6 @@ export const usePopularityStore = defineStore('popularity', () => {
     return map
   })
 
-  // 兼容旧 API：weeklyMap 和 monthlyMap 返回相同数据
-  const weeklyMap = computed(() => popularityMap.value)
-  const monthlyMap = computed(() => popularityMap.value)
-
   // 是否有热门数据
   const hasData = computed(() => statsMap.value.size > 0)
 
@@ -211,8 +207,6 @@ export const usePopularityStore = defineStore('popularity', () => {
     // Getters
     allTimeData,
     popularityMap,
-    weeklyMap,
-    monthlyMap,
     hasData,
     // Actions
     fetchPopularityData,

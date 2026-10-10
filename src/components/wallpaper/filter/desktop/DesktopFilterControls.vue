@@ -1,7 +1,6 @@
 <script setup>
 import BingDatePicker from '@/components/wallpaper/filter/fields/BingDatePicker.vue'
 import CategoryDropdown from '@/components/wallpaper/filter/fields/CategoryDropdown.vue'
-import ViewModeToggle from '@/components/wallpaper/filter/shared/ViewModeToggle.vue'
 import { FORMAT_OPTIONS, RESOLUTION_OPTIONS, SORT_OPTIONS } from '@/utils/config/constants'
 
 defineProps({
@@ -41,18 +40,6 @@ defineProps({
     type: String,
     default: 'all',
   },
-  viewMode: {
-    type: String,
-    default: 'grid',
-  },
-  allowListMode: {
-    type: Boolean,
-    default: true,
-  },
-  hideViewMode: {
-    type: Boolean,
-    default: false,
-  },
 })
 
 defineEmits([
@@ -61,18 +48,11 @@ defineEmits([
   'resolutionChange',
   'sortChange',
   'subcategoryUpdate',
-  'viewModeChange',
 ])
 </script>
 
 <template>
   <div class="filter-right">
-    <div v-if="!hideViewMode" class="filter-item filter-item--view-mode">
-      <ViewModeToggle :mode="viewMode" :allow-list-mode="allowListMode" @change="$emit('viewModeChange', $event)" />
-    </div>
-
-    <div v-if="!hideViewMode" class="filter-divider" />
-
     <div v-if="currentSeries === 'bing'" class="filter-item filter-item--date">
       <span class="filter-label">日期</span>
       <BingDatePicker
@@ -98,7 +78,6 @@ defineEmits([
         :model-value="formatFilter"
         placeholder="全部格式"
         size="default"
-        style="width: 140px"
         @change="$emit('formatChange', $event)"
       >
         <el-option
@@ -116,7 +95,6 @@ defineEmits([
         :model-value="resolutionFilter"
         placeholder="全部分辨率"
         size="default"
-        style="width: 140px"
         @change="$emit('resolutionChange', $event)"
       >
         <el-option
@@ -134,7 +112,6 @@ defineEmits([
         :model-value="sortBy"
         placeholder="排序方式"
         size="default"
-        style="width: 160px"
         @change="$emit('sortChange', $event)"
       >
         <el-option
@@ -152,17 +129,11 @@ defineEmits([
 .filter-right {
   display: flex;
   align-items: center;
-  gap: $spacing-lg;
-  flex-wrap: nowrap;
+  gap: 12px 16px;
+  flex: 1 1 760px;
+  flex-wrap: wrap;
   justify-content: flex-end;
   min-width: 0;
-}
-
-.filter-divider {
-  width: 1px;
-  height: 24px;
-  background: var(--color-border);
-  flex-shrink: 0;
 }
 
 .filter-item {
@@ -170,8 +141,13 @@ defineEmits([
   align-items: center;
   gap: $spacing-sm;
   min-width: 0;
+  flex: 1 1 150px;
+  max-width: 200px;
 
   :deep(.el-select) {
+    width: 100%;
+    min-width: 0;
+    flex: 1;
     --el-select-border-color-hover: var(--accent-border-strong);
 
     .el-select__wrapper {
@@ -196,7 +172,7 @@ defineEmits([
 
       &.is-focused {
         border-color: var(--accent-border-strong) !important;
-        box-shadow: 0 0 0 3px var(--accent-ring) !important;
+        box-shadow: none !important;
       }
     }
 
@@ -226,50 +202,42 @@ defineEmits([
   font-weight: $font-weight-semibold;
   color: var(--color-text-primary);
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
-@media (min-width: 768px) and (max-width: 1180px) {
-  .filter-right {
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: 10px 14px;
+.filter-item--date {
+  flex: 0 0 196px;
+}
+
+.filter-item--category {
+  flex-basis: 180px;
+  max-width: 220px;
+
+  :deep(.category-dropdown) {
+    flex: 1;
     width: 100%;
+    min-width: 0;
   }
 
-  .filter-divider {
-    display: none;
+  :deep(.dropdown-trigger) {
+    width: 100%;
+    min-width: 0;
   }
+}
 
-  .filter-item {
-    gap: 8px;
-  }
+.filter-item--format {
+  flex-basis: 130px;
+  max-width: 166px;
+}
 
-  .filter-item--view-mode {
-    margin-right: auto;
-  }
+.filter-item--sort {
+  flex-basis: 180px;
+  max-width: 220px;
+}
 
-  .filter-item--category {
-    :deep(.category-dropdown .dropdown-trigger) {
-      width: 180px;
-      min-width: 180px;
-    }
-  }
-
-  .filter-item--format,
-  .filter-item--resolution {
-    :deep(.el-select) {
-      width: 124px !important;
-    }
-  }
-
-  .filter-item--sort {
-    :deep(.el-select) {
-      width: 146px !important;
-    }
-  }
-
-  .filter-label {
-    font-size: 13px;
+@media (max-width: 1180px) {
+  .filter-right {
+    gap: 10px 12px;
   }
 }
 </style>

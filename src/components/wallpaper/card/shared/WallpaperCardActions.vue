@@ -1,6 +1,5 @@
 <script setup>
-import { computed, onBeforeUnmount, ref } from 'vue'
-import LottieScene from '@/components/common/ui/LottieScene.vue'
+import { computed, defineAsyncComponent, onBeforeUnmount, ref } from 'vue'
 import { formatNumber } from '@/utils/common/format'
 
 const props = defineProps({
@@ -39,6 +38,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['toggleLike', 'toggleCollect'])
+
+const LottieScene = defineAsyncComponent(() => import('@/components/common/ui/LottieScene.vue'))
 
 const likeAnimating = ref(false)
 const collectAnimating = ref(false)

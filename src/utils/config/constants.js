@@ -213,6 +213,5 @@ export const STORAGE_KEYS = {
   THEME_MODE: 'wallpaper-gallery-theme-mode', // 新增：主题模式
   SORT: 'wallpaper-gallery-sort',
   CATEGORY: 'wallpaper-gallery-category',
-  VIEW_MODE: 'wallpaper-gallery-view-mode',
   CURRENT_SERIES: 'wallpaper-gallery-current-series', // 当前选择的系列
 }

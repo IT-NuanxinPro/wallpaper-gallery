@@ -17,4 +17,63 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
+  // 预览图贴边展示，避免全局浅色滚动条在图片加载时露出白色轨道。
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+// 弹窗首次异步挂载也使用 appear；只过渡绘制属性，保留内容滚动布局。
+@mixin modal-transition($panel) {
+  .gallery-modal-enter-active {
+    transition: opacity 360ms cubic-bezier(0.22, 1, 0.36, 1);
+
+    #{$panel} {
+      transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1), opacity 300ms ease-out;
+    }
+  }
+
+  .gallery-modal-leave-active {
+    transition: opacity 220ms ease-in;
+
+    #{$panel} {
+      transition: transform 220ms ease-in, opacity 180ms ease-in;
+    }
+  }
+
+  .gallery-modal-enter-from,
+  .gallery-modal-leave-to {
+    opacity: 0;
+
+    #{$panel} {
+      opacity: 0;
+      transform: translateY(20px) scale(0.975);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gallery-modal-enter-active,
+    .gallery-modal-leave-active {
+      transition-duration: 1ms;
+
+      #{$panel} {
+        transition-duration: 1ms;
+      }
+    }
+
+    .gallery-modal-enter-from,
+    .gallery-modal-leave-to {
+      #{$panel} {
+        transform: none;
+      }
+    }
+  }
 }

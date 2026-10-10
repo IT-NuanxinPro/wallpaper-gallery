@@ -87,7 +87,7 @@ watch(() => props.isOpen, (isOpen) => {
   else if (isVisible.value) {
     handleClose()
   }
-})
+}, { immediate: true })
 
 onMounted(() => {
   document.addEventListener('keydown', handleKeydown)
@@ -101,7 +101,7 @@ onUnmounted(() => {
 
 <template>
   <Teleport to="body">
-    <Transition name="modal" @after-leave="onModalAfterLeave">
+    <Transition name="gallery-modal" appear @after-leave="onModalAfterLeave">
       <div
         v-if="isVisible"
         class="avatar-maker-modal"
@@ -182,6 +182,7 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss" scoped>
+@use '@/assets/styles/modal' as modal;
 .avatar-maker-modal {
   position: fixed;
   inset: 0;
@@ -328,33 +329,6 @@ onUnmounted(() => {
 }
 
 // 弹窗动画
-.modal-enter-active {
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  .avatar-maker-modal__content {
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-}
 
-.modal-leave-active {
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  .avatar-maker-modal__content {
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-}
-
-.modal-enter-from {
-  opacity: 0;
-  .avatar-maker-modal__content {
-    opacity: 0;
-    transform: scale(0.9) translateY(30px);
-  }
-}
-
-.modal-leave-to {
-  opacity: 0;
-  .avatar-maker-modal__content {
-    opacity: 0;
-    transform: scale(0.95) translateY(20px);
-  }
-}
+@include modal.modal-transition('.avatar-maker-modal__content');
 </style>

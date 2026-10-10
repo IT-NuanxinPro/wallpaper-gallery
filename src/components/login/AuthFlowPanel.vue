@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue'
-import LottieScene from '@/components/common/ui/LottieScene.vue'
+import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 
 const props = defineProps({
   badge: {
@@ -25,7 +25,6 @@ const props = defineProps({
   },
 })
 
-const loadingAnimationSrc = `${import.meta.env.BASE_URL}lottie/Loading%20animation%20blue.lottie`
 const isLoading = computed(() => props.state === 'loading')
 const isSuccess = computed(() => props.state === 'success')
 </script>
@@ -38,12 +37,8 @@ const isSuccess = computed(() => props.state === 'success')
     </div>
 
     <div class="auth-flow-panel__visual" :class="`is-${state}`" aria-hidden="true">
-      <div v-if="isLoading" class="auth-flow-panel__lottie">
-        <LottieScene
-          :src="loadingAnimationSrc"
-          :speed="0.95"
-          fit="contain"
-        />
+      <div v-if="isLoading" class="auth-flow-panel__loader">
+        <LoadingSpinner size="lg" />
       </div>
 
       <div v-else class="auth-flow-panel__status-icon">
@@ -156,10 +151,8 @@ const isSuccess = computed(() => props.state === 'success')
   justify-content: center;
 }
 
-.auth-flow-panel__lottie {
-  width: clamp(132px, 22vw, 176px);
-  aspect-ratio: 1;
-  filter: drop-shadow(0 18px 38px rgba(37, 99, 235, 0.18));
+.auth-flow-panel__loader {
+  padding: 24px;
 }
 
 .auth-flow-panel__status-icon {

@@ -161,7 +161,7 @@ const displayUrl = computed(() => {
 })
 
 // GSAP 入场动画
-watch(() => props.isOpen, async (isOpen) => {
+watch(() => props.isOpen, async (isOpen, wasOpen) => {
   if (isOpen) {
     // 如果使用 DesktopModal，由它自己处理统计，这里不重复调用
     if (!useDesktopModal.value && props.wallpaper) {
@@ -181,7 +181,7 @@ watch(() => props.isOpen, async (isOpen) => {
     await nextTick()
     animateIn()
   }
-  else {
+  else if (wasOpen) {
     // 恢复背景滚动
     document.body.classList.remove('modal-open')
     document.body.style.top = ''
@@ -189,7 +189,7 @@ watch(() => props.isOpen, async (isOpen) => {
     // 恢复滚动位置（立即跳转，无动画）
     window.scrollTo({ top: savedScrollY.value, behavior: 'instant' })
   }
-})
+}, { immediate: true })
 
 function animateIn() {
   if (!modalRef.value || !contentRef.value)

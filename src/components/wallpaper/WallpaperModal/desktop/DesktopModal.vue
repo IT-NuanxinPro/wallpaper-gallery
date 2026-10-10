@@ -242,7 +242,7 @@ function resetState() {
 
 <template>
   <Teleport to="body">
-    <Transition name="modal" @after-leave="onModalAfterLeave">
+    <Transition name="gallery-modal" appear @after-leave="onModalAfterLeave">
       <div
         v-if="isVisible && wallpaper"
         class="desktop-modal"
@@ -435,6 +435,7 @@ function resetState() {
 </template>
 
 <style lang="scss" scoped>
+@use '@/assets/styles/modal' as modal;
 .desktop-modal {
   position: fixed;
   inset: 0;
@@ -888,40 +889,6 @@ function resetState() {
 }
 
 // 弹窗动画
-.modal-enter-active {
-  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-
-  .desktop-modal__content {
-    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-}
-
-.modal-leave-active {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-  .desktop-modal__content {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-}
-
-.modal-enter-from {
-  opacity: 0;
-
-  .desktop-modal__content {
-    opacity: 0;
-    transform: scale(0.85) translateY(40px);
-  }
-}
-
-.modal-leave-to {
-  opacity: 0;
-
-  .desktop-modal__content {
-    opacity: 0;
-    transform: scale(0.95) translateY(20px);
-  }
-}
-
 // 响应式
 @media (max-width: 1500px) {
   .desktop-modal {
@@ -949,4 +916,6 @@ function resetState() {
     width: 100%;
   }
 }
+
+@include modal.modal-transition('.desktop-modal__content');
 </style>

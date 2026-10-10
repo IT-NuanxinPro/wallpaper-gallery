@@ -130,11 +130,11 @@ function handleOpen() {
 }
 
 function handleClose() {
-  releaseVideoResources()
   isVisible.value = false
 }
 
 function onAfterLeave() {
+  releaseVideoResources()
   restoreScroll()
   emit('close')
 }
@@ -227,7 +227,7 @@ onUnmounted(() => {
 
 <template>
   <Teleport to="body">
-    <Transition name="modal" @after-leave="onAfterLeave">
+    <Transition name="gallery-modal" appear @after-leave="onAfterLeave">
       <div v-if="isVisible && wallpaper" class="social-cover-modal">
         <div class="social-cover-modal__content">
           <button class="social-cover-modal__close" aria-label="关闭" @click="handleClose">
@@ -386,6 +386,7 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss" scoped>
+@use '@/assets/styles/modal' as modal;
 .social-cover-modal {
   position: fixed;
   inset: 0;
@@ -769,27 +770,6 @@ onUnmounted(() => {
   height: 84px;
 }
 
-.modal-enter-active,
-.modal-leave-active {
-  transition: opacity 0.28s ease;
-
-  .social-cover-modal__content {
-    transition:
-      opacity 0.28s ease,
-      transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-}
-
-.modal-enter-from,
-.modal-leave-to {
-  opacity: 0;
-
-  .social-cover-modal__content {
-    opacity: 0;
-    transform: translateY(18px) scale(0.985);
-  }
-}
-
 @media (max-width: 960px) {
   .social-cover-modal {
     padding: 20px;
@@ -806,4 +786,6 @@ onUnmounted(() => {
     height: 514px;
   }
 }
+
+@include modal.modal-transition('.social-cover-modal__content');
 </style>

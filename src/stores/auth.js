@@ -14,7 +14,7 @@ import {
 import { getLinkedIdentityByProvider, normalizeAuthProviderKey } from '@/utils/auth/providers'
 
 const PROFILE_SELECT_FIELDS = 'id, username, display_name, avatar_url, bio, primary_email, primary_provider, role, status, extra'
-const PREFERENCES_SELECT_FIELDS = 'user_id, default_series, theme_mode, view_mode_desktop, view_mode_mobile, sort_mode, sync_local_preferences, email_updates, data'
+const PREFERENCES_SELECT_FIELDS = 'user_id, default_series, theme_mode, sort_mode, sync_local_preferences, email_updates, data'
 const AUTH_PROVIDER_STORAGE_KEY = 'wallpaper-gallery-auth-provider'
 const AUTH_PROVIDER_PENDING_STORAGE_KEY = 'wallpaper-gallery-auth-provider-pending'
 

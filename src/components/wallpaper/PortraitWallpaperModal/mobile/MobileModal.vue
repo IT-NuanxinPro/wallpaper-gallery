@@ -101,6 +101,10 @@ const fileExt = computed(() => props.wallpaper ? getFileExtension(props.wallpape
 const formattedSize = computed(() => props.wallpaper ? formatFileSize(props.wallpaper.size) : '')
 const formattedDate = computed(() => props.wallpaper ? formatDate(props.wallpaper.createdAt) : '')
 const canUseDeviceMode = computed(() => effectiveSeries.value === 'mobile')
+const previewAspectRatio = computed(() => {
+  const { width, height } = props.wallpaper?.resolution || {}
+  return width > 0 && height > 0 ? `${width} / ${height}` : '9 / 16'
+})
 
 watch(() => props.isOpen, (open) => {
   if (open && props.wallpaper) {
@@ -174,7 +178,7 @@ function resetState() {
 
 <template>
   <Teleport to="body">
-    <Transition name="modal" @after-leave="onAfterLeave">
+    <Transition name="gallery-modal" appear @after-leave="onAfterLeave">
       <div
         v-if="isVisible && wallpaper"
         class="mobile-modal"
@@ -204,7 +208,11 @@ function resetState() {
           <div class="mobile-modal__body">
             <!-- 图片预览 -->
             <Transition name="content-fade">
-              <div v-show="!deviceMode.isDeviceMode.value" class="mobile-modal__preview">
+              <div
+                v-show="!deviceMode.isDeviceMode.value"
+                class="mobile-modal__preview"
+                :style="{ aspectRatio: imageLoaded ? undefined : previewAspectRatio }"
+              >
                 <div v-if="!imageLoaded" class="loading-placeholder">
                   <LoadingSpinner size="lg" />
                 </div>
@@ -450,11 +458,7 @@ function resetState() {
   &__preview {
     position: relative;
     flex: none;
-    height: clamp(160px, 42vh, 360px);
-    height: clamp(160px, 42dvh, 360px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100%;
     background: var(--mobile-modal-preview-bg);
     overflow: hidden;
 
@@ -469,18 +473,14 @@ function resetState() {
     }
 
     img {
+      display: block;
       width: 100%;
-      height: 100%;
-      object-fit: contain;
+      height: auto;
       opacity: 0;
-      transform: scale(0.95);
-      transition:
-        opacity 0.4s ease,
-        transform 0.4s ease;
+      transition: opacity 180ms ease-out;
 
       &.loaded {
         opacity: 1;
-        transform: scale(1);
       }
     }
   }
@@ -779,19 +779,6 @@ function resetState() {
   }
 }
 
-.modal-enter-active {
-  transition: opacity 0.3s ease;
-}
-
-.modal-leave-active {
-  transition: none;
-}
-
-.modal-enter-from,
-.modal-leave-to {
-  opacity: 0;
-}
-
 .content-fade-enter-active,
 .content-fade-leave-active {
   transition: opacity 0.3s ease;
@@ -953,4 +940,6 @@ function resetState() {
     min-height: 40px;
   }
 }
+
+@include modal.modal-transition('.mobile-modal__content');
 </style>

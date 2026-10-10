@@ -1135,6 +1135,13 @@ onUnmounted(() => {
   --crop-chip-border: rgba(110, 168, 255, 0.2);
   --crop-text-muted: rgba(255, 255, 255, 0.45);
   --crop-text-soft: rgba(255, 255, 255, 0.62);
+  // 输出格式与批量尺寸共用控件颜色，避免同一面板混入黑色卡片。
+  --crop-control-surface: rgba(255, 255, 255, 0.03);
+  --crop-control-surface-hover: rgba(255, 255, 255, 0.05);
+  --crop-control-border: rgba(255, 255, 255, 0.06);
+  --crop-control-border-hover: rgba(255, 255, 255, 0.1);
+  --crop-control-text: rgba(255, 255, 255, 0.92);
+  --crop-control-hint: rgba(255, 255, 255, 0.42);
   color-scheme: dark;
   position: fixed;
   inset: 0;

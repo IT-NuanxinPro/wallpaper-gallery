@@ -613,7 +613,6 @@ onMounted(() => {
                       :key="wallpaper._assetKey || wallpaper.id"
                       :wallpaper="wallpaper"
                       :index="index"
-                      view-mode="grid"
                       :aspect-ratio="getAspectRatio(wallpaper)"
                       @click="handleSelectWallpaper(wallpaper)"
                     />

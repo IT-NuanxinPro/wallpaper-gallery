@@ -6,7 +6,7 @@ export async function loadHotTags(series = 'all') {
   }
 
   try {
-    const response = await fetch(`${HOT_TAGS_BASE_URL}/hot-tags-${series}.json`)
+    const response = await fetch(`${HOT_TAGS_BASE_URL}/hot-tags-${series}.json`, { cache: 'no-cache' })
     if (!response.ok) {
       if (response.status === 404) {
         return []

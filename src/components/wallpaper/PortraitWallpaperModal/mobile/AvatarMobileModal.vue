@@ -180,7 +180,7 @@ function resetState() {
 
 <template>
   <Teleport to="body">
-    <Transition name="modal" @after-leave="onAfterLeave">
+    <Transition name="gallery-modal" appear @after-leave="onAfterLeave">
       <div
         v-if="isVisible && wallpaper"
         class="avatar-modal"
@@ -799,19 +799,6 @@ function resetState() {
   }
 }
 
-.modal-enter-active {
-  transition: opacity 0.3s ease;
-}
-
-.modal-leave-active {
-  transition: none;
-}
-
-.modal-enter-from,
-.modal-leave-to {
-  opacity: 0;
-}
-
 @media (max-height: 650px) {
   .avatar-modal {
     &__content {
@@ -915,4 +902,6 @@ function resetState() {
     }
   }
 }
+
+@include modal.modal-transition('.avatar-modal__content');
 </style>

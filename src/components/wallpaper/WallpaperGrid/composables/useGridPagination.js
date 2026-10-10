@@ -1,14 +1,14 @@
-import { computed, ref } from 'vue'
+import { computed, onUnmounted, ref } from 'vue'
 
 const PAGE_SIZE = 20
 
-export function useGridPagination({ timers, wallpapers }) {
+export function useGridPagination({ wallpapers }) {
   const displayCount = ref(PAGE_SIZE)
   const isLoadingMore = ref(false)
-  const scrollPaused = ref(false)
 
   // RAF 节流标记
   let scrollRafId = null
+  let loadRafId = null
 
   const displayedItems = computed(() => wallpapers.value.slice(0, displayCount.value))
 
@@ -20,18 +20,17 @@ export function useGridPagination({ timers, wallpapers }) {
 
     isLoadingMore.value = true
 
-    const timer = setTimeout(() => {
-      timers.delete(timer)
+    loadRafId = requestAnimationFrame(() => {
+      loadRafId = null
       displayCount.value = Math.min(displayCount.value + PAGE_SIZE, wallpapers.value.length)
       isLoadingMore.value = false
-    }, 150)
-    timers.add(timer)
+    })
   }
 
   function checkScroll() {
     scrollRafId = null
 
-    if (scrollPaused.value || isLoadingMore.value || !hasMoreData.value)
+    if (isLoadingMore.value || !hasMoreData.value)
       return
 
     const scrollTop = window.scrollY || document.documentElement.scrollTop
@@ -49,26 +48,24 @@ export function useGridPagination({ timers, wallpapers }) {
     scrollRafId = requestAnimationFrame(checkScroll)
   }
 
-  function pauseScrollLoad() {
-    scrollPaused.value = true
-  }
-
   function resetDisplayCount() {
+    cancelAnimationFrame(loadRafId)
+    loadRafId = null
+    isLoadingMore.value = false
     displayCount.value = PAGE_SIZE
   }
 
-  function resumeScrollLoad() {
-    scrollPaused.value = false
-  }
+  onUnmounted(() => {
+    cancelAnimationFrame(scrollRafId)
+    cancelAnimationFrame(loadRafId)
+  })
 
   return {
     displayCount,
     displayedItems,
     handleScroll,
     isLoadingMore,
-    pauseScrollLoad,
     resetDisplayCount,
-    resumeScrollLoad,
   }
 }
 

@@ -91,16 +91,6 @@ export function trackSeriesSwitch(fromType, toType) {
 }
 
 /**
- * 追踪视图模式切换事件
- * @param {string} mode - 视图模式（grid/list/waterfall）
- */
-export function trackViewModeChange(mode) {
-  trackEvent('view_mode_change', {
-    mode,
-  })
-}
-
-/**
  * 追踪筛选事件
  * @param {string} filterType - 筛选类型（category/format/sort）
  * @param {string} filterValue - 筛选值

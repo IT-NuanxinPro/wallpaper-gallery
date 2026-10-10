@@ -425,6 +425,14 @@ export function buildWallpaperImageFallbackUrls(wallpaper, options = {}) {
     extractFilenameExtension(wallpaper?.filename) || wallpaper?.format,
   )
   const preferOriginal = options.preferOriginal ?? (series === 'avatar' && extension === 'webp')
+  if (options.preferThumbnail) {
+    // 列表先用缩略图；仅失败时回退预览图和原图，不提前下载大图。
+    return [...new Set([
+      wallpaper.thumbnailUrl,
+      wallpaper.previewUrl,
+      wallpaper.url,
+    ].filter(Boolean).flatMap(url => [url, buildRawImageUrl(url)]))]
+  }
   const primaryUrl = preferOriginal
     ? (wallpaper.url || wallpaper.thumbnailUrl || wallpaper.previewUrl)
     : (wallpaper.previewUrl || wallpaper.thumbnailUrl || wallpaper.url)

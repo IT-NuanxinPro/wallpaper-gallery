@@ -2,9 +2,9 @@
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import AvatarMakerBanner from '@/components/avatar/AvatarMakerBanner.vue'
-import AvatarMakerModal from '@/components/avatar/AvatarMakerModal/index.vue'
 import DiyAvatarBanner from '@/components/avatar/DiyAvatarBanner.vue'
 import AnnouncementBanner from '@/components/common/feedback/AnnouncementBanner.vue'
+import { defineAsyncModal } from '@/components/common/feedback/defineAsyncModal'
 import BackToTop from '@/components/common/navigation/BackToTop.vue'
 import HomeModalHost from '@/components/home/HomeModalHost.vue'
 import HotTagsPanel from '@/components/home/HotTagsPanel.vue'
@@ -26,6 +26,7 @@ import { SERIES_CONFIG } from '@/utils/config/constants'
 import { getDefaultCategoryFilter } from '@/utils/filter/defaults'
 
 const route = useRoute()
+const AvatarMakerModal = defineAsyncModal(() => import('@/components/avatar/AvatarMakerModal/index.vue'))
 
 const seriesStore = useSeriesStore()
 const wallpaperStore = useWallpaperStore()
@@ -189,7 +190,9 @@ const {
 } = useWallpaperNavigator(wallpaperStore)
 
 function handleReset() {
-  filterStore.resetFilters(filterStore.sortBy, currentSeries.value)
+  // 周/月热门同时限定上传时间，清除筛选时也需要解除该限制。
+  const defaultSort = ['weekly-hot', 'monthly-hot'].includes(filterStore.sortBy) ? 'newest' : filterStore.sortBy
+  filterStore.resetFilters(defaultSort, currentSeries.value)
   activeHotTag.value = ''
 }
 
@@ -413,6 +416,7 @@ function handleAvatarMakerClose() {
     </div>
 
     <HomeModalHost
+      v-if="currentWallpaper"
       :wallpaper="currentWallpaper"
       :is-open="isOpen"
       :use-portrait-modal="usePortraitModal"
@@ -425,6 +429,7 @@ function handleAvatarMakerClose() {
     <BackToTop />
 
     <AvatarMakerModal
+      v-if="isAvatarMakerOpen"
       :is-open="isAvatarMakerOpen"
       @close="handleAvatarMakerClose"
     />

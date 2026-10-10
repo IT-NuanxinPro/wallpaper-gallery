@@ -1,4 +1,6 @@
 <script setup>
+import { onMounted, ref } from 'vue'
+
 defineProps({
   bingDate: {
     type: String,
@@ -23,10 +25,6 @@ defineProps({
   imageLoaded: {
     type: Boolean,
     default: false,
-  },
-  imageRef: {
-    type: Object,
-    default: null,
   },
   index: {
     type: Number,
@@ -76,19 +74,20 @@ defineProps({
     type: String,
     default: '',
   },
-  viewMode: {
-    type: String,
-    default: 'grid',
-  },
 })
 
 const emit = defineEmits(['click', 'error', 'load', 'hoverEnter', 'hoverLeave'])
+const imageRef = ref(null)
+
+onMounted(() => {
+  if (imageRef.value?.complete && imageRef.value.naturalWidth > 0)
+    emit('load')
+})
 </script>
 
 <template>
   <div
     class="card-image"
-    :class="`card-image--${viewMode}`"
     :style="style"
     @click="emit('click')"
     @mouseenter="emit('hoverEnter')"
@@ -114,19 +113,20 @@ const emit = defineEmits(['click', 'error', 'load', 'hoverEnter', 'hoverLeave'])
     </div>
 
     <img
-      :ref="imageRef"
+      ref="imageRef"
       :src="thumbnailUrl"
       :alt="imageAlt"
       width="800"
       height="600"
-      loading="lazy"
+      :loading="index < (isMobile ? 2 : 6) ? 'eager' : 'lazy'"
+      decoding="async"
       :fetchpriority="index < 6 ? 'high' : 'auto'"
       :class="{ 'is-loaded': imageLoaded, 'is-error': imageError }"
       @load="emit('load')"
       @error="emit('error')"
     >
 
-    <div v-if="categoryDisplay && viewMode === 'grid' && !isBingWallpaper" class="card-category-badge">
+    <div v-if="categoryDisplay && !isBingWallpaper" class="card-category-badge">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
         <polyline points="9 22 9 12 15 12 15 22" />
@@ -134,7 +134,7 @@ const emit = defineEmits(['click', 'error', 'load', 'hoverEnter', 'hoverLeave'])
       <span>{{ categoryDisplay }}</span>
     </div>
 
-    <div v-if="isBingWallpaper && viewMode === 'grid'" class="card-bing-badge">
+    <div v-if="isBingWallpaper" class="card-bing-badge">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
         <line x1="16" y1="2" x2="16" y2="6" />
@@ -178,8 +178,9 @@ const emit = defineEmits(['click', 'error', 'load', 'hoverEnter', 'hoverLeave'])
     height: 100%;
     object-fit: cover;
     opacity: 0;
-    transition: opacity 0.4s ease;
-    will-change: transform;
+    transition:
+      opacity 180ms ease-out,
+      transform 180ms ease-out;
 
     &.is-loaded {
       opacity: 1;
@@ -187,20 +188,6 @@ const emit = defineEmits(['click', 'error', 'load', 'hoverEnter', 'hoverLeave'])
 
     &.is-error {
       display: none;
-    }
-  }
-
-  &--list {
-    @include mobile-only {
-      width: 100px !important;
-      height: 100px !important;
-      border-radius: var(--radius-md);
-
-      img {
-        object-fit: cover;
-        width: 100%;
-        height: 100%;
-      }
     }
   }
 }
@@ -285,7 +272,7 @@ const emit = defineEmits(['click', 'error', 'load', 'hoverEnter', 'hoverLeave'])
   justify-content: center;
   background: rgba(0, 0, 0, 0.5);
   opacity: 0;
-  will-change: opacity;
+  transition: opacity 180ms ease-out;
 }
 
 .card-actions-mobile {
@@ -391,6 +378,17 @@ const emit = defineEmits(['click', 'error', 'load', 'hoverEnter', 'hoverLeave'])
   svg {
     width: 12px;
     height: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-shimmer {
+    animation: none;
+  }
+
+  .card-image img,
+  .card-overlay {
+    transition: none;
   }
 }
 </style>

@@ -2,6 +2,7 @@
 import { gsap } from 'gsap'
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { buildImageUrl } from '@/utils/common/format'
+import { HOT_TAGS_WINDOW_DAYS } from '@/utils/config/hotTags'
 
 const props = defineProps({
   isMobile: {
@@ -325,7 +326,7 @@ onBeforeUnmount(() => {
           热门标签
         </p>
         <h2 class="hot-tags-title">
-          大家最近更爱搜这些内容
+          近 {{ HOT_TAGS_WINDOW_DAYS }} 天的热门内容
         </h2>
       </div>
       <button

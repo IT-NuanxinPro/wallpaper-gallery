@@ -82,10 +82,6 @@ defineProps({
     type: Number,
     default: 0,
   },
-  viewMode: {
-    type: String,
-    default: 'grid',
-  },
   wallpaperCopyright: {
     type: String,
     default: '',
@@ -94,7 +90,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="card-info" :class="`card-info--${viewMode}`">
+  <div class="card-info">
     <template v-if="isBingWallpaper">
       <p class="card-filename card-bing-title" :title="bingTitle">
         {{ bingTitle }}
@@ -180,38 +176,11 @@ defineProps({
     margin 220ms ease;
 
   @include mobile-only {
-    &--grid {
-      display: none;
-    }
+    display: none;
   }
 
-  &--grid {
-    [data-theme='dark'] & {
-      margin: 0;
-      border: none;
-      background: transparent;
-      box-shadow: none;
-    }
-  }
-
-  &--list {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: $spacing-md $spacing-lg;
-
-    [data-theme='dark'] & {
-      align-self: stretch;
-      margin: 0;
-      border: none;
-      background: transparent;
-      box-shadow: none;
-    }
-
-    @include mobile-only {
-      padding: $spacing-sm $spacing-md;
-    }
+  [data-theme='dark'] & {
+    background: transparent;
   }
 }
 
@@ -242,20 +211,6 @@ defineProps({
 
   [data-theme='dark'] & {
     color: #f8fafc;
-  }
-}
-
-.card-info--list .card-filename {
-  font-size: $font-size-md;
-  margin-bottom: $spacing-sm;
-  white-space: normal;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  line-height: 1.4;
-
-  @include mobile-only {
-    font-size: $font-size-sm;
   }
 }
 
@@ -330,15 +285,6 @@ defineProps({
   }
 }
 
-.card-info--list .card-meta {
-  gap: $spacing-lg;
-
-  @include mobile-only {
-    gap: $spacing-md;
-    font-size: $font-size-xs;
-  }
-}
-
 .card-meta-secondary {
   display: flex;
   align-items: center;
@@ -363,11 +309,6 @@ defineProps({
 .card-footer--with-actions,
 .card-footer--bing {
   justify-content: space-between;
-}
-
-.card-info--list .card-footer {
-  margin-top: auto;
-  padding-top: $spacing-sm;
 }
 
 .card-info-actions {

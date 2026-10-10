@@ -7,8 +7,9 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 import { decodeData } from '../src/utils/common/codec.js'
+import { HOT_TAGS_HALF_LIFE_DAYS, HOT_TAGS_WINDOW_DAYS } from '../src/utils/config/hotTags.js'
 import stopwords from './config/hot-tags-stopwords.json' with { type: 'json' }
 
 const __filename = fileURLToPath(import.meta.url)
@@ -23,7 +24,6 @@ const IMAGE_SCORE_WEIGHTS = {
   view: 1,
   download: 3,
 }
-const DECAY_HALF_LIFE_DAYS = 90
 
 const stopwordSet = new Set(stopwords.map(word => word.trim().toLowerCase()).filter(Boolean))
 
@@ -156,7 +156,7 @@ function isNoiseTag(tag) {
   if (/^\d+$/.test(normalized))
     return true
 
-  if (/^\d{4}(?:[-/]\d{1,2})?$/.test(normalized))
+  if (/^\d{4}(?:[-/\s]\d{1,2})?$/.test(normalized))
     return true
 
   return false
@@ -182,45 +182,50 @@ function extractWallpaperTags(wallpaper) {
   return [...unique]
 }
 
-function getImageScore(stats) {
-  return (stats.views || 0) * IMAGE_SCORE_WEIGHTS.view
-    + (stats.downloads || 0) * IMAGE_SCORE_WEIGHTS.download
+function getCount(value) {
+  const count = Number(value)
+  return Number.isFinite(count) ? Math.max(0, count) : 0
 }
 
-function getTimeDecayMultiplier(createdAt) {
-  if (!createdAt)
-    return 0.5
-
-  const ageDays = (Date.now() - new Date(createdAt).getTime()) / (1000 * 60 * 60 * 24)
-  if (ageDays < 0)
-    return 1
-
-  return DECAY_HALF_LIFE_DAYS / (DECAY_HALF_LIFE_DAYS + ageDays)
+function getImageScore(views, downloads, ageDays) {
+  // 新图即使尚无统计也有基础分；累计互动只提供最多一倍加分，避免老图垄断。
+  const interactions = views * IMAGE_SCORE_WEIGHTS.view + downloads * IMAGE_SCORE_WEIGHTS.download
+  const bonus = Math.min(Math.log1p(interactions) / Math.log(101), 1)
+  return (1 + bonus) * 2 ** (-ageDays / HOT_TAGS_HALF_LIFE_DAYS)
 }
 
-function buildHotTagsForSeries(series) {
-  const wallpapers = loadSeriesWallpapers(series)
-  const wallpaperMap = new Map(
-    wallpapers.map(wallpaper => [normalizeImageId(wallpaper.filename, series), wallpaper]),
+export function buildHotTags(wallpapers, stats, series, now = new Date()) {
+  const statsMap = new Map(
+    stats.map(stat => [normalizeImageId(stat.image_id, series), stat]),
   )
-  const stats = loadSeriesStats(series)
+  const filenameCounts = new Map()
+  wallpapers.forEach((wallpaper) => {
+    const filename = normalizeImageId(wallpaper.filename, series)
+    filenameCounts.set(filename, (filenameCounts.get(filename) || 0) + 1)
+  })
   const tagMap = new Map()
+  const seen = new Set()
 
-  stats.forEach((stat) => {
-    const imageId = normalizeImageId(stat.image_id, series)
-    const wallpaper = wallpaperMap.get(imageId)
-    if (!wallpaper)
+  // 从完整元数据选近期内容，不再从历史浏览量 Top 500 反向选壁纸。
+  wallpapers.forEach((wallpaper) => {
+    const imageId = normalizeImageId(wallpaper.filename, series)
+    const identity = wallpaper.path || imageId
+    const ageDays = (now.getTime() - new Date(wallpaper.createdAt).getTime()) / 86400000
+    if (!imageId || !wallpaper.createdAt || !Number.isFinite(ageDays)
+      || ageDays < 0 || ageDays > HOT_TAGS_WINDOW_DAYS || seen.has(identity)) {
       return
+    }
+    seen.add(identity)
 
     const tags = extractWallpaperTags(wallpaper)
     if (tags.length === 0)
       return
 
-    const views = stat.views || stat.total_views || 0
-    const downloads = stat.downloads || stat.total_downloads || 0
-    const rawScore = getImageScore({ views, downloads })
-    const decay = getTimeDecayMultiplier(wallpaper.createdAt)
-    const imageScore = Math.round(rawScore * decay)
+    // 同名不同图的累计统计无法准确拆分，使用新鲜度基础分，避免重复加权。
+    const stat = filenameCounts.get(imageId) === 1 ? statsMap.get(imageId) : null
+    const views = getCount(stat?.views ?? stat?.total_views)
+    const downloads = getCount(stat?.downloads ?? stat?.total_downloads)
+    const imageScore = getImageScore(views, downloads, ageDays)
 
     tags.forEach((tag) => {
       const current = tagMap.get(tag) || {
@@ -229,6 +234,7 @@ function buildHotTagsForSeries(series) {
         views: 0,
         downloads: 0,
         wallpaperCount: 0,
+        latestCreatedAt: wallpaper.createdAt,
         series: new Set(),
         topWallpapers: [],
       }
@@ -237,6 +243,9 @@ function buildHotTagsForSeries(series) {
       current.views += views
       current.downloads += downloads
       current.wallpaperCount += 1
+      if (Date.parse(wallpaper.createdAt) > Date.parse(current.latestCreatedAt)) {
+        current.latestCreatedAt = wallpaper.createdAt
+      }
       current.series.add(series)
 
       current.topWallpapers.push({
@@ -244,6 +253,7 @@ function buildHotTagsForSeries(series) {
         thumbnailPath: wallpaper.thumbnailPath || '',
         cdnTag: wallpaper.cdnTag || '',
         score: imageScore,
+        createdAt: wallpaper.createdAt,
       })
 
       tagMap.set(tag, current)
@@ -253,7 +263,7 @@ function buildHotTagsForSeries(series) {
   return Array.from(tagMap.values())
     .map((tag) => {
       tag.topWallpapers = tag.topWallpapers
-        .sort((a, b) => b.score - a.score)
+        .sort((a, b) => b.score - a.score || Date.parse(b.createdAt) - Date.parse(a.createdAt) || a.filename.localeCompare(b.filename, 'zh-CN'))
         .slice(0, 5)
       tag.series = [...tag.series]
       return tag
@@ -261,10 +271,9 @@ function buildHotTagsForSeries(series) {
     .sort((a, b) => {
       if (b.score !== a.score)
         return b.score - a.score
-      if (b.downloads !== a.downloads)
-        return b.downloads - a.downloads
-      if (b.views !== a.views)
-        return b.views - a.views
+      const dateDiff = Date.parse(b.latestCreatedAt) - Date.parse(a.latestCreatedAt)
+      if (dateDiff)
+        return dateDiff
       return a.tag.localeCompare(b.tag, 'zh-CN')
     })
 }
@@ -314,13 +323,17 @@ function mergeAllSeries(seriesResults) {
     .sort((a, b) => b.score - a.score)
 }
 
-function formatPayload(series, tags, limit) {
+function formatPayload(series, tags, limit, now) {
   return {
-    generatedAt: new Date().toISOString(),
+    generatedAt: now.toISOString(),
+    windowDays: HOT_TAGS_WINDOW_DAYS,
+    halfLifeDays: HOT_TAGS_HALF_LIFE_DAYS,
+    windowStart: new Date(now.getTime() - HOT_TAGS_WINDOW_DAYS * 86400000).toISOString(),
     series,
     total: tags.length,
     tags: tags.slice(0, limit).map(tag => ({
       ...tag,
+      score: Number(tag.score.toFixed(6)),
       topWallpapers: tag.topWallpapers.map((wp) => {
         if (typeof wp === 'string')
           return wp
@@ -338,24 +351,27 @@ async function main() {
   console.log('========================================')
 
   ensureOutputDir()
+  const now = new Date()
 
   const seriesResults = SERIES_LIST.map((series) => {
-    const tags = buildHotTagsForSeries(series)
-    const payload = formatPayload(series, tags, LIMIT_PER_SERIES)
+    const tags = buildHotTags(loadSeriesWallpapers(series), loadSeriesStats(series), series, now)
+    const payload = formatPayload(series, tags, LIMIT_PER_SERIES, now)
     writeJsonFile(`hot-tags-${series}.json`, payload)
     console.log(`  ${series}: ${payload.tags.length} 个标签`)
     return { series, tags }
   })
 
   const allTags = mergeAllSeries(seriesResults)
-  writeJsonFile('hot-tags-all.json', formatPayload('all', allTags, LIMIT_ALL))
+  writeJsonFile('hot-tags-all.json', formatPayload('all', allTags, LIMIT_ALL, now))
 
   console.log('========================================')
   console.log('热门标签导出完成')
   console.log('========================================')
 }
 
-main().catch((error) => {
-  console.error('导出热门标签失败:', error)
-  process.exit(1)
-})
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((error) => {
+    console.error('导出热门标签失败:', error)
+    process.exit(1)
+  })
+}

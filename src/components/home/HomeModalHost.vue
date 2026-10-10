@@ -1,10 +1,6 @@
 <script setup>
 import { computed } from 'vue'
-import PortraitWallpaperModal from '@/components/wallpaper/PortraitWallpaperModal/index.vue'
-import SocialCoverDesktopModal from '@/components/wallpaper/SocialCoverDesktopModal.vue'
-import VideoPortraitDesktopModal from '@/components/wallpaper/VideoPortraitDesktopModal.vue'
-import VideoWallpaperModal from '@/components/wallpaper/VideoWallpaperModal.vue'
-import WallpaperModal from '@/components/wallpaper/WallpaperModal/index.vue'
+import { defineAsyncModal } from '@/components/common/feedback/defineAsyncModal'
 import { useDevice } from '@/composables/useDevice'
 
 const props = defineProps({
@@ -25,8 +21,12 @@ const props = defineProps({
     default: null,
   },
 })
-
 defineEmits(['close', 'next', 'prev'])
+const PortraitWallpaperModal = defineAsyncModal(() => import('@/components/wallpaper/PortraitWallpaperModal/index.vue'))
+const SocialCoverDesktopModal = defineAsyncModal(() => import('@/components/wallpaper/SocialCoverDesktopModal.vue'))
+const VideoPortraitDesktopModal = defineAsyncModal(() => import('@/components/wallpaper/VideoPortraitDesktopModal.vue'))
+const VideoWallpaperModal = defineAsyncModal(() => import('@/components/wallpaper/VideoWallpaperModal.vue'))
+const WallpaperModal = defineAsyncModal(() => import('@/components/wallpaper/WallpaperModal/index.vue'))
 
 const { isMobile } = useDevice()
 const useSocialCoverDesktopModal = computed(() =>
@@ -72,7 +72,7 @@ const useVideoPortraitDesktopModal = computed(() =>
   />
 
   <WallpaperModal
-    v-else-if="!usePortraitModal && !showMobileSeriesNotice"
+    v-else-if="wallpaper && !usePortraitModal && !showMobileSeriesNotice"
     :wallpaper="wallpaper"
     :is-open="isOpen"
     @close="$emit('close')"
@@ -81,7 +81,7 @@ const useVideoPortraitDesktopModal = computed(() =>
   />
 
   <PortraitWallpaperModal
-    v-else-if="!showMobileSeriesNotice"
+    v-else-if="wallpaper && !showMobileSeriesNotice"
     :wallpaper="wallpaper"
     :is-open="isOpen"
     @close="$emit('close')"

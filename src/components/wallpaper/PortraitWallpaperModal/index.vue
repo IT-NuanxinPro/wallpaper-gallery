@@ -120,7 +120,7 @@ watch(() => props.isOpen, async (isOpen) => {
   else if (!isOpen && isVisible.value) {
     handleClose()
   }
-})
+}, { immediate: true })
 
 // 监听壁纸变化
 watch(() => props.wallpaper, () => {
@@ -312,7 +312,7 @@ onUnmounted(() => {
 
   <!-- 其他系列使用原有弹窗 -->
   <Teleport v-else to="body">
-    <Transition name="modal" @after-leave="onModalAfterLeave">
+    <Transition name="gallery-modal" appear @after-leave="onModalAfterLeave">
       <div
         v-if="isVisible && wallpaper"
         class="portrait-modal"
@@ -391,6 +391,7 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss" scoped>
+@use '@/assets/styles/modal' as modal;
 .portrait-modal {
   position: fixed;
   inset: 0;
@@ -481,40 +482,6 @@ onUnmounted(() => {
 }
 
 // 弹窗整体动画
-.modal-enter-active {
-  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-
-  .portrait-modal__content {
-    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-}
-
-.modal-leave-active {
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-
-  .portrait-modal__content {
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-}
-
-.modal-enter-from {
-  opacity: 0;
-
-  .portrait-modal__content {
-    opacity: 0;
-    transform: scale(0.9) translateY(30px);
-  }
-}
-
-.modal-leave-to {
-  opacity: 0;
-
-  .portrait-modal__content {
-    opacity: 0;
-    transform: scale(0.95) translateY(20px);
-  }
-}
-
 // 内容淡入淡出
 .content-fade-enter-active,
 .content-fade-leave-active {
@@ -536,4 +503,6 @@ onUnmounted(() => {
 .fade-leave-to {
   opacity: 0;
 }
+
+@include modal.modal-transition('.portrait-modal__content');
 </style>

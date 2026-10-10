@@ -93,6 +93,9 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: pnpm sync:assets
 
+      - name: Refresh recent hot tags from deployed metadata
+        run: pnpm export:hot-tags
+
       # 5. 执行 Vite 打包构建并生成关键路由静态 HTML
       - name: Build
         env:

@@ -6,7 +6,6 @@ import MobileFilterBar from '@/components/wallpaper/filter/mobile/MobileFilterBa
 import MobileFilterPopup from '@/components/wallpaper/filter/mobile/MobileFilterPopup.vue'
 import FilterSummary from '@/components/wallpaper/filter/shared/FilterSummary.vue'
 import { useDevice } from '@/composables/useDevice'
-import { useViewMode } from '@/composables/useViewMode'
 import { trackFilter } from '@/utils/common/analytics'
 import { VIDEO_USAGE_SHORT_LABELS } from '@/utils/config/constants'
 import { hasActiveSeriesFilters } from '@/utils/filter/defaults'
@@ -84,8 +83,6 @@ const props = defineProps({
 const emit = defineEmits(['clearSearch', 'update:sortBy', 'update:formatFilter', 'update:resolutionFilter', 'update:categoryFilter', 'update:subcategoryFilter', 'reset'])
 
 const { isMobile } = useDevice()
-const { viewMode, setViewMode } = useViewMode()
-const allowListMode = computed(() => props.currentSeries !== 'video')
 const showVideoUsageTabs = computed(() => props.currentSeries === 'video')
 
 const DesktopFilterControls = defineAsyncComponent({
@@ -322,17 +319,13 @@ const videoUsageTabs = computed(() => [
       <DesktopFilterControls
         :category-filter="categoryFilter"
         :category-options="categoryOptions"
-        :allow-list-mode="allowListMode"
         :current-series="currentSeries"
         :format-filter="formatFilter"
         :hide-category-filter="showVideoUsageTabs"
-        :hide-view-mode="showVideoUsageTabs"
         :hide-format-filter="hideFormatFilter"
         :resolution-filter="resolutionFilter"
         :sort-by="sortBy"
         :subcategory-filter="subcategoryFilter"
-        :view-mode="viewMode"
-        @view-mode-change="setViewMode"
         @category-update="handleCategoryUpdate"
         @subcategory-update="handleSubcategoryUpdate"
         @format-change="handleFormatChange"
@@ -340,20 +333,14 @@ const videoUsageTabs = computed(() => [
         @sort-change="handleSortChange"
       />
     </div>
-
     <MobileFilterBar
       v-else
-      :allow-list-mode="allowListMode"
       :current-category-label="currentCategoryLabel"
       :hide-category-filter="showVideoUsageTabs"
-      :hide-view-mode="showVideoUsageTabs"
       :is-category-active="isCategoryActive"
-      :view-mode="viewMode"
-      @view-mode-change="setViewMode"
       @open-category="openCategoryDrawer"
       @open-filter="openFilterPopup"
     />
-
     <div v-if="isMobile && showVideoUsageTabs" class="video-usage-tabs">
       <button
         v-for="tab in videoUsageTabs"
@@ -365,7 +352,6 @@ const videoUsageTabs = computed(() => [
         <span class="video-usage-tabs__label">{{ tab.label }}</span>
       </button>
     </div>
-
     <!-- 移动端分类选择抽屉（左右分栏） -->
     <MobileCategoryDrawer
       v-if="!showVideoUsageTabs"
@@ -440,7 +426,8 @@ const videoUsageTabs = computed(() => [
   justify-content: flex-end;
   gap: 18px;
   min-height: 38px;
-  flex: 1;
+  flex: 1 1 800px;
+  flex-wrap: wrap;
   min-width: 0;
 }
 

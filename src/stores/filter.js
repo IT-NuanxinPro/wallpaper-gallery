@@ -4,6 +4,7 @@ import { debounce } from '@/utils/common/format'
 import { sortByDate, sortByDownloads, sortByName, sortByPopularity, sortBySize, sortByViews } from '@/utils/common/sorting'
 import { RESOLUTION_THRESHOLDS, STORAGE_KEYS, VIDEO_USAGE_SHORT_LABELS } from '@/utils/config/constants'
 import { getDefaultCategoryFilter, hasActiveSeriesFilters } from '@/utils/filter/defaults'
+import { filterByUploadPeriod } from '@/utils/filter/uploadPeriod'
 import { usePopularityStore } from './popularity'
 
 export const useFilterStore = defineStore('filter', () => {
@@ -117,7 +118,7 @@ export const useFilterStore = defineStore('filter', () => {
 
   function applyFilters(wallpapers, options = {}) {
     const { skipCategoryFilter = false } = options
-    let result = [...wallpapers]
+    let result = filterByUploadPeriod([...wallpapers], sortBy.value)
 
     if (exactSearchValue.value) {
       result = result.filter(wallpaper => wallpaper.filename === exactSearchValue.value)
@@ -191,15 +192,13 @@ export const useFilterStore = defineStore('filter', () => {
       case 'oldest':
         return sortByDate(wallpapers, 'asc')
       case 'popular':
+      case 'weekly-hot':
+      case 'monthly-hot':
         return sortByPopularity(wallpapers, popularityStore.popularityMap)
       case 'downloads':
         return sortByDownloads(wallpapers, popularityStore.popularityMap)
       case 'views':
         return sortByViews(wallpapers, popularityStore.popularityMap)
-      case 'weekly-hot':
-        return sortByPopularity(wallpapers, popularityStore.weeklyMap.size > 0 ? popularityStore.weeklyMap : popularityStore.popularityMap)
-      case 'monthly-hot':
-        return sortByPopularity(wallpapers, popularityStore.monthlyMap.size > 0 ? popularityStore.monthlyMap : popularityStore.popularityMap)
       case 'largest':
         return sortBySize(wallpapers, 'desc')
       case 'smallest':

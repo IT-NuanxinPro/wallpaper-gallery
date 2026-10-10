@@ -36,7 +36,9 @@ defineProps({
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--grid-gap);
-  animation: fadeIn 0.3s ease;
+  @include mobile-only {
+    gap: $spacing-sm;
+  }
 
   @include respond-to('md') {
     grid-template-columns: repeat(3, 1fr);
@@ -74,6 +76,12 @@ defineProps({
 
   @include mobile-only {
     border-radius: var(--radius-sm);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-shimmer {
+    animation: none;
   }
 }
 

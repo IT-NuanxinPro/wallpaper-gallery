@@ -57,14 +57,14 @@ jobs:
           if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             gh release edit "$TAG" \
               --repo "$GITHUB_REPOSITORY" \
-              --title "Wallpaper Gallery ${TAG}" \
+              --title "$TAG" \
               --notes-file "$NOTES_FILE"
           else
             gh release create "$TAG" \
               --repo "$GITHUB_REPOSITORY" \
               --target "$GITHUB_SHA" \
-              --title "Wallpaper Gallery ${TAG}" \
+              --title "$TAG" \
               --notes-file "$NOTES_FILE"
           fi
 
-          echo "Published Wallpaper Gallery ${TAG}"
+          echo "Published ${TAG}"

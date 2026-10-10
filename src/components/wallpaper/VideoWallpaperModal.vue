@@ -145,11 +145,11 @@ function restoreScroll() {
 }
 
 function handleClose() {
-  releaseVideoResources()
   isVisible.value = false
 }
 
 function onAfterLeave() {
+  releaseVideoResources()
   restoreScroll()
   emit('close')
 }
@@ -239,7 +239,7 @@ onUnmounted(() => {
 
 <template>
   <Teleport to="body">
-    <Transition name="video-modal-fade" @after-leave="onAfterLeave">
+    <Transition name="gallery-modal" appear @after-leave="onAfterLeave">
       <div v-if="isVisible && wallpaper" class="video-modal" :class="{ 'video-modal--mobile': isMobile }" role="dialog" aria-modal="true" aria-label="动态壁纸预览">
         <div class="video-modal__shell" :class="[`video-modal__shell--${modalMode}`, { 'is-portrait-video': isPortraitVideo }]">
           <button class="video-modal__close" aria-label="关闭" @click="handleClose">
@@ -1050,24 +1050,5 @@ onUnmounted(() => {
   }
 }
 
-.video-modal-fade-enter-active,
-.video-modal-fade-leave-active {
-  transition: opacity 0.28s ease;
-
-  .video-modal__shell {
-    transition:
-      opacity 0.28s ease,
-      transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-}
-
-.video-modal-fade-enter-from,
-.video-modal-fade-leave-to {
-  opacity: 0;
-
-  .video-modal__shell {
-    opacity: 0;
-    transform: translateY(18px) scale(0.985);
-  }
-}
+@include modal.modal-transition('.video-modal__shell');
 </style>
