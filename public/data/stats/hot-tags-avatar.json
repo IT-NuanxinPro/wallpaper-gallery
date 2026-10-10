@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-10-10T05:43:38.310Z",
+  "generatedAt": "2026-10-10T20:40:26.308Z",
   "windowDays": 90,
   "halfLifeDays": 30,
-  "windowStart": "2026-07-12T05:43:38.310Z",
+  "windowStart": "2026-07-12T20:40:26.308Z",
   "series": "avatar",
   "total": 107,
   "tags": [
     {
       "tag": "动漫",
-      "score": 6.340301,
-      "views": 5,
-      "downloads": 2,
+      "score": 6.424461,
+      "views": 8,
+      "downloads": 3,
       "wallpaperCount": 14,
       "latestCreatedAt": "2026-09-03T04:45:32.071Z",
       "series": [
@@ -18,32 +18,32 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/640%20(1).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/640 (1).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/640%20(7).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (10).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(10).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/640 (7).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(11).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (14).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(12).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (11).webp",
           "cdnTag": "v1.4.18"
         }
       ]
     },
     {
       "tag": "喜羊羊与灰太狼",
-      "score": 4.313194,
-      "views": 1,
-      "downloads": 0,
+      "score": 4.414194,
+      "views": 3,
+      "downloads": 1,
       "wallpaperCount": 10,
       "latestCreatedAt": "2026-09-03T04:45:32.071Z",
       "series": [
@@ -51,31 +51,31 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(10).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (10).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(11).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (14).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(12).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (11).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(13).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (12).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(14).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (13).webp",
           "cdnTag": "v1.4.18"
         }
       ]
     },
     {
       "tag": "搞怪",
-      "score": 4.073779,
-      "views": 3,
+      "score": 4.07849,
+      "views": 4,
       "downloads": 1,
       "wallpaperCount": 9,
       "latestCreatedAt": "2026-09-03T04:45:32.071Z",
@@ -84,30 +84,30 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(4).webp",
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (4).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(10).webp",
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (10).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(1).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (14).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(11).webp",
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (1).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(14).webp",
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (11).webp",
           "cdnTag": "v1.4.18"
         }
       ]
     },
     {
       "tag": "表情包",
-      "score": 3.648842,
+      "score": 3.596714,
       "views": 3,
       "downloads": 1,
       "wallpaperCount": 8,
@@ -117,30 +117,30 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(4).webp",
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (4).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(10).webp",
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (10).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(1).webp",
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (1).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(11).webp",
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (11).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(4).webp",
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (4).webp",
           "cdnTag": "v1.4.18"
         }
       ]
     },
     {
       "tag": "搞怪表情",
-      "score": 1.847938,
+      "score": 1.821538,
       "views": 1,
       "downloads": 1,
       "wallpaperCount": 4,
@@ -150,27 +150,27 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(4).webp",
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (4).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(4).webp",
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (4).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(5).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (5).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/IP形象/Hello Kitty/640%20(6).webp",
+          "thumbnail": "/thumbnail/avatar/IP形象/Hello Kitty/640 (6).webp",
           "cdnTag": "v1.4.18"
         }
       ]
     },
     {
       "tag": "蜡笔小新",
-      "score": 1.453981,
-      "views": 3,
+      "score": 1.445329,
+      "views": 4,
       "downloads": 1,
       "wallpaperCount": 3,
       "latestCreatedAt": "2026-09-03T04:45:32.071Z",
@@ -179,23 +179,23 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/640%20(1).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/640 (1).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/640%20(2).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/640 (2).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/640%20(3).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/640 (3).webp",
           "cdnTag": "v1.4.18"
         }
       ]
     },
     {
       "tag": "灰太狼",
-      "score": 1.274812,
-      "views": 0,
+      "score": 1.319509,
+      "views": 1,
       "downloads": 0,
       "wallpaperCount": 3,
       "latestCreatedAt": "2026-09-03T04:45:32.071Z",
@@ -204,22 +204,22 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(14).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (14).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(5).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (5).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(8).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (8).webp",
           "cdnTag": "v1.4.18"
         }
       ]
     },
     {
       "tag": "可爱",
-      "score": 1.274812,
+      "score": 1.256599,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -229,22 +229,22 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(7).webp",
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (7).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(8).webp",
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (8).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(9).webp",
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (9).webp",
           "cdnTag": "v1.4.18"
         }
       ]
     },
     {
       "tag": "Q版卡通",
-      "score": 1.274812,
+      "score": 1.256599,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -254,23 +254,23 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(11).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (11).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(13).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (13).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/640%20(5).webp",
+          "thumbnail": "/thumbnail/avatar/人像/卡通简笔画/640 (5).webp",
           "cdnTag": "v1.4.18"
         }
       ]
     },
     {
       "tag": "动漫卡通",
-      "score": 1.029044,
-      "views": 3,
+      "score": 1.026462,
+      "views": 4,
       "downloads": 1,
       "wallpaperCount": 2,
       "latestCreatedAt": "2026-09-03T04:45:32.071Z",
@@ -279,18 +279,18 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/640%20(1).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/640 (1).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(3).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (3).webp",
           "cdnTag": "v1.4.18"
         }
       ]
     },
     {
       "tag": "卡通萌系",
-      "score": 0.951029,
+      "score": 0.937443,
       "views": 2,
       "downloads": 0,
       "wallpaperCount": 2,
@@ -300,18 +300,18 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(10).webp",
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (10).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/IP形象/Hello Kitty/640%20(6).webp",
+          "thumbnail": "/thumbnail/avatar/IP形象/Hello Kitty/640 (6).webp",
           "cdnTag": "v1.4.18"
         }
       ]
     },
     {
       "tag": "动漫角色",
-      "score": 0.849874,
+      "score": 0.837733,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 2,
@@ -321,18 +321,18 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/640%20(2).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/640 (2).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(5).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (5).webp",
           "cdnTag": "v1.4.18"
         }
       ]
     },
     {
       "tag": "二次元",
-      "score": 0.849874,
+      "score": 0.837733,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 2,
@@ -342,18 +342,18 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(2).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (2).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(7).webp",
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (7).webp",
           "cdnTag": "v1.4.18"
         }
       ]
     },
     {
       "tag": "萌系",
-      "score": 0.849874,
+      "score": 0.837733,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 2,
@@ -363,19 +363,19 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(2).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (2).webp",
           "cdnTag": "v1.4.18"
         },
         {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(8).webp",
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (8).webp",
           "cdnTag": "v1.4.18"
         }
       ]
     },
     {
       "tag": "可爱公仔",
-      "score": 0.604107,
-      "views": 3,
+      "score": 0.607596,
+      "views": 4,
       "downloads": 1,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-09-03T04:45:32.071Z",
@@ -384,15 +384,15 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/640%20(1).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/640 (1).webp",
           "cdnTag": "v1.4.18"
         }
       ]
     },
     {
       "tag": "毛绒玩具",
-      "score": 0.604107,
-      "views": 3,
+      "score": 0.607596,
+      "views": 4,
       "downloads": 1,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-09-03T04:45:32.071Z",
@@ -401,15 +401,15 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/640%20(1).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/640 (1).webp",
           "cdnTag": "v1.4.18"
         }
       ]
     },
     {
       "tag": "俏皮眨眼",
-      "score": 0.604107,
-      "views": 3,
+      "score": 0.607596,
+      "views": 4,
       "downloads": 1,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-09-03T04:45:32.071Z",
@@ -418,254 +418,16 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/640%20(1).webp",
-          "cdnTag": "v1.4.18"
-        }
-      ]
-    },
-    {
-      "tag": "窗台萌宠",
-      "score": 0.573126,
-      "views": 1,
-      "downloads": 1,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/640%20(7).webp",
-          "cdnTag": "v1.4.18"
-        }
-      ]
-    },
-    {
-      "tag": "可爱瞬间",
-      "score": 0.573126,
-      "views": 1,
-      "downloads": 1,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(4).webp",
-          "cdnTag": "v1.4.18"
-        }
-      ]
-    },
-    {
-      "tag": "绿毯帽子",
-      "score": 0.573126,
-      "views": 1,
-      "downloads": 1,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/640%20(7).webp",
-          "cdnTag": "v1.4.18"
-        }
-      ]
-    },
-    {
-      "tag": "猫和老鼠",
-      "score": 0.573126,
-      "views": 1,
-      "downloads": 1,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/640%20(7).webp",
-          "cdnTag": "v1.4.18"
-        }
-      ]
-    },
-    {
-      "tag": "毛绒狗狗",
-      "score": 0.573126,
-      "views": 1,
-      "downloads": 1,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/640%20(7).webp",
-          "cdnTag": "v1.4.18"
-        }
-      ]
-    },
-    {
-      "tag": "毛茸茸猫咪",
-      "score": 0.573126,
-      "views": 1,
-      "downloads": 1,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(4).webp",
-          "cdnTag": "v1.4.18"
-        }
-      ]
-    },
-    {
-      "tag": "萌趣",
-      "score": 0.573126,
-      "views": 1,
-      "downloads": 1,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(4).webp",
-          "cdnTag": "v1.4.18"
-        }
-      ]
-    },
-    {
-      "tag": "捧西瓜",
-      "score": 0.573126,
-      "views": 1,
-      "downloads": 1,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(4).webp",
-          "cdnTag": "v1.4.18"
-        }
-      ]
-    },
-    {
-      "tag": "治愈闲适",
-      "score": 0.573126,
-      "views": 1,
-      "downloads": 1,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/640%20(7).webp",
-          "cdnTag": "v1.4.18"
-        }
-      ]
-    },
-    {
-      "tag": "棕色玩具狗",
-      "score": 0.573126,
-      "views": 1,
-      "downloads": 1,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/640%20(7).webp",
-          "cdnTag": "v1.4.18"
-        }
-      ]
-    },
-    {
-      "tag": "粉嫩Hello Kitty羊咩咩",
-      "score": 0.526092,
-      "views": 2,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(10).webp",
-          "cdnTag": "v1.4.18"
-        }
-      ]
-    },
-    {
-      "tag": "粉色太阳镜",
-      "score": 0.526092,
-      "views": 2,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(10).webp",
-          "cdnTag": "v1.4.18"
-        }
-      ]
-    },
-    {
-      "tag": "和平手势",
-      "score": 0.526092,
-      "views": 2,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(10).webp",
-          "cdnTag": "v1.4.18"
-        }
-      ]
-    },
-    {
-      "tag": "郁金香背景",
-      "score": 0.526092,
-      "views": 2,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(10).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/640 (1).webp",
           "cdnTag": "v1.4.18"
         }
       ]
     },
     {
       "tag": "二次元卡通",
-      "score": 0.488759,
-      "views": 1,
-      "downloads": 0,
+      "score": 0.581486,
+      "views": 2,
+      "downloads": 1,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-09-03T04:45:32.071Z",
       "series": [
@@ -673,16 +435,16 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(10).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (10).webp",
           "cdnTag": "v1.4.18"
         }
       ]
     },
     {
       "tag": "工厂工匠",
-      "score": 0.488759,
-      "views": 1,
-      "downloads": 0,
+      "score": 0.581486,
+      "views": 2,
+      "downloads": 1,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-09-03T04:45:32.071Z",
       "series": [
@@ -690,16 +452,16 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(10).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (10).webp",
           "cdnTag": "v1.4.18"
         }
       ]
     },
     {
       "tag": "黄帽狼",
-      "score": 0.488759,
-      "views": 1,
-      "downloads": 0,
+      "score": 0.581486,
+      "views": 2,
+      "downloads": 1,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-09-03T04:45:32.071Z",
       "series": [
@@ -707,16 +469,16 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(10).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (10).webp",
           "cdnTag": "v1.4.18"
         }
       ]
     },
     {
       "tag": "蓝工装",
-      "score": 0.488759,
-      "views": 1,
-      "downloads": 0,
+      "score": 0.581486,
+      "views": 2,
+      "downloads": 1,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-09-03T04:45:32.071Z",
       "series": [
@@ -724,14 +486,269 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(10).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (10).webp",
           "cdnTag": "v1.4.18"
         }
       ]
     },
     {
       "tag": "幽默表情",
-      "score": 0.488759,
+      "score": 0.581486,
+      "views": 2,
+      "downloads": 1,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (10).webp",
+          "cdnTag": "v1.4.18"
+        }
+      ]
+    },
+    {
+      "tag": "窗台萌宠",
+      "score": 0.564938,
+      "views": 1,
+      "downloads": 1,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/640 (7).webp",
+          "cdnTag": "v1.4.18"
+        }
+      ]
+    },
+    {
+      "tag": "可爱瞬间",
+      "score": 0.564938,
+      "views": 1,
+      "downloads": 1,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (4).webp",
+          "cdnTag": "v1.4.18"
+        }
+      ]
+    },
+    {
+      "tag": "绿毯帽子",
+      "score": 0.564938,
+      "views": 1,
+      "downloads": 1,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/640 (7).webp",
+          "cdnTag": "v1.4.18"
+        }
+      ]
+    },
+    {
+      "tag": "猫和老鼠",
+      "score": 0.564938,
+      "views": 1,
+      "downloads": 1,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/640 (7).webp",
+          "cdnTag": "v1.4.18"
+        }
+      ]
+    },
+    {
+      "tag": "毛绒狗狗",
+      "score": 0.564938,
+      "views": 1,
+      "downloads": 1,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/640 (7).webp",
+          "cdnTag": "v1.4.18"
+        }
+      ]
+    },
+    {
+      "tag": "毛茸茸猫咪",
+      "score": 0.564938,
+      "views": 1,
+      "downloads": 1,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (4).webp",
+          "cdnTag": "v1.4.18"
+        }
+      ]
+    },
+    {
+      "tag": "萌趣",
+      "score": 0.564938,
+      "views": 1,
+      "downloads": 1,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (4).webp",
+          "cdnTag": "v1.4.18"
+        }
+      ]
+    },
+    {
+      "tag": "捧西瓜",
+      "score": 0.564938,
+      "views": 1,
+      "downloads": 1,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (4).webp",
+          "cdnTag": "v1.4.18"
+        }
+      ]
+    },
+    {
+      "tag": "治愈闲适",
+      "score": 0.564938,
+      "views": 1,
+      "downloads": 1,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/640 (7).webp",
+          "cdnTag": "v1.4.18"
+        }
+      ]
+    },
+    {
+      "tag": "棕色玩具狗",
+      "score": 0.564938,
+      "views": 1,
+      "downloads": 1,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/猫和老鼠/640 (7).webp",
+          "cdnTag": "v1.4.18"
+        }
+      ]
+    },
+    {
+      "tag": "粉嫩Hello Kitty羊咩咩",
+      "score": 0.518576,
+      "views": 2,
+      "downloads": 0,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (10).webp",
+          "cdnTag": "v1.4.18"
+        }
+      ]
+    },
+    {
+      "tag": "粉色太阳镜",
+      "score": 0.518576,
+      "views": 2,
+      "downloads": 0,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (10).webp",
+          "cdnTag": "v1.4.18"
+        }
+      ]
+    },
+    {
+      "tag": "和平手势",
+      "score": 0.518576,
+      "views": 2,
+      "downloads": 0,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (10).webp",
+          "cdnTag": "v1.4.18"
+        }
+      ]
+    },
+    {
+      "tag": "郁金香背景",
+      "score": 0.518576,
+      "views": 2,
+      "downloads": 0,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (10).webp",
+          "cdnTag": "v1.4.18"
+        }
+      ]
+    },
+    {
+      "tag": "厨师",
+      "score": 0.481776,
       "views": 1,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -741,14 +758,48 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(10).webp",
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (14).webp",
+          "cdnTag": "v1.4.18"
+        }
+      ]
+    },
+    {
+      "tag": "惊喜",
+      "score": 0.481776,
+      "views": 1,
+      "downloads": 0,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (14).webp",
+          "cdnTag": "v1.4.18"
+        }
+      ]
+    },
+    {
+      "tag": "羊头",
+      "score": 0.481776,
+      "views": 1,
+      "downloads": 0,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640 (14).webp",
           "cdnTag": "v1.4.18"
         }
       ]
     },
     {
       "tag": "抱钱",
-      "score": 0.424937,
+      "score": 0.418866,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -758,58 +809,7 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640%20(9).webp",
-          "cdnTag": "v1.4.18"
-        }
-      ]
-    },
-    {
-      "tag": "彩色服饰",
-      "score": 0.424937,
-      "views": 0,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/640%20(3).webp",
-          "cdnTag": "v1.4.18"
-        }
-      ]
-    },
-    {
-      "tag": "厨师",
-      "score": 0.424937,
-      "views": 0,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/喜羊羊与灰太狼/640%20(14).webp",
-          "cdnTag": "v1.4.18"
-        }
-      ]
-    },
-    {
-      "tag": "呆萌表情",
-      "score": 0.424937,
-      "views": 0,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-09-03T04:45:32.071Z",
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/动漫/蜡笔小新/640%20(2).webp",
+          "thumbnail": "/thumbnail/avatar/表情包/搞怪/640 (9).webp",
           "cdnTag": "v1.4.18"
         }
       ]
