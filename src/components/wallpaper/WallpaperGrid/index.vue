@@ -1,12 +1,11 @@
 <script setup>
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import { useDevice } from '@/composables/useDevice'
 import { useWallpaperType } from '@/composables/useWallpaperType'
 import { usePopularityStore } from '@/stores/popularity'
 import WallpaperCard from '../card/index.vue'
-import { useCardEntrance } from './composables/useCardEntrance'
 import { PAGE_SIZE, useGridPagination } from './composables/useGridPagination'
 import GridEmptyState from './shared/GridEmptyState.vue'
 import GridLoadingState from './shared/GridLoadingState.vue'
@@ -60,8 +59,6 @@ function getDownloadCount(filename) {
 function getViewCount(filename) {
   return popularityStore.getViewCount(filename)
 }
-
-const gridRef = ref(null)
 
 const wallpapersRef = computed(() => props.wallpapers)
 const {
@@ -117,8 +114,6 @@ function navigateToSeries(seriesId) {
 function handleResetFilters() {
   emit('resetFilters')
 }
-
-useCardEntrance({ displayedItems, gridRef })
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll, { passive: true })
@@ -191,7 +186,6 @@ const skeletonCount = computed(() => isMobile.value ? 6 : 12)
     <template v-else>
       <!-- 卡片布局 -->
       <div
-        ref="gridRef"
         class="wallpaper-grid"
         :class="[`aspect-${aspectType}`]"
       >
@@ -227,7 +221,7 @@ const skeletonCount = computed(() => isMobile.value ? 6 : 12)
 <style lang="scss" scoped>
 .wallpaper-grid-wrapper {
   min-height: 400px;
-  overflow-x: clip; // 动画不产生横向滚动，也不创建额外滚动容器
+  overflow-x: clip;
 }
 
 // ========================================
