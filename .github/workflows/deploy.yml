@@ -102,10 +102,9 @@ jobs:
 
       # 6. 将构建产物推送到 Cloudflare Pages (核心步骤：解决 SEO 和 200 路由)
       - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: wallpaper-gallery-prod # ⚠️ 请确保这与你的 Cloudflare Pages 项目名一致
-          directory: dist
+          command: pages deploy dist --project-name=wallpaper-gallery-prod --branch=main
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
