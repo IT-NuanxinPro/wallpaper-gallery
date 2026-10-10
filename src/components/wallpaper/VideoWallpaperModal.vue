@@ -240,7 +240,7 @@ onUnmounted(() => {
 <template>
   <Teleport to="body">
     <Transition name="video-modal-fade" @after-leave="onAfterLeave">
-      <div v-if="isVisible && wallpaper" class="video-modal">
+      <div v-if="isVisible && wallpaper" class="video-modal" :class="{ 'video-modal--mobile': isMobile }" role="dialog" aria-modal="true" aria-label="动态壁纸预览">
         <div class="video-modal__shell" :class="[`video-modal__shell--${modalMode}`, { 'is-portrait-video': isPortraitVideo }]">
           <button class="video-modal__close" aria-label="关闭" @click="handleClose">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -248,166 +248,168 @@ onUnmounted(() => {
             </svg>
           </button>
 
-          <div class="video-modal__preview">
-            <div v-if="videoError" class="video-modal__error">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="3" width="18" height="18" rx="2" />
-                <path d="M12 8v4M12 16h.01" />
-              </svg>
-              <p>视频加载失败</p>
-            </div>
-            <div v-else-if="showPhoneFramePreview" class="video-modal__phone-preview">
-              <div class="iphone-frame">
-                <div class="screen-container">
-                  <div
-                    v-if="!videoReady"
-                    class="video-modal__loading video-modal__loading--frame"
-                  >
-                    <LoadingSpinner size="md" />
+          <div class="video-modal__body">
+            <div class="video-modal__preview">
+              <div v-if="videoError" class="video-modal__error">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <path d="M12 8v4M12 16h.01" />
+                </svg>
+                <p>视频加载失败</p>
+              </div>
+              <div v-else-if="showPhoneFramePreview" class="video-modal__phone-preview">
+                <div class="iphone-frame">
+                  <div class="screen-container">
+                    <div
+                      v-if="!videoReady"
+                      class="video-modal__loading video-modal__loading--frame"
+                    >
+                      <LoadingSpinner size="md" />
+                    </div>
+                    <video
+                      ref="portraitVideoElementRef"
+                      class="video-modal__frame-video"
+                      :class="{ 'is-loading': !videoReady }"
+                      :src="wallpaper.playbackUrl || wallpaper.url"
+                      autoplay
+                      muted
+                      loop
+                      playsinline
+                      webkit-playsinline="true"
+                      preload="auto"
+                      @canplay="handlePortraitVideoCanPlay"
+                      @loadedmetadata="handleVideoLoadedMetadata"
+                      @error="handleVideoError"
+                    />
                   </div>
-                  <video
-                    ref="portraitVideoElementRef"
-                    class="video-modal__frame-video"
-                    :class="{ 'is-loading': !videoReady }"
-                    :src="wallpaper.playbackUrl || wallpaper.url"
-                    autoplay
-                    muted
-                    loop
-                    playsinline
-                    webkit-playsinline="true"
-                    preload="auto"
-                    @canplay="handlePortraitVideoCanPlay"
-                    @loadedmetadata="handleVideoLoadedMetadata"
-                    @error="handleVideoError"
-                  />
+
+                  <div class="dynamic-island" />
+                  <div class="home-indicator" />
+                  <div class="mute-btn" />
+                  <div class="volume-up-btn" />
+                  <div class="volume-down-btn" />
+                  <div class="power-btn" />
+                </div>
+              </div>
+
+              <div v-else class="video-modal__player-shell" :class="{ 'is-portrait': isPortraitVideo }">
+                <div
+                  v-if="!videoReady"
+                  class="video-modal__loading"
+                  :class="{ 'is-portrait': isPortraitVideo }"
+                >
+                  <LoadingSpinner size="lg" />
+                </div>
+                <VideoWallpaperPlayer
+                  ref="videoPlayerRef"
+                  class="video-modal__player"
+                  :class="{ 'is-loading': !videoReady }"
+                  :src="wallpaper.playbackUrl || wallpaper.url"
+                  poster=""
+                  :autoplay="true"
+                  :controls="false"
+                  :is-portrait="isPortraitVideo"
+                  @canplay="handleVideoCanPlay"
+                  @loadedmetadata="handleVideoLoadedMetadata"
+                  @error="handleVideoError"
+                />
+              </div>
+            </div>
+
+            <aside class="video-modal__info">
+              <div class="video-modal__info-header">
+                <div class="video-modal__eyebrow">
+                  <span>{{ usageLabel }}</span>
+                  <span>{{ topicLabel }}</span>
                 </div>
 
-                <div class="dynamic-island" />
-                <div class="home-indicator" />
-                <div class="mute-btn" />
-                <div class="volume-up-btn" />
-                <div class="volume-down-btn" />
-                <div class="power-btn" />
+                <h3 class="video-modal__title">
+                  {{ displayTitle }}
+                </h3>
               </div>
-            </div>
 
-            <div v-else class="video-modal__player-shell" :class="{ 'is-portrait': isPortraitVideo }">
-              <div
-                v-if="!videoReady"
-                class="video-modal__loading"
-                :class="{ 'is-portrait': isPortraitVideo }"
-              >
-                <LoadingSpinner size="lg" />
+              <div class="video-modal__tags">
+                <span v-if="resolutionTag" class="video-modal__tag" :class="`video-modal__tag--${resolutionTagType}`">
+                  {{ resolutionTag }}
+                </span>
+                <span class="video-modal__tag video-modal__tag--secondary">视频壁纸</span>
+                <span v-if="viewCount > 0" class="video-modal__tag video-modal__tag--metric">
+                  浏览 {{ viewCount }}
+                </span>
+                <span v-if="downloadCount > 0" class="video-modal__tag video-modal__tag--metric">
+                  下载 {{ downloadCount }}
+                </span>
+                <span v-if="collectCount > 0" class="video-modal__tag video-modal__tag--metric">
+                  收藏 {{ collectCount }}
+                </span>
+                <span v-if="likeCount > 0" class="video-modal__tag video-modal__tag--metric">
+                  喜欢 {{ likeCount }}
+                </span>
               </div>
-              <VideoWallpaperPlayer
-                ref="videoPlayerRef"
-                class="video-modal__player"
-                :class="{ 'is-loading': !videoReady }"
-                :src="wallpaper.playbackUrl || wallpaper.url"
-                poster=""
-                :autoplay="true"
-                :controls="false"
-                :is-portrait="isPortraitVideo"
-                @canplay="handleVideoCanPlay"
-                @loadedmetadata="handleVideoLoadedMetadata"
-                @error="handleVideoError"
-              />
-            </div>
+
+              <div class="video-modal__details">
+                <div class="video-modal__detail-row">
+                  <span class="video-modal__detail-label">分类</span>
+                  <span class="video-modal__detail-value">{{ usageLabel }} / {{ topicLabel }}</span>
+                </div>
+                <div class="video-modal__detail-row">
+                  <span class="video-modal__detail-label">分辨率</span>
+                  <span class="video-modal__detail-value">{{ resolutionText }}</span>
+                </div>
+                <div v-if="durationText" class="video-modal__detail-row">
+                  <span class="video-modal__detail-label">时长</span>
+                  <span class="video-modal__detail-value">{{ durationText }}</span>
+                </div>
+                <div v-if="formattedSize" class="video-modal__detail-row">
+                  <span class="video-modal__detail-label">文件大小</span>
+                  <span class="video-modal__detail-value">{{ formattedSize }}</span>
+                </div>
+                <div class="video-modal__detail-row">
+                  <span class="video-modal__detail-label">上传时间</span>
+                  <span class="video-modal__detail-value">{{ formattedDate }}</span>
+                </div>
+              </div>
+
+              <div class="video-modal__actions">
+                <WallpaperCardActions
+                  v-if="isAuthenticated"
+                  compact
+                  :show-counts="false"
+                  :liked="liked"
+                  :collected="collected"
+                  :like-count="likeCount"
+                  :collect-count="collectCount"
+                  :is-authenticated="isAuthenticated"
+                  @toggle-like="toggleLike"
+                  @toggle-collect="toggleCollect"
+                />
+
+                <div class="video-modal__download-row">
+                  <button
+                    v-if="!isMobile"
+                    class="video-modal__copy-url-btn"
+                    type="button"
+                    :disabled="!wallpaper?.url"
+                    aria-label="复制链接"
+                    title="复制直链"
+                    @click="handleCopyUrl"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                    </svg>
+                  </button>
+                  <button class="video-modal__download" type="button" :disabled="downloading" @click="handleDownload">
+                    <LoadingSpinner v-if="downloading" size="sm" />
+                    <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                    </svg>
+                    <span>{{ downloading ? '下载中...' : '下载视频' }}</span>
+                  </button>
+                </div>
+              </div>
+            </aside>
           </div>
-
-          <aside class="video-modal__info">
-            <div class="video-modal__info-header">
-              <div class="video-modal__eyebrow">
-                <span>{{ usageLabel }}</span>
-                <span>{{ topicLabel }}</span>
-              </div>
-
-              <h3 class="video-modal__title">
-                {{ displayTitle }}
-              </h3>
-            </div>
-
-            <div class="video-modal__tags">
-              <span v-if="resolutionTag" class="video-modal__tag" :class="`video-modal__tag--${resolutionTagType}`">
-                {{ resolutionTag }}
-              </span>
-              <span class="video-modal__tag video-modal__tag--secondary">视频壁纸</span>
-              <span v-if="viewCount > 0" class="video-modal__tag video-modal__tag--metric">
-                浏览 {{ viewCount }}
-              </span>
-              <span v-if="downloadCount > 0" class="video-modal__tag video-modal__tag--metric">
-                下载 {{ downloadCount }}
-              </span>
-              <span v-if="collectCount > 0" class="video-modal__tag video-modal__tag--metric">
-                收藏 {{ collectCount }}
-              </span>
-              <span v-if="likeCount > 0" class="video-modal__tag video-modal__tag--metric">
-                喜欢 {{ likeCount }}
-              </span>
-            </div>
-
-            <div class="video-modal__details">
-              <div class="video-modal__detail-row">
-                <span class="video-modal__detail-label">分类</span>
-                <span class="video-modal__detail-value">{{ usageLabel }} / {{ topicLabel }}</span>
-              </div>
-              <div class="video-modal__detail-row">
-                <span class="video-modal__detail-label">分辨率</span>
-                <span class="video-modal__detail-value">{{ resolutionText }}</span>
-              </div>
-              <div v-if="durationText" class="video-modal__detail-row">
-                <span class="video-modal__detail-label">时长</span>
-                <span class="video-modal__detail-value">{{ durationText }}</span>
-              </div>
-              <div v-if="formattedSize" class="video-modal__detail-row">
-                <span class="video-modal__detail-label">文件大小</span>
-                <span class="video-modal__detail-value">{{ formattedSize }}</span>
-              </div>
-              <div class="video-modal__detail-row">
-                <span class="video-modal__detail-label">上传时间</span>
-                <span class="video-modal__detail-value">{{ formattedDate }}</span>
-              </div>
-            </div>
-
-            <div class="video-modal__actions">
-              <WallpaperCardActions
-                v-if="isAuthenticated"
-                compact
-                :show-counts="false"
-                :liked="liked"
-                :collected="collected"
-                :like-count="likeCount"
-                :collect-count="collectCount"
-                :is-authenticated="isAuthenticated"
-                @toggle-like="toggleLike"
-                @toggle-collect="toggleCollect"
-              />
-
-              <div class="video-modal__download-row">
-                <button
-                  v-if="!isMobile"
-                  class="video-modal__copy-url-btn"
-                  type="button"
-                  :disabled="!wallpaper?.url"
-                  aria-label="复制链接"
-                  title="复制直链"
-                  @click="handleCopyUrl"
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-                  </svg>
-                </button>
-                <button class="video-modal__download" type="button" :disabled="downloading" @click="handleDownload">
-                  <LoadingSpinner v-if="downloading" size="sm" />
-                  <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
-                  </svg>
-                  <span>{{ downloading ? '下载中...' : '下载视频' }}</span>
-                </button>
-              </div>
-            </div>
-          </aside>
         </div>
       </div>
     </Transition>
@@ -415,6 +417,7 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss" scoped>
+@use '@/assets/styles/modal' as modal;
 .video-modal {
   position: fixed;
   inset: 0;
@@ -459,6 +462,10 @@ onUnmounted(() => {
       align-items: center;
       padding: 50px;
     }
+  }
+
+  &__body {
+    display: contents;
   }
 
   &__close {
@@ -955,6 +962,91 @@ onUnmounted(() => {
   .video-modal__frame-video,
   .video-modal__loading--frame {
     border-radius: 35px;
+  }
+}
+
+// 使用设备状态覆盖横屏手机，避免只按屏幕宽度匹配竖屏样式。
+.video-modal--mobile {
+  @include modal.mobile-modal-viewport;
+
+  .video-modal__shell {
+    width: min(100%, 560px);
+    max-height: 100%;
+    min-height: 0;
+    padding: 60px 0 0;
+    gap: 0;
+    border-radius: 20px;
+    align-items: stretch;
+  }
+
+  .video-modal__close {
+    top: 8px;
+    right: 12px;
+  }
+
+  .video-modal__body {
+    @include modal.modal-scroll-body;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 16px 20px;
+  }
+
+  .video-modal__preview {
+    flex: none;
+    min-height: 160px;
+  }
+
+  .video-modal__player-shell {
+    width: min(100%, 74.6667vh);
+    width: min(100%, 74.6667dvh);
+    max-height: 42vh;
+    max-height: 42dvh;
+
+    &.is-portrait {
+      width: min(100%, 220px, 23.625vh);
+      width: min(100%, 220px, 23.625dvh);
+      max-height: none;
+      margin: 0 auto;
+    }
+  }
+
+  // 播放器默认保留桌面最小高度；弹窗中由预览框的宽高比决定尺寸。
+  .video-modal__player,
+  :deep(.video-wallpaper-player__stage) {
+    height: 100%;
+    min-height: 0;
+  }
+
+  :deep(.video-wallpaper-player__media) {
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .video-modal__info {
+    flex: none;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    overflow: visible;
+    gap: 16px;
+    padding: 0;
+  }
+
+  .video-modal__title {
+    font-size: 20px;
+    overflow-wrap: anywhere;
+  }
+
+  .video-modal__detail-row {
+    flex-wrap: wrap;
+  }
+
+  .video-modal__detail-value {
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 }
 

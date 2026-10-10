@@ -184,6 +184,9 @@ function resetState() {
       <div
         v-if="isVisible && wallpaper"
         class="avatar-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-label="头像预览"
       >
         <div class="avatar-modal__content">
           <!-- 关闭按钮 -->
@@ -193,134 +196,136 @@ function resetState() {
             </svg>
           </button>
 
-          <!-- 头像预览 -->
-          <div class="avatar-modal__preview">
-            <div class="avatar-frame" :class="{ 'is-square': isSquare }">
-              <div v-if="!imageLoaded" class="loading-placeholder">
-                <LoadingSpinner size="lg" />
+          <div class="avatar-modal__body">
+            <!-- 头像预览 -->
+            <div class="avatar-modal__preview">
+              <div class="avatar-frame" :class="{ 'is-square': isSquare }">
+                <div v-if="!imageLoaded" class="loading-placeholder">
+                  <LoadingSpinner size="lg" />
+                </div>
+                <img
+                  :src="displayImageUrl"
+                  :alt="wallpaper.filename"
+                  :class="{ loaded: imageLoaded }"
+                  @load="handleImageLoad"
+                  @error="handleImageError"
+                >
               </div>
-              <img
-                :src="displayImageUrl"
-                :alt="wallpaper.filename"
-                :class="{ loaded: imageLoaded }"
-                @load="handleImageLoad"
-                @error="handleImageError"
-              >
-            </div>
-            <!-- 形状切换 -->
-            <div class="shape-toggle">
-              <button
-                class="shape-btn"
-                :class="{ active: !isSquare }"
-                title="圆形"
-                @click="isSquare = false"
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="10" />
-                </svg>
-              </button>
-              <button
-                class="shape-btn"
-                :class="{ active: isSquare }"
-                title="方形"
-                @click="isSquare = true"
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="3" y="3" width="18" height="18" rx="3" />
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- 底部信息 -->
-          <div class="avatar-modal__info">
-            <div class="info-header">
-              <h3 class="info-title">
-                {{ displayFilename }}
-              </h3>
-              <p v-if="categoryDisplay" class="info-category">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg>
-                {{ categoryDisplay }}
-              </p>
-            </div>
-
-            <div class="info-tags">
-              <!-- AI 标签（显示前3个关键词） -->
-              <span v-for="tag in aiTags" :key="tag" class="tag tag--ai">
-                {{ tag }}
-              </span>
-              <span class="tag" :class="[`tag--${resolution.type || 'success'}`]">{{ resolution.label }}</span>
-              <span class="tag tag--secondary">{{ fileExt }}</span>
-              <span v-if="viewCount > 0" class="tag tag--view">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-                {{ viewCount }}
-              </span>
-              <span v-if="downloadCount > 0" class="tag tag--download">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
-                </svg>
-                {{ downloadCount }}
-              </span>
-              <span v-if="collectCount > 0" class="tag tag--collect">
-                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                </svg>
-                {{ collectCount }}
-              </span>
-              <span v-if="likeCount > 0" class="tag tag--like">
-                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                  <path d="m12 21-1.45-1.32C5.4 15.03 2 11.95 2 8.5 2 5.42 4.42 3 7.5 3A5.3 5.3 0 0 1 12 5.09 5.3 5.3 0 0 1 16.5 3C19.58 3 22 5.42 22 8.5c0 3.45-3.4 6.53-8.55 11.18z" />
-                </svg>
-                {{ likeCount }}
-              </span>
-            </div>
-
-            <div class="info-details">
-              <div class="detail-row">
-                <span class="detail-label">文件大小</span>
-                <span class="detail-value">{{ formattedSize }}</span>
-              </div>
-              <div class="detail-row">
-                <span class="detail-label">上传时间</span>
-                <span class="detail-value">{{ formattedDate }}</span>
-              </div>
-              <div class="detail-row">
-                <span class="detail-label">尺寸</span>
-                <span class="detail-value">{{ imageDimensions.width > 0 ? `${imageDimensions.width} × ${imageDimensions.height}` : '加载中...' }}</span>
+              <!-- 形状切换 -->
+              <div class="shape-toggle">
+                <button
+                  class="shape-btn"
+                  :class="{ active: !isSquare }"
+                  title="圆形"
+                  @click="isSquare = false"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" />
+                  </svg>
+                </button>
+                <button
+                  class="shape-btn"
+                  :class="{ active: isSquare }"
+                  title="方形"
+                  @click="isSquare = true"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="3" />
+                  </svg>
+                </button>
               </div>
             </div>
 
-            <div class="info-actions">
-              <WallpaperCardActions
-                v-if="isAuthenticated"
-                compact
-                :show-counts="false"
-                :liked="liked"
-                :collected="collected"
-                :like-count="likeCount"
-                :collect-count="collectCount"
-                :is-authenticated="isAuthenticated"
-                @toggle-like="emit('toggleLike')"
-                @toggle-collect="emit('toggleCollect')"
-              />
+            <!-- 底部信息 -->
+            <div class="avatar-modal__info">
+              <div class="info-header">
+                <h3 class="info-title">
+                  {{ displayFilename }}
+                </h3>
+                <p v-if="categoryDisplay" class="info-category">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                  {{ categoryDisplay }}
+                </p>
+              </div>
 
-              <button
-                class="action-btn action-btn--primary"
-                :disabled="downloading"
-                @click="handleDownload"
-              >
-                <LoadingSpinner v-if="downloading" size="sm" />
-                <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
-                </svg>
-                <span>{{ downloading ? '下载中...' : '下载头像' }}</span>
-              </button>
+              <div class="info-tags">
+                <!-- AI 标签（显示前3个关键词） -->
+                <span v-for="tag in aiTags" :key="tag" class="tag tag--ai">
+                  {{ tag }}
+                </span>
+                <span class="tag" :class="[`tag--${resolution.type || 'success'}`]">{{ resolution.label }}</span>
+                <span class="tag tag--secondary">{{ fileExt }}</span>
+                <span v-if="viewCount > 0" class="tag tag--view">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                  {{ viewCount }}
+                </span>
+                <span v-if="downloadCount > 0" class="tag tag--download">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                  </svg>
+                  {{ downloadCount }}
+                </span>
+                <span v-if="collectCount > 0" class="tag tag--collect">
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  {{ collectCount }}
+                </span>
+                <span v-if="likeCount > 0" class="tag tag--like">
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                    <path d="m12 21-1.45-1.32C5.4 15.03 2 11.95 2 8.5 2 5.42 4.42 3 7.5 3A5.3 5.3 0 0 1 12 5.09 5.3 5.3 0 0 1 16.5 3C19.58 3 22 5.42 22 8.5c0 3.45-3.4 6.53-8.55 11.18z" />
+                  </svg>
+                  {{ likeCount }}
+                </span>
+              </div>
+
+              <div class="info-details">
+                <div class="detail-row">
+                  <span class="detail-label">文件大小</span>
+                  <span class="detail-value">{{ formattedSize }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">上传时间</span>
+                  <span class="detail-value">{{ formattedDate }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">尺寸</span>
+                  <span class="detail-value">{{ imageDimensions.width > 0 ? `${imageDimensions.width} × ${imageDimensions.height}` : '加载中...' }}</span>
+                </div>
+              </div>
+
+              <div class="info-actions">
+                <WallpaperCardActions
+                  v-if="isAuthenticated"
+                  compact
+                  :show-counts="false"
+                  :liked="liked"
+                  :collected="collected"
+                  :like-count="likeCount"
+                  :collect-count="collectCount"
+                  :is-authenticated="isAuthenticated"
+                  @toggle-like="emit('toggleLike')"
+                  @toggle-collect="emit('toggleCollect')"
+                />
+
+                <button
+                  class="action-btn action-btn--primary"
+                  :disabled="downloading"
+                  @click="handleDownload"
+                >
+                  <LoadingSpinner v-if="downloading" size="sm" />
+                  <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                  </svg>
+                  <span>{{ downloading ? '下载中...' : '下载头像' }}</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -330,6 +335,7 @@ function resetState() {
 </template>
 
 <style lang="scss" scoped>
+@use '@/assets/styles/modal' as modal;
 .avatar-modal {
   --avatar-modal-overlay: linear-gradient(
     135deg,
@@ -365,16 +371,15 @@ function resetState() {
   align-items: center;
   justify-content: center;
   background: var(--avatar-modal-overlay);
-  padding: 16px;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
+  @include modal.mobile-modal-viewport;
 
   &__content {
     position: relative;
     display: flex;
     flex-direction: column;
     width: 100%;
+    min-height: 0;
+    max-height: 100%;
     max-width: 360px;
     margin: 0 auto;
     background: var(--avatar-modal-panel-bg);
@@ -386,6 +391,10 @@ function resetState() {
       inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 
+  &__body {
+    @include modal.modal-scroll-body;
+  }
+
   &__close {
     position: absolute;
     top: 12px;
@@ -394,8 +403,8 @@ function resetState() {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     background: var(--avatar-modal-close-bg);
     border: 1px solid var(--avatar-modal-close-border);
     border-radius: 50%;
@@ -707,7 +716,7 @@ function resetState() {
 
 .info-actions {
   display: grid;
-  grid-template-columns: max-content minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   gap: 12px;
 
@@ -774,7 +783,11 @@ function resetState() {
   }
 
   &--primary {
-    grid-column: 2;
+    grid-column: 1 / -1;
+
+    .card-actions + & {
+      grid-column: 2;
+    }
     background: var(--accent-gradient);
     color: white;
     border: none;
@@ -801,8 +814,6 @@ function resetState() {
 
 @media (max-height: 650px) {
   .avatar-modal {
-    padding: 12px;
-
     &__content {
       border-radius: 20px;
     }
@@ -862,8 +873,6 @@ function resetState() {
 
 @media (max-width: 360px) {
   .avatar-modal {
-    padding: 10px;
-
     &__info {
       padding: 12px;
       padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));

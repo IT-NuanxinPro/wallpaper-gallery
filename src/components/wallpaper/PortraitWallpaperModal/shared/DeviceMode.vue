@@ -10,7 +10,7 @@ const props = defineProps({
 
 const emit = defineEmits(['exit', 'afterEnter', 'afterLeave'])
 
-const { isMobile } = useDevice()
+const { isMobile, windowWidth, windowHeight } = useDevice()
 
 const timeDigits = ref(['0', '0', '0', '0'])
 const islandExpanded = ref(false)
@@ -43,8 +43,8 @@ function handleImageLoad() {
 const frameSize = computed(() => {
   if (!isMobile.value)
     return { width: 280, height: 580 }
-  const vh = window.innerHeight
-  const vw = window.innerWidth
+  const vh = windowHeight.value
+  const vw = windowWidth.value
   const availableHeight = vh - 80
   const availableWidth = vw - 40
   const aspectRatio = 280 / 580
@@ -204,6 +204,10 @@ onUnmounted(() => {
 
   &.is-mobile {
     z-index: 2000;
+    height: 100vh;
+    height: 100dvh;
+    padding-top: max(52px, env(safe-area-inset-top, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
   // 退出按钮
@@ -245,9 +249,9 @@ onUnmounted(() => {
     }
 
     @media (max-width: 768px) {
-      top: 15px;
-      left: 15px;
-      height: 36px;
+      top: max(12px, env(safe-area-inset-top, 0px));
+      left: max(12px, env(safe-area-inset-left, 0px));
+      height: 44px;
       padding: 0 12px;
       font-size: 13px;
 
@@ -279,7 +283,7 @@ onUnmounted(() => {
     0 0 0 2px #1a1a1a,
     0 0 0 4px #2a2a2a,
     0 25px 50px rgba(0, 0, 0, 0.5);
-  transition: all 0.3s ease;
+  transition: border-radius 0.3s ease;
 
   @media (max-width: 768px) {
     border-radius: 38px;

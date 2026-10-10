@@ -91,6 +91,7 @@ const isDark = computed(() => theme.value === 'dark')
 
 .mobile-search-bar {
   flex: 1;
+  min-width: 0;
 
   :deep(.search-bar) {
     --search-height: 42px;

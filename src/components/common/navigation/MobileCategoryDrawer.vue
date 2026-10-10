@@ -208,11 +208,12 @@ function closeDrawer() {
   right: 0;
   bottom: 0;
   max-height: 70vh;
+  max-height: 70dvh;
   background: rgba(255, 255, 255, 0.98);
   border-radius: 20px 20px 0 0;
   z-index: 1001;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   overflow: hidden;
   box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
   touch-action: pan-y;
@@ -301,6 +302,7 @@ function closeDrawer() {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   max-height: calc(70vh - 130px);
+  max-height: calc(70dvh - 130px);
   border-right: 1px solid rgba(0, 0, 0, 0.06);
 
   [data-theme='dark'] & {
@@ -355,6 +357,7 @@ function closeDrawer() {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   max-height: calc(70vh - 130px);
+  max-height: calc(70dvh - 130px);
 }
 
 .subcategory-header {

@@ -1,0 +1,20 @@
+// 移动弹窗按浏览器可见高度布局，并避开刘海和底部手势区域。
+@mixin mobile-modal-viewport {
+  height: 100vh;
+  height: 100dvh;
+  padding: max(12px, env(safe-area-inset-top, 0px))
+    max(12px, env(safe-area-inset-right, 0px))
+    max(12px, env(safe-area-inset-bottom, 0px))
+    max(12px, env(safe-area-inset-left, 0px));
+  overflow: hidden;
+}
+
+// 仅内容区滚动，关闭按钮留在弹窗外壳上，避免滚出屏幕。
+@mixin modal-scroll-body {
+  min-width: 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}

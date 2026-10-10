@@ -247,6 +247,7 @@ export function useDevice() {
   return {
     // 核心属性
     windowWidth,
+    windowHeight: sharedWindowHeight,
     deviceType,
     isMobile,
     isTablet,

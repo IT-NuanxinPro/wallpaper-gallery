@@ -102,6 +102,7 @@ defineEmits(['apply', 'close', 'reset', 'update:show', 'update:tempFormatFilter'
   flex-direction: column;
   background: rgba(255, 255, 255, 0.95);
   max-height: 80vh;
+  max-height: calc(100dvh - max(12px, env(safe-area-inset-top, 0px)) - env(safe-area-inset-bottom, 0px));
   overflow: hidden;
 }
 
@@ -223,6 +224,7 @@ defineEmits(['apply', 'close', 'reset', 'update:show', 'update:tempFormatFilter'
 }
 
 .popup-footer {
+  flex-shrink: 0;
   padding: 16px;
   padding-bottom: max(16px, env(safe-area-inset-bottom));
   border-top: 1px solid rgba(0, 0, 0, 0.06);
