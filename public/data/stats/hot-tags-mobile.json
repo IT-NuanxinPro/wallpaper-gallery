@@ -1,83 +1,842 @@
 {
-  "generatedAt": "2026-10-10T20:40:26.308Z",
+  "generatedAt": "2026-10-11T21:04:12.016Z",
   "windowDays": 90,
   "halfLifeDays": 30,
-  "windowStart": "2026-07-12T20:40:26.308Z",
+  "windowStart": "2026-07-13T21:04:12.016Z",
   "series": "mobile",
-  "total": 31,
+  "total": 231,
   "tags": [
     {
       "tag": "人像",
-      "score": 3.499318,
+      "score": 62.319356,
       "views": 497,
       "downloads": 78,
-      "wallpaperCount": 6,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
+      "wallpaperCount": 66,
+      "latestCreatedAt": "2026-10-11T01:53:44.862Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/插画/【恋风】20260819160437.webp",
-          "cdnTag": "v1.3.97"
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092951_829.webp",
+          "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/【恋风】20260819160501.webp",
-          "cdnTag": "v1.3.97"
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091602_333.webp",
+          "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/【恋风】20260819161022.webp",
-          "cdnTag": "v1.3.97"
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091608_286.webp",
+          "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/【恋风】20260819160513.webp",
-          "cdnTag": "v1.3.97"
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_091717_711.webp",
+          "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/【恋风】20260819160529.webp",
-          "cdnTag": "v1.3.97"
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091735_332.webp",
+          "cdnTag": "v1.4.64"
         }
       ]
     },
     {
       "tag": "清新",
-      "score": 1.725533,
+      "score": 37.024353,
       "views": 172,
       "downloads": 42,
-      "wallpaperCount": 3,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
+      "wallpaperCount": 39,
+      "latestCreatedAt": "2026-10-11T01:53:44.862Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/【恋风】20260819160501.webp",
-          "cdnTag": "v1.3.97"
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092951_829.webp",
+          "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/【恋风】20260819160529.webp",
-          "cdnTag": "v1.3.97"
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091602_333.webp",
+          "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/【恋风】20260819160941.webp",
-          "cdnTag": "v1.3.97"
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091608_286.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091735_332.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091755_370.webp",
+          "cdnTag": "v1.4.64"
         }
       ]
     },
     {
       "tag": "魅力",
-      "score": 1.17932,
+      "score": 22.74957,
       "views": 167,
       "downloads": 20,
-      "wallpaperCount": 2,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
+      "wallpaperCount": 24,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/【恋风】20260819161022.webp",
-          "cdnTag": "v1.3.97"
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_091717_711.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092027_670.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092618_215.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092729_942.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092737_007.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
+      "tag": "阳光",
+      "score": 18.648453,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 19,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091602_333.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091755_370.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/风景/海滨/微信图片_2026-10-11_091901_947.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091920_824.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092505_926.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
+      "tag": "动漫",
+      "score": 16.683686,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 17,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_091654_921.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/IP形象/微信图片_2026-10-11_091705_806.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_091812_486.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_092333_289.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/微信图片_2026-10-11_092422_650.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
+      "tag": "优雅",
+      "score": 16.278643,
+      "views": 68,
+      "downloads": 6,
+      "wallpaperCount": 17,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092618_215.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092729_942.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092737_007.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092748_193.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092754_366.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
+      "tag": "长发",
+      "score": 15.304972,
+      "views": 111,
+      "downloads": 20,
+      "wallpaperCount": 16,
+      "latestCreatedAt": "2026-10-11T01:53:44.862Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092951_829.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091755_370.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091830_480.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092505_926.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092737_007.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
+      "tag": "夏日",
+      "score": 13.737208,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 14,
+      "latestCreatedAt": "2026-10-11T01:53:44.862Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092951_829.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091608_286.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091818_244.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_085433_645.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_090440_128.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
+      "tag": "夜晚",
+      "score": 11.780523,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 12,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/IP形象/微信图片_2026-10-11_091705_806.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/风景/星空/微信图片_2026-10-11_091928_356.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092737_007.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092748_193.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092814_436.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
+      "tag": "插画",
+      "score": 10.391033,
+      "views": 158,
+      "downloads": 16,
+      "wallpaperCount": 11,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/插画/创意/微信图片_2026-10-11_091728_983.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/插画/通用/微信图片_2026-10-11_091748_679.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/插画/风景/微信图片_2026-10-11_091959_798.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/插画/萌宠/微信图片_2026-10-11_091404_874.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/插画/通用/微信图片_2026-10-11_091424_583.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
+      "tag": "可爱",
+      "score": 9.814408,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 10,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/插画/创意/微信图片_2026-10-11_091728_983.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/插画/通用/微信图片_2026-10-11_091748_679.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/创意/文字/微信图片_2026-10-11_091845_758.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/萌宠/猫咪/微信图片_2026-10-11_092429_867.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/微信图片_2026-10-11_092611_282.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
+      "tag": "风景",
+      "score": 7.850988,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 8,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/风景/海滨/微信图片_2026-10-11_091901_947.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/风景/星空/微信图片_2026-10-11_091928_356.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/插画/风景/微信图片_2026-10-11_091959_798.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/风景/花卉/微信图片_2026-10-11_092349_780.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/风景/海滨/微信图片_2026-10-11_092403_936.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
+      "tag": "花朵",
+      "score": 7.850988,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 8,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091602_333.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092103_596.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_085701_138.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_085728_467.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_090704_384.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
+      "tag": "创意",
+      "score": 6.86793,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 7,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/插画/创意/微信图片_2026-10-11_091728_983.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/创意/文字/微信图片_2026-10-11_091740_236.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/创意/文字/微信图片_2026-10-11_091845_758.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/创意/抽象/微信图片_2026-10-11_092041_686.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/创意/通用/微信图片_2026-07-21_190403_422.webp",
+          "cdnTag": "v1.4.63"
+        }
+      ]
+    },
+    {
+      "tag": "海绵宝宝",
+      "score": 6.866583,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 7,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/微信图片_2026-10-11_092422_650.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/微信图片_2026-10-11_092611_282.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/微信图片_2026-10-11_091249_137.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/640 (1).webp",
+          "cdnTag": "v1.4.63"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/640 (2).webp",
+          "cdnTag": "v1.4.63"
+        }
+      ]
+    },
+    {
+      "tag": "二次元",
+      "score": 5.890261,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 6,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_091654_921.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_091812_486.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_092333_289.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_090542_911.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_090634_004.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
+      "tag": "萌宠",
+      "score": 5.887567,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 6,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/萌宠/猫咪/微信图片_2026-10-11_092429_867.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/萌宠/猫咪/微信图片_2026-10-11_092921_734.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/萌宠/猫咪/微信图片_2026-10-11_091341_642.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/插画/萌宠/微信图片_2026-10-11_091404_874.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/萌宠/IP形象/微信图片_2026-07-21_190928_664.webp",
+          "cdnTag": "v1.4.63"
+        }
+      ]
+    },
+    {
+      "tag": "少女",
+      "score": 5.463397,
+      "views": 36,
+      "downloads": 10,
+      "wallpaperCount": 6,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091608_286.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091920_824.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092729_942.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_090634_004.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091222_090.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
+      "tag": "微笑",
+      "score": 4.908551,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 5,
+      "latestCreatedAt": "2026-10-11T01:53:44.862Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092951_829.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091735_332.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091818_244.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091920_824.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091512_796.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
+      "tag": "樱花",
+      "score": 4.908551,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 5,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091830_480.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092103_596.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/风景/花卉/微信图片_2026-10-11_092349_780.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_090542_911.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091512_796.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
+      "tag": "海滩",
+      "score": 4.905857,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 5,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092505_926.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092625_478.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_085530_928.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/640 (2).webp",
+          "cdnTag": "v1.4.63"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/640 (7).webp",
+          "cdnTag": "v1.4.63"
+        }
+      ]
+    },
+    {
+      "tag": "浪漫",
+      "score": 3.926841,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 4,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_091812_486.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/风景/花卉/微信图片_2026-10-11_092349_780.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092706_925.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_085530_928.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
+      "tag": "月光",
+      "score": 3.926841,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 4,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_091812_486.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092706_925.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091222_090.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_091310_304.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
+      "tag": "宁静",
+      "score": 3.925494,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 4,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/风景/星空/微信图片_2026-10-11_091928_356.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_090542_911.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091453_101.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/创意/通用/微信图片_2026-07-21_190403_422.webp",
+          "cdnTag": "v1.4.63"
+        }
+      ]
+    },
+    {
+      "tag": "友谊",
+      "score": 3.924147,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 4,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/插画/创意/微信图片_2026-10-11_091728_983.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_092333_289.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/640 (1).webp",
+          "cdnTag": "v1.4.63"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/640 (2).webp",
+          "cdnTag": "v1.4.63"
+        }
+      ]
+    },
+    {
+      "tag": "黑丝",
+      "score": 3.51641,
+      "views": 68,
+      "downloads": 6,
+      "wallpaperCount": 4,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092754_366.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092814_436.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_085610_803.webp",
+          "cdnTag": "v1.4.64"
         },
         {
           "thumbnail": "/thumbnail/mobile/人像/魅力/【恋风】20260819160513.webp",
@@ -86,478 +845,320 @@
       ]
     },
     {
-      "tag": "白门",
-      "score": 0.594465,
-      "views": 111,
-      "downloads": 20,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
+      "tag": "猫咪",
+      "score": 2.945131,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 3,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/【恋风】20260819160501.webp",
-          "cdnTag": "v1.3.97"
+          "thumbnail": "/thumbnail/mobile/萌宠/猫咪/微信图片_2026-10-11_092429_867.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/萌宠/猫咪/微信图片_2026-10-11_092921_734.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/萌宠/猫咪/微信图片_2026-10-11_091341_642.webp",
+          "cdnTag": "v1.4.64"
         }
       ]
     },
     {
-      "tag": "插画",
-      "score": 0.594465,
-      "views": 158,
-      "downloads": 16,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
+      "tag": "玩偶",
+      "score": 2.945131,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 3,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/插画/【恋风】20260819160437.webp",
-          "cdnTag": "v1.3.97"
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091920_824.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/微信图片_2026-10-11_092611_282.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_090737_062.webp",
+          "cdnTag": "v1.4.64"
         }
       ]
     },
     {
-      "tag": "插画感",
-      "score": 0.594465,
-      "views": 158,
-      "downloads": 16,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
+      "tag": "青春",
+      "score": 2.945131,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 3,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/插画/【恋风】20260819160437.webp",
-          "cdnTag": "v1.3.97"
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092723_127.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_085255_437.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091209_406.webp",
+          "cdnTag": "v1.4.64"
         }
       ]
     },
     {
-      "tag": "粉色毛衣",
-      "score": 0.594465,
-      "views": 158,
-      "downloads": 16,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
+      "tag": "时尚",
+      "score": 2.945131,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 3,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/插画/【恋风】20260819160437.webp",
-          "cdnTag": "v1.3.97"
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_091717_711.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_085240_644.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_085255_437.webp",
+          "cdnTag": "v1.4.64"
         }
       ]
     },
     {
-      "tag": "黑袜",
-      "score": 0.594465,
-      "views": 111,
-      "downloads": 20,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
+      "tag": "文字",
+      "score": 2.943784,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 3,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/【恋风】20260819160501.webp",
-          "cdnTag": "v1.3.97"
+          "thumbnail": "/thumbnail/mobile/创意/文字/微信图片_2026-10-11_091740_236.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/创意/文字/微信图片_2026-10-11_091845_758.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/创意/文字/微信图片_2026-07-21_190947_521.webp",
+          "cdnTag": "v1.4.63"
         }
       ]
     },
     {
-      "tag": "户外风景",
-      "score": 0.594465,
-      "views": 99,
-      "downloads": 14,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
+      "tag": "派大星",
+      "score": 2.941089,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 3,
+      "latestCreatedAt": "2026-10-11T00:28:10.089Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/【恋风】20260819161022.webp",
-          "cdnTag": "v1.3.97"
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/640 (1).webp",
+          "cdnTag": "v1.4.63"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/640 (2).webp",
+          "cdnTag": "v1.4.63"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/640 (3).webp",
+          "cdnTag": "v1.4.63"
         }
       ]
     },
     {
-      "tag": "花卉裙装",
-      "score": 0.594465,
-      "views": 158,
-      "downloads": 16,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
+      "tag": "粉色",
+      "score": 1.96342,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 2,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/插画/【恋风】20260819160437.webp",
-          "cdnTag": "v1.3.97"
+          "thumbnail": "/thumbnail/mobile/插画/创意/微信图片_2026-10-11_091728_983.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092729_942.webp",
+          "cdnTag": "v1.4.64"
         }
       ]
     },
     {
-      "tag": "蓝天白云",
-      "score": 0.594465,
-      "views": 99,
-      "downloads": 14,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
+      "tag": "海滨",
+      "score": 1.96342,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 2,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/【恋风】20260819161022.webp",
-          "cdnTag": "v1.3.97"
+          "thumbnail": "/thumbnail/mobile/风景/海滨/微信图片_2026-10-11_091901_947.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/风景/海滨/微信图片_2026-10-11_092403_936.webp",
+          "cdnTag": "v1.4.64"
         }
       ]
     },
     {
-      "tag": "魅力少女",
-      "score": 0.594465,
-      "views": 99,
-      "downloads": 14,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
+      "tag": "黄昏",
+      "score": 1.96342,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 2,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/【恋风】20260819161022.webp",
-          "cdnTag": "v1.3.97"
+          "thumbnail": "/thumbnail/mobile/风景/冬日雪景/微信图片_2026-10-11_092534_448.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092645_230.webp",
+          "cdnTag": "v1.4.64"
         }
       ]
     },
     {
-      "tag": "柔光氛围",
-      "score": 0.594465,
-      "views": 158,
-      "downloads": 16,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
+      "tag": "神秘",
+      "score": 1.96342,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 2,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/插画/【恋风】20260819160437.webp",
-          "cdnTag": "v1.3.97"
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/微信图片_2026-10-11_092411_546.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092938_633.webp",
+          "cdnTag": "v1.4.64"
         }
       ]
     },
     {
-      "tag": "少女肖像",
-      "score": 0.594465,
-      "views": 158,
-      "downloads": 16,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
+      "tag": "性感",
+      "score": 1.96342,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 2,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/插画/【恋风】20260819160437.webp",
-          "cdnTag": "v1.3.97"
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092754_366.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092814_436.webp",
+          "cdnTag": "v1.4.64"
         }
       ]
     },
     {
-      "tag": "夏日活力",
-      "score": 0.594465,
-      "views": 99,
-      "downloads": 14,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
+      "tag": "车内",
+      "score": 1.96342,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 2,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/【恋风】20260819161022.webp",
-          "cdnTag": "v1.3.97"
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/微信图片_2026-10-11_092411_546.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_085746_880.webp",
+          "cdnTag": "v1.4.64"
         }
       ]
     },
     {
-      "tag": "长发",
-      "score": 0.594465,
-      "views": 111,
-      "downloads": 20,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
+      "tag": "春日",
+      "score": 1.96342,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 2,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/【恋风】20260819160501.webp",
-          "cdnTag": "v1.3.97"
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092103_596.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091538_965.webp",
+          "cdnTag": "v1.4.64"
         }
       ]
     },
     {
-      "tag": "治愈",
-      "score": 0.594465,
-      "views": 111,
-      "downloads": 20,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
+      "tag": "海边",
+      "score": 1.96342,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 2,
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/【恋风】20260819160501.webp",
-          "cdnTag": "v1.3.97"
-        }
-      ]
-    },
-    {
-      "tag": "自然风格",
-      "score": 0.594465,
-      "views": 99,
-      "downloads": 14,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091608_286.webp",
+          "cdnTag": "v1.4.64"
+        },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/【恋风】20260819161022.webp",
-          "cdnTag": "v1.3.97"
-        }
-      ]
-    },
-    {
-      "tag": "黑丝",
-      "score": 0.584855,
-      "views": 68,
-      "downloads": 6,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/【恋风】20260819160513.webp",
-          "cdnTag": "v1.3.97"
-        }
-      ]
-    },
-    {
-      "tag": "镜前",
-      "score": 0.584855,
-      "views": 68,
-      "downloads": 6,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/【恋风】20260819160513.webp",
-          "cdnTag": "v1.3.97"
-        }
-      ]
-    },
-    {
-      "tag": "蕾丝",
-      "score": 0.584855,
-      "views": 68,
-      "downloads": 6,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/【恋风】20260819160513.webp",
-          "cdnTag": "v1.3.97"
-        }
-      ]
-    },
-    {
-      "tag": "优雅",
-      "score": 0.584855,
-      "views": 68,
-      "downloads": 6,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/【恋风】20260819160513.webp",
-          "cdnTag": "v1.3.97"
-        }
-      ]
-    },
-    {
-      "tag": "白纱窗帘",
-      "score": 0.568032,
-      "views": 36,
-      "downloads": 10,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/【恋风】20260819160529.webp",
-          "cdnTag": "v1.3.97"
-        }
-      ]
-    },
-    {
-      "tag": "柔光",
-      "score": 0.568032,
-      "views": 36,
-      "downloads": 10,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/【恋风】20260819160529.webp",
-          "cdnTag": "v1.3.97"
-        }
-      ]
-    },
-    {
-      "tag": "少女",
-      "score": 0.568032,
-      "views": 36,
-      "downloads": 10,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/【恋风】20260819160529.webp",
-          "cdnTag": "v1.3.97"
-        }
-      ]
-    },
-    {
-      "tag": "治愈系",
-      "score": 0.568032,
-      "views": 36,
-      "downloads": 10,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/【恋风】20260819160529.webp",
-          "cdnTag": "v1.3.97"
-        }
-      ]
-    },
-    {
-      "tag": "清新少女",
-      "score": 0.563037,
-      "views": 25,
-      "downloads": 12,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/【恋风】20260819160941.webp",
-          "cdnTag": "v1.3.97"
-        }
-      ]
-    },
-    {
-      "tag": "柔和窗光",
-      "score": 0.563037,
-      "views": 25,
-      "downloads": 12,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/【恋风】20260819160941.webp",
-          "cdnTag": "v1.3.97"
-        }
-      ]
-    },
-    {
-      "tag": "温柔侧颜",
-      "score": 0.563037,
-      "views": 25,
-      "downloads": 12,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/【恋风】20260819160941.webp",
-          "cdnTag": "v1.3.97"
-        }
-      ]
-    },
-    {
-      "tag": "长发女孩",
-      "score": 0.563037,
-      "views": 25,
-      "downloads": 12,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/【恋风】20260819160941.webp",
-          "cdnTag": "v1.3.97"
-        }
-      ]
-    },
-    {
-      "tag": "自然光影",
-      "score": 0.563037,
-      "views": 25,
-      "downloads": 12,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-08-19T08:25:53.779Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/【恋风】20260819160941.webp",
-          "cdnTag": "v1.3.97"
+          "thumbnail": "/thumbnail/mobile/人像/明星/微信图片_2026-10-11_090822_146.webp",
+          "cdnTag": "v1.4.64"
         }
       ]
     }
