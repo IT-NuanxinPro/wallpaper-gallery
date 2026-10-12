@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-11T21:04:12.016Z",
+  "generatedAt": "2026-10-12T23:45:36.814Z",
   "windowDays": 90,
   "halfLifeDays": 30,
-  "windowStart": "2026-07-13T21:04:12.016Z",
+  "windowStart": "2026-07-14T23:45:36.814Z",
   "series": "avatar",
   "total": 248,
   "tags": [
     {
       "tag": "人像",
-      "score": 77.227533,
+      "score": 75.268464,
       "views": 1,
       "downloads": 0,
       "wallpaperCount": 79,
@@ -41,7 +41,7 @@
     },
     {
       "tag": "甜妹",
-      "score": 47.329636,
+      "score": 46.129002,
       "views": 1,
       "downloads": 0,
       "wallpaperCount": 48,
@@ -74,7 +74,7 @@
     },
     {
       "tag": "阳光",
-      "score": 16.710294,
+      "score": 16.286395,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 17,
@@ -107,7 +107,7 @@
     },
     {
       "tag": "微笑",
-      "score": 14.744377,
+      "score": 14.370349,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 15,
@@ -140,7 +140,7 @@
     },
     {
       "tag": "氛围感",
-      "score": 13.761418,
+      "score": 13.412326,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 14,
@@ -173,7 +173,7 @@
     },
     {
       "tag": "温柔",
-      "score": 13.761418,
+      "score": 13.412326,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 14,
@@ -206,7 +206,7 @@
     },
     {
       "tag": "可爱",
-      "score": 12.039974,
+      "score": 11.73455,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 14,
@@ -239,7 +239,7 @@
     },
     {
       "tag": "背影",
-      "score": 9.829584,
+      "score": 9.580233,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 10,
@@ -272,7 +272,7 @@
     },
     {
       "tag": "动漫",
-      "score": 9.224209,
+      "score": 8.990214,
       "views": 8,
       "downloads": 3,
       "wallpaperCount": 17,
@@ -305,7 +305,7 @@
     },
     {
       "tag": "温馨",
-      "score": 8.846626,
+      "score": 8.622209,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 9,
@@ -338,7 +338,7 @@
     },
     {
       "tag": "长发",
-      "score": 8.846626,
+      "score": 8.622209,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 9,
@@ -371,7 +371,7 @@
     },
     {
       "tag": "甜美",
-      "score": 8.846626,
+      "score": 8.622209,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 9,
@@ -404,7 +404,7 @@
     },
     {
       "tag": "女孩",
-      "score": 8.846626,
+      "score": 8.622209,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 9,
@@ -437,7 +437,7 @@
     },
     {
       "tag": "夏日",
-      "score": 8.846626,
+      "score": 8.622209,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 9,
@@ -470,8 +470,8 @@
     },
     {
       "tag": "萌宠",
-      "score": 8.272811,
-      "views": 0,
+      "score": 8.291005,
+      "views": 2,
       "downloads": 0,
       "wallpaperCount": 9,
       "latestCreatedAt": "2026-10-11T03:12:56.455Z",
@@ -479,6 +479,10 @@
         "avatar"
       ],
       "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/0.webp",
+          "cdnTag": "v1.4.65"
+        },
         {
           "thumbnail": "/thumbnail/avatar/萌宠/狗狗/微信图片_2026-10-11_101358_531.webp",
           "cdnTag": "v1.4.65"
@@ -494,16 +498,12 @@
         {
           "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-10-11_102726_819.webp",
           "cdnTag": "v1.4.65"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-10-11_102743_037.webp",
-          "cdnTag": "v1.4.65"
         }
       ]
     },
     {
       "tag": "搞怪",
-      "score": 8.063283,
+      "score": 7.858737,
       "views": 5,
       "downloads": 1,
       "wallpaperCount": 13,
@@ -536,8 +536,8 @@
     },
     {
       "tag": "猫咪",
-      "score": 7.289853,
-      "views": 0,
+      "score": 7.332981,
+      "views": 2,
       "downloads": 0,
       "wallpaperCount": 8,
       "latestCreatedAt": "2026-10-11T03:12:56.455Z",
@@ -545,6 +545,10 @@
         "avatar"
       ],
       "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/0.webp",
+          "cdnTag": "v1.4.65"
+        },
         {
           "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-10-11_102025_372.webp",
           "cdnTag": "v1.4.65"
@@ -560,16 +564,12 @@
         {
           "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-10-11_102743_037.webp",
           "cdnTag": "v1.4.65"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-10-11_103039_540.webp",
-          "cdnTag": "v1.4.65"
         }
       ]
     },
     {
       "tag": "少女",
-      "score": 7.02834,
+      "score": 6.850049,
       "views": 1,
       "downloads": 0,
       "wallpaperCount": 7,
@@ -602,7 +602,7 @@
     },
     {
       "tag": "表情包",
-      "score": 6.4621,
+      "score": 6.298173,
       "views": 3,
       "downloads": 1,
       "wallpaperCount": 11,
@@ -635,7 +635,7 @@
     },
     {
       "tag": "萌娃",
-      "score": 5.897751,
+      "score": 5.74814,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 6,
@@ -668,7 +668,7 @@
     },
     {
       "tag": "喜羊羊与灰太狼",
-      "score": 5.294688,
+      "score": 5.160375,
       "views": 3,
       "downloads": 1,
       "wallpaperCount": 11,
@@ -701,7 +701,7 @@
     },
     {
       "tag": "IP形象",
-      "score": 4.340977,
+      "score": 4.230858,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 5,
@@ -734,7 +734,7 @@
     },
     {
       "tag": "插画",
-      "score": 3.931834,
+      "score": 3.832093,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 4,
@@ -763,7 +763,7 @@
     },
     {
       "tag": "卡通",
-      "score": 3.931834,
+      "score": 3.832093,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 4,
@@ -792,7 +792,7 @@
     },
     {
       "tag": "海边",
-      "score": 3.931834,
+      "score": 3.832093,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 4,
@@ -821,7 +821,7 @@
     },
     {
       "tag": "清新",
-      "score": 3.931834,
+      "score": 3.832093,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 4,
@@ -850,7 +850,7 @@
     },
     {
       "tag": "玩偶",
-      "score": 3.931834,
+      "score": 3.832093,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 4,
@@ -879,7 +879,7 @@
     },
     {
       "tag": "冬日",
-      "score": 3.931834,
+      "score": 3.832093,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 4,
@@ -908,7 +908,7 @@
     },
     {
       "tag": "俏皮",
-      "score": 3.096506,
+      "score": 3.017956,
       "views": 1,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -933,7 +933,7 @@
     },
     {
       "tag": "创意",
-      "score": 2.948875,
+      "score": 2.87407,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -958,7 +958,7 @@
     },
     {
       "tag": "帽子",
-      "score": 2.948875,
+      "score": 2.87407,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -983,7 +983,7 @@
     },
     {
       "tag": "小狗",
-      "score": 2.948875,
+      "score": 2.87407,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -1008,7 +1008,7 @@
     },
     {
       "tag": "笑容",
-      "score": 2.948875,
+      "score": 2.87407,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -1033,7 +1033,7 @@
     },
     {
       "tag": "夜晚",
-      "score": 2.948875,
+      "score": 2.87407,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -1058,7 +1058,7 @@
     },
     {
       "tag": "静谧",
-      "score": 2.948875,
+      "score": 2.87407,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -1083,7 +1083,7 @@
     },
     {
       "tag": "优雅",
-      "score": 2.948875,
+      "score": 2.87407,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -1107,8 +1107,29 @@
       ]
     },
     {
+      "tag": "橘色",
+      "score": 2.1441,
+      "views": 2,
+      "downloads": 0,
+      "wallpaperCount": 2,
+      "latestCreatedAt": "2026-10-11T03:12:56.455Z",
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/0.webp",
+          "cdnTag": "v1.4.65"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/萌宠/猫咪/微信图片_2026-10-11_102025_372.webp",
+          "cdnTag": "v1.4.65"
+        }
+      ]
+    },
+    {
       "tag": "白衬衫",
-      "score": 1.965917,
+      "score": 1.916047,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 2,
@@ -1129,7 +1150,7 @@
     },
     {
       "tag": "沉思",
-      "score": 1.965917,
+      "score": 1.916047,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 2,
@@ -1150,7 +1171,7 @@
     },
     {
       "tag": "宠物",
-      "score": 1.965917,
+      "score": 1.916047,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 2,
@@ -1165,27 +1186,6 @@
         },
         {
           "thumbnail": "/thumbnail/avatar/人像/萌娃/微信图片_2026-10-11_103731_644.webp",
-          "cdnTag": "v1.4.65"
-        }
-      ]
-    },
-    {
-      "tag": "耳机",
-      "score": 1.965917,
-      "views": 0,
-      "downloads": 0,
-      "wallpaperCount": 2,
-      "latestCreatedAt": "2026-10-11T03:12:56.455Z",
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_2026-10-11_101722_020.webp",
-          "cdnTag": "v1.4.65"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-10-11_103103_787.webp",
           "cdnTag": "v1.4.65"
         }
       ]

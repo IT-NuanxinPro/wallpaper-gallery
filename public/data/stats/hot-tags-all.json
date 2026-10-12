@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-10-11T21:04:12.016Z",
+  "generatedAt": "2026-10-12T23:45:36.814Z",
   "windowDays": 90,
   "halfLifeDays": 30,
-  "windowStart": "2026-07-13T21:04:12.016Z",
+  "windowStart": "2026-07-14T23:45:36.814Z",
   "series": "all",
   "total": 899,
   "tags": [
     {
       "tag": "人像",
-      "score": 163.607135,
-      "views": 943,
+      "score": 159.463235,
+      "views": 947,
       "downloads": 152,
       "wallpaperCount": 191,
       "series": [
@@ -27,9 +27,9 @@
     },
     {
       "tag": "插画",
-      "score": 50.414046,
-      "views": 557,
-      "downloads": 132,
+      "score": 49.611065,
+      "views": 583,
+      "downloads": 141,
       "wallpaperCount": 70,
       "series": [
         "desktop",
@@ -41,13 +41,13 @@
         "2026-08-07_43556.jpg",
         "2026-08-13_43597.jpg",
         "2026-08-09_43588.jpg",
-        "微信图片_2026-10-11_101232_230.jpg"
+        "2026-08-06_43562.jpg"
       ]
     },
     {
       "tag": "清新",
-      "score": 50.359823,
-      "views": 241,
+      "score": 49.085158,
+      "views": 242,
       "downloads": 52,
       "wallpaperCount": 60,
       "series": [
@@ -65,7 +65,7 @@
     },
     {
       "tag": "甜妹",
-      "score": 47.329636,
+      "score": 46.129002,
       "views": 1,
       "downloads": 0,
       "wallpaperCount": 48,
@@ -82,9 +82,9 @@
     },
     {
       "tag": "风景",
-      "score": 46.003882,
-      "views": 733,
-      "downloads": 315,
+      "score": 44.842567,
+      "views": 736,
+      "downloads": 318,
       "wallpaperCount": 66,
       "series": [
         "desktop",
@@ -100,9 +100,9 @@
     },
     {
       "tag": "动漫",
-      "score": 43.74432,
-      "views": 412,
-      "downloads": 139,
+      "score": 42.642566,
+      "views": 413,
+      "downloads": 140,
       "wallpaperCount": 64,
       "series": [
         "desktop",
@@ -119,7 +119,7 @@
     },
     {
       "tag": "阳光",
-      "score": 43.285608,
+      "score": 42.187561,
       "views": 82,
       "downloads": 28,
       "wallpaperCount": 47,
@@ -138,8 +138,8 @@
     },
     {
       "tag": "魅力",
-      "score": 31.574194,
-      "views": 469,
+      "score": 30.77532,
+      "views": 471,
       "downloads": 62,
       "wallpaperCount": 40,
       "series": [
@@ -156,8 +156,8 @@
     },
     {
       "tag": "长发",
-      "score": 28.653011,
-      "views": 212,
+      "score": 27.927638,
+      "views": 213,
       "downloads": 47,
       "wallpaperCount": 33,
       "series": [
@@ -175,8 +175,8 @@
     },
     {
       "tag": "优雅",
-      "score": 25.609459,
-      "views": 189,
+      "score": 24.962427,
+      "views": 191,
       "downloads": 31,
       "wallpaperCount": 32,
       "series": [
@@ -194,7 +194,7 @@
     },
     {
       "tag": "夏日",
-      "score": 25.318602,
+      "score": 24.676332,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 27,
@@ -213,8 +213,8 @@
     },
     {
       "tag": "夜晚",
-      "score": 24.484931,
-      "views": 134,
+      "score": 23.864943,
+      "views": 135,
       "downloads": 37,
       "wallpaperCount": 28,
       "series": [
@@ -232,7 +232,7 @@
     },
     {
       "tag": "创意",
-      "score": 24.138297,
+      "score": 23.525969,
       "views": 52,
       "downloads": 22,
       "wallpaperCount": 31,
@@ -251,9 +251,9 @@
     },
     {
       "tag": "二次元",
-      "score": 22.693111,
-      "views": 349,
-      "downloads": 114,
+      "score": 22.125373,
+      "views": 350,
+      "downloads": 115,
       "wallpaperCount": 35,
       "series": [
         "desktop",
@@ -270,7 +270,7 @@
     },
     {
       "tag": "可爱",
-      "score": 22.4268,
+      "score": 21.857888,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 25,
@@ -289,9 +289,9 @@
     },
     {
       "tag": "自然",
-      "score": 21.161316,
-      "views": 267,
-      "downloads": 116,
+      "score": 20.624506,
+      "views": 269,
+      "downloads": 117,
       "wallpaperCount": 29,
       "series": [
         "desktop",
@@ -307,9 +307,9 @@
     },
     {
       "tag": "氛围感",
-      "score": 21.061874,
-      "views": 233,
-      "downloads": 56,
+      "score": 20.527587,
+      "views": 235,
+      "downloads": 57,
       "wallpaperCount": 26,
       "series": [
         "desktop",
@@ -326,7 +326,7 @@
     },
     {
       "tag": "微笑",
-      "score": 20.472358,
+      "score": 19.953026,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 22,
@@ -345,7 +345,7 @@
     },
     {
       "tag": "温柔",
-      "score": 16.517559,
+      "score": 16.09855,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 18,
@@ -364,8 +364,8 @@
     },
     {
       "tag": "萌宠",
-      "score": 15.120716,
-      "views": 0,
+      "score": 14.965195,
+      "views": 2,
       "downloads": 0,
       "wallpaperCount": 16,
       "series": [
@@ -374,16 +374,16 @@
         "avatar"
       ],
       "topWallpapers": [
+        "0.jpg",
         "微信图片_2026-10-11_101358_531.jpg",
         "微信图片_2026-10-11_102025_372.png",
         "微信图片_2026-10-11_102031_537.jpg",
-        "微信图片_2026-10-11_102726_819.jpg",
-        "微信图片_2026-10-11_102743_037.jpg"
+        "微信图片_2026-10-11_102726_819.jpg"
       ]
     },
     {
       "tag": "少女",
-      "score": 14.166094,
+      "score": 13.806736,
       "views": 37,
       "downloads": 10,
       "wallpaperCount": 16,
@@ -402,9 +402,9 @@
     },
     {
       "tag": "自然风光",
-      "score": 14.017688,
-      "views": 159,
-      "downloads": 70,
+      "score": 13.670024,
+      "views": 160,
+      "downloads": 71,
       "wallpaperCount": 18,
       "series": [
         "desktop",
@@ -420,7 +420,7 @@
     },
     {
       "tag": "日落",
-      "score": 12.000473,
+      "score": 11.696051,
       "views": 114,
       "downloads": 38,
       "wallpaperCount": 18,
@@ -439,7 +439,7 @@
     },
     {
       "tag": "宁静",
-      "score": 11.969647,
+      "score": 11.666007,
       "views": 48,
       "downloads": 24,
       "wallpaperCount": 13,
@@ -458,7 +458,7 @@
     },
     {
       "tag": "背影",
-      "score": 11.54147,
+      "score": 11.248692,
       "views": 24,
       "downloads": 4,
       "wallpaperCount": 12,
@@ -477,8 +477,8 @@
     },
     {
       "tag": "卡通",
-      "score": 11.083496,
-      "views": 116,
+      "score": 10.804209,
+      "views": 117,
       "downloads": 37,
       "wallpaperCount": 13,
       "series": [
@@ -495,7 +495,7 @@
     },
     {
       "tag": "场景",
-      "score": 10.908035,
+      "score": 10.631326,
       "views": 119,
       "downloads": 33,
       "wallpaperCount": 19,
@@ -512,7 +512,7 @@
     },
     {
       "tag": "温馨",
-      "score": 10.810046,
+      "score": 10.535823,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 11,
@@ -530,7 +530,7 @@
     },
     {
       "tag": "女孩",
-      "score": 10.591647,
+      "score": 10.322963,
       "views": 33,
       "downloads": 11,
       "wallpaperCount": 11,
@@ -548,8 +548,8 @@
     },
     {
       "tag": "猫咪",
-      "score": 10.234983,
-      "views": 0,
+      "score": 10.203401,
+      "views": 2,
       "downloads": 0,
       "wallpaperCount": 11,
       "series": [
@@ -557,16 +557,16 @@
         "avatar"
       ],
       "topWallpapers": [
+        "0.jpg",
         "微信图片_2026-10-11_102025_372.png",
         "微信图片_2026-10-11_102031_537.jpg",
         "微信图片_2026-10-11_102726_819.jpg",
-        "微信图片_2026-10-11_102743_037.jpg",
-        "微信图片_2026-10-11_103039_540.jpg"
+        "微信图片_2026-10-11_102743_037.jpg"
       ]
     },
     {
       "tag": "花朵",
-      "score": 9.515471,
+      "score": 9.274087,
       "views": 26,
       "downloads": 13,
       "wallpaperCount": 10,
@@ -584,7 +584,7 @@
     },
     {
       "tag": "海绵宝宝",
-      "score": 8.994392,
+      "score": 8.766227,
       "views": 45,
       "downloads": 19,
       "wallpaperCount": 9,
@@ -603,7 +603,7 @@
     },
     {
       "tag": "甜美",
-      "score": 8.846626,
+      "score": 8.622209,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 9,
@@ -620,7 +620,7 @@
     },
     {
       "tag": "IP形象",
-      "score": 8.538058,
+      "score": 8.321469,
       "views": 25,
       "downloads": 13,
       "wallpaperCount": 10,
@@ -639,9 +639,9 @@
     },
     {
       "tag": "夜景",
-      "score": 8.227811,
-      "views": 144,
-      "downloads": 49,
+      "score": 8.02478,
+      "views": 147,
+      "downloads": 52,
       "wallpaperCount": 13,
       "series": [
         "desktop",
@@ -657,7 +657,7 @@
     },
     {
       "tag": "搞怪",
-      "score": 8.063283,
+      "score": 7.858737,
       "views": 5,
       "downloads": 1,
       "wallpaperCount": 13,
@@ -674,9 +674,9 @@
     },
     {
       "tag": "星空",
-      "score": 7.898767,
-      "views": 131,
-      "downloads": 51,
+      "score": 7.698395,
+      "views": 133,
+      "downloads": 52,
       "wallpaperCount": 11,
       "series": [
         "desktop",
@@ -692,8 +692,8 @@
     },
     {
       "tag": "夕阳",
-      "score": 7.537627,
-      "views": 146,
+      "score": 7.34829,
+      "views": 147,
       "downloads": 59,
       "wallpaperCount": 9,
       "series": [
@@ -711,7 +711,7 @@
     },
     {
       "tag": "海边",
-      "score": 7.265307,
+      "score": 7.081004,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 8,
@@ -730,9 +730,9 @@
     },
     {
       "tag": "海滨",
-      "score": 7.036729,
-      "views": 77,
-      "downloads": 30,
+      "score": 6.858225,
+      "views": 79,
+      "downloads": 31,
       "wallpaperCount": 9,
       "series": [
         "desktop",
@@ -748,7 +748,7 @@
     },
     {
       "tag": "表情包",
-      "score": 7.034518,
+      "score": 6.85607,
       "views": 3,
       "downloads": 1,
       "wallpaperCount": 12,
@@ -766,8 +766,8 @@
     },
     {
       "tag": "海滩",
-      "score": 6.977064,
-      "views": 24,
+      "score": 6.801948,
+      "views": 25,
       "downloads": 13,
       "wallpaperCount": 7,
       "series": [
@@ -785,7 +785,7 @@
     },
     {
       "tag": "玩偶",
-      "score": 6.876964,
+      "score": 6.702513,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 7,
@@ -803,7 +803,7 @@
     },
     {
       "tag": "樱花",
-      "score": 6.852123,
+      "score": 6.678302,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 7,
@@ -821,8 +821,25 @@
       ]
     },
     {
+      "tag": "国风",
+      "score": 6.58445,
+      "views": 86,
+      "downloads": 22,
+      "wallpaperCount": 13,
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        "2026-08-09_43588.jpg",
+        "2026-08-06_43562.jpg",
+        "2026-08-24_43667.jpg",
+        "2026-08-18_43653.jpg",
+        "2026-08-19_43652.jpg"
+      ]
+    },
+    {
       "tag": "山脉",
-      "score": 6.597983,
+      "score": 6.430609,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 8,
@@ -840,7 +857,7 @@
     },
     {
       "tag": "时尚",
-      "score": 6.28226,
+      "score": 6.122895,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 7,
@@ -858,25 +875,8 @@
       ]
     },
     {
-      "tag": "国风",
-      "score": 6.274159,
-      "views": 62,
-      "downloads": 14,
-      "wallpaperCount": 13,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        "2026-08-09_43588.jpg",
-        "2026-08-24_43667.jpg",
-        "2026-08-06_43562.jpg",
-        "2026-08-18_43653.jpg",
-        "2026-08-19_43652.jpg"
-      ]
-    },
-    {
       "tag": "萌娃",
-      "score": 5.897751,
+      "score": 5.74814,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 6,
@@ -893,7 +893,7 @@
     },
     {
       "tag": "小狗",
-      "score": 5.593175,
+      "score": 5.45129,
       "views": 25,
       "downloads": 13,
       "wallpaperCount": 6,
@@ -912,7 +912,7 @@
     },
     {
       "tag": "草地",
-      "score": 5.592044,
+      "score": 5.450188,
       "views": 79,
       "downloads": 39,
       "wallpaperCount": 7,
