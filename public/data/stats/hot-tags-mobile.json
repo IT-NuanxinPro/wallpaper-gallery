@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-10-20T20:48:53.830Z",
+  "generatedAt": "2026-10-21T20:50:55.799Z",
   "windowDays": 90,
   "halfLifeDays": 30,
-  "windowStart": "2026-07-22T20:48:53.830Z",
+  "windowStart": "2026-07-23T20:50:55.799Z",
   "series": "mobile",
   "total": 240,
   "tags": [
     {
       "tag": "人像",
-      "score": 61.542209,
-      "views": 553,
-      "downloads": 87,
+      "score": 60.291884,
+      "views": 568,
+      "downloads": 89,
       "wallpaperCount": 77,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
       "series": [
@@ -18,11 +18,11 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/侧颜-壁纸-女性.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/好身材-对镜自拍.webp",
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/好身材-对镜自拍.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/侧颜-壁纸-女性.webp",
           "cdnTag": "v1.4.67"
         },
         {
@@ -41,8 +41,8 @@
     },
     {
       "tag": "清新",
-      "score": 35.709899,
-      "views": 195,
+      "score": 34.92556,
+      "views": 200,
       "downloads": 46,
       "wallpaperCount": 45,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -74,9 +74,9 @@
     },
     {
       "tag": "魅力",
-      "score": 23.764269,
-      "views": 198,
-      "downloads": 24,
+      "score": 23.345582,
+      "views": 208,
+      "downloads": 26,
       "wallpaperCount": 29,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
       "series": [
@@ -107,7 +107,7 @@
     },
     {
       "tag": "阳光",
-      "score": 19.349587,
+      "score": 18.907025,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 24,
@@ -140,9 +140,9 @@
     },
     {
       "tag": "优雅",
-      "score": 15.483308,
-      "views": 82,
-      "downloads": 9,
+      "score": 15.174678,
+      "views": 86,
+      "downloads": 10,
       "wallpaperCount": 19,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
       "series": [
@@ -173,7 +173,7 @@
     },
     {
       "tag": "长发",
-      "score": 14.114,
+      "score": 13.791186,
       "views": 112,
       "downloads": 21,
       "wallpaperCount": 18,
@@ -206,7 +206,7 @@
     },
     {
       "tag": "动漫",
-      "score": 13.554691,
+      "score": 13.24467,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 17,
@@ -239,7 +239,7 @@
     },
     {
       "tag": "夏日",
-      "score": 11.16082,
+      "score": 10.905551,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 14,
@@ -272,7 +272,7 @@
     },
     {
       "tag": "夜晚",
-      "score": 10.410831,
+      "score": 10.172715,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 13,
@@ -305,7 +305,7 @@
     },
     {
       "tag": "插画",
-      "score": 8.442214,
+      "score": 8.249124,
       "views": 160,
       "downloads": 17,
       "wallpaperCount": 11,
@@ -338,7 +338,7 @@
     },
     {
       "tag": "可爱",
-      "score": 7.973734,
+      "score": 7.79136,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 10,
@@ -371,7 +371,7 @@
     },
     {
       "tag": "风景",
-      "score": 6.37855,
+      "score": 6.23266,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 8,
@@ -404,7 +404,7 @@
     },
     {
       "tag": "花朵",
-      "score": 6.37855,
+      "score": 6.23266,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 8,
@@ -437,7 +437,7 @@
     },
     {
       "tag": "少女",
-      "score": 6.121158,
+      "score": 5.981155,
       "views": 37,
       "downloads": 11,
       "wallpaperCount": 8,
@@ -470,7 +470,7 @@
     },
     {
       "tag": "微笑",
-      "score": 5.667408,
+      "score": 5.537784,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 7,
@@ -503,7 +503,7 @@
     },
     {
       "tag": "创意",
-      "score": 5.579863,
+      "score": 5.452241,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 7,
@@ -536,7 +536,7 @@
     },
     {
       "tag": "海绵宝宝",
-      "score": 5.578768,
+      "score": 5.451171,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 7,
@@ -569,7 +569,7 @@
     },
     {
       "tag": "海滩",
-      "score": 4.825496,
+      "score": 4.715128,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 6,
@@ -602,7 +602,7 @@
     },
     {
       "tag": "二次元",
-      "score": 4.785554,
+      "score": 4.676099,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 6,
@@ -635,7 +635,7 @@
     },
     {
       "tag": "萌宠",
-      "score": 4.783365,
+      "score": 4.67396,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 6,
@@ -667,9 +667,42 @@
       ]
     },
     {
-      "tag": "宁静",
-      "score": 4.614674,
+      "tag": "月光",
+      "score": 4.548441,
       "views": 18,
+      "downloads": 4,
+      "wallpaperCount": 5,
+      "latestCreatedAt": "2026-10-13T07:21:53.023Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/好身材-对镜自拍.webp",
+          "cdnTag": "v1.4.67"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_091812_486.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092706_925.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091222_090.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_091310_304.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
+      "tag": "宁静",
+      "score": 4.541542,
+      "views": 23,
       "downloads": 2,
       "wallpaperCount": 5,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -700,41 +733,8 @@
       ]
     },
     {
-      "tag": "月光",
-      "score": 4.608341,
-      "views": 14,
-      "downloads": 3,
-      "wallpaperCount": 5,
-      "latestCreatedAt": "2026-10-13T07:21:53.023Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/好身材-对镜自拍.webp",
-          "cdnTag": "v1.4.67"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_091812_486.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092706_925.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091222_090.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_091310_304.webp",
-          "cdnTag": "v1.4.64"
-        }
-      ]
-    },
-    {
       "tag": "黑丝",
-      "score": 4.53636,
+      "score": 4.432605,
       "views": 68,
       "downloads": 6,
       "wallpaperCount": 6,
@@ -767,7 +767,7 @@
     },
     {
       "tag": "樱花",
-      "score": 3.987962,
+      "score": 3.896749,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 5,
@@ -800,7 +800,7 @@
     },
     {
       "tag": "浪漫",
-      "score": 3.190369,
+      "score": 3.117399,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 4,
@@ -829,7 +829,7 @@
     },
     {
       "tag": "友谊",
-      "score": 3.18818,
+      "score": 3.115261,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 4,
@@ -858,7 +858,7 @@
     },
     {
       "tag": "性感",
-      "score": 2.434908,
+      "score": 2.379217,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -883,7 +883,7 @@
     },
     {
       "tag": "猫咪",
-      "score": 2.392777,
+      "score": 2.33805,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -908,7 +908,7 @@
     },
     {
       "tag": "玩偶",
-      "score": 2.392777,
+      "score": 2.33805,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -933,7 +933,7 @@
     },
     {
       "tag": "青春",
-      "score": 2.392777,
+      "score": 2.33805,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -958,7 +958,7 @@
     },
     {
       "tag": "时尚",
-      "score": 2.392777,
+      "score": 2.33805,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -983,7 +983,7 @@
     },
     {
       "tag": "文字",
-      "score": 2.391682,
+      "score": 2.33698,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -1008,7 +1008,7 @@
     },
     {
       "tag": "派大星",
-      "score": 2.389494,
+      "score": 2.334841,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -1032,31 +1032,10 @@
       ]
     },
     {
-      "tag": "黑色",
-      "score": 2.215564,
-      "views": 14,
-      "downloads": 3,
-      "wallpaperCount": 2,
-      "latestCreatedAt": "2026-10-13T07:21:53.023Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/好身材-对镜自拍.webp",
-          "cdnTag": "v1.4.67"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_085240_644.webp",
-          "cdnTag": "v1.4.64"
-        }
-      ]
-    },
-    {
       "tag": "高跟鞋",
-      "score": 2.18392,
-      "views": 12,
-      "downloads": 1,
+      "score": 2.213315,
+      "views": 18,
+      "downloads": 2,
       "wallpaperCount": 2,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
       "series": [
@@ -1074,10 +1053,31 @@
       ]
     },
     {
+      "tag": "黑色",
+      "score": 2.210392,
+      "views": 18,
+      "downloads": 4,
+      "wallpaperCount": 2,
+      "latestCreatedAt": "2026-10-13T07:21:53.023Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/好身材-对镜自拍.webp",
+          "cdnTag": "v1.4.67"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_085240_644.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
       "tag": "暗夜",
-      "score": 2.141789,
-      "views": 12,
-      "downloads": 1,
+      "score": 2.172147,
+      "views": 18,
+      "downloads": 2,
       "wallpaperCount": 2,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
       "series": [
@@ -1096,7 +1096,7 @@
     },
     {
       "tag": "暗夜玫瑰",
-      "score": 1.637316,
+      "score": 1.599867,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 2,
@@ -1117,7 +1117,7 @@
     },
     {
       "tag": "地铁",
-      "score": 1.637316,
+      "score": 1.599867,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 2,
@@ -1138,7 +1138,7 @@
     },
     {
       "tag": "冬日",
-      "score": 1.637316,
+      "score": 1.599867,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 2,
@@ -1159,7 +1159,7 @@
     },
     {
       "tag": "粉色",
-      "score": 1.595185,
+      "score": 1.5587,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 2,
