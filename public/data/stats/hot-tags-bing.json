@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-22T20:44:35.966Z",
+  "generatedAt": "2026-10-23T20:37:07.403Z",
   "windowDays": 90,
   "halfLifeDays": 30,
-  "windowStart": "2026-07-24T20:44:35.966Z",
+  "windowStart": "2026-07-25T20:37:07.403Z",
   "series": "bing",
   "total": 88,
   "tags": [
     {
       "tag": "秋色中转动的水轮",
-      "score": 1.080783,
+      "score": 1.056225,
       "views": 3,
       "downloads": 1,
       "wallpaperCount": 1,
@@ -22,7 +22,7 @@
     },
     {
       "tag": "从铁轨到潮汐",
-      "score": 1.080059,
+      "score": 1.055517,
       "views": 5,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -36,7 +36,7 @@
     },
     {
       "tag": "迁飞路线上的生命",
-      "score": 1.056098,
+      "score": 1.032101,
       "views": 6,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -49,8 +49,22 @@
       ]
     },
     {
+      "tag": "荒野伙伴",
+      "score": 0.980346,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-10-23T00:00:00Z",
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-10-23.jpg"
+      ]
+    },
+    {
       "tag": "静水映斑斓",
-      "score": 0.980228,
+      "score": 0.957955,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -64,7 +78,7 @@
     },
     {
       "tag": "飞掠河面",
-      "score": 0.95784,
+      "score": 0.936075,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -78,7 +92,7 @@
     },
     {
       "tag": "慢节奏生活",
-      "score": 0.935963,
+      "score": 0.914695,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -91,8 +105,22 @@
       ]
     },
     {
+      "tag": "宇宙在召唤",
+      "score": 0.898496,
+      "views": 3,
+      "downloads": 1,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-10-04T00:00:00Z",
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-10-04.jpg"
+      ]
+    },
+    {
       "tag": "纵身一跃，一次一课",
-      "score": 0.918771,
+      "score": 0.897894,
       "views": 2,
       "downloads": 1,
       "wallpaperCount": 1,
@@ -106,7 +134,7 @@
     },
     {
       "tag": "水上通衢",
-      "score": 0.914585,
+      "score": 0.893803,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -119,22 +147,8 @@
       ]
     },
     {
-      "tag": "宇宙在召唤",
-      "score": 0.897786,
-      "views": 2,
-      "downloads": 1,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-10-04T00:00:00Z",
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-10-04.jpg"
-      ]
-    },
-    {
       "tag": "75载，风华正茂",
-      "score": 0.893696,
+      "score": 0.873389,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -148,7 +162,7 @@
     },
     {
       "tag": "发掘尘封的过去",
-      "score": 0.873284,
+      "score": 0.853441,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -162,7 +176,7 @@
     },
     {
       "tag": "一窥科罗拉多群峰",
-      "score": 0.853338,
+      "score": 0.833948,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -176,7 +190,7 @@
     },
     {
       "tag": "在花岗岩中读懂时间",
-      "score": 0.837664,
+      "score": 0.81863,
       "views": 2,
       "downloads": 1,
       "wallpaperCount": 1,
@@ -190,7 +204,7 @@
     },
     {
       "tag": "桥梁、屋顶与暮色",
-      "score": 0.833848,
+      "score": 0.814901,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -204,7 +218,7 @@
     },
     {
       "tag": "穿越时间的螺旋",
-      "score": 0.814803,
+      "score": 0.796288,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -218,7 +232,7 @@
     },
     {
       "tag": "蓝与绿的交响曲",
-      "score": 0.796193,
+      "score": 0.778101,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -232,7 +246,7 @@
     },
     {
       "tag": "捕捉、进食、重复",
-      "score": 0.782369,
+      "score": 0.764592,
       "views": 2,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -246,7 +260,7 @@
     },
     {
       "tag": "科西嘉岛的岩石前哨",
-      "score": 0.725907,
+      "score": 0.709412,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -260,7 +274,7 @@
     },
     {
       "tag": "现在你“海”能看见我……",
-      "score": 0.709327,
+      "score": 0.693209,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -274,7 +288,7 @@
     },
     {
       "tag": "穿越山口腹地",
-      "score": 0.695193,
+      "score": 0.679397,
       "views": 6,
       "downloads": 2,
       "wallpaperCount": 1,
@@ -288,7 +302,7 @@
     },
     {
       "tag": "迷惑不解？沿着小径走",
-      "score": 0.693126,
+      "score": 0.677376,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -302,7 +316,7 @@
     },
     {
       "tag": "条纹中的地球故事",
-      "score": 0.677295,
+      "score": 0.661905,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -316,7 +330,7 @@
     },
     {
       "tag": "最炫者生存",
-      "score": 0.661566,
+      "score": 0.646533,
       "views": 5,
       "downloads": 3,
       "wallpaperCount": 1,
@@ -330,7 +344,7 @@
     },
     {
       "tag": "地中海风情尽显",
-      "score": 0.634709,
+      "score": 0.620287,
       "views": 9,
       "downloads": 4,
       "wallpaperCount": 1,
@@ -344,7 +358,7 @@
     },
     {
       "tag": "一条值得保护的河流",
-      "score": 0.617505,
+      "score": 0.603474,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -358,7 +372,7 @@
     },
     {
       "tag": "海浪与海岸的高手",
-      "score": 0.617263,
+      "score": 0.603237,
       "views": 8,
       "downloads": 2,
       "wallpaperCount": 1,
@@ -372,7 +386,7 @@
     },
     {
       "tag": "高处的珊瑚礁",
-      "score": 0.612442,
+      "score": 0.598526,
       "views": 5,
       "downloads": 2,
       "wallpaperCount": 1,
@@ -386,7 +400,7 @@
     },
     {
       "tag": "俯瞰大地拼图",
-      "score": 0.604062,
+      "score": 0.590336,
       "views": 8,
       "downloads": 3,
       "wallpaperCount": 1,
@@ -400,7 +414,7 @@
     },
     {
       "tag": "一张令人过目难忘的脸",
-      "score": 0.58962,
+      "score": 0.576222,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -414,7 +428,7 @@
     },
     {
       "tag": "金色田野",
-      "score": 0.576783,
+      "score": 0.563677,
       "views": 8,
       "downloads": 3,
       "wallpaperCount": 1,
@@ -428,7 +442,7 @@
     },
     {
       "tag": "冰川孕育之河",
-      "score": 0.576153,
+      "score": 0.563061,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -442,7 +456,7 @@
     },
     {
       "tag": "为丰收举杯",
-      "score": 0.567801,
+      "score": 0.554899,
       "views": 3,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -456,7 +470,7 @@
     },
     {
       "tag": "历史沿运河流淌之地",
-      "score": 0.56767,
+      "score": 0.554771,
       "views": 6,
       "downloads": 4,
       "wallpaperCount": 1,
@@ -470,7 +484,7 @@
     },
     {
       "tag": "印度西海岸的生活",
-      "score": 0.564672,
+      "score": 0.551841,
       "views": 9,
       "downloads": 1,
       "wallpaperCount": 1,
@@ -484,7 +498,7 @@
     },
     {
       "tag": "可览美景的历史胜地",
-      "score": 0.562993,
+      "score": 0.550201,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -498,7 +512,7 @@
     },
     {
       "tag": "深海夜花园",
-      "score": 0.550135,
+      "score": 0.537634,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -512,7 +526,7 @@
     },
     {
       "tag": "写在大地上的故事",
-      "score": 0.537569,
+      "score": 0.525354,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -526,7 +540,7 @@
     },
     {
       "tag": "当月亮也来赴会",
-      "score": 0.525291,
+      "score": 0.513355,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -540,7 +554,7 @@
     },
     {
       "tag": "火山灰与浪花相遇",
-      "score": 0.513294,
+      "score": 0.50163,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -550,20 +564,6 @@
       ],
       "topWallpapers": [
         "bing-2026-09-24.jpg"
-      ]
-    },
-    {
-      "tag": "脚下的世界",
-      "score": 0.509457,
-      "views": 14,
-      "downloads": 3,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-09-01T00:00:00Z",
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-09-01.jpg"
       ]
     }
   ]
