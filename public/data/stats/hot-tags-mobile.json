@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-11-01T21:21:28.699Z",
+  "generatedAt": "2026-11-03T00:01:08.892Z",
   "windowDays": 90,
   "halfLifeDays": 30,
-  "windowStart": "2026-08-03T21:21:28.699Z",
+  "windowStart": "2026-08-05T00:01:08.892Z",
   "series": "mobile",
   "total": 240,
   "tags": [
     {
       "tag": "人像",
-      "score": 49.75556,
-      "views": 731,
-      "downloads": 109,
+      "score": 49.369674,
+      "views": 780,
+      "downloads": 114,
       "wallpaperCount": 77,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
       "series": [
@@ -41,9 +41,9 @@
     },
     {
       "tag": "清新",
-      "score": 28.29638,
-      "views": 268,
-      "downloads": 52,
+      "score": 28.421547,
+      "views": 305,
+      "downloads": 57,
       "wallpaperCount": 45,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
       "series": [
@@ -59,23 +59,23 @@
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/人像-夏日-大海.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/Ios-优雅-写真.webp",
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092951_829.webp",
-          "cdnTag": "v1.4.64"
+          "thumbnail": "/thumbnail/mobile/人像/清新/人像-侧脸-公交车内.webp",
+          "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/冬季穿搭-冬日少女.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/人像-夏日-大海.webp",
           "cdnTag": "v1.4.67"
         }
       ]
     },
     {
       "tag": "魅力",
-      "score": 19.892717,
-      "views": 303,
+      "score": 19.421358,
+      "views": 315,
       "downloads": 40,
       "wallpaperCount": 29,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -96,20 +96,20 @@
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/仰角-女生-灰色短裤.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/中袖-低胸-包臀裙.webp",
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/中袖-低胸-包臀裙.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/仰角-女生-灰色短裤.webp",
           "cdnTag": "v1.4.67"
         }
       ]
     },
     {
       "tag": "阳光",
-      "score": 15.489052,
-      "views": 35,
-      "downloads": 5,
+      "score": 15.917046,
+      "views": 61,
+      "downloads": 10,
       "wallpaperCount": 24,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
       "series": [
@@ -121,11 +121,7 @@
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/人像-夏日-大海.webp",
-          "cdnTag": "v1.4.67"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/冬季穿搭-冬日少女.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/Ios-优雅-写真.webp",
           "cdnTag": "v1.4.67"
         },
         {
@@ -133,15 +129,19 @@
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/Ios-优雅-写真.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/人像-夏日-大海.webp",
+          "cdnTag": "v1.4.67"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/冬季穿搭-冬日少女.webp",
           "cdnTag": "v1.4.67"
         }
       ]
     },
     {
       "tag": "优雅",
-      "score": 12.178154,
-      "views": 105,
+      "score": 11.873139,
+      "views": 106,
       "downloads": 11,
       "wallpaperCount": 19,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -173,9 +173,9 @@
     },
     {
       "tag": "长发",
-      "score": 11.507371,
-      "views": 147,
-      "downloads": 26,
+      "score": 11.329729,
+      "views": 152,
+      "downloads": 29,
       "wallpaperCount": 18,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
       "series": [
@@ -187,12 +187,12 @@
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092951_829.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
           "thumbnail": "/thumbnail/mobile/人像/清新/Ios-优雅-写真.webp",
           "cdnTag": "v1.4.67"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092951_829.webp",
+          "cdnTag": "v1.4.64"
         },
         {
           "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091755_370.webp",
@@ -206,7 +206,7 @@
     },
     {
       "tag": "动漫",
-      "score": 10.63805,
+      "score": 10.36848,
       "views": 13,
       "downloads": 1,
       "wallpaperCount": 17,
@@ -239,7 +239,7 @@
     },
     {
       "tag": "夏日",
-      "score": 8.755321,
+      "score": 8.533459,
       "views": 9,
       "downloads": 0,
       "wallpaperCount": 14,
@@ -249,11 +249,11 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092951_829.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091608_286.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091608_286.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092951_829.webp",
           "cdnTag": "v1.4.64"
         },
         {
@@ -272,7 +272,7 @@
     },
     {
       "tag": "夜晚",
-      "score": 8.276286,
+      "score": 8.066563,
       "views": 13,
       "downloads": 1,
       "wallpaperCount": 13,
@@ -305,7 +305,7 @@
     },
     {
       "tag": "插画",
-      "score": 6.394658,
+      "score": 6.232616,
       "views": 160,
       "downloads": 17,
       "wallpaperCount": 11,
@@ -338,7 +338,7 @@
     },
     {
       "tag": "可爱",
-      "score": 6.039802,
+      "score": 5.886752,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 10,
@@ -371,8 +371,8 @@
     },
     {
       "tag": "少女",
-      "score": 4.953889,
-      "views": 46,
+      "score": 5.146631,
+      "views": 57,
       "downloads": 11,
       "wallpaperCount": 8,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -385,12 +385,12 @@
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/冬季穿搭-冬日少女.webp",
-          "cdnTag": "v1.4.67"
-        },
-        {
           "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091608_286.webp",
           "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/冬季穿搭-冬日少女.webp",
+          "cdnTag": "v1.4.67"
         },
         {
           "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091920_824.webp",
@@ -403,8 +403,41 @@
       ]
     },
     {
+      "tag": "微笑",
+      "score": 4.967845,
+      "views": 20,
+      "downloads": 5,
+      "wallpaperCount": 7,
+      "latestCreatedAt": "2026-10-13T07:21:53.023Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/Ios-优雅-写真.webp",
+          "cdnTag": "v1.4.67"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/人像-侧脸-公交车内.webp",
+          "cdnTag": "v1.4.67"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092951_829.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091735_332.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091818_244.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
       "tag": "风景",
-      "score": 4.83151,
+      "score": 4.709079,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 8,
@@ -437,7 +470,7 @@
     },
     {
       "tag": "花朵",
-      "score": 4.83151,
+      "score": 4.709079,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 8,
@@ -469,42 +502,9 @@
       ]
     },
     {
-      "tag": "微笑",
-      "score": 4.594269,
-      "views": 9,
-      "downloads": 0,
-      "wallpaperCount": 7,
-      "latestCreatedAt": "2026-10-13T07:21:53.023Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092951_829.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/人像-侧脸-公交车内.webp",
-          "cdnTag": "v1.4.67"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/Ios-优雅-写真.webp",
-          "cdnTag": "v1.4.67"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091735_332.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091818_244.webp",
-          "cdnTag": "v1.4.64"
-        }
-      ]
-    },
-    {
       "tag": "黑丝",
-      "score": 4.312601,
-      "views": 102,
+      "score": 4.210997,
+      "views": 104,
       "downloads": 11,
       "wallpaperCount": 6,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -536,7 +536,7 @@
     },
     {
       "tag": "创意",
-      "score": 4.226535,
+      "score": 4.119434,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 7,
@@ -569,7 +569,7 @@
     },
     {
       "tag": "海绵宝宝",
-      "score": 4.225706,
+      "score": 4.118626,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 7,
@@ -601,8 +601,41 @@
       ]
     },
     {
+      "tag": "海滩",
+      "score": 3.896302,
+      "views": 11,
+      "downloads": 0,
+      "wallpaperCount": 6,
+      "latestCreatedAt": "2026-10-13T07:21:53.023Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/人像-夏日-大海.webp",
+          "cdnTag": "v1.4.67"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092505_926.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092625_478.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_085530_928.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/640 (2).webp",
+          "cdnTag": "v1.4.63"
+        }
+      ]
+    },
+    {
       "tag": "二次元",
-      "score": 3.99576,
+      "score": 3.894507,
       "views": 13,
       "downloads": 1,
       "wallpaperCount": 6,
@@ -634,41 +667,41 @@
       ]
     },
     {
-      "tag": "海滩",
-      "score": 3.972474,
-      "views": 9,
-      "downloads": 0,
-      "wallpaperCount": 6,
+      "tag": "宁静",
+      "score": 3.539289,
+      "views": 57,
+      "downloads": 3,
+      "wallpaperCount": 5,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/人像-夏日-大海.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/侧颜-壁纸-女性.webp",
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092505_926.webp",
+          "thumbnail": "/thumbnail/mobile/风景/星空/微信图片_2026-10-11_091928_356.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092625_478.webp",
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_090542_911.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_085530_928.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091453_101.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/640 (2).webp",
+          "thumbnail": "/thumbnail/mobile/创意/通用/微信图片_2026-07-21_190403_422.webp",
           "cdnTag": "v1.4.63"
         }
       ]
     },
     {
       "tag": "萌宠",
-      "score": 3.623218,
+      "score": 3.531405,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 6,
@@ -700,42 +733,9 @@
       ]
     },
     {
-      "tag": "宁静",
-      "score": 3.609029,
-      "views": 47,
-      "downloads": 3,
-      "wallpaperCount": 5,
-      "latestCreatedAt": "2026-10-13T07:21:53.023Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/侧颜-壁纸-女性.webp",
-          "cdnTag": "v1.4.67"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/风景/星空/微信图片_2026-10-11_091928_356.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_090542_911.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091453_101.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/创意/通用/微信图片_2026-07-21_190403_422.webp",
-          "cdnTag": "v1.4.63"
-        }
-      ]
-    },
-    {
       "tag": "月光",
-      "score": 3.550302,
-      "views": 24,
+      "score": 3.463918,
+      "views": 25,
       "downloads": 4,
       "wallpaperCount": 5,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -767,7 +767,7 @@
     },
     {
       "tag": "樱花",
-      "score": 3.02073,
+      "score": 2.944184,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 5,
@@ -800,7 +800,7 @@
     },
     {
       "tag": "浪漫",
-      "score": 2.416584,
+      "score": 2.355347,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 4,
@@ -829,7 +829,7 @@
     },
     {
       "tag": "友谊",
-      "score": 2.414926,
+      "score": 2.353731,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 4,
@@ -858,8 +858,8 @@
     },
     {
       "tag": "高跟鞋",
-      "score": 2.255781,
-      "views": 59,
+      "score": 2.220086,
+      "views": 68,
       "downloads": 10,
       "wallpaperCount": 2,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -879,7 +879,7 @@
     },
     {
       "tag": "性感",
-      "score": 2.234826,
+      "score": 2.178195,
       "views": 13,
       "downloads": 1,
       "wallpaperCount": 3,
@@ -904,8 +904,8 @@
     },
     {
       "tag": "暗夜",
-      "score": 1.833393,
-      "views": 49,
+      "score": 1.800724,
+      "views": 57,
       "downloads": 8,
       "wallpaperCount": 2,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -925,7 +925,7 @@
     },
     {
       "tag": "猫咪",
-      "score": 1.812438,
+      "score": 1.76651,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -950,7 +950,7 @@
     },
     {
       "tag": "玩偶",
-      "score": 1.812438,
+      "score": 1.76651,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -975,7 +975,7 @@
     },
     {
       "tag": "青春",
-      "score": 1.812438,
+      "score": 1.76651,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -1000,7 +1000,7 @@
     },
     {
       "tag": "时尚",
-      "score": 1.812438,
+      "score": 1.76651,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -1025,7 +1025,7 @@
     },
     {
       "tag": "文字",
-      "score": 1.811609,
+      "score": 1.765702,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -1050,7 +1050,7 @@
     },
     {
       "tag": "派大星",
-      "score": 1.809951,
+      "score": 1.764086,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -1075,8 +1075,8 @@
     },
     {
       "tag": "黑色",
-      "score": 1.737863,
-      "views": 24,
+      "score": 1.697408,
+      "views": 25,
       "downloads": 4,
       "wallpaperCount": 2,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -1096,8 +1096,8 @@
     },
     {
       "tag": "暗夜玫瑰",
-      "score": 1.72621,
-      "views": 21,
+      "score": 1.690145,
+      "views": 23,
       "downloads": 4,
       "wallpaperCount": 2,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -1116,8 +1116,29 @@
       ]
     },
     {
+      "tag": "地铁",
+      "score": 1.597036,
+      "views": 11,
+      "downloads": 2,
+      "wallpaperCount": 2,
+      "latestCreatedAt": "2026-10-13T07:21:53.023Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/人像-侧脸-公交车内.webp",
+          "cdnTag": "v1.4.67"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_091717_711.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
       "tag": "夏日风情",
-      "score": 1.562792,
+      "score": 1.52319,
       "views": 11,
       "downloads": 1,
       "wallpaperCount": 2,
@@ -1137,43 +1158,22 @@
       ]
     },
     {
-      "tag": "地铁",
-      "score": 1.240205,
-      "views": 0,
+      "tag": "海边",
+      "score": 1.471457,
+      "views": 9,
       "downloads": 0,
       "wallpaperCount": 2,
-      "latestCreatedAt": "2026-10-13T07:21:53.023Z",
+      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/人像-侧脸-公交车内.webp",
-          "cdnTag": "v1.4.67"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_091717_711.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091608_286.webp",
           "cdnTag": "v1.4.64"
-        }
-      ]
-    },
-    {
-      "tag": "冬日",
-      "score": 1.240205,
-      "views": 0,
-      "downloads": 0,
-      "wallpaperCount": 2,
-      "latestCreatedAt": "2026-10-13T07:21:53.023Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/冬季穿搭-冬日少女.webp",
-          "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_090634_004.webp",
+          "thumbnail": "/thumbnail/mobile/人像/明星/微信图片_2026-10-11_090822_146.webp",
           "cdnTag": "v1.4.64"
         }
       ]
