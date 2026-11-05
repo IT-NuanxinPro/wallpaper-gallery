@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-11-04T22:49:03.933Z",
+  "generatedAt": "2026-11-05T22:48:09.926Z",
   "windowDays": 90,
   "halfLifeDays": 30,
-  "windowStart": "2026-08-06T22:49:03.933Z",
+  "windowStart": "2026-08-07T22:48:09.926Z",
   "series": "mobile",
   "total": 240,
   "tags": [
     {
       "tag": "人像",
-      "score": 46.981951,
-      "views": 815,
-      "downloads": 116,
+      "score": 45.967399,
+      "views": 833,
+      "downloads": 117,
       "wallpaperCount": 77,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
       "series": [
@@ -41,8 +41,8 @@
     },
     {
       "tag": "清新",
-      "score": 26.901074,
-      "views": 318,
+      "score": 26.311588,
+      "views": 326,
       "downloads": 56,
       "wallpaperCount": 45,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -74,9 +74,9 @@
     },
     {
       "tag": "魅力",
-      "score": 18.621367,
-      "views": 337,
-      "downloads": 43,
+      "score": 18.229615,
+      "views": 347,
+      "downloads": 44,
       "wallpaperCount": 29,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
       "series": [
@@ -107,8 +107,8 @@
     },
     {
       "tag": "阳光",
-      "score": 14.88794,
-      "views": 58,
+      "score": 14.565325,
+      "views": 61,
       "downloads": 8,
       "wallpaperCount": 24,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -140,8 +140,8 @@
     },
     {
       "tag": "优雅",
-      "score": 11.360762,
-      "views": 108,
+      "score": 11.117525,
+      "views": 112,
       "downloads": 11,
       "wallpaperCount": 19,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -173,7 +173,7 @@
     },
     {
       "tag": "动漫",
-      "score": 10.639391,
+      "score": 10.396537,
       "views": 34,
       "downloads": 7,
       "wallpaperCount": 17,
@@ -206,8 +206,8 @@
     },
     {
       "tag": "长发",
-      "score": 10.465769,
-      "views": 148,
+      "score": 10.229314,
+      "views": 149,
       "downloads": 26,
       "wallpaperCount": 18,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -239,7 +239,7 @@
     },
     {
       "tag": "夏日",
-      "score": 8.189531,
+      "score": 8.002598,
       "views": 12,
       "downloads": 0,
       "wallpaperCount": 14,
@@ -272,8 +272,8 @@
     },
     {
       "tag": "夜晚",
-      "score": 8.048838,
-      "views": 25,
+      "score": 7.871901,
+      "views": 26,
       "downloads": 2,
       "wallpaperCount": 13,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -305,7 +305,7 @@
     },
     {
       "tag": "插画",
-      "score": 5.958048,
+      "score": 5.82205,
       "views": 160,
       "downloads": 17,
       "wallpaperCount": 11,
@@ -338,7 +338,7 @@
     },
     {
       "tag": "可爱",
-      "score": 5.627421,
+      "score": 5.49897,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 10,
@@ -371,8 +371,8 @@
     },
     {
       "tag": "少女",
-      "score": 5.386229,
-      "views": 71,
+      "score": 5.278063,
+      "views": 73,
       "downloads": 17,
       "wallpaperCount": 8,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -381,12 +381,12 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_090634_004.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
           "thumbnail": "/thumbnail/mobile/人像/清新/人像-夏日-大海.webp",
           "cdnTag": "v1.4.67"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_090634_004.webp",
+          "cdnTag": "v1.4.64"
         },
         {
           "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091608_286.webp",
@@ -404,7 +404,7 @@
     },
     {
       "tag": "风景",
-      "score": 4.501628,
+      "score": 4.398874,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 8,
@@ -437,7 +437,7 @@
     },
     {
       "tag": "花朵",
-      "score": 4.501628,
+      "score": 4.398874,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 8,
@@ -470,7 +470,7 @@
     },
     {
       "tag": "微笑",
-      "score": 4.370897,
+      "score": 4.271128,
       "views": 11,
       "downloads": 2,
       "wallpaperCount": 7,
@@ -503,7 +503,7 @@
     },
     {
       "tag": "二次元",
-      "score": 4.120324,
+      "score": 4.026273,
       "views": 23,
       "downloads": 6,
       "wallpaperCount": 6,
@@ -536,8 +536,8 @@
     },
     {
       "tag": "黑丝",
-      "score": 4.043106,
-      "views": 108,
+      "score": 3.96078,
+      "views": 110,
       "downloads": 11,
       "wallpaperCount": 6,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -569,7 +569,7 @@
     },
     {
       "tag": "创意",
-      "score": 3.937959,
+      "score": 3.848071,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 7,
@@ -602,7 +602,7 @@
     },
     {
       "tag": "海绵宝宝",
-      "score": 3.937186,
+      "score": 3.847316,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 7,
@@ -635,8 +635,8 @@
     },
     {
       "tag": "海滩",
-      "score": 3.761598,
-      "views": 12,
+      "score": 3.690515,
+      "views": 14,
       "downloads": 1,
       "wallpaperCount": 6,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -668,8 +668,8 @@
     },
     {
       "tag": "宁静",
-      "score": 3.41087,
-      "views": 70,
+      "score": 3.340354,
+      "views": 75,
       "downloads": 4,
       "wallpaperCount": 5,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -701,7 +701,7 @@
     },
     {
       "tag": "萌宠",
-      "score": 3.375835,
+      "score": 3.298778,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 6,
@@ -734,8 +734,8 @@
     },
     {
       "tag": "月光",
-      "score": 3.314656,
-      "views": 26,
+      "score": 3.248295,
+      "views": 29,
       "downloads": 4,
       "wallpaperCount": 5,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -767,7 +767,7 @@
     },
     {
       "tag": "樱花",
-      "score": 2.814483,
+      "score": 2.75024,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 5,
@@ -800,7 +800,7 @@
     },
     {
       "tag": "浪漫",
-      "score": 2.251586,
+      "score": 2.200192,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 4,
@@ -829,7 +829,7 @@
     },
     {
       "tag": "友谊",
-      "score": 2.250041,
+      "score": 2.198682,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 4,
@@ -858,9 +858,9 @@
     },
     {
       "tag": "高跟鞋",
-      "score": 2.149045,
-      "views": 83,
-      "downloads": 13,
+      "score": 2.099991,
+      "views": 86,
+      "downloads": 14,
       "wallpaperCount": 2,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
       "series": [
@@ -879,8 +879,8 @@
     },
     {
       "tag": "性感",
-      "score": 2.089578,
-      "views": 14,
+      "score": 2.048665,
+      "views": 15,
       "downloads": 1,
       "wallpaperCount": 3,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -904,9 +904,9 @@
     },
     {
       "tag": "暗夜",
-      "score": 1.748157,
-      "views": 72,
-      "downloads": 11,
+      "score": 1.708254,
+      "views": 75,
+      "downloads": 12,
       "wallpaperCount": 2,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
       "series": [
@@ -925,7 +925,7 @@
     },
     {
       "tag": "猫咪",
-      "score": 1.68869,
+      "score": 1.650144,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -950,7 +950,7 @@
     },
     {
       "tag": "玩偶",
-      "score": 1.68869,
+      "score": 1.650144,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -975,7 +975,7 @@
     },
     {
       "tag": "青春",
-      "score": 1.68869,
+      "score": 1.650144,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -1000,7 +1000,7 @@
     },
     {
       "tag": "时尚",
-      "score": 1.68869,
+      "score": 1.650144,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -1025,7 +1025,7 @@
     },
     {
       "tag": "文字",
-      "score": 1.687917,
+      "score": 1.649389,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -1050,7 +1050,7 @@
     },
     {
       "tag": "派大星",
-      "score": 1.686372,
+      "score": 1.647879,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -1074,30 +1074,9 @@
       ]
     },
     {
-      "tag": "暗夜玫瑰",
-      "score": 1.625967,
-      "views": 26,
-      "downloads": 4,
-      "wallpaperCount": 2,
-      "latestCreatedAt": "2026-10-13T07:21:53.023Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/人像-冷艳-御姐.webp",
-          "cdnTag": "v1.4.67"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092938_633.webp",
-          "cdnTag": "v1.4.64"
-        }
-      ]
-    },
-    {
       "tag": "黑色",
-      "score": 1.625967,
-      "views": 26,
+      "score": 1.598152,
+      "views": 29,
       "downloads": 4,
       "wallpaperCount": 2,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -1116,8 +1095,29 @@
       ]
     },
     {
+      "tag": "暗夜玫瑰",
+      "score": 1.592029,
+      "views": 27,
+      "downloads": 4,
+      "wallpaperCount": 2,
+      "latestCreatedAt": "2026-10-13T07:21:53.023Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/人像-冷艳-御姐.webp",
+          "cdnTag": "v1.4.67"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092938_633.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
       "tag": "冬日",
-      "score": 1.55291,
+      "score": 1.517463,
       "views": 10,
       "downloads": 5,
       "wallpaperCount": 2,
@@ -1138,7 +1138,7 @@
     },
     {
       "tag": "地铁",
-      "score": 1.526681,
+      "score": 1.491833,
       "views": 11,
       "downloads": 2,
       "wallpaperCount": 2,
@@ -1159,8 +1159,8 @@
     },
     {
       "tag": "夏日风情",
-      "score": 1.46396,
-      "views": 12,
+      "score": 1.444582,
+      "views": 14,
       "downloads": 1,
       "wallpaperCount": 2,
       "latestCreatedAt": "2026-10-11T01:53:44.861Z",
