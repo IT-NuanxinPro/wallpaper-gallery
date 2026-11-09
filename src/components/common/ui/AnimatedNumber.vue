@@ -5,7 +5,7 @@
  * 支持批量加载和渐进加载时的数字变化动画
  */
 import { gsap } from 'gsap'
-import { onMounted, ref, watch } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 const props = defineProps({
   value: {
@@ -48,6 +48,11 @@ function formatNumber(num) {
 
 // 动画到目标值
 function animateTo(targetValue, fromValue = null) {
+  gsap.killTweensOf(displayValue)
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    displayValue.value = targetValue
+    return
+  }
   const startValue = fromValue !== null ? fromValue : displayValue.value
 
   // 如果值没变化，不播放动画
@@ -80,6 +85,8 @@ watch(() => props.value, (newValue, oldValue) => {
     animateTo(newValue)
   }
 })
+
+onBeforeUnmount(() => gsap.killTweensOf(displayValue))
 
 // 挂载时播放初始动画
 onMounted(() => {

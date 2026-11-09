@@ -4,6 +4,7 @@ import { gsap } from 'gsap'
 import { storeToRefs } from 'pinia'
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import EnvBadge from '@/components/common/ui/EnvBadge.vue'
 import RemoteAvatar from '@/components/common/ui/RemoteAvatar.vue'
 import WallpaperSeriesIcon from '@/components/common/ui/WallpaperSeriesIcon.vue'
@@ -71,6 +72,7 @@ function getSeriesPath(seriesId) {
 
 // 移动端抽屉状态
 const showDrawer = ref(false)
+const signingOut = ref(false)
 
 // PC 端搜索展开状态
 const isSearchExpanded = ref(false)
@@ -163,6 +165,20 @@ function toggleSearch() {
     return
   }
 
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    isSearchExpanded.value = !isSearchExpanded.value
+    isAnimating.value = false
+    nextTick(() => {
+      const searchBar = searchBarRef.value?.$el || searchBarRef.value
+      if (searchBar) {
+        gsap.killTweensOf(searchBar)
+        gsap.set(searchBar, { width: searchExpandWidth.value, opacity: 1, x: 0 })
+        searchBar.querySelector('input')?.focus()
+      }
+    })
+    return
+  }
+
   if (isAnimating.value)
     return
   isAnimating.value = true
@@ -203,8 +219,9 @@ function toggleSearch() {
 }
 
 function closeSearch() {
-  if (isMobile.value) {
+  if (isMobile.value || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     isSearchExpanded.value = false
+    isAnimating.value = false
     return
   }
 
@@ -270,6 +287,9 @@ function handleThemeQuickToggle() {
 }
 
 async function handleSignOut() {
+  if (signingOut.value)
+    return
+  signingOut.value = true
   closeDrawer()
 
   const shouldRedirectBeforeSignOut = ['/account', '/library'].includes(route.path)
@@ -285,6 +305,9 @@ async function handleSignOut() {
   catch (error) {
     console.warn('[AppHeader] 退出登录失败:', error)
     ElMessage.error('退出登录失败，请稍后重试')
+  }
+  finally {
+    signingOut.value = false
   }
 }
 
@@ -517,8 +540,8 @@ watch(isMobile, () => {
               <el-dropdown-item command="likes">
                 我的喜欢
               </el-dropdown-item>
-              <el-dropdown-item command="signout" divided>
-                退出登录
+              <el-dropdown-item command="signout" :disabled="signingOut" divided>
+                {{ signingOut ? '正在退出登录' : '退出登录' }}
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>
@@ -607,10 +630,33 @@ watch(isMobile, () => {
       @navigate="navigateTo"
       @signout="handleSignOut"
     />
+    <Transition name="fade">
+      <div v-if="signingOut" class="header-action-status" role="status" aria-live="polite">
+        <LoadingSpinner size="sm" />
+        <span>正在退出登录</span>
+      </div>
+    </Transition>
   </header>
 </template>
 
 <style lang="scss">
+.header-action-status {
+  position: fixed;
+  top: calc(#{$header-height} + 12px);
+  right: 24px;
+  z-index: 1201;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-card);
+  color: var(--color-text-secondary);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+  font-size: 13px;
+}
+
 .header-account-dropdown-menu.el-popper {
   padding: 0;
   border: none;
@@ -685,16 +731,15 @@ html[data-theme='dark'] .header-account-dropdown-menu .el-dropdown-menu__item--d
   left: 0;
   right: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.96);
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    opacity 180ms ease;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 
-  // PC 端使用 backdrop-filter
-  @include tablet-up {
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-  }
+  // 固定导航避免持续对滚动内容做大范围模糊合成。
 
   // 移动端使用纯色背景，避免滚动卡顿
   @include mobile-only {
@@ -702,7 +747,7 @@ html[data-theme='dark'] .header-account-dropdown-menu .el-dropdown-menu__item--d
   }
 
   [data-theme='dark'] & {
-    background: rgba(15, 23, 42, 0.75);
+    background: rgba(15, 23, 42, 0.97);
     border-bottom-color: rgba(255, 255, 255, 0.08);
 
     @include mobile-only {

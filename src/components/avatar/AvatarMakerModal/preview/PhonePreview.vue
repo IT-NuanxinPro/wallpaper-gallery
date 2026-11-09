@@ -3,6 +3,7 @@
  * iPhone 真机预览组件
  */
 import { computed, ref } from 'vue'
+import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 
 const props = defineProps({
   previewImage: { type: String, default: null },
@@ -32,7 +33,7 @@ const previewRadius = computed(() => {
         <div class="avatar-showcase">
           <div class="avatar-wrapper" :class="{ 'is-square': avatarShape === 'square' }" :style="avatarShape === 'square' ? { borderRadius: previewRadius } : {}">
             <div v-if="isLoading" class="avatar-loading">
-              <span class="loading-spinner" />
+              <LoadingSpinner size="md" />
             </div>
             <img v-else-if="previewImage" :src="previewImage" alt="头像预览" class="avatar-image" :style="avatarShape === 'square' ? { borderRadius: previewRadius } : {}">
             <svg v-else class="avatar-placeholder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -183,21 +184,6 @@ const previewRadius = computed(() => {
   background: rgba(26, 26, 46, 0.9);
   border-radius: 50%;
   z-index: 1;
-}
-
-.loading-spinner {
-  width: 28px;
-  height: 28px;
-  border: 3px solid rgba(255, 255, 255, 0.2);
-  border-top-color: var(--color-accent);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 .avatar-placeholder {

@@ -141,14 +141,14 @@ defineProps({
       </div>
       <div class="card-meta">
         <span class="meta-item">{{ formattedSize }}</span>
-        <span v-if="viewCount > 0" class="meta-item meta-views">
+        <span v-if="viewCount > 0" class="meta-item meta-views" title="图片预览次数，同一会话短时间重复预览去重">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
             <circle cx="12" cy="12" r="3" />
           </svg>
           {{ formatNumber(viewCount) }}
         </span>
-        <span v-if="downloadCount > 0" class="meta-item meta-downloads">
+        <span v-if="downloadCount > 0" class="meta-item meta-downloads" title="下载已发起次数，不代表浏览器最终保存成功">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
           </svg>

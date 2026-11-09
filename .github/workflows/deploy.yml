@@ -61,6 +61,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Test
+        run: pnpm test
+
       # 4. 同步数据到 public 目录 (确保打包时能包含这些 JSON 数据)
       - name: Copy data from image repository
         run: |
@@ -94,7 +97,12 @@ jobs:
         run: pnpm sync:assets
 
       - name: Refresh recent hot tags from deployed metadata
-        run: pnpm export:hot-tags
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: |
+          node scripts/export-stats.js
+          pnpm export:hot-tags
 
       # 5. 执行 Vite 打包构建并生成关键路由静态 HTML
       - name: Build

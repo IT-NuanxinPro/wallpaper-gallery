@@ -274,25 +274,10 @@
     </style>
 
     <!-- DNS 预解析和预连接（加速 CDN 加载） -->
-    <link rel="preconnect" href="https://unpkg.com" crossorigin />
-    <link rel="dns-prefetch" href="https://unpkg.com" />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
     <link rel="preconnect" href="https://cn.bing.com" crossorigin />
     <link rel="dns-prefetch" href="https://cn.bing.com" />
-
-    <!-- Import Map: 映射裸模块说明符到 CDN (使用 unpkg - Cloudflare CDN，国内访问更稳定) -->
-    <!-- 生产环境使用 UMD 全局变量模式，开发环境使用 Import Map -->
-    <script type="importmap">
-      {
-        "imports": {
-          "vue": "https://unpkg.com/vue@3.5.24/dist/vue.esm-browser.prod.js",
-          "vue-router": "https://unpkg.com/vue-router@4.6.4/dist/vue-router.esm-browser.js",
-          "@vue/devtools-api": "https://unpkg.com/@vue/devtools-api@6.6.4/lib/esm/index.js",
-          "gsap": "https://unpkg.com/gsap@3.14.2/index.js"
-        }
-      }
-    </script>
 
     <!-- Umami Analytics (隐私友好的网站统计) - 通过环境变量动态加载 -->
 

@@ -1,9 +1,11 @@
 <script setup>
-import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
+import LoadingSurface from '@/components/common/feedback/LoadingSurface.vue'
 import GridSkeleton from '../GridSkeleton.vue'
 
 defineProps({
   aspectType: { type: String, default: 'landscape' },
+  aspectRatio: { type: String, default: '16/10' },
+  isBing: { type: Boolean, default: false },
   currentSeriesName: { type: String, default: '壁纸' },
   isMobile: { type: Boolean, default: false },
   skeletonCount: { type: Number, default: 6 },
@@ -11,29 +13,21 @@ defineProps({
 </script>
 
 <template>
-  <div class="loading-state" aria-busy="true">
-    <div class="loading-status" role="status" aria-live="polite">
-      <LoadingSpinner size="sm" />
-      <span>正在加载{{ currentSeriesName }}</span>
-    </div>
+  <LoadingSurface class="loading-state" busy :label="`正在加载${currentSeriesName}`" :size="48">
     <GridSkeleton
       :count="skeletonCount"
       :aspect-type="aspectType"
+      :aspect-ratio="aspectRatio"
+      :is-bing="isBing"
       :is-mobile="isMobile"
       aria-hidden="true"
     />
-  </div>
+  </LoadingSurface>
 </template>
 
 <style lang="scss" scoped>
-.loading-status {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  min-height: 48px;
-  margin-bottom: 16px;
-  color: var(--color-text-secondary);
-  font-size: 14px;
+.loading-state :deep(.loading-surface__veil) {
+  align-items: start;
+  padding-top: clamp(64px, 16vh, 160px);
 }
 </style>

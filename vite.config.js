@@ -4,13 +4,12 @@ import process from 'node:process'
 import { fileURLToPath, URL } from 'node:url'
 import { VantResolver } from '@vant/auto-import-resolver'
 import vue from '@vitejs/plugin-vue'
-import externalGlobals from 'rollup-plugin-external-globals'
 import AutoImport from 'unplugin-auto-import/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
 import { defineConfig } from 'vite'
 import compression from 'vite-plugin-compression'
-import { cdnPlugin } from './build/vite-plugin-cdn.js'
+import { viteImageProxyPlugin } from './build/vite-plugin-image-proxy.js'
 import { obfuscatePlugin } from './build/vite-plugin-obfuscate.js'
 import { formatBuildTime, versionPlugin } from './build/vite-plugin-version.js'
 
@@ -27,13 +26,12 @@ const BUILD_TIME = formatBuildTime()
 export default defineConfig({
   plugins: [
     vue(),
+    viteImageProxyPlugin(),
     // 版本文件更新
     versionPlugin({
       version: APP_VERSION,
       buildTime: BUILD_TIME,
     }),
-    // CDN 注入
-    cdnPlugin(),
     // 自动导入
     AutoImport({
       resolvers: [ElementPlusResolver({ importStyle: 'css' }), VantResolver()],
@@ -57,15 +55,6 @@ export default defineConfig({
         'src/utils/common/format.js',
       ],
     }),
-    // 生产环境：使用 externalGlobals 将外部依赖转换为全局变量
-    isProduction && {
-      ...externalGlobals({
-        'vue': 'Vue',
-        'vue-demi': 'VueDemi',
-        'vue-router': 'VueRouter',
-      }),
-      enforce: 'post',
-    },
   ].filter(Boolean),
   base: '/', // 子域名部署使用根路径
   // 注入全局变量
@@ -105,17 +94,10 @@ export default defineConfig({
     // 使用 esbuild 压缩（更快）
     minify: 'esbuild',
     rollupOptions: {
-      // 排除不需要打包的依赖（使用 CDN）- 仅生产环境
-      external: isProduction ? ['vue', 'vue-demi', 'vue-router'] : [],
       output: {
-        // 指定全局变量名（对应 CDN 中的全局变量）
-        globals: {
-          'vue': 'Vue',
-          'vue-demi': 'VueDemi',
-          'vue-router': 'VueRouter',
-        },
         manualChunks: {
-          // 保留这些库的分包配置（不使用 CDN）
+          // 启动依赖随站点发布，避免依赖第三方 CDN 才能渲染页面。
+          vue: ['vue', 'vue-router', 'pinia'],
           vant: ['vant'],
           gsap: ['gsap'],
         },

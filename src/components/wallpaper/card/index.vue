@@ -3,6 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { useDevice } from '@/composables/useDevice'
 import { buildWallpaperImageFallbackUrls, formatBingDate, formatFileSize, formatRelativeTime, getDisplayFilename, highlightText } from '@/utils/common/format'
 import { VIDEO_USAGE_SHORT_LABELS } from '@/utils/config/constants'
+import { vCardReveal } from '../WallpaperGrid/composables/cardReveal'
 import WallpaperCardInfo from './shared/WallpaperCardInfo.vue'
 import WallpaperCardMedia from './shared/WallpaperCardMedia.vue'
 
@@ -173,8 +174,9 @@ function handleMouseLeave() {
 
 <template>
   <div
+    v-card-reveal
     class="wallpaper-card"
-    :class="{ 'is-media-hovered': isMediaHovered }"
+    :class="{ 'is-media-hovered': isMediaHovered, 'is-bing-card': isBingWallpaper }"
   >
     <WallpaperCardMedia
       :bing-date="bingDate"
@@ -227,15 +229,19 @@ function handleMouseLeave() {
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow:
-    0 14px 30px rgba(37, 99, 235, 0.08),
-    0 24px 48px rgba(15, 23, 42, 0.08),
+    0 4px 12px rgba(15, 23, 42, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.58);
   transition:
     transform 180ms ease-out,
-    background 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-    border-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-color 180ms ease-out;
+
+  :deep(.card-info) {
+    min-height: 164px;
+  }
+
+  &.is-bing-card :deep(.card-info) {
+    min-height: 140px;
+  }
 
   &::before {
     content: '';
@@ -269,10 +275,8 @@ function handleMouseLeave() {
       linear-gradient(145deg, rgba(96, 165, 250, 0.14), rgba(14, 165, 233, 0.06) 42%, rgba(2, 6, 23, 0) 68%);
     border-color: rgba(96, 165, 250, 0.22);
     box-shadow:
-      0 22px 44px rgba(2, 8, 23, 0.42),
-      0 10px 24px rgba(37, 99, 235, 0.1),
-      inset 0 1px 0 rgba(191, 219, 254, 0.09),
-      inset 0 -1px 0 rgba(15, 23, 42, 0.52);
+      0 4px 12px rgba(2, 8, 23, 0.3),
+      inset 0 1px 0 rgba(191, 219, 254, 0.09);
 
     &::before {
       background: linear-gradient(180deg, rgba(191, 219, 254, 0.1), rgba(255, 255, 255, 0));
@@ -300,18 +304,6 @@ function handleMouseLeave() {
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-
-    &.is-media-hovered {
-      transform: none;
-
-      :deep(.card-image img) {
-        transform: none;
-      }
-    }
-  }
-
   &.is-media-hovered {
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(219, 234, 254, 0.9)),
@@ -319,8 +311,7 @@ function handleMouseLeave() {
       radial-gradient(circle at bottom right, rgba(var(--color-accent-secondary-rgb), 0.16), transparent 52%);
     border-color: var(--accent-border-strong);
     box-shadow:
-      0 18px 36px rgba(37, 99, 235, 0.12),
-      0 28px 56px rgba(15, 23, 42, 0.1),
+      0 8px 20px rgba(15, 23, 42, 0.12),
       inset 0 1px 0 rgba(255, 255, 255, 0.66);
     transform: translateY(-4px);
 
@@ -330,10 +321,8 @@ function handleMouseLeave() {
         linear-gradient(145deg, rgba(96, 165, 250, 0.2), rgba(14, 165, 233, 0.1) 40%, rgba(2, 6, 23, 0) 66%);
       border-color: rgba(147, 197, 253, 0.26);
       box-shadow:
-        0 28px 54px rgba(2, 8, 23, 0.46),
-        0 14px 32px rgba(37, 99, 235, 0.14),
-        inset 0 1px 0 rgba(191, 219, 254, 0.12),
-        inset 0 -1px 0 rgba(15, 23, 42, 0.56);
+        0 8px 20px rgba(2, 8, 23, 0.36),
+        inset 0 1px 0 rgba(191, 219, 254, 0.12);
     }
   }
 
@@ -348,6 +337,18 @@ function handleMouseLeave() {
         box-shadow:
           0 14px 26px rgba(2, 8, 23, 0.3),
           inset 0 1px 0 rgba(191, 219, 254, 0.06);
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &.is-media-hovered {
+      transform: none;
+
+      :deep(.card-image img) {
+        transform: none;
       }
     }
   }

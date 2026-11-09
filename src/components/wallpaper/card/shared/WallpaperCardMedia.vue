@@ -1,7 +1,7 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
-defineProps({
+const props = defineProps({
   bingDate: {
     type: String,
     default: '',
@@ -78,18 +78,63 @@ defineProps({
 
 const emit = defineEmits(['click', 'error', 'load', 'hoverEnter', 'hoverLeave'])
 const imageRef = ref(null)
+const mediaReady = ref(false)
+let loadVersion = 0
+
+watch(() => props.thumbnailUrl, () => {
+  loadVersion++
+  mediaReady.value = false
+}, { flush: 'sync' })
+onBeforeUnmount(() => {
+  loadVersion++
+})
+
+async function handleImageLoad(event) {
+  const image = event.target
+  if (image !== imageRef.value || mediaReady.value)
+    return
+  const version = ++loadVersion
+  try {
+    await image.decode?.()
+  }
+  catch {
+    // 原生 load 已成功时，兼容不支持 decode 或拒绝 decode 的浏览器。
+  }
+  if (version !== loadVersion || image !== imageRef.value || !image.naturalWidth)
+    return
+  mediaReady.value = true
+  emit('load')
+}
+
+function handleImageError(event) {
+  if (event.target !== imageRef.value)
+    return
+  loadVersion++
+  mediaReady.value = false
+  emit('error')
+}
+
+function handleKeydown(event) {
+  if (!event.repeat)
+    emit('click')
+}
 
 onMounted(() => {
   if (imageRef.value?.complete && imageRef.value.naturalWidth > 0)
-    emit('load')
+    void handleImageLoad({ target: imageRef.value })
 })
 </script>
 
 <template>
   <div
     class="card-image"
+    role="button"
+    tabindex="0"
+    :aria-label="imageAlt"
     :style="style"
     @click="emit('click')"
+    @keydown.enter.prevent="handleKeydown"
+    @keydown.space.prevent="handleKeydown"
     @mouseenter="emit('hoverEnter')"
     @mouseleave="emit('hoverLeave')"
   >
@@ -100,9 +145,7 @@ onMounted(() => {
       <span>🔥 热门</span>
     </div>
 
-    <div v-if="!imageLoaded" class="image-skeleton">
-      <div class="skeleton-shimmer" />
-    </div>
+    <div v-if="!mediaReady && !imageError" class="image-skeleton" aria-hidden="true" />
 
     <div v-if="imageError && imageLoaded" class="image-error">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -113,6 +156,7 @@ onMounted(() => {
     </div>
 
     <img
+      :key="thumbnailUrl"
       ref="imageRef"
       :src="thumbnailUrl"
       :alt="imageAlt"
@@ -121,9 +165,9 @@ onMounted(() => {
       :loading="index < (isMobile ? 2 : 6) ? 'eager' : 'lazy'"
       decoding="async"
       :fetchpriority="index < 6 ? 'high' : 'auto'"
-      :class="{ 'is-loaded': imageLoaded, 'is-error': imageError }"
-      @load="emit('load')"
-      @error="emit('error')"
+      :class="{ 'is-loaded': mediaReady, 'is-error': imageError }"
+      @load="handleImageLoad"
+      @error="handleImageError"
     >
 
     <div v-if="categoryDisplay && !isBingWallpaper" class="card-category-badge">
@@ -163,9 +207,21 @@ onMounted(() => {
 <style lang="scss" scoped>
 .card-image {
   position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
   overflow: hidden;
   background: var(--color-bg-hover);
   cursor: pointer;
+  transition: transform 120ms ease-out;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: -4px;
+  }
+
+  &:active {
+    transform: scale(0.985);
+  }
 
   [data-theme='dark'] & {
     background:
@@ -174,6 +230,9 @@ onMounted(() => {
   }
 
   img {
+    position: absolute;
+    inset: 0;
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -225,22 +284,6 @@ onMounted(() => {
   inset: 0;
   background: var(--color-bg-hover);
   overflow: hidden;
-
-  .skeleton-shimmer {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, transparent 0%, var(--color-bg-card) 50%, transparent 100%);
-    animation: shimmer 1.5s infinite;
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
 }
 
 .image-error {
@@ -323,8 +366,6 @@ onMounted(() => {
   gap: 4px;
   padding: 4px 8px;
   background: linear-gradient(180deg, rgba(16, 24, 40, 0.92), rgba(10, 18, 31, 0.88));
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(96, 165, 250, 0.14);
   box-shadow:
     0 10px 18px rgba(2, 8, 23, 0.24),
@@ -362,8 +403,6 @@ onMounted(() => {
   gap: 4px;
   padding: 5px 10px;
   background: linear-gradient(135deg, rgba(0, 120, 212, 0.95), rgba(16, 110, 190, 0.95));
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   color: white;
   font-size: 11px;
   font-weight: $font-weight-semibold;
@@ -382,13 +421,14 @@ onMounted(() => {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .skeleton-shimmer {
-    animation: none;
-  }
-
+  .card-image,
   .card-image img,
   .card-overlay {
     transition: none;
+  }
+
+  .card-image:active {
+    transform: none;
   }
 }
 </style>

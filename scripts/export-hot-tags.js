@@ -10,6 +10,7 @@ import process from 'node:process'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { decodeData } from '../src/utils/common/codec.js'
 import { HOT_TAGS_HALF_LIFE_DAYS, HOT_TAGS_WINDOW_DAYS } from '../src/utils/config/hotTags.js'
+import { getWallpaperIdentity } from '../src/utils/wallpaper/identity.js'
 import stopwords from './config/hot-tags-stopwords.json' with { type: 'json' }
 
 const __filename = fileURLToPath(import.meta.url)
@@ -195,8 +196,10 @@ function getImageScore(views, downloads, ageDays) {
 }
 
 export function buildHotTags(wallpapers, stats, series, now = new Date()) {
+  const isCanonicalSnapshot = stats?.schema === 2
+  const rows = isCanonicalSnapshot ? stats.items : stats
   const statsMap = new Map(
-    stats.map(stat => [normalizeImageId(stat.image_id, series), stat]),
+    rows.map(stat => [isCanonicalSnapshot ? stat.asset_key : normalizeImageId(stat.image_id, series), stat]),
   )
   const filenameCounts = new Map()
   wallpapers.forEach((wallpaper) => {
@@ -222,7 +225,9 @@ export function buildHotTags(wallpapers, stats, series, now = new Date()) {
       return
 
     // 同名不同图的累计统计无法准确拆分，使用新鲜度基础分，避免重复加权。
-    const stat = filenameCounts.get(imageId) === 1 ? statsMap.get(imageId) : null
+    const stat = isCanonicalSnapshot
+      ? statsMap.get(getWallpaperIdentity(wallpaper, series).assetKey)
+      : filenameCounts.get(imageId) === 1 ? statsMap.get(imageId) : null
     const views = getCount(stat?.views ?? stat?.total_views)
     const downloads = getCount(stat?.downloads ?? stat?.total_downloads)
     const imageScore = getImageScore(views, downloads, ageDays)

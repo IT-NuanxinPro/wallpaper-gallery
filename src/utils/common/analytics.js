@@ -2,6 +2,8 @@
 // Umami Analytics 事件追踪工具函数
 // ========================================
 
+import { getWallpaperIdentity } from '@/utils/wallpaper/identity'
+
 let analyticsDisabled = false
 
 function shouldDisableAnalytics(error) {
@@ -116,8 +118,11 @@ export function trackThemeChange(theme) {
  * 追踪壁纸预览事件（打开弹窗）
  * @param {object} wallpaper - 壁纸对象
  */
-export function trackWallpaperPreview(wallpaper) {
+export function trackWallpaperPreview(wallpaper, series) {
+  const identity = getWallpaperIdentity(wallpaper, series)
   trackEvent('wallpaper_preview', {
+    asset_key: identity.assetKey,
+    series: identity.series,
     filename: wallpaper.filename,
     category: wallpaper.category,
   })

@@ -9,12 +9,13 @@ import { computed, ref, watch } from 'vue'
 
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import WallpaperCardActions from '@/components/wallpaper/card/shared/WallpaperCardActions.vue'
+import { useImageFallback } from '@/composables/useImageFallback'
+import { usePreviewTracking } from '@/composables/usePreviewTracking'
+import { useWallpaperDownload } from '@/composables/useWallpaperDownload'
 import { useWallpaperType } from '@/composables/useWallpaperType'
 import { usePopularityStore } from '@/stores/popularity'
-import { trackWallpaperDownload, trackWallpaperPreview } from '@/utils/common/analytics'
 import { copyText } from '@/utils/common/clipboard'
-import { buildRawImageUrl, buildWallpaperDownloadFilename, downloadFile, formatDate, formatFileSize, formatRelativeTime, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/common/format'
-import { recordDownload, recordView } from '@/utils/integrations/supabase'
+import { formatDate, formatFileSize, formatRelativeTime, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/common/format'
 import { resolveWallpaperSeries } from '@/utils/wallpaper/identity'
 import DesktopImageStage from './DesktopImageStage.vue'
 
@@ -58,21 +59,20 @@ const popularityStore = usePopularityStore()
 // 状态
 const isVisible = ref(false)
 const imageLoaded = ref(false)
-const fallbackStage = ref('none')
-const downloading = ref(false)
+const { downloading, handleDownload } = useWallpaperDownload(() => props.wallpaper, effectiveSeries)
 const imageDimensions = ref({ width: 0, height: 0 })
 
 // 统计数据（从 popularityStore 获取，支持乐观更新）
 const downloadCount = computed(() => {
   if (!props.wallpaper)
     return 0
-  return popularityStore.getDownloadCount(props.wallpaper.filename)
+  return popularityStore.getDownloadCount(props.wallpaper)
 })
 
 const viewCount = computed(() => {
   if (!props.wallpaper)
     return 0
-  return popularityStore.getViewCount(props.wallpaper.filename)
+  return popularityStore.getViewCount(props.wallpaper)
 })
 
 // 计算属性 - 优先使用 AI 生成的 displayTitle
@@ -140,17 +140,13 @@ const relativeTime = computed(() => {
 const isBingWallpaper = computed(() => props.wallpaper?.isBing === true)
 
 // 优化的图片 URL
-const optimizedImageUrl = computed(() => {
+const primaryImageUrl = computed(() => {
   if (!props.wallpaper?.url)
     return ''
 
-  const primaryUrl = props.wallpaper.previewUrl || props.wallpaper.url
-
-  if (fallbackStage.value === 'raw')
-    return buildRawImageUrl(primaryUrl)
-
-  return primaryUrl
+  return props.wallpaper.previewUrl || props.wallpaper.url
 })
+const { displayUrl: optimizedImageUrl, advance: advanceImageFallback, reset: resetImageFallback } = useImageFallback(primaryImageUrl)
 
 // 监听
 watch(() => props.isOpen, async (isOpen) => {
@@ -162,16 +158,14 @@ watch(() => props.isOpen, async (isOpen) => {
   }
 }, { immediate: true })
 
-watch(() => props.wallpaper, () => {
-  fallbackStage.value = 'none'
+// 同一资源的元数据引用替换不重置图片状态，避免缓存图不再触发 load 后尺寸丢失。
+watch([() => props.wallpaper?.id, () => props.wallpaper?.url, () => props.wallpaper?.previewUrl], () => {
+  resetImageFallback()
   resetState()
   // 统计数据现在是 computed，从 popularityStore 自动获取
 })
 
 function handleOpen() {
-  trackWallpaperPreview(props.wallpaper)
-  recordView(props.wallpaper, effectiveSeries.value)
-
   // 滚动锁定由父组件处理，这里只需要显示弹窗
   isVisible.value = true
 }
@@ -183,21 +177,6 @@ function handleClose() {
 function onModalAfterLeave() {
   // 滚动恢复由父组件处理，这里只需要通知关闭
   emit('close')
-}
-
-async function handleDownload() {
-  if (!props.wallpaper || downloading.value)
-    return
-
-  downloading.value = true
-  try {
-    await downloadFile(props.wallpaper.url, buildWallpaperDownloadFilename(props.wallpaper))
-    trackWallpaperDownload(props.wallpaper, effectiveSeries.value)
-    recordDownload(props.wallpaper, effectiveSeries.value)
-  }
-  finally {
-    downloading.value = false
-  }
 }
 
 async function handleCopyUrl() {
@@ -216,15 +195,14 @@ async function handleCopyUrl() {
 
 function handleImageLoad(e) {
   imageLoaded.value = true
-  imageDimensions.value = {
+  imageDimensions.value = e.dimensions || {
     width: e.target.naturalWidth,
     height: e.target.naturalHeight,
   }
 }
 
 function handleImageError() {
-  if (fallbackStage.value === 'none') {
-    fallbackStage.value = 'raw'
+  if (advanceImageFallback()) {
     imageLoaded.value = false
   }
 }
@@ -238,6 +216,12 @@ function resetState() {
   imageDimensions.value = { width: 0, height: 0 }
   // 统计数据现在是 computed，无需手动重置
 }
+usePreviewTracking({
+  wallpaper: () => props.wallpaper,
+  series: effectiveSeries,
+  isOpen: () => props.isOpen && isVisible.value,
+  ready: imageLoaded,
+})
 </script>
 
 <template>
@@ -258,15 +242,11 @@ function resetState() {
           <!-- 左侧：圆角大图预览 -->
           <div class="desktop-modal__preview">
             <DesktopImageStage
-              :image-loaded="imageLoaded"
+              :resolution="wallpaper.resolution"
               :image-src="optimizedImageUrl"
               @load="handleImageLoad"
               @error="handleImageError"
-            >
-              <template #loading>
-                <LoadingSpinner size="md" />
-              </template>
-            </DesktopImageStage>
+            />
           </div>
 
           <!-- 右侧：信息面板 -->
@@ -346,9 +326,9 @@ function resetState() {
                 <span class="detail-label">{{ isBingWallpaper ? '发布日期' : '上传时间' }}</span>
                 <span class="detail-value">{{ formattedDate }} <span class="detail-sub">({{ relativeTime }})</span></span>
               </div>
-              <div v-if="imageDimensions.width > 0" class="detail-row">
-                <span class="detail-label">分辨率</span>
-                <span class="detail-value">{{ imageDimensions.width }} × {{ imageDimensions.height }}</span>
+              <div class="detail-row">
+                <span class="detail-label">{{ imageDimensions.width > 0 ? '预览分辨率' : (wallpaper.resolution?.width > 0 ? '原图分辨率' : '分辨率') }}</span>
+                <span class="detail-value">{{ imageDimensions.width > 0 ? `${imageDimensions.width} × ${imageDimensions.height}` : (wallpaper.resolution?.width > 0 ? `${wallpaper.resolution.width} × ${wallpaper.resolution.height}` : (imageLoaded ? '尺寸暂不可用' : '正在读取尺寸…')) }}</span>
               </div>
             </div>
 
@@ -416,7 +396,7 @@ function resetState() {
                 </button>
                 <button
                   class="download-btn"
-                  :disabled="downloading"
+                  :disabled="downloading" :aria-busy="downloading"
                   @click="handleDownload"
                 >
                   <LoadingSpinner v-if="downloading" size="sm" />
@@ -453,6 +433,8 @@ function resetState() {
   padding: 40px;
 
   &__content {
+    max-height: calc(100dvh - 80px);
+    overflow-y: auto;
     position: relative;
     display: flex;
     gap: 50px;
@@ -918,4 +900,13 @@ function resetState() {
 }
 
 @include modal.modal-transition('.desktop-modal__content');
+
+button:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 3px;
+}
+
+button[aria-busy='true'] {
+  cursor: progress;
+}
 </style>

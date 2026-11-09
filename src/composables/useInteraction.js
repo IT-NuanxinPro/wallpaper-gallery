@@ -2,6 +2,7 @@ import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useInteractionStore } from '@/stores/interaction'
+import { resolveWallpaperSeries } from '@/utils/wallpaper/identity'
 
 /**
  * 为单个壁纸卡片提供交互逻辑（喜欢/收藏）
@@ -13,15 +14,14 @@ export function useInteraction(wallpaper, series) {
   const interactionStore = useInteractionStore()
   const { isAuthenticated } = storeToRefs(authStore)
 
-  const filename = computed(() => wallpaper.value?.filename || wallpaper.value?.id || '')
-  const currentSeries = computed(() => series.value || '')
+  const currentSeries = computed(() => resolveWallpaperSeries(wallpaper.value, series.value || ''))
 
   const liked = computed(() =>
-    isAuthenticated.value && interactionStore.isLiked(filename.value, currentSeries.value),
+    isAuthenticated.value && interactionStore.isLiked(wallpaper.value, currentSeries.value),
   )
 
   const collected = computed(() =>
-    isAuthenticated.value && interactionStore.isCollected(filename.value, currentSeries.value),
+    isAuthenticated.value && interactionStore.isCollected(wallpaper.value, currentSeries.value),
   )
 
   async function toggleLike() {
@@ -29,7 +29,7 @@ export function useInteraction(wallpaper, series) {
       return { needsLogin: true }
     }
 
-    return interactionStore.handleToggleLike(filename.value, currentSeries.value)
+    return interactionStore.handleToggleLike(wallpaper.value, currentSeries.value)
   }
 
   async function toggleCollect() {
@@ -37,7 +37,7 @@ export function useInteraction(wallpaper, series) {
       return { needsLogin: true }
     }
 
-    return interactionStore.handleToggleCollect(filename.value, currentSeries.value)
+    return interactionStore.handleToggleCollect(wallpaper.value, currentSeries.value)
   }
 
   return {

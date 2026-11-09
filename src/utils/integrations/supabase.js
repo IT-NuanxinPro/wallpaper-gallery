@@ -24,7 +24,7 @@ export function isSupabaseConfigured() {
  * @param {string} series - 系列 (desktop/mobile/avatar/bing)
  */
 export function recordView(wallpaper, series) {
-  statsRecordView(wallpaper, series)
+  return statsRecordView(wallpaper, series)
 }
 
 /**
@@ -33,5 +33,5 @@ export function recordView(wallpaper, series) {
  * @param {string} series - 系列 (desktop/mobile/avatar/bing)
  */
 export function recordDownload(wallpaper, series) {
-  statsRecordDownload(wallpaper, series)
+  return statsRecordDownload(wallpaper, series)
 }

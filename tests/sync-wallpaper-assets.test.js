@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { mapBingWallpaperAsset, mapStandardWallpaperAsset } from '../scripts/sync-wallpaper-assets.js'
+import * as assetSync from '../scripts/sync-wallpaper-assets.js'
 
 describe('mapStandardWallpaperAsset', () => {
   it('creates a stable asset key and active asset record for standard wallpapers', () => {
@@ -22,11 +23,25 @@ describe('mapStandardWallpaperAsset', () => {
       thumbnailPath: '/thumbnail/desktop/动漫/鬼灭之刃/%E5%89%91%E5%AE%A2.webp',
     })
 
-    expect(record.asset_key).toBe('desktop:剑客-动漫角色.png')
+    expect(record.asset_key).toBe('desktop:path:/wallpaper/desktop/%E5%8A%A8%E6%BC%AB/%E9%AC%BC%E7%81%AD%E4%B9%8B%E5%88%83/%E5%89%91%E5%AE%A2.png')
     expect(record.status).toBe('active')
     expect(record.removed_at).toBeNull()
     expect(record.raw_url).toContain('nuanXinProPic@v1.2.24')
     expect(record.metadata.urls.thumbnail).toContain('/thumbnail/desktop/')
+  })
+})
+
+describe('离线历史身份映射', () => {
+  it('重复文件名保留两个路径，并标记历史统计无法唯一归属', () => {
+    expect(typeof assetSync.buildLegacyAssetMappings).toBe('function')
+    const assets = ['a', 'b'].map(category => mapStandardWallpaperAsset('desktop', {
+      filename: 'same.jpg', path: `/wallpaper/desktop/${category}/same.jpg`,
+    }))
+    expect(assetSync.buildLegacyAssetMappings([...assets, assets[0]])).toEqual([{
+      legacyKey: 'desktop:same.jpg',
+      assetKeys: ['desktop:path:/wallpaper/desktop/a/same.jpg', 'desktop:path:/wallpaper/desktop/b/same.jpg'],
+      ambiguous: true,
+    }])
   })
 })
 

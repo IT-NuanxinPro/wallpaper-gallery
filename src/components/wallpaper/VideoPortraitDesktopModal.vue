@@ -4,13 +4,13 @@ import { computed, onMounted, onUnmounted, ref, toRef, watch } from 'vue'
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import WallpaperCardActions from '@/components/wallpaper/card/shared/WallpaperCardActions.vue'
 import { useInteraction } from '@/composables/useInteraction'
+import { isCurrentMediaEvent, usePreviewTracking } from '@/composables/usePreviewTracking'
+import { useWallpaperDownload } from '@/composables/useWallpaperDownload'
 import { useWallpaperType } from '@/composables/useWallpaperType'
 import { usePopularityStore } from '@/stores/popularity'
-import { trackWallpaperDownload, trackWallpaperPreview } from '@/utils/common/analytics'
 import { copyText } from '@/utils/common/clipboard'
-import { buildWallpaperDownloadFilename, downloadFile, formatDate, formatFileSize, getDisplayFilename } from '@/utils/common/format'
+import { formatDate, formatFileSize, getDisplayFilename } from '@/utils/common/format'
 import { VIDEO_USAGE_SHORT_LABELS } from '@/utils/config/constants'
-import { recordDownload, recordView } from '@/utils/integrations/supabase'
 import { resolveWallpaperSeries } from '@/utils/wallpaper/identity'
 
 const props = defineProps({
@@ -32,7 +32,7 @@ const { collected, isAuthenticated, liked, toggleCollect, toggleLike } = useInte
 const popularityStore = usePopularityStore()
 
 const isVisible = ref(false)
-const downloading = ref(false)
+const { downloading, handleDownload } = useWallpaperDownload(() => props.wallpaper, effectiveSeries)
 const videoReady = ref(false)
 const videoError = ref(false)
 const savedScrollY = ref(0)
@@ -74,10 +74,10 @@ const resolutionText = computed(() => {
 })
 const resolutionTag = computed(() => props.wallpaper?.resolution?.label || '')
 const resolutionTagType = computed(() => props.wallpaper?.resolution?.type || 'success')
-const downloadCount = computed(() => props.wallpaper ? popularityStore.getDownloadCount(props.wallpaper.filename) : 0)
-const viewCount = computed(() => props.wallpaper ? popularityStore.getViewCount(props.wallpaper.filename) : 0)
-const likeCount = computed(() => props.wallpaper ? popularityStore.getLikeCount(props.wallpaper.filename) : 0)
-const collectCount = computed(() => props.wallpaper ? popularityStore.getCollectCount(props.wallpaper.filename) : 0)
+const downloadCount = computed(() => props.wallpaper ? popularityStore.getDownloadCount(props.wallpaper) : 0)
+const viewCount = computed(() => props.wallpaper ? popularityStore.getViewCount(props.wallpaper) : 0)
+const likeCount = computed(() => props.wallpaper ? popularityStore.getLikeCount(props.wallpaper) : 0)
+const collectCount = computed(() => props.wallpaper ? popularityStore.getCollectCount(props.wallpaper) : 0)
 
 function resetVideoState() {
   videoReady.value = false
@@ -105,8 +105,6 @@ function restoreScroll() {
 }
 
 function handleOpen() {
-  trackWallpaperPreview(props.wallpaper)
-  recordView(props.wallpaper, effectiveSeries.value)
   savedScrollY.value = window.scrollY || window.pageYOffset
   document.body.style.top = `-${savedScrollY.value}px`
   document.body.classList.add('modal-open')
@@ -136,14 +134,16 @@ watch(() => props.isOpen, (open) => {
   }
 }, { immediate: true })
 
-watch(() => props.wallpaper?.id, (nextId, prevId) => {
-  if (!isVisible.value || !nextId || nextId === prevId)
+watch([() => props.wallpaper?.id, () => props.wallpaper?.url], () => {
+  if (!isVisible.value || !props.wallpaper)
     return
 
   releaseVideoResources()
 })
 
 async function handlePortraitVideoCanPlay(event) {
+  if (!isCurrentMediaEvent(event, props.wallpaper?.playbackUrl || props.wallpaper?.url))
+    return
   videoReady.value = true
   videoError.value = false
 
@@ -168,21 +168,6 @@ function handleVideoLoadedMetadata(event) {
 
 function handleVideoError() {
   videoError.value = true
-}
-
-async function handleDownload() {
-  if (!props.wallpaper || downloading.value)
-    return
-
-  downloading.value = true
-  try {
-    await downloadFile(props.wallpaper.downloadUrl || props.wallpaper.url, buildWallpaperDownloadFilename(props.wallpaper))
-    trackWallpaperDownload(props.wallpaper, effectiveSeries.value)
-    recordDownload(props.wallpaper, effectiveSeries.value)
-  }
-  finally {
-    downloading.value = false
-  }
 }
 
 async function handleCopyUrl() {
@@ -220,6 +205,12 @@ onUnmounted(() => {
   releaseVideoResources()
   restoreScroll()
 })
+usePreviewTracking({
+  wallpaper: () => props.wallpaper,
+  series: effectiveSeries,
+  isOpen: () => props.isOpen && isVisible.value,
+  ready: () => videoReady.value && !videoError.value,
+})
 </script>
 
 <template>
@@ -233,7 +224,7 @@ onUnmounted(() => {
             </svg>
           </button>
 
-          <div class="desktop-modal__preview">
+          <div class="desktop-modal__preview" :aria-busy="!videoReady && !videoError">
             <div v-if="videoError" class="desktop-modal__preview-error">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -362,7 +353,7 @@ onUnmounted(() => {
 
                 <button
                   class="download-btn"
-                  :disabled="downloading"
+                  :disabled="downloading" :aria-busy="downloading"
                   @click="handleDownload"
                 >
                   <LoadingSpinner v-if="downloading" size="sm" />
@@ -404,7 +395,9 @@ onUnmounted(() => {
     gap: 60px;
     max-width: 1080px;
     width: 100%;
-    min-height: 580px;
+    min-height: 0;
+    max-height: calc(100dvh - 80px);
+    overflow-y: auto;
     align-items: flex-start;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -457,8 +450,8 @@ onUnmounted(() => {
   }
 
   &__preview-error {
-    width: 360px;
-    height: 780px;
+    width: 280px;
+    height: 580px;
     border-radius: 28px;
     display: flex;
     flex-direction: column;
@@ -491,7 +484,7 @@ onUnmounted(() => {
   &__frame-video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 42px;
     display: block;
     opacity: 1;
@@ -778,15 +771,34 @@ onUnmounted(() => {
     &__content {
       gap: 36px;
       padding: 42px 28px 28px;
-      min-height: 780px;
+      min-height: 0;
     }
   }
 
-  .iphone-frame {
+  .iphone-frame,
+  .desktop-modal__preview-error {
     width: 248px;
     height: 514px;
   }
 }
 
 @include modal.modal-transition('.desktop-modal__content');
+
+@media (max-height: 820px) {
+  .iphone-frame,
+  .desktop-modal__preview-error {
+    width: min(280px, calc((100dvh - 180px) * 0.483));
+    height: min(580px, calc(100dvh - 180px));
+    flex-shrink: 0;
+  }
+}
+
+button:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 3px;
+}
+
+button[aria-busy='true'] {
+  cursor: progress;
+}
 </style>

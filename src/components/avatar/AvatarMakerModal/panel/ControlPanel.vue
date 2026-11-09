@@ -3,6 +3,7 @@
  * 控制面板 - 形状切换、尺寸设置、下载按钮
  */
 import { computed } from 'vue'
+import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 
 const props = defineProps({
   avatarShape: { type: String, default: 'circle', validator: v => ['circle', 'square'].includes(v) },
@@ -118,7 +119,7 @@ function updateRadius(e) {
         <svg v-if="!isDownloading" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
         </svg>
-        <span v-if="isDownloading" class="loading-spinner" />
+        <LoadingSpinner v-if="isDownloading" size="sm" />
         <span>{{ isDownloading ? '生成中...' : '下载头像' }}</span>
       </button>
     </div>
@@ -425,21 +426,6 @@ function updateRadius(e) {
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
-  }
-}
-
-.loading-spinner {
-  width: 18px;
-  height: 18px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: white;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
   }
 }
 </style>

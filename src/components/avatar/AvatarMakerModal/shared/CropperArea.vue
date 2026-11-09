@@ -4,6 +4,7 @@
  */
 import Cropper from 'cropperjs'
 import { nextTick, onUnmounted, ref, watch } from 'vue'
+import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import 'cropperjs/dist/cropper.css'
 
 const props = defineProps({
@@ -180,7 +181,7 @@ onUnmounted(() => destroyCropper())
 
     <div class="cropper-container">
       <div v-if="!imageLoaded && !imageError" class="cropper-loading">
-        <span class="loading-spinner" />
+        <LoadingSpinner size="md" />
         <span>正在加载图片...</span>
       </div>
 
@@ -299,21 +300,6 @@ onUnmounted(() => destroyCropper())
   gap: 12px;
   color: rgba(255, 255, 255, 0.6);
   font-size: 14px;
-}
-
-.loading-spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid rgba(255, 255, 255, 0.2);
-  border-top-color: var(--color-accent);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 .cropper-error {

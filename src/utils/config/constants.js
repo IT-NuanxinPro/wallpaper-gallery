@@ -148,7 +148,7 @@ export const SORT_OPTIONS = [
   { value: 'newest', label: '🕐 最新优先', icon: 'clock' },
   { value: 'popular', label: '🔥 最热门', icon: 'fire' },
   { value: 'downloads', label: '📥 下载量最高', icon: 'download' },
-  { value: 'views', label: '👁️ 浏览量最高', icon: 'eye' },
+  { value: 'views', label: '👁️ 预览量最高', icon: 'eye' },
   { value: 'weekly-hot', label: '📅 本周热门', icon: 'calendar' },
   { value: 'monthly-hot', label: '📆 本月热门', icon: 'calendar' },
   { value: 'oldest', label: '🕰️ 最早优先', icon: 'clock-reverse' },

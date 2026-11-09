@@ -9,12 +9,13 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import WallpaperCardActions from '@/components/wallpaper/card/shared/WallpaperCardActions.vue'
+import WallpaperImageStage from '@/components/wallpaper/shared/WallpaperImageStage.vue'
+import { usePreviewTracking } from '@/composables/usePreviewTracking'
+import { useWallpaperDownload } from '@/composables/useWallpaperDownload'
 import { useWallpaperType } from '@/composables/useWallpaperType'
 import { usePopularityStore } from '@/stores/popularity'
-import { trackWallpaperDownload, trackWallpaperPreview } from '@/utils/common/analytics'
 import { copyText } from '@/utils/common/clipboard'
-import { buildRawImageUrl, buildWallpaperDownloadFilename, downloadFile, formatDate, formatFileSize, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/common/format'
-import { recordDownload, recordView } from '@/utils/integrations/supabase'
+import { buildRawImageUrl, formatDate, formatFileSize, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/common/format'
 import { resolveWallpaperSeries } from '@/utils/wallpaper/identity'
 
 const props = defineProps({
@@ -57,7 +58,7 @@ const popularityStore = usePopularityStore()
 // 状态
 const isVisible = ref(false)
 const imageLoaded = ref(false)
-const downloading = ref(false)
+const { downloading, handleDownload } = useWallpaperDownload(() => props.wallpaper, effectiveSeries)
 const imageDimensions = ref({ width: 0, height: 0 })
 const fallbackStage = ref('none')
 
@@ -65,13 +66,13 @@ const fallbackStage = ref('none')
 const downloadCount = computed(() => {
   if (!props.wallpaper)
     return 0
-  return popularityStore.getDownloadCount(props.wallpaper.filename)
+  return popularityStore.getDownloadCount(props.wallpaper)
 })
 
 const viewCount = computed(() => {
   if (!props.wallpaper)
     return 0
-  return popularityStore.getViewCount(props.wallpaper.filename)
+  return popularityStore.getViewCount(props.wallpaper)
 })
 
 // 时钟
@@ -173,16 +174,14 @@ watch(() => props.isOpen, async (isOpen) => {
   }
 }, { immediate: true })
 
-watch(() => props.wallpaper, () => {
+// 同一资源的元数据引用替换不重置图片状态，避免缓存图不再触发 load 后尺寸丢失。
+watch([() => props.wallpaper?.id, () => props.wallpaper?.url, () => props.wallpaper?.previewUrl], () => {
   fallbackStage.value = 'none'
   resetState()
   // 统计数据现在是 computed，从 popularityStore 自动获取
 })
 
 function handleOpen() {
-  trackWallpaperPreview(props.wallpaper)
-  recordView(props.wallpaper, effectiveSeries.value)
-
   // 滚动锁定由父组件处理，这里只需要显示弹窗
   isVisible.value = true
 
@@ -215,21 +214,6 @@ function onModalAfterLeave() {
   emit('close')
 }
 
-async function handleDownload() {
-  if (!props.wallpaper || downloading.value)
-    return
-
-  downloading.value = true
-  try {
-    await downloadFile(props.wallpaper.url, buildWallpaperDownloadFilename(props.wallpaper))
-    trackWallpaperDownload(props.wallpaper, effectiveSeries.value)
-    recordDownload(props.wallpaper, effectiveSeries.value)
-  }
-  finally {
-    downloading.value = false
-  }
-}
-
 async function handleCopyUrl() {
   const url = props.wallpaper?.url
   if (!url)
@@ -246,7 +230,7 @@ async function handleCopyUrl() {
 
 function handleImageLoad(e) {
   imageLoaded.value = true
-  imageDimensions.value = {
+  imageDimensions.value = e.dimensions || {
     width: e.target.naturalWidth,
     height: e.target.naturalHeight,
   }
@@ -276,6 +260,12 @@ onUnmounted(() => {
   if (islandTimer)
     clearInterval(islandTimer)
 })
+usePreviewTracking({
+  wallpaper: () => props.wallpaper,
+  series: effectiveSeries,
+  isOpen: () => props.isOpen && isVisible.value,
+  ready: imageLoaded,
+})
 </script>
 
 <template>
@@ -303,16 +293,15 @@ onUnmounted(() => {
             >
               <!-- 屏幕 -->
               <div class="screen-container">
-                <div v-if="!imageLoaded" class="loading-placeholder">
-                  <LoadingSpinner size="md" />
-                </div>
-                <img
+                <WallpaperImageStage
+                  class="fixed-frame-media"
                   :src="optimizedImageUrl"
                   :alt="wallpaper.filename"
-                  :class="{ loaded: imageLoaded }"
+                  :resolution="wallpaper.resolution"
+                  fallback-ratio="9 / 16"
                   @load="handleImageLoad"
                   @error="handleImageError"
-                >
+                />
               </div>
 
               <!-- 灵动岛 -->
@@ -418,9 +407,9 @@ onUnmounted(() => {
                 <span class="detail-label">上传时间</span>
                 <span class="detail-value">{{ formattedDate }}</span>
               </div>
-              <div v-if="imageDimensions.width > 0" class="detail-row">
+              <div class="detail-row">
                 <span class="detail-label">分辨率</span>
-                <span class="detail-value">{{ imageDimensions.width }} × {{ imageDimensions.height }}</span>
+                <span class="detail-value">{{ imageDimensions.width > 0 ? `${imageDimensions.width} × ${imageDimensions.height}` : '正在读取尺寸…' }}</span>
               </div>
             </div>
 
@@ -454,7 +443,7 @@ onUnmounted(() => {
                 </button>
                 <button
                   class="download-btn"
-                  :disabled="downloading"
+                  :disabled="downloading" :aria-busy="downloading"
                   @click="handleDownload"
                 >
                   <LoadingSpinner v-if="downloading" size="sm" />
@@ -491,6 +480,8 @@ onUnmounted(() => {
   padding: 40px;
 
   &__content {
+    max-height: calc(100dvh - 80px);
+    overflow-y: auto;
     position: relative;
     display: flex;
     gap: 60px;
@@ -1075,4 +1066,27 @@ onUnmounted(() => {
 // 弹窗动画
 
 @include modal.modal-transition('.desktop-modal__content');
+
+.fixed-frame-media {
+  height: 100%;
+  max-height: none;
+  border-radius: inherit;
+}
+
+@media (max-height: 820px) {
+  .iphone-frame {
+    width: min(280px, calc((100dvh - 180px) * 0.483));
+    height: min(580px, calc(100dvh - 180px));
+    flex-shrink: 0;
+  }
+}
+
+button:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 3px;
+}
+
+button[aria-busy='true'] {
+  cursor: progress;
+}
 </style>

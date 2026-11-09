@@ -110,7 +110,7 @@
 // 滑动淡入
 .slide-up-enter-active,
 .slide-up-leave-active {
-  transition: all var(--transition-normal);
+  transition: opacity var(--transition-normal), transform var(--transition-normal);
 }
 
 .slide-up-enter-from,
@@ -122,7 +122,7 @@
 // 缩放淡入
 .scale-enter-active,
 .scale-leave-active {
-  transition: all var(--transition-normal);
+  transition: opacity var(--transition-normal), transform var(--transition-normal);
 }
 
 .scale-enter-from,
@@ -134,14 +134,14 @@
 // 弹窗动画
 .modal-enter-active,
 .modal-leave-active {
-  transition: all var(--transition-slow);
+  transition: opacity var(--transition-slow), transform var(--transition-slow);
 
   .modal-overlay {
     transition: opacity var(--transition-slow);
   }
 
   .modal-content {
-    transition: all var(--transition-slow);
+    transition: opacity var(--transition-slow), transform var(--transition-slow);
   }
 }
 
@@ -202,5 +202,26 @@
     &:nth-child(#{$i}) {
       animation-delay: #{$base-delay * $i};
     }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide-up-enter-from,
+  .slide-up-leave-to,
+  .scale-enter-from,
+  .scale-leave-to,
+  .modal-enter-from .modal-content,
+  .modal-leave-to .modal-content {
+    transform: none;
+  }
+
+  .animate-fadeIn,
+  .animate-slideUp,
+  .animate-scaleIn,
+  .animate-pulse,
+  .animate-shimmer,
+  .animate-spin,
+  .animate-float {
+    animation: none;
   }
 }

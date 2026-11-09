@@ -4,7 +4,6 @@ import { debounce } from '@/utils/common/format'
 import { sortByDate, sortByDownloads, sortByName, sortByPopularity, sortBySize, sortByViews } from '@/utils/common/sorting'
 import { RESOLUTION_THRESHOLDS, STORAGE_KEYS, VIDEO_USAGE_SHORT_LABELS } from '@/utils/config/constants'
 import { getDefaultCategoryFilter, hasActiveSeriesFilters } from '@/utils/filter/defaults'
-import { filterByUploadPeriod } from '@/utils/filter/uploadPeriod'
 import { usePopularityStore } from './popularity'
 
 export const useFilterStore = defineStore('filter', () => {
@@ -118,7 +117,7 @@ export const useFilterStore = defineStore('filter', () => {
 
   function applyFilters(wallpapers, options = {}) {
     const { skipCategoryFilter = false } = options
-    let result = filterByUploadPeriod([...wallpapers], sortBy.value)
+    let result = [...wallpapers]
 
     if (exactSearchValue.value) {
       result = result.filter(wallpaper => wallpaper.filename === exactSearchValue.value)
@@ -192,13 +191,15 @@ export const useFilterStore = defineStore('filter', () => {
       case 'oldest':
         return sortByDate(wallpapers, 'asc')
       case 'popular':
+        return sortByPopularity(wallpapers, popularityStore.popularityMap, currentSeriesId.value)
       case 'weekly-hot':
+        return sortByPopularity(wallpapers, popularityStore.weeklyPopularityMap, currentSeriesId.value)
       case 'monthly-hot':
-        return sortByPopularity(wallpapers, popularityStore.popularityMap)
+        return sortByPopularity(wallpapers, popularityStore.monthlyPopularityMap, currentSeriesId.value)
       case 'downloads':
-        return sortByDownloads(wallpapers, popularityStore.popularityMap)
+        return sortByDownloads(wallpapers, popularityStore.popularityMap, currentSeriesId.value)
       case 'views':
-        return sortByViews(wallpapers, popularityStore.popularityMap)
+        return sortByViews(wallpapers, popularityStore.popularityMap, currentSeriesId.value)
       case 'largest':
         return sortBySize(wallpapers, 'desc')
       case 'smallest':

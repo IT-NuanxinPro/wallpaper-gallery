@@ -27,7 +27,7 @@ describe('buildWallpaperDownloadFilename', () => {
 })
 
 describe('buildWallpaperImageFallbackUrls', () => {
-  it('tries avatar webp originals before proxy fallbacks', () => {
+  it('tries avatar webp originals before the matching Raw fallback', () => {
     const urls = buildWallpaperImageFallbackUrls({
       filename: '663.webp',
       format: 'WEBP',
@@ -38,7 +38,7 @@ describe('buildWallpaperImageFallbackUrls', () => {
     })
 
     expect(urls[0]).toContain('/wallpaper/avatar/')
-    expect(urls.at(-1)).toContain('wsrv.nl')
+    expect(urls.at(-1)).toBe('https://raw.githubusercontent.com/IT-NuanxinPro/nuanXinProPic/v1.1.96/wallpaper/avatar/人像/甜妹/663.webp')
   })
 
   it('falls back from preview thumbnails to original assets for standard wallpapers', () => {
@@ -51,6 +51,6 @@ describe('buildWallpaperImageFallbackUrls', () => {
     })
 
     expect(urls).toContain('https://cdn.jsdelivr.net/gh/IT-NuanxinPro/nuanXinProPic@v1.2.8/wallpaper/desktop/动漫/demo.png')
-    expect(urls.at(-1)).toContain('wsrv.nl')
+    expect(urls.at(-1)).toBe('https://raw.githubusercontent.com/IT-NuanxinPro/nuanXinProPic/v1.2.8/wallpaper/desktop/动漫/demo.png')
   })
 })

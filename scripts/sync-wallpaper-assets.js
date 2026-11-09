@@ -68,8 +68,8 @@ function chunk(items, size) {
   return chunks
 }
 
-function getStandardCategoryFiles(series) {
-  const indexPath = path.join(DATA_DIR, series, 'index.json')
+function getStandardCategoryFiles(series, dataDir) {
+  const indexPath = path.join(dataDir, series, 'index.json')
   if (!fs.existsSync(indexPath)) {
     return []
   }
@@ -88,8 +88,8 @@ function getStandardCategoryFiles(series) {
     : []
 }
 
-function getBingYearFiles() {
-  const indexPath = path.join(DATA_DIR, 'bing', 'index.json')
+function getBingYearFiles(dataDir) {
+  const indexPath = path.join(dataDir, 'bing', 'index.json')
   const indexData = readJson(indexPath)
   return Array.isArray(indexData.years)
     ? indexData.years.map(item => item?.file).filter(Boolean)
@@ -98,7 +98,7 @@ function getBingYearFiles() {
 
 export function mapStandardWallpaperAsset(series, wallpaper) {
   const filename = normalizeWallpaperFilename(wallpaper?.filename || wallpaper?.id, series)
-  const assetKey = buildWallpaperAssetKey(filename, series)
+  const assetKey = buildWallpaperAssetKey(wallpaper, series)
   const buildAssetUrl = series === 'video' ? buildVideoAssetUrl : buildCdnAssetUrl
   const rawUrl = buildAssetUrl(wallpaper?.path, wallpaper?.cdnTag)
   const previewUrl = buildAssetUrl(wallpaper?.previewPath, wallpaper?.cdnTag)
@@ -189,14 +189,33 @@ export function mapBingWallpaperAsset(item) {
   }
 }
 
-export function collectWallpaperAssets() {
+export function buildLegacyAssetMappings(assets) {
+  const keysByLegacyKey = new Map()
+  assets.forEach((asset) => {
+    const legacyKey = buildWallpaperAssetKey(asset.filename, asset.series)
+    if (!legacyKey || !asset.asset_key) {
+      return
+    }
+    if (!keysByLegacyKey.has(legacyKey)) {
+      keysByLegacyKey.set(legacyKey, new Set())
+    }
+    keysByLegacyKey.get(legacyKey).add(asset.asset_key)
+  })
+  return Array.from(keysByLegacyKey, ([legacyKey, keys]) => ({
+    legacyKey,
+    assetKeys: [...keys].sort(),
+    ambiguous: keys.size > 1,
+  })).sort((a, b) => a.legacyKey.localeCompare(b.legacyKey))
+}
+
+export function collectWallpaperAssets(dataDir = DATA_DIR) {
   const assets = new Map()
 
   STATIC_SERIES.forEach((series) => {
-    const categoryFiles = getStandardCategoryFiles(series)
+    const categoryFiles = getStandardCategoryFiles(series, dataDir)
 
     categoryFiles.forEach((file) => {
-      const categoryPath = path.join(DATA_DIR, series, file)
+      const categoryPath = path.join(dataDir, series, file)
       const categoryData = readJson(categoryPath)
       const decoded = categoryData.blob || categoryData.payload
         ? JSON.parse(decodeData(categoryData.blob || categoryData.payload))
@@ -212,8 +231,8 @@ export function collectWallpaperAssets() {
     })
   })
 
-  getBingYearFiles().forEach((file) => {
-    const yearPath = path.join(DATA_DIR, 'bing', file)
+  getBingYearFiles(dataDir).forEach((file) => {
+    const yearPath = path.join(dataDir, 'bing', file)
     const yearData = readJson(yearPath)
     const items = Array.isArray(yearData.items) ? yearData.items : []
 

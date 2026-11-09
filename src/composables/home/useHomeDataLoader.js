@@ -14,7 +14,8 @@ export function useHomeDataLoader({
   const isLoading = ref(false)
   let visualRequestVersion = 0
 
-  const loading = computed(() => isLoading.value || wallpaperStore.loading)
+  const loading = computed(() => wallpaperStore.loading
+    || (isLoading.value && wallpaperStore.currentRenderedSeries !== currentSeries.value))
   const error = computed(() => wallpaperStore.error)
 
   async function loadSeriesData(series, forceRefresh = false) {
@@ -35,6 +36,11 @@ export function useHomeDataLoader({
       })
 
       await wallpaperStore.initSeries(series, forceRefresh)
+      // 刷新不会改变已选月份，不能只依赖 categoryFilter 的变更监听。
+      if (currentRequestVersion === visualRequestVersion && currentSeries.value === 'bing'
+        && /^\d{4}-\d{2}$/.test(filterStore.categoryFilter)) {
+        await wallpaperStore.loadBingYear(Number.parseInt(filterStore.categoryFilter.slice(0, 4)))
+      }
     }
     finally {
       if (visualRequestVersion === currentRequestVersion) {

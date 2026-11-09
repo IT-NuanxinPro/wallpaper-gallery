@@ -6,11 +6,11 @@
 import { computed, onUnmounted, ref, toRef, watch } from 'vue'
 import { useDevice } from '@/composables/useDevice'
 import { useInteraction } from '@/composables/useInteraction'
+import { usePreviewTracking } from '@/composables/usePreviewTracking'
+import { useWallpaperDownload } from '@/composables/useWallpaperDownload'
 import { useWallpaperType } from '@/composables/useWallpaperType'
 import { usePopularityStore } from '@/stores/popularity'
-import { trackWallpaperDownload, trackWallpaperPreview } from '@/utils/common/analytics'
-import { buildRawImageUrl, buildWallpaperDownloadFilename, downloadFile } from '@/utils/common/format'
-import { recordDownload, recordView } from '@/utils/integrations/supabase'
+import { buildRawImageUrl } from '@/utils/common/format'
 import { resolveWallpaperSeries } from '@/utils/wallpaper/identity'
 
 import { useDeviceMode } from './composables/useDeviceMode'
@@ -61,7 +61,8 @@ const contentRef = ref(null)
 // 数据状态
 const imageDimensions = ref({ width: 0, height: 0 })
 const imageLoaded = ref(false)
-const downloading = ref(false)
+const imageError = ref(false)
+const { downloading, handleDownload } = useWallpaperDownload(() => props.wallpaper, effectiveSeries)
 const savedScrollY = ref(0)
 const fallbackStage = ref('none')
 
@@ -69,25 +70,25 @@ const fallbackStage = ref('none')
 const downloadCount = computed(() => {
   if (!props.wallpaper)
     return 0
-  return popularityStore.getDownloadCount(props.wallpaper.filename)
+  return popularityStore.getDownloadCount(props.wallpaper)
 })
 
 const viewCount = computed(() => {
   if (!props.wallpaper)
     return 0
-  return popularityStore.getViewCount(props.wallpaper.filename)
+  return popularityStore.getViewCount(props.wallpaper)
 })
 
 const likeCount = computed(() => {
   if (!props.wallpaper)
     return 0
-  return popularityStore.getLikeCount(props.wallpaper.filename)
+  return popularityStore.getLikeCount(props.wallpaper)
 })
 
 const collectCount = computed(() => {
   if (!props.wallpaper)
     return 0
-  return popularityStore.getCollectCount(props.wallpaper.filename)
+  return popularityStore.getCollectCount(props.wallpaper)
 })
 
 // 弹窗显示状态（用于 Transition 控制）
@@ -123,7 +124,8 @@ watch(() => props.isOpen, async (isOpen) => {
 }, { immediate: true })
 
 // 监听壁纸变化
-watch(() => props.wallpaper, () => {
+// 同一资源的元数据引用替换不重置图片状态，避免缓存图不再触发 load 后尺寸丢失。
+watch([() => props.wallpaper?.id, () => props.wallpaper?.url, () => props.wallpaper?.previewUrl], () => {
   fallbackStage.value = 'none'
   resetState()
   // 统计数据现在是 computed，从 popularityStore 自动获取
@@ -132,8 +134,6 @@ watch(() => props.wallpaper, () => {
 // 打开弹窗
 function handleOpen() {
   // 追踪和统计
-  trackWallpaperPreview(props.wallpaper)
-  recordView(props.wallpaper, effectiveSeries.value)
 
   // 锁定背景滚动
   savedScrollY.value = window.scrollY || window.pageYOffset
@@ -191,29 +191,17 @@ function exitDeviceMode() {
 }
 
 // 下载处理
-async function handleDownload() {
-  if (!props.wallpaper || downloading.value)
-    return
-
-  downloading.value = true
-  try {
-    await downloadFile(props.wallpaper.url, buildWallpaperDownloadFilename(props.wallpaper))
-    trackWallpaperDownload(props.wallpaper, effectiveSeries.value)
-    recordDownload(props.wallpaper, effectiveSeries.value)
-  }
-  finally {
-    downloading.value = false
-  }
-}
 
 // 图片加载完成
 function handleImageLoad(dimensions) {
+  imageError.value = false
   imageLoaded.value = true
   imageDimensions.value = dimensions
 }
 
 // 图片加载失败
 function handleImageError() {
+  imageError.value = true
   if (fallbackStage.value === 'none') {
     fallbackStage.value = 'raw'
     imageLoaded.value = false
@@ -225,6 +213,7 @@ function handleImageError() {
 
 // 重置状态
 function resetState() {
+  imageError.value = false
   imageLoaded.value = false
   imageDimensions.value = { width: 0, height: 0 }
   // 统计数据现在是 computed，无需手动重置
@@ -246,6 +235,13 @@ onUnmounted(() => {
       window.scrollTo({ top: savedScrollY.value, behavior: 'instant' })
     }
   }
+})
+usePreviewTracking({
+  wallpaper: () => props.wallpaper,
+  series: effectiveSeries,
+  isOpen: () => props.isOpen && isVisible.value,
+  ready: () => imageLoaded.value && !imageError.value,
+  enabled: () => !useDesktopModal.value && !useAvatarDesktopModal.value && !useMobileModal.value && !useAvatarMobileModal.value,
 })
 </script>
 
@@ -348,6 +344,7 @@ onUnmounted(() => {
               :src="displayImageUrl"
               :alt="wallpaper.filename"
               :is-avatar="isAvatarSeries"
+              :resolution="wallpaper.resolution"
               @load="handleImageLoad"
               @error="handleImageError"
             />
@@ -505,4 +502,13 @@ onUnmounted(() => {
 }
 
 @include modal.modal-transition('.portrait-modal__content');
+
+button:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 3px;
+}
+
+button[aria-busy='true'] {
+  cursor: progress;
+}
 </style>

@@ -4,15 +4,17 @@ import { gsap } from 'gsap'
 import { computed, nextTick, onMounted, onUnmounted, ref, toRef, watch } from 'vue'
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import WallpaperCardActions from '@/components/wallpaper/card/shared/WallpaperCardActions.vue'
+import WallpaperImageStage from '@/components/wallpaper/shared/WallpaperImageStage.vue'
 import VideoWallpaperPlayer from '@/components/wallpaper/VideoWallpaperPlayer.vue'
 import { useDevice } from '@/composables/useDevice'
+import { useImageFallback } from '@/composables/useImageFallback'
 import { useInteraction } from '@/composables/useInteraction'
+import { isCurrentMediaEvent, usePreviewTracking } from '@/composables/usePreviewTracking'
+import { useWallpaperDownload } from '@/composables/useWallpaperDownload'
 import { useWallpaperType } from '@/composables/useWallpaperType'
 import { usePopularityStore } from '@/stores/popularity'
-import { trackWallpaperDownload, trackWallpaperPreview } from '@/utils/common/analytics'
 import { copyText } from '@/utils/common/clipboard'
-import { buildRawImageUrl, buildWallpaperDownloadFilename, downloadFile, formatDate, formatFileSize, formatRelativeTime, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/common/format'
-import { recordDownload, recordView } from '@/utils/integrations/supabase'
+import { formatDate, formatFileSize, formatRelativeTime, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/common/format'
 import { resolveWallpaperSeries } from '@/utils/wallpaper/identity'
 import ImageCropModal from '../crop/index.vue'
 import DesktopModal from './desktop/DesktopModal.vue'
@@ -87,7 +89,7 @@ const imageLoaded = ref(false)
 const imageError = ref(false)
 const videoLoaded = ref(false)
 const videoError = ref(false)
-const downloading = ref(false)
+const { downloading, handleDownload } = useWallpaperDownload(() => props.wallpaper, effectiveSeries)
 const actualDimensions = ref({ width: 0, height: 0 })
 
 // 保存滚动位置（修复移动端弹窗关闭后滚动位置丢失问题）
@@ -98,32 +100,31 @@ const previewLoaded = ref(false)
 const originalLoaded = ref(false)
 const showOriginal = ref(false)
 const loadingOriginal = ref(false)
-const fallbackStage = ref('none')
 
 // 下载次数（从 popularityStore 获取，支持乐观更新）
 const downloadCount = computed(() => {
   if (!props.wallpaper)
     return 0
-  return popularityStore.getDownloadCount(props.wallpaper.filename)
+  return popularityStore.getDownloadCount(props.wallpaper)
 })
 
 // 访问量（从 popularityStore 获取，支持乐观更新）
 const viewCount = computed(() => {
   if (!props.wallpaper)
     return 0
-  return popularityStore.getViewCount(props.wallpaper.filename)
+  return popularityStore.getViewCount(props.wallpaper)
 })
 
 const likeCount = computed(() => {
   if (!props.wallpaper)
     return 0
-  return popularityStore.getLikeCount(props.wallpaper.filename)
+  return popularityStore.getLikeCount(props.wallpaper)
 })
 
 const collectCount = computed(() => {
   if (!props.wallpaper)
     return 0
-  return popularityStore.getCollectCount(props.wallpaper.filename)
+  return popularityStore.getCollectCount(props.wallpaper)
 })
 
 const isVideoWallpaper = computed(() => props.wallpaper?.mediaType === 'video')
@@ -150,27 +151,11 @@ const baseDisplayUrl = computed(() => {
   return props.wallpaper.previewUrl || props.wallpaper.url
 })
 
-const displayUrl = computed(() => {
-  if (!baseDisplayUrl.value)
-    return ''
-
-  if (fallbackStage.value === 'raw')
-    return buildRawImageUrl(baseDisplayUrl.value)
-
-  return baseDisplayUrl.value
-})
+const { displayUrl, advance: advanceImageFallback, reset: resetImageFallback } = useImageFallback(baseDisplayUrl)
 
 // GSAP 入场动画
 watch(() => props.isOpen, async (isOpen, wasOpen) => {
   if (isOpen) {
-    // 如果使用 DesktopModal，由它自己处理统计，这里不重复调用
-    if (!useDesktopModal.value && props.wallpaper) {
-      // 追踪壁纸预览事件
-      trackWallpaperPreview(props.wallpaper)
-      // 记录到 Supabase 统计（异步 RPC）
-      recordView(props.wallpaper, effectiveSeries.value)
-    }
-
     // 保存当前滚动位置
     savedScrollY.value = window.scrollY || window.pageYOffset
 
@@ -256,8 +241,9 @@ function animateOut(callback) {
 }
 
 // Reset state when wallpaper changes
-watch(() => props.wallpaper, () => {
-  fallbackStage.value = 'none'
+// 同一资源的元数据引用替换不重置图片状态，避免缓存图不再触发 load 后尺寸丢失。
+watch([() => props.wallpaper?.id, () => props.wallpaper?.url, () => props.wallpaper?.previewUrl], () => {
+  resetImageFallback()
   imageLoaded.value = false
   imageError.value = false
   videoLoaded.value = false
@@ -272,7 +258,6 @@ watch(() => props.wallpaper, () => {
 })
 
 watch(baseDisplayUrl, () => {
-  fallbackStage.value = 'none'
   imageLoaded.value = false
   imageError.value = false
   actualDimensions.value = { width: 0, height: 0 }
@@ -377,7 +362,7 @@ function handleImageLoad(e) {
 
   // 获取图片实际尺寸
   if (e.target) {
-    actualDimensions.value = {
+    actualDimensions.value = e.dimensions || {
       width: e.target.naturalWidth,
       height: e.target.naturalHeight,
     }
@@ -385,8 +370,7 @@ function handleImageLoad(e) {
 }
 
 function handleImageError() {
-  if (fallbackStage.value === 'none') {
-    fallbackStage.value = 'raw'
+  if (advanceImageFallback()) {
     imageLoaded.value = false
     imageError.value = false
     return
@@ -411,23 +395,6 @@ function handleNext() {
   emit('next')
 }
 
-async function handleDownload() {
-  if (!props.wallpaper || downloading.value)
-    return
-
-  downloading.value = true
-  try {
-    await downloadFile(props.wallpaper.url, buildWallpaperDownloadFilename(props.wallpaper))
-    // 追踪下载事件,包含系列信息
-    trackWallpaperDownload(props.wallpaper, effectiveSeries.value)
-    // 记录到 Supabase 统计（异步 RPC）
-    recordDownload(props.wallpaper, effectiveSeries.value)
-  }
-  finally {
-    downloading.value = false
-  }
-}
-
 async function handleCopyUrl() {
   const url = props.wallpaper?.url
   if (!url)
@@ -442,8 +409,14 @@ async function handleCopyUrl() {
   }
 }
 
-function handleVideoLoadedMetadata(event) {
+function handleVideoCanPlay(event) {
+  if (!isCurrentMediaEvent(event, props.wallpaper?.url))
+    return
   videoLoaded.value = true
+  videoError.value = false
+}
+
+function handleVideoLoadedMetadata(event) {
   videoError.value = false
 
   if (event?.target?.videoWidth > 0) {
@@ -488,6 +461,13 @@ onUnmounted(() => {
   if (savedScrollY.value > 0) {
     window.scrollTo({ top: savedScrollY.value, behavior: 'instant' })
   }
+})
+usePreviewTracking({
+  wallpaper: () => props.wallpaper,
+  series: effectiveSeries,
+  isOpen: () => props.isOpen,
+  ready: () => isVideoWallpaper.value ? videoLoaded.value && !videoError.value : imageLoaded.value && !imageError.value,
+  enabled: () => !useDesktopModal.value,
 })
 </script>
 
@@ -547,39 +527,19 @@ onUnmounted(() => {
               :src="wallpaper.url"
               :poster="wallpaper.thumbnailUrl || wallpaper.previewUrl"
               @loadedmetadata="handleVideoLoadedMetadata"
+              @canplay="handleVideoCanPlay"
               @error="handleVideoError"
             />
           </template>
 
           <template v-else>
-            <!-- Loading -->
-            <div v-if="!imageLoaded" class="modal-loading">
-              <LoadingSpinner size="lg" />
-              <p v-if="loadingOriginal" class="loading-text">
-                正在加载原图...
-              </p>
-            </div>
-
-            <!-- Error -->
-            <div v-else-if="imageError" class="modal-error">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="3" width="18" height="18" rx="2" />
-                <path d="M12 8v4M12 16h.01" />
-              </svg>
-              <p>图片加载失败</p>
-            </div>
-
-            <!-- Image -->
-            <img
-              v-show="imageLoaded && !imageError"
+            <WallpaperImageStage
               :src="displayUrl"
               :alt="wallpaper.filename"
-              width="1920"
-              height="1080"
-              class="modal-image"
+              :resolution="wallpaper.resolution"
               @load="handleImageLoad"
               @error="handleImageError"
-            >
+            />
 
             <!-- 预览图标识 -->
             <div v-if="hasPreview && imageLoaded && !imageError && !showOriginal" class="preview-badge">
@@ -602,26 +562,8 @@ onUnmounted(() => {
 
         <!-- Info Panel -->
         <div ref="infoRef" class="modal-info">
-          <!-- 图片加载中显示骨架屏 -->
-          <template v-if="(!isVideoWallpaper && (!imageLoaded || imageError)) || (isVideoWallpaper && videoError)">
-            <div class="info-skeleton">
-              <div class="skeleton-title" />
-              <div class="skeleton-tags">
-                <div class="skeleton-tag" />
-                <div class="skeleton-tag" />
-                <div class="skeleton-tag" />
-              </div>
-              <div class="skeleton-details">
-                <div class="skeleton-line" />
-                <div class="skeleton-line" />
-                <div class="skeleton-line" />
-              </div>
-              <div class="skeleton-btn" />
-            </div>
-          </template>
-
-          <!-- 图片加载完成后显示真实信息 -->
-          <template v-else>
+          <!-- 元数据已就绪，图片解码不切换信息面板结构。 -->
+          <template v-if="wallpaper">
             <div class="info-header">
               <!-- Bing 壁纸信息（使用独立组件） -->
               <BingWallpaperInfo
@@ -817,7 +759,7 @@ onUnmounted(() => {
                 </button>
                 <button
                   class="download-btn"
-                  :disabled="downloading"
+                  :disabled="downloading" :aria-busy="downloading"
                   @click="handleDownload"
                 >
                   <LoadingSpinner v-if="downloading" size="sm" />
@@ -977,16 +919,17 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   flex: 1;
-  min-height: 300px; // 垂直布局初始高度
-  max-height: 60vh; // 垂直布局限制图片区域高度
+  flex-shrink: 0;
+  min-height: 0;
+  max-height: 60dvh;
   background: linear-gradient(180deg, rgba(8, 13, 24, 0.98), rgba(11, 18, 32, 0.94));
   overflow: hidden;
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
 
   // 平板竖屏：稍大的图片区域
   @include tablet-only {
-    min-height: 400px;
-    max-height: 65vh;
+    min-height: 0;
+    max-height: 60dvh;
   }
 }
 
@@ -1000,13 +943,14 @@ onUnmounted(() => {
 
 // 水平布局时的图片容器样式
 .modal-content--horizontal .modal-image-container {
-  min-width: 600px;
-  min-height: 500px;
-  max-height: none;
+  min-width: 0;
+  min-height: 0;
+  align-self: center;
+  max-height: 78dvh;
   border-radius: var(--radius-xl) 0 0 var(--radius-xl);
 
   @include large-desktop-up {
-    min-width: 800px;
+    min-width: 0;
   }
 }
 
@@ -1749,5 +1693,14 @@ onUnmounted(() => {
   50% {
     opacity: 0.5;
   }
+}
+
+button:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 3px;
+}
+
+button[aria-busy='true'] {
+  cursor: progress;
 }
 </style>

@@ -101,13 +101,13 @@ export async function fetchDefaultCollectionId() {
  * 切换喜欢状态
  * @returns {Promise<boolean>} 操作后的状态 (true=已喜欢)
  */
-export async function toggleLike(filename, series) {
+export async function toggleLike(wallpaperOrKey, series) {
   const supabase = getClient()
   const { data: { session } } = await supabase.auth.getSession()
   if (!session)
     throw new Error('未登录')
 
-  const assetKey = buildWallpaperAssetKey(filename, series)
+  const assetKey = buildWallpaperAssetKey(wallpaperOrKey, series)
   if (!assetKey)
     throw new Error('无效的壁纸标识')
 
@@ -145,13 +145,13 @@ export async function toggleLike(filename, series) {
  * 切换收藏状态（加入/移出默认收藏夹）
  * @returns {Promise<boolean>} 操作后的状态 (true=已收藏)
  */
-export async function toggleCollect(filename, series, collectionId) {
+export async function toggleCollect(wallpaperOrKey, series, collectionId) {
   const supabase = getClient()
   const { data: { session } } = await supabase.auth.getSession()
   if (!session)
     throw new Error('未登录')
 
-  const assetKey = buildWallpaperAssetKey(filename, series)
+  const assetKey = buildWallpaperAssetKey(wallpaperOrKey, series)
   if (!assetKey)
     throw new Error('无效的壁纸标识')
 

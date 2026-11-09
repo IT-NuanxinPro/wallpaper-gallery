@@ -3,7 +3,10 @@
 // ========================================
 // 仅管理静态数据的 localStorage 缓存
 
-const CACHE_PREFIX = 'stats_'
+import { refreshStatsMetadata } from '@/utils/stats/snapshot'
+
+const CACHE_PREFIX = 'stats_v2_'
+const CACHE_SCHEMA = 2
 const CACHE_TTL = 60 * 60 * 1000 // 1 小时
 
 /**
@@ -18,15 +21,18 @@ export function getCachedStats(series) {
     if (!cached)
       return null
 
-    const { data, timestamp } = JSON.parse(cached)
+    const { data, timestamp, metadata, schema } = JSON.parse(cached)
 
     // 检查是否过期
-    if (Date.now() - timestamp > CACHE_TTL) {
+    if (schema !== CACHE_SCHEMA || !Array.isArray(data) || !metadata
+      || !Number.isFinite(timestamp) || Date.now() - timestamp > CACHE_TTL) {
       localStorage.removeItem(key)
       return null
     }
 
-    return new Map(data)
+    const stats = new Map(data)
+    stats.metadata = refreshStatsMetadata(metadata)
+    return stats
   }
   catch (error) {
     console.warn('[LocalStatsCache] 读取缓存失败:', error)
@@ -43,7 +49,9 @@ export function setCachedStats(series, statsMap) {
   try {
     const key = `${CACHE_PREFIX}${series}`
     const data = {
+      schema: CACHE_SCHEMA,
       data: Array.from(statsMap.entries()),
+      metadata: statsMap.metadata,
       timestamp: Date.now(),
     }
     localStorage.setItem(key, JSON.stringify(data))

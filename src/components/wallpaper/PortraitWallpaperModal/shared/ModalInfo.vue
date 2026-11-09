@@ -109,22 +109,8 @@ const aiKeywords = computed(() => props.wallpaper?.keywords || [])
 
 <template>
   <div class="modal-info">
-    <!-- 骨架屏 -->
-    <template v-if="isLoading">
-      <div class="modal-info__skeleton">
-        <div class="skeleton__left">
-          <div class="skeleton__title" />
-          <div class="skeleton__tags">
-            <div class="skeleton__tag" />
-            <div class="skeleton__tag skeleton__tag--short" />
-          </div>
-        </div>
-        <div class="skeleton__btn" />
-      </div>
-    </template>
-
-    <!-- 实际内容 -->
-    <template v-else>
+    <!-- 壁纸元数据独立于图片加载，保持面板高度和操作位置稳定。 -->
+    <template v-if="wallpaper">
       <div class="modal-info__main">
         <div class="modal-info__header">
           <h3 class="modal-info__title">
@@ -235,7 +221,7 @@ const aiKeywords = computed(() => props.wallpaper?.keywords || [])
         <!-- 下载按钮 -->
         <button
           class="action-btn action-btn--primary"
-          :disabled="isDownloading"
+          :disabled="isDownloading" :aria-busy="isDownloading"
           @click="emit('download')"
         >
           <LoadingSpinner v-if="isDownloading" size="sm" />

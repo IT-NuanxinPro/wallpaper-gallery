@@ -1,49 +1,14 @@
 <script setup>
-import { gsap } from 'gsap'
-import { ref, watch } from 'vue'
 import { useScrollTop } from '@/composables/useScrollTop'
 import { trackBackToTop } from '@/utils/common/analytics'
 
 const { showButton, scrollToTop } = useScrollTop()
-const buttonRef = ref(null)
-
-// 按钮出现/消失动画
-watch(showButton, (show) => {
-  if (buttonRef.value) {
-    if (show) {
-      gsap.fromTo(
-        buttonRef.value,
-        { opacity: 0, scale: 0.5, y: 20 },
-        { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: 'back.out(2)' },
-      )
-    }
-    else {
-      gsap.to(buttonRef.value, {
-        opacity: 0,
-        scale: 0.5,
-        y: 20,
-        duration: 0.3,
-        ease: 'power2.in',
-      })
-    }
-  }
-})
 
 function handleClick() {
   // 追踪返回顶部点击，记录当前滚动位置
   const scrollPosition = window.scrollY || document.documentElement.scrollTop
   trackBackToTop(scrollPosition)
 
-  // 点击动画
-  if (buttonRef.value) {
-    gsap.to(buttonRef.value, {
-      scale: 0.9,
-      duration: 0.1,
-      yoyo: true,
-      repeat: 1,
-      ease: 'power2.inOut',
-    })
-  }
   scrollToTop()
 }
 </script>
@@ -52,7 +17,6 @@ function handleClick() {
   <Transition name="fade">
     <button
       v-show="showButton"
-      ref="buttonRef"
       class="back-to-top"
       aria-label="回到顶部"
       @click="handleClick"
@@ -82,10 +46,11 @@ function handleClick() {
   box-shadow:
     0 4px 20px var(--accent-shadow),
     0 0 0 1px rgba(255, 255, 255, 0.1) inset;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: transform, opacity;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    opacity 180ms ease;
   border: none;
-  outline: none;
 
   // 光晕效果
   &::before {
@@ -144,11 +109,30 @@ function handleClick() {
 // Transition
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s ease;
+  transition:
+    opacity 180ms ease,
+    translate 220ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+  translate: 0 10px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .back-to-top,
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 100ms ease;
+  }
+
+  .back-to-top:hover,
+  .back-to-top:active,
+  .fade-enter-from,
+  .fade-leave-to {
+    transform: none;
+    translate: none;
+  }
 }
 </style>

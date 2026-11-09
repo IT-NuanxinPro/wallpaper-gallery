@@ -27,20 +27,99 @@ export function normalizeWallpaperFilename(filenameOrId, series) {
   return normalized
 }
 
-export function buildWallpaperAssetKey(filenameOrId, series) {
-  const normalizedFilename = normalizeWallpaperFilename(filenameOrId, series)
-  if (!normalizedFilename || !series) {
+function decodePathSegment(segment) {
+  // 仅修复裸百分号；已编码的百分号和斜线只解码一次。
+  try {
+    return decodeURIComponent(segment.replace(/%(?![\da-f]{2})/gi, '%25'))
+  }
+  catch {
+    return segment.replace(/(?:%[\da-f]{2})+/gi, (encoded) => {
+      try {
+        return decodeURIComponent(encoded)
+      }
+      catch {
+        return encoded
+      }
+    })
+  }
+}
+
+export function normalizeWallpaperPath(sourcePath, series) {
+  if (typeof sourcePath !== 'string' || !ALL_SERIES.includes(series) || series === 'bing') {
     return ''
   }
-  return `${series}:${normalizedFilename}`
+
+  const resourcePath = sourcePath.startsWith('/') ? sourcePath : `/${sourcePath}`
+  if (!resourcePath.startsWith(`/wallpaper/${series}/`)) {
+    return ''
+  }
+
+  const segments = resourcePath.slice(1).split('/').map(decodePathSegment)
+  if (segments.some(segment => !segment || segment === '.' || segment === '..')) {
+    return ''
+  }
+  return `/${segments.map(segment => encodeURIComponent(segment)).join('/')}`
+}
+
+export function buildWallpaperAssetKey(wallpaperOrKey, series) {
+  const wallpaper = wallpaperOrKey && typeof wallpaperOrKey === 'object' ? wallpaperOrKey : null
+  const resolvedSeries = series || (wallpaper ? resolveWallpaperSeries(wallpaper) : String(wallpaperOrKey || '').split(':')[0])
+  if (!ALL_SERIES.includes(resolvedSeries)) {
+    return ''
+  }
+
+  if (wallpaper) {
+    const resourcePath = normalizeWallpaperPath(wallpaper.path, resolvedSeries)
+      || normalizeWallpaperPath(wallpaper.source_path, resolvedSeries)
+    if (resourcePath) {
+      return `${resolvedSeries}:path:${resourcePath}`
+    }
+
+    const cachedKey = wallpaper._assetKey
+    if (typeof cachedKey === 'string' && cachedKey.startsWith(`${resolvedSeries}:`)
+      && (resolvedSeries === 'bing'
+        ? BING_FILENAME_PATTERN.test(cachedKey.slice(5))
+        : cachedKey.startsWith(`${resolvedSeries}:path:`))
+      && buildWallpaperAssetKey(cachedKey, resolvedSeries) === cachedKey) {
+      return cachedKey
+    }
+
+    return buildWallpaperAssetKey(wallpaper.filename || wallpaper.id, resolvedSeries)
+  }
+
+  let value = String(wallpaperOrKey || '').trim()
+  const keySeries = value.split(':')[0]
+  if (ALL_SERIES.includes(keySeries) && value.includes(':')) {
+    if (keySeries !== resolvedSeries) {
+      return ''
+    }
+    value = value.slice(keySeries.length + 1)
+  }
+
+  if (value.startsWith('path:')) {
+    const resourcePath = normalizeWallpaperPath(value.slice(5), resolvedSeries)
+    return resourcePath ? `${resolvedSeries}:path:${resourcePath}` : ''
+  }
+
+  const filename = normalizeWallpaperFilename(value, resolvedSeries)
+  return filename ? `${resolvedSeries}:${filename}` : ''
 }
 
 export function getWallpaperIdentity(wallpaper, series) {
-  const filename = normalizeWallpaperFilename(wallpaper?.filename || wallpaper?.id, series)
+  const assetKey = buildWallpaperAssetKey(wallpaper, series)
+  const resolvedSeries = assetKey.split(':')[0] || series || ''
+  const imageId = assetKey ? assetKey.slice(resolvedSeries.length + 1) : ''
+  const filename = normalizeWallpaperFilename(
+    typeof wallpaper === 'object' && wallpaper
+      ? wallpaper.filename || (imageId.startsWith('path:') ? decodePathSegment(imageId.split('/').at(-1)) : wallpaper.id)
+      : (imageId.startsWith('path:') ? decodePathSegment(imageId.split('/').at(-1)) : imageId),
+    resolvedSeries,
+  )
   return {
-    assetKey: buildWallpaperAssetKey(filename, series),
+    assetKey,
+    imageId,
     filename,
-    series,
+    series: resolvedSeries,
   }
 }
 
@@ -50,6 +129,7 @@ export function resolveWallpaperSeries(wallpaper, fallbackSeries = '') {
     : ''
   const pathSeries = [
     wallpaper?.path,
+    wallpaper?.source_path,
     wallpaper?.thumbnailPath,
     wallpaper?.previewPath,
     wallpaper?.url,
@@ -89,9 +169,9 @@ export function resolveWallpaperSeries(wallpaper, fallbackSeries = '') {
 
   const candidates = [
     wallpaper?._series,
-    assetKeySeries,
     pathSeries,
     wallpaper?.series,
+    assetKeySeries,
     wallpaper?.isBing ? 'bing' : '',
     fallbackSeries,
   ]

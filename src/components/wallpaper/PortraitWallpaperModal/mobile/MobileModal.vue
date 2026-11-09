@@ -2,12 +2,13 @@
 import { computed, ref, watch } from 'vue'
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import WallpaperCardActions from '@/components/wallpaper/card/shared/WallpaperCardActions.vue'
+import WallpaperImageStage from '@/components/wallpaper/shared/WallpaperImageStage.vue'
+import { usePreviewTracking } from '@/composables/usePreviewTracking'
 import { useScrollLock } from '@/composables/useScrollLock'
+import { useWallpaperDownload } from '@/composables/useWallpaperDownload'
 import { useWallpaperType } from '@/composables/useWallpaperType'
 import { usePopularityStore } from '@/stores/popularity'
-import { trackWallpaperDownload, trackWallpaperPreview } from '@/utils/common/analytics'
-import { buildRawImageUrl, buildWallpaperDownloadFilename, downloadFile, formatDate, formatFileSize, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/common/format'
-import { recordDownload, recordView } from '@/utils/integrations/supabase'
+import { buildRawImageUrl, formatDate, formatFileSize, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/common/format'
 import { resolveWallpaperSeries } from '@/utils/wallpaper/identity'
 import { useDeviceMode } from '../composables/useDeviceMode'
 import DeviceMode from '../shared/DeviceMode.vue'
@@ -32,7 +33,7 @@ const popularityStore = usePopularityStore()
 
 const isVisible = ref(false)
 const imageLoaded = ref(false)
-const downloading = ref(false)
+const { downloading, handleDownload } = useWallpaperDownload(() => props.wallpaper, effectiveSeries)
 const imageDimensions = ref({ width: 0, height: 0 })
 const fallbackStage = ref('none')
 
@@ -40,13 +41,13 @@ const fallbackStage = ref('none')
 const downloadCount = computed(() => {
   if (!props.wallpaper)
     return 0
-  return popularityStore.getDownloadCount(props.wallpaper.filename)
+  return popularityStore.getDownloadCount(props.wallpaper)
 })
 
 const viewCount = computed(() => {
   if (!props.wallpaper)
     return 0
-  return popularityStore.getViewCount(props.wallpaper.filename)
+  return popularityStore.getViewCount(props.wallpaper)
 })
 
 const displayImageUrl = computed(() => {
@@ -101,10 +102,6 @@ const fileExt = computed(() => props.wallpaper ? getFileExtension(props.wallpape
 const formattedSize = computed(() => props.wallpaper ? formatFileSize(props.wallpaper.size) : '')
 const formattedDate = computed(() => props.wallpaper ? formatDate(props.wallpaper.createdAt) : '')
 const canUseDeviceMode = computed(() => effectiveSeries.value === 'mobile')
-const previewAspectRatio = computed(() => {
-  const { width, height } = props.wallpaper?.resolution || {}
-  return width > 0 && height > 0 ? `${width} / ${height}` : '9 / 16'
-})
 
 watch(() => props.isOpen, (open) => {
   if (open && props.wallpaper) {
@@ -115,14 +112,13 @@ watch(() => props.isOpen, (open) => {
   }
 }, { immediate: true })
 
-watch(() => props.wallpaper, () => {
+// 同一资源的元数据引用替换不重置图片状态，避免缓存图不再触发 load 后尺寸丢失。
+watch([() => props.wallpaper?.id, () => props.wallpaper?.url, () => props.wallpaper?.previewUrl], () => {
   resetState()
   // 统计数据现在是 computed，从 popularityStore 自动获取
 })
 
 function openModal() {
-  trackWallpaperPreview(props.wallpaper)
-  recordView(props.wallpaper, effectiveSeries.value)
   scrollLock.lock()
   isVisible.value = true
 }
@@ -140,23 +136,9 @@ function onAfterLeave() {
   emit('close')
 }
 
-async function handleDownload() {
-  if (!props.wallpaper || downloading.value)
-    return
-  downloading.value = true
-  try {
-    await downloadFile(props.wallpaper.url, buildWallpaperDownloadFilename(props.wallpaper))
-    trackWallpaperDownload(props.wallpaper, effectiveSeries.value)
-    recordDownload(props.wallpaper, effectiveSeries.value)
-  }
-  finally {
-    downloading.value = false
-  }
-}
-
 function handleImageLoad(e) {
   imageLoaded.value = true
-  imageDimensions.value = { width: e.target.naturalWidth, height: e.target.naturalHeight }
+  imageDimensions.value = e.dimensions || { width: e.target.naturalWidth, height: e.target.naturalHeight }
 }
 
 function handleImageError() {
@@ -174,6 +156,12 @@ function resetState() {
   if (deviceMode.isDeviceMode.value)
     deviceMode.reset()
 }
+usePreviewTracking({
+  wallpaper: () => props.wallpaper,
+  series: effectiveSeries,
+  isOpen: () => props.isOpen && isVisible.value,
+  ready: imageLoaded,
+})
 </script>
 
 <template>
@@ -208,22 +196,16 @@ function resetState() {
           <div class="mobile-modal__body">
             <!-- 图片预览 -->
             <Transition name="content-fade">
-              <div
+              <WallpaperImageStage
                 v-show="!deviceMode.isDeviceMode.value"
                 class="mobile-modal__preview"
-                :style="{ aspectRatio: imageLoaded ? undefined : previewAspectRatio }"
-              >
-                <div v-if="!imageLoaded" class="loading-placeholder">
-                  <LoadingSpinner size="lg" />
-                </div>
-                <img
-                  :src="displayImageUrl"
-                  :alt="wallpaper.filename"
-                  :class="{ loaded: imageLoaded }"
-                  @load="handleImageLoad"
-                  @error="handleImageError"
-                >
-              </div>
+                :src="displayImageUrl"
+                :alt="wallpaper.filename"
+                :resolution="wallpaper.resolution"
+                fallback-ratio="9 / 16"
+                @load="handleImageLoad"
+                @error="handleImageError"
+              />
             </Transition>
 
             <!-- 真机模式 -->
@@ -320,7 +302,7 @@ function resetState() {
                 <button
                   class="action-btn action-btn--primary"
                   type="button"
-                  :disabled="downloading"
+                  :disabled="downloading" :aria-busy="downloading"
                   @click="handleDownload"
                 >
                   <LoadingSpinner v-if="downloading" size="sm" />
@@ -456,6 +438,7 @@ function resetState() {
   }
 
   &__preview {
+    --media-stage-max-height: 58dvh;
     position: relative;
     flex: none;
     width: 100%;
@@ -942,4 +925,13 @@ function resetState() {
 }
 
 @include modal.modal-transition('.mobile-modal__content');
+
+button:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 3px;
+}
+
+button[aria-busy='true'] {
+  cursor: progress;
+}
 </style>

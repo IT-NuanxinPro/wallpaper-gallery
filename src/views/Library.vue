@@ -2,6 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import PageLoadingScene from '@/components/common/feedback/PageLoadingScene.vue'
 import RemoteAvatar from '@/components/common/ui/RemoteAvatar.vue'
 import HomeModalHost from '@/components/home/HomeModalHost.vue'
@@ -13,6 +14,7 @@ import { useWallpaperStore } from '@/stores/wallpaper'
 import { getAvatarInitial, getAvatarStyle } from '@/utils/auth/avatarAppearance'
 import { SERIES_CONFIG } from '@/utils/config/constants'
 import { resolveWallpaperSeries } from '@/utils/wallpaper/identity'
+import { restoreWallpaperFromAssetKey } from '@/utils/wallpaper/transformers'
 
 const route = useRoute()
 const router = useRouter()
@@ -268,61 +270,13 @@ async function resolveWallpapers(assetKeys) {
         return wallpaper
       }
 
-      const { filename, series } = parseAssetKey(assetKeys[index])
-      return createMinimalWallpaper(assetKeys[index], filename, series)
+      return restoreWallpaperFromAssetKey(assetKeys[index])
     })
   }
   finally {
     if (resolveRequestVersion === resolveVersion) {
       resolving.value = false
     }
-  }
-}
-
-function parseAssetKey(assetKey) {
-  const [series, ...filenameParts] = String(assetKey || '').split(':')
-  return {
-    series,
-    filename: filenameParts.join(':'),
-  }
-}
-
-function createMinimalWallpaper(assetKey, filename, series) {
-  const config = SERIES_CONFIG[series]
-  if (!config) {
-    return {
-      id: filename,
-      filename,
-      _assetKey: assetKey,
-      _series: series,
-    }
-  }
-
-  // Bing 系列特殊处理
-  if (series === 'bing') {
-    const dateMatch = filename.match(/bing-(\d{4}-\d{2}-\d{2})/)
-    return {
-      id: filename,
-      filename,
-      isBing: true,
-      date: dateMatch ? dateMatch[1] : '',
-      title: filename,
-      thumbnailUrl: '', // Bing 缩略图需要 urlbase，这里简化处理
-      _assetKey: assetKey,
-      _series: series,
-    }
-  }
-
-  return {
-    id: filename,
-    filename,
-    thumbnailUrl: `${config.thumbnailBaseUrl}/${filename}`,
-    previewUrl: `${config.thumbnailBaseUrl}/${filename}`,
-    url: `${config.imageBaseUrl}/${filename}`,
-    category: '',
-    subcategory: '',
-    _assetKey: assetKey,
-    _series: series,
   }
 }
 
@@ -594,7 +548,7 @@ onMounted(() => {
                 >
                   <!-- 加载状态 -->
                   <div v-if="interactionStore.libraryLoading || resolving" class="library-loading">
-                    <div class="library-loading__spinner" />
+                    <LoadingSpinner size="lg" />
                     <span>加载中...</span>
                   </div>
 
@@ -644,7 +598,7 @@ onMounted(() => {
                   </div>
 
                   <div v-if="isLoadingMore" class="library-loading-more">
-                    <div class="library-loading__spinner" />
+                    <LoadingSpinner size="sm" />
                     <span>正在加载更多壁纸...</span>
                   </div>
                 </div>
@@ -1501,21 +1455,6 @@ onMounted(() => {
 
   [data-theme='dark'] & {
     color: #94a3b8;
-  }
-}
-
-.library-loading__spinner {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 3px solid rgba(59, 130, 246, 0.2);
-  border-top-color: #3b82f6;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
   }
 }
 

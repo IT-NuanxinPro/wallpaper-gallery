@@ -1,0 +1,53 @@
+// 所有交互共享轻量按压与键盘反馈；独立scale不覆盖组件已有transform。
+:root {
+  --feedback-duration: 140ms;
+  --feedback-ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+:where(button, a[href], [role='button'], [role='tab'], select, summary) {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition:
+    color var(--feedback-duration) ease,
+    background-color var(--feedback-duration) ease,
+    border-color var(--feedback-duration) ease,
+    opacity var(--feedback-duration) ease,
+    scale var(--feedback-duration) var(--feedback-ease);
+}
+
+:where(button, [role='button'], [role='tab'], summary):not(:disabled, [aria-disabled='true']):active {
+  scale: 0.97;
+}
+
+:where(a[href]):active {
+  opacity: 0.72;
+}
+
+:where(button, a[href], [role='button'], [role='tab'], input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+:where(button, [role='button'])[aria-busy='true'] {
+  cursor: progress;
+}
+
+:where(button, [role='button']):disabled,
+:where(button, a[href], [role='button'])[aria-disabled='true'] {
+  cursor: not-allowed;
+  scale: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  :where(button, a[href], [role='button'], [role='tab'], select, summary) {
+    transition-duration: 80ms;
+  }
+
+  :where(button, [role='button'], [role='tab'], summary):not(:disabled, [aria-disabled='true']):active {
+    scale: 1;
+  }
+}

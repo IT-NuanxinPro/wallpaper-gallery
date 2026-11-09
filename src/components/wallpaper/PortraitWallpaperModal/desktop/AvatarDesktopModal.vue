@@ -9,12 +9,13 @@ import { computed, ref, watch } from 'vue'
 
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import WallpaperCardActions from '@/components/wallpaper/card/shared/WallpaperCardActions.vue'
+import WallpaperImageStage from '@/components/wallpaper/shared/WallpaperImageStage.vue'
+import { usePreviewTracking } from '@/composables/usePreviewTracking'
+import { useWallpaperDownload } from '@/composables/useWallpaperDownload'
 import { useWallpaperType } from '@/composables/useWallpaperType'
 import { usePopularityStore } from '@/stores/popularity'
-import { trackWallpaperDownload, trackWallpaperPreview } from '@/utils/common/analytics'
 import { copyText } from '@/utils/common/clipboard'
-import { buildRawImageUrl, buildWallpaperDownloadFilename, downloadFile, formatDate, formatFileSize, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/common/format'
-import { recordDownload, recordView } from '@/utils/integrations/supabase'
+import { buildRawImageUrl, formatDate, formatFileSize, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/common/format'
 import { resolveWallpaperSeries } from '@/utils/wallpaper/identity'
 
 const props = defineProps({
@@ -36,14 +37,14 @@ const popularityStore = usePopularityStore()
 // 状态
 const isVisible = ref(false)
 const imageLoaded = ref(false)
-const downloading = ref(false)
+const { downloading, handleDownload } = useWallpaperDownload(() => props.wallpaper, effectiveSeries)
 const imageDimensions = ref({ width: 0, height: 0 })
 const isSquare = ref(false) // 头像形状：false=圆形，true=圆角方形
 const fallbackStage = ref('none')
 
 // 统计数据
-const downloadCount = computed(() => props.wallpaper ? popularityStore.getDownloadCount(props.wallpaper.filename) : 0)
-const viewCount = computed(() => props.wallpaper ? popularityStore.getViewCount(props.wallpaper.filename) : 0)
+const downloadCount = computed(() => props.wallpaper ? popularityStore.getDownloadCount(props.wallpaper) : 0)
+const viewCount = computed(() => props.wallpaper ? popularityStore.getViewCount(props.wallpaper) : 0)
 // 悬浮状态
 const isHovered = ref(false)
 
@@ -107,14 +108,13 @@ watch(() => props.isOpen, (isOpen) => {
     handleClose()
 }, { immediate: true })
 
-watch(() => props.wallpaper, () => {
+// 同一资源的元数据引用替换不重置图片状态，避免缓存图不再触发 load 后尺寸丢失。
+watch([() => props.wallpaper?.id, () => props.wallpaper?.url, () => props.wallpaper?.previewUrl], () => {
   fallbackStage.value = 'none'
   resetState()
 })
 
 function handleOpen() {
-  trackWallpaperPreview(props.wallpaper)
-  recordView(props.wallpaper, effectiveSeries.value)
   isVisible.value = true
 }
 
@@ -124,20 +124,6 @@ function handleClose() {
 
 // eslint-disable-next-line style/max-statements-per-line
 function onModalAfterLeave() { emit('close') }
-
-async function handleDownload() {
-  if (!props.wallpaper || downloading.value)
-    return
-  downloading.value = true
-  try {
-    await downloadFile(props.wallpaper.url, buildWallpaperDownloadFilename(props.wallpaper))
-    trackWallpaperDownload(props.wallpaper, effectiveSeries.value)
-    recordDownload(props.wallpaper, effectiveSeries.value)
-  }
-  finally {
-    downloading.value = false
-  }
-}
 
 async function handleCopyUrl() {
   const url = props.wallpaper?.url
@@ -155,7 +141,7 @@ async function handleCopyUrl() {
 
 function handleImageLoad(e) {
   imageLoaded.value = true
-  imageDimensions.value = { width: e.target.naturalWidth, height: e.target.naturalHeight }
+  imageDimensions.value = e.dimensions || { width: e.target.naturalWidth, height: e.target.naturalHeight }
 }
 
 function handleImageError() {
@@ -169,6 +155,12 @@ function resetState() {
   imageLoaded.value = false
   imageDimensions.value = { width: 0, height: 0 }
 }
+usePreviewTracking({
+  wallpaper: () => props.wallpaper,
+  series: effectiveSeries,
+  isOpen: () => props.isOpen && isVisible.value,
+  ready: imageLoaded,
+})
 </script>
 
 <template>
@@ -197,16 +189,15 @@ function resetState() {
                 <!-- 头像展示区 -->
                 <div class="avatar-showcase">
                   <div class="avatar-wrapper" :class="{ 'is-square': isSquare }">
-                    <div v-if="!imageLoaded" class="loading-placeholder">
-                      <LoadingSpinner size="md" />
-                    </div>
-                    <img
+                    <WallpaperImageStage
+                      class="fixed-frame-media"
                       :src="optimizedImageUrl"
                       :alt="wallpaper.filename"
-                      :class="{ loaded: imageLoaded }"
+                      :resolution="wallpaper.resolution"
+                      fallback-ratio="1 / 1"
                       @load="handleImageLoad"
                       @error="handleImageError"
-                    >
+                    />
                   </div>
                   <!-- 模拟昵称 -->
                   <div class="avatar-name">
@@ -303,9 +294,9 @@ function resetState() {
                 <span class="detail-label">上传时间</span>
                 <span class="detail-value">{{ formattedDate }}</span>
               </div>
-              <div v-if="imageDimensions.width > 0" class="detail-row">
+              <div class="detail-row">
                 <span class="detail-label">尺寸</span>
-                <span class="detail-value">{{ imageDimensions.width }} × {{ imageDimensions.height }}</span>
+                <span class="detail-value">{{ imageDimensions.width > 0 ? `${imageDimensions.width} × ${imageDimensions.height}` : '正在读取尺寸…' }}</span>
               </div>
             </div>
 
@@ -337,7 +328,7 @@ function resetState() {
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
                   </svg>
                 </button>
-                <button class="download-btn" :disabled="downloading" @click="handleDownload">
+                <button class="download-btn" :disabled="downloading" :aria-busy="downloading" @click="handleDownload">
                   <LoadingSpinner v-if="downloading" size="sm" />
                   <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
@@ -367,6 +358,8 @@ function resetState() {
   padding: 40px;
 
   &__content {
+    max-height: calc(100dvh - 80px);
+    overflow-y: auto;
     position: relative;
     display: flex;
     gap: 60px;
@@ -888,4 +881,27 @@ function resetState() {
 // 弹窗动画
 
 @include modal.modal-transition('.avatar-desktop-modal__content');
+
+.fixed-frame-media {
+  height: 100%;
+  max-height: none;
+  border-radius: inherit;
+}
+
+@media (max-height: 820px) {
+  .iphone-frame {
+    width: min(280px, calc((100dvh - 180px) * 0.483));
+    height: min(580px, calc(100dvh - 180px));
+    flex-shrink: 0;
+  }
+}
+
+button:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 3px;
+}
+
+button[aria-busy='true'] {
+  cursor: progress;
+}
 </style>

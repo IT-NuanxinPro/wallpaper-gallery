@@ -45,16 +45,21 @@ describe('系列数据加载与缓存', () => {
       : response({ wallpapers: [item('desktop', 'updated')] }))
     await store.initSeries('desktop', true)
     expect(store.wallpapers[0].filename).toBe('updated.jpg')
-    expect(fetchWithRetry).toHaveBeenCalledTimes(4)
+    expect(fetchWithRetry).toHaveBeenCalledTimes(6)
   })
 
   it('慢请求返回后不能覆盖用户已经切回的缓存系列', async () => {
     const store = useWallpaperStore()
     await store.initSeries('desktop')
     let finishMobile
-    vi.mocked(fetchWithRetry).mockImplementationOnce(() => new Promise((resolve) => {
-      finishMobile = resolve
-    }))
+    vi.mocked(fetchWithRetry).mockImplementation(async (url) => {
+      if (url.includes('index.json')) {
+        return new Promise((resolve) => {
+          finishMobile = resolve
+        })
+      }
+      return response({ wallpapers: [item('mobile', 'first')] })
+    })
     const pending = store.initSeries('mobile')
     await store.initSeries('desktop')
     finishMobile(response({ total: 1, categories: [{ file: '风景.json' }] }))

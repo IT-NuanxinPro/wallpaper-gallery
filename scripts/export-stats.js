@@ -1,208 +1,101 @@
 #!/usr/bin/env node
-// ========================================
-// 静态统计导出脚本
-// ========================================
-// 从 Supabase 导出热门统计数据到静态 JSON 文件
-// 用于 GitHub Actions 定时任务
-
+// 全量统计导出：所有系列完整读取成功后，才替换静态快照目录。
 import fs from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
+import { createStatsSnapshot, fetchStatsPages, parseStatsSnapshot } from '../src/utils/stats/snapshot.js'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
-// 从环境变量获取配置
-const SUPABASE_URL = process.env.VITE_SUPABASE_URL
-const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY
-
-// 导出配置
+const OUTPUT_DIR = fileURLToPath(new URL('../public/data/stats', import.meta.url))
 const SERIES_LIST = ['desktop', 'mobile', 'avatar', 'video', 'bing']
-const OUTPUT_DIR = path.join(__dirname, '../public/data/stats')
-const LIMIT_PER_SERIES = 500 // 每个系列导出前 500 条
 
-function normalizeImageId(imageId, series) {
-  if (!imageId)
-    return ''
+export async function exportStats({
+  supabaseUrl = process.env.VITE_SUPABASE_URL,
+  supabaseKey = process.env.VITE_SUPABASE_ANON_KEY,
+  outputDir = OUTPUT_DIR,
+  fetchImpl = fetch,
+  seriesList = SERIES_LIST,
+} = {}) {
+  if (!supabaseUrl || !supabaseKey)
+    throw new Error('缺少 VITE_SUPABASE_URL 或 VITE_SUPABASE_ANON_KEY')
 
-  if (series === 'bing') {
-    if (/^bing-\d{4}-\d{2}-\d{2}\.jpg$/i.test(imageId)) {
-      return imageId
+  const exportedAt = new Date().toISOString()
+  const snapshots = new Map()
+  const summary = { schema: 2, exportedAt, series: {} }
+
+  for (const series of seriesList) {
+    const pageResult = await fetchStatsPages(async (params) => {
+      const response = await fetchImpl(`${supabaseUrl}/rest/v1/rpc/get_stats_page`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` },
+        body: JSON.stringify(params),
+        signal: AbortSignal.timeout(30000),
+      })
+      if (!response.ok)
+        throw new Error(`导出 ${series} 失败: HTTP ${response.status}`)
+      return response.json()
+    }, series)
+
+    const { items, periodStartedAt, weekStart, monthStart } = pageResult
+    const snapshot = createStatsSnapshot(pageResult, exportedAt)
+    parseStatsSnapshot(snapshot, series)
+    snapshots.set(`hot-${series}.json`, snapshot)
+    const legacy = items.filter(item => !(series === 'bing'
+      ? /^bing-\d{4}-\d{2}-\d{2}\.jpg$/i.test(item.image_id)
+      : item.image_id.startsWith(`path:/wallpaper/${series}/`)))
+    summary.series[series] = {
+      count: items.length,
+      totalViews: items.reduce((sum, item) => sum + item.views, 0),
+      totalDownloads: items.reduce((sum, item) => sum + item.downloads, 0),
+      periodStartedAt,
+      weekStart,
+      monthStart,
+      legacyCount: legacy.length,
+      legacyAmbiguousCount: legacy.filter(item => item.legacy_ambiguous).length,
+      legacyViews: legacy.reduce((sum, item) => sum + item.views, 0),
+      legacyDownloads: legacy.reduce((sum, item) => sum + item.downloads, 0),
     }
+  }
+  snapshots.set('summary.json', summary)
 
-    if (/^\d{4}-\d{2}-\d{2}\.jpg$/i.test(imageId)) {
-      return `bing-${imageId}`
+  fs.mkdirSync(path.dirname(outputDir), { recursive: true })
+  const stagingDir = fs.mkdtempSync(path.join(path.dirname(outputDir), '.stats-export-'))
+  const backupDir = `${stagingDir}-previous`
+  let backedUp = false
+  try {
+    if (fs.existsSync(outputDir))
+      fs.cpSync(outputDir, stagingDir, { recursive: true })
+    for (const [filename, payload] of snapshots)
+      fs.writeFileSync(path.join(stagingDir, filename), JSON.stringify(payload, null, 2), 'utf8')
+
+    if (fs.existsSync(outputDir)) {
+      fs.renameSync(outputDir, backupDir)
+      backedUp = true
     }
-  }
-
-  return imageId
-}
-
-/**
- * 检查 Supabase 配置
- */
-function checkConfig() {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-    console.error('错误: 缺少 Supabase 配置')
-    console.error('请设置环境变量: VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY')
-    process.exit(1)
-  }
-}
-
-/**
- * 调用 Supabase RPC 获取热门数据
- */
-async function fetchHotStats(series, limit = LIMIT_PER_SERIES) {
-  const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_hot_stats`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'apikey': SUPABASE_ANON_KEY,
-      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-    },
-    body: JSON.stringify({
-      series_filter: series,
-      limit_count: limit,
-    }),
-  })
-
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status}: ${await response.text()}`)
-  }
-
-  return response.json()
-}
-
-/**
- * 格式化导出数据
- */
-function formatExportData(rawData) {
-  return rawData
-}
-
-function mergeExportData(rawData, series) {
-  const merged = new Map()
-
-  rawData.forEach((item) => {
-    const imageId = normalizeImageId(item.image_id, series)
-    if (!imageId)
-      return
-
-    const prev = merged.get(imageId) || { image_id: imageId, views: 0, downloads: 0, likes: 0, collects: 0 }
-    prev.views += item.total_views || 0
-    prev.downloads += item.total_downloads || 0
-    prev.likes += item.total_likes || 0
-    prev.collects += item.total_collects || 0
-    merged.set(imageId, prev)
-  })
-
-  return Array.from(merged.values())
-    .sort((a, b) => {
-      if (b.views !== a.views)
-        return b.views - a.views
-      if (b.downloads !== a.downloads)
-        return b.downloads - a.downloads
-      return a.image_id.localeCompare(b.image_id, 'zh-CN')
-    })
-}
-
-/**
- * 确保输出目录存在
- */
-function ensureOutputDir() {
-  if (!fs.existsSync(OUTPUT_DIR)) {
-    fs.mkdirSync(OUTPUT_DIR, { recursive: true })
-    console.log(`创建目录: ${OUTPUT_DIR}`)
-  }
-}
-
-/**
- * 格式化时间为 YYYY-MM-DD HH:mm:ss
- */
-function formatDateTime(date = new Date()) {
-  const pad = value => String(value).padStart(2, '0')
-
-  return `${[
-    date.getFullYear(),
-    pad(date.getMonth() + 1),
-    pad(date.getDate()),
-  ].join('-')} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
-}
-
-/**
- * 写入 JSON 文件
- */
-function writeJsonFile(filename, data) {
-  const filepath = path.join(OUTPUT_DIR, filename)
-  fs.writeFileSync(filepath, JSON.stringify(data, null, 2), 'utf-8')
-
-  if (Array.isArray(data)) {
-    console.log(`导出完成: ${filename} (${data.length} 条)`)
-    return
-  }
-
-  console.log(`导出完成: ${filename}`)
-}
-
-/**
- * 主函数
- */
-async function main() {
-  console.log('========================================')
-  console.log('开始导出热门统计数据')
-  console.log('========================================')
-
-  checkConfig()
-  ensureOutputDir()
-
-  const summary = {
-    exportedAt: formatDateTime(),
-    series: {},
-  }
-
-  for (const series of SERIES_LIST) {
     try {
-      console.log(`\n正在导出: ${series}...`)
-
-      const rawData = await fetchHotStats(series)
-      const formattedData = mergeExportData(formatExportData(rawData), series)
-
-      // 写入单独的系列文件
-      writeJsonFile(`hot-${series}.json`, formattedData)
-
-      // 记录摘要
-      summary.series[series] = {
-        count: formattedData.length,
-        totalViews: formattedData.reduce((sum, item) => sum + item.views, 0),
-        totalDownloads: formattedData.reduce((sum, item) => sum + item.downloads, 0),
-      }
+      fs.renameSync(stagingDir, outputDir)
     }
     catch (error) {
-      console.error(`导出 ${series} 失败:`, error.message)
-      summary.series[series] = { error: error.message }
+      if (backedUp)
+        fs.renameSync(backupDir, outputDir)
+      throw error
     }
+    if (backedUp)
+      fs.rmSync(backupDir, { recursive: true })
   }
-
-  // 写入摘要文件
-  writeJsonFile('summary.json', summary)
-
-  console.log('\n========================================')
-  console.log('导出完成!')
-  console.log('========================================')
-  console.log('\n摘要:')
-  Object.entries(summary.series).forEach(([series, info]) => {
-    if (info.error) {
-      console.log(`  ${series}: 错误 - ${info.error}`)
-    }
-    else {
-      console.log(`  ${series}: ${info.count} 条, ${info.totalViews} 浏览, ${info.totalDownloads} 下载`)
-    }
-  })
+  finally {
+    if (fs.existsSync(stagingDir))
+      fs.rmSync(stagingDir, { recursive: true })
+  }
+  return summary
 }
 
-// 运行
-main().catch((error) => {
-  console.error('导出失败:', error)
-  process.exit(1)
-})
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  exportStats().then((summary) => {
+    for (const [series, info] of Object.entries(summary.series))
+      console.log(`${series}: ${info.count} 条，${info.totalViews} 浏览，${info.totalDownloads} 下载`)
+  }).catch((error) => {
+    console.error('统计导出失败:', error.message)
+    process.exitCode = 1
+  })
+}

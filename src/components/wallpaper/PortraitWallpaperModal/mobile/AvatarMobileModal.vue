@@ -3,12 +3,13 @@ import { computed, ref, watch } from 'vue'
 
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import WallpaperCardActions from '@/components/wallpaper/card/shared/WallpaperCardActions.vue'
+import WallpaperImageStage from '@/components/wallpaper/shared/WallpaperImageStage.vue'
+import { usePreviewTracking } from '@/composables/usePreviewTracking'
 import { useScrollLock } from '@/composables/useScrollLock'
+import { useWallpaperDownload } from '@/composables/useWallpaperDownload'
 import { useWallpaperType } from '@/composables/useWallpaperType'
 import { usePopularityStore } from '@/stores/popularity'
-import { trackWallpaperDownload, trackWallpaperPreview } from '@/utils/common/analytics'
-import { buildRawImageUrl, buildWallpaperDownloadFilename, downloadFile, formatDate, formatFileSize, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/common/format'
-import { recordDownload, recordView } from '@/utils/integrations/supabase'
+import { buildRawImageUrl, formatDate, formatFileSize, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/common/format'
 import { resolveWallpaperSeries } from '@/utils/wallpaper/identity'
 
 const props = defineProps({
@@ -31,7 +32,7 @@ const popularityStore = usePopularityStore()
 // 状态
 const isVisible = ref(false)
 const imageLoaded = ref(false)
-const downloading = ref(false)
+const { downloading, handleDownload } = useWallpaperDownload(() => props.wallpaper, effectiveSeries)
 const imageDimensions = ref({ width: 0, height: 0 })
 const isSquare = ref(false) // 头像形状：false=圆形，true=方形
 const fallbackStage = ref('none')
@@ -40,13 +41,13 @@ const fallbackStage = ref('none')
 const downloadCount = computed(() => {
   if (!props.wallpaper)
     return 0
-  return popularityStore.getDownloadCount(props.wallpaper.filename)
+  return popularityStore.getDownloadCount(props.wallpaper)
 })
 
 const viewCount = computed(() => {
   if (!props.wallpaper)
     return 0
-  return popularityStore.getViewCount(props.wallpaper.filename)
+  return popularityStore.getViewCount(props.wallpaper)
 })
 
 const displayImageUrl = computed(() => {
@@ -120,14 +121,13 @@ watch(() => props.isOpen, (open) => {
 }, { immediate: true })
 
 // 监听壁纸变化
-watch(() => props.wallpaper, () => {
+// 同一资源的元数据引用替换不重置图片状态，避免缓存图不再触发 load 后尺寸丢失。
+watch([() => props.wallpaper?.id, () => props.wallpaper?.url, () => props.wallpaper?.previewUrl], () => {
   resetState()
   // 统计数据现在是 computed，从 popularityStore 自动获取
 })
 
 function openModal() {
-  trackWallpaperPreview(props.wallpaper)
-  recordView(props.wallpaper, effectiveSeries.value)
   scrollLock.lock()
   isVisible.value = true
 }
@@ -141,23 +141,9 @@ function onAfterLeave() {
   emit('close')
 }
 
-async function handleDownload() {
-  if (!props.wallpaper || downloading.value)
-    return
-  downloading.value = true
-  try {
-    await downloadFile(props.wallpaper.url, buildWallpaperDownloadFilename(props.wallpaper))
-    trackWallpaperDownload(props.wallpaper, effectiveSeries.value)
-    recordDownload(props.wallpaper, effectiveSeries.value)
-  }
-  finally {
-    downloading.value = false
-  }
-}
-
 function handleImageLoad(e) {
   imageLoaded.value = true
-  imageDimensions.value = {
+  imageDimensions.value = e.dimensions || {
     width: e.target.naturalWidth,
     height: e.target.naturalHeight,
   }
@@ -176,6 +162,12 @@ function resetState() {
   imageDimensions.value = { width: 0, height: 0 }
   // 统计数据现在是 computed，无需手动重置
 }
+usePreviewTracking({
+  wallpaper: () => props.wallpaper,
+  series: effectiveSeries,
+  isOpen: () => props.isOpen && isVisible.value,
+  ready: imageLoaded,
+})
 </script>
 
 <template>
@@ -200,16 +192,15 @@ function resetState() {
             <!-- 头像预览 -->
             <div class="avatar-modal__preview">
               <div class="avatar-frame" :class="{ 'is-square': isSquare }">
-                <div v-if="!imageLoaded" class="loading-placeholder">
-                  <LoadingSpinner size="lg" />
-                </div>
-                <img
+                <WallpaperImageStage
+                  class="fixed-frame-media"
                   :src="displayImageUrl"
                   :alt="wallpaper.filename"
-                  :class="{ loaded: imageLoaded }"
+                  :resolution="wallpaper.resolution"
+                  fallback-ratio="1 / 1"
                   @load="handleImageLoad"
                   @error="handleImageError"
-                >
+                />
               </div>
               <!-- 形状切换 -->
               <div class="shape-toggle">
@@ -316,7 +307,7 @@ function resetState() {
 
                 <button
                   class="action-btn action-btn--primary"
-                  :disabled="downloading"
+                  :disabled="downloading" :aria-busy="downloading"
                   @click="handleDownload"
                 >
                   <LoadingSpinner v-if="downloading" size="sm" />
@@ -904,4 +895,19 @@ function resetState() {
 }
 
 @include modal.modal-transition('.avatar-modal__content');
+
+.fixed-frame-media {
+  height: 100%;
+  max-height: none;
+  border-radius: inherit;
+}
+
+button:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 3px;
+}
+
+button[aria-busy='true'] {
+  cursor: progress;
+}
 </style>

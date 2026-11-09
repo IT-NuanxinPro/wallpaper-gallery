@@ -384,13 +384,15 @@ const videoUsageTabs = computed(() => [
   justify-content: space-between;
   gap: $spacing-md;
   padding: $spacing-md $spacing-lg;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  // 吸顶筛选栏使用不透明表面，避免随长列表滚动持续重算模糊。
+  background-color: var(--color-bg-card);
   border-radius: $radius-lg;
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
-  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
   margin-bottom: $spacing-lg;
 
   // 吸顶效果（PC 和移动端通用）
@@ -404,17 +406,17 @@ const videoUsageTabs = computed(() => [
   transform: translateZ(0);
 
   [data-theme='dark'] & {
-    background: rgba(15, 23, 42, 0.75);
+    background: var(--color-bg-card);
     border-color: rgba(255, 255, 255, 0.08);
   }
 
   &.has-filters {
     border-color: var(--accent-border-strong);
-    background: rgba(255, 255, 255, 0.8);
+    background: var(--color-bg-card);
     box-shadow: 0 4px 30px var(--accent-ring);
 
     [data-theme='dark'] & {
-      background: rgba(15, 23, 42, 0.85);
+      background: var(--color-bg-card);
       border-color: var(--accent-border);
     }
   }

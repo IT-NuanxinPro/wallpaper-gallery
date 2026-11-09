@@ -1,6 +1,7 @@
 <script setup>
 import { gsap } from 'gsap'
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import LoadingSurface from '@/components/common/feedback/LoadingSurface.vue'
 import { buildImageUrl } from '@/utils/common/format'
 import { HOT_TAGS_WINDOW_DAYS } from '@/utils/config/hotTags'
 
@@ -188,6 +189,8 @@ function handlePanelToggle() {
 }
 
 function onPanelBeforeEnter(el) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+    return
   el.style.height = '0'
   el.style.opacity = '0'
   el.style.transform = 'translateY(-6px)'
@@ -195,6 +198,10 @@ function onPanelBeforeEnter(el) {
 }
 
 function onPanelEnter(el) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    onPanelAfterEnter(el)
+    return
+  }
   el.style.transition = 'height 240ms ease, opacity 180ms ease, transform 240ms ease'
 
   requestAnimationFrame(() => {
@@ -213,6 +220,8 @@ function onPanelAfterEnter(el) {
 }
 
 function onPanelBeforeLeave(el) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+    return
   el.style.height = `${el.scrollHeight}px`
   el.style.opacity = '1'
   el.style.transform = 'translateY(0)'
@@ -220,6 +229,10 @@ function onPanelBeforeLeave(el) {
 }
 
 function onPanelLeave(el) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    onPanelAfterLeave(el)
+    return
+  }
   void el.offsetHeight
   el.style.transition = 'height 240ms ease, opacity 160ms ease, transform 240ms ease'
 
@@ -250,7 +263,7 @@ function handleTagSelect(tag) {
 }
 
 function setChipInitialState(el) {
-  if (el && !animationPlayed.value) {
+  if (el && !animationPlayed.value && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     gsap.set(el, { opacity: 0, y: 12 })
   }
 }
@@ -283,12 +296,17 @@ watch(
     }
 
     gsap.killTweensOf(chips)
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      gsap.set(chips, { clearProps: 'opacity,transform' })
+      animationPlayed.value = true
+      return
+    }
     gsap.to(chips, {
-      duration: 0.58,
+      duration: 0.32,
       ease: 'power2.out',
       opacity: 1,
       y: 0,
-      stagger: 0.06,
+      stagger: { amount: 0.18 },
       clearProps: 'opacity,transform',
       onComplete: () => {
         animationPlayed.value = true
@@ -363,148 +381,150 @@ onBeforeUnmount(() => {
       @after-leave="onPanelAfterLeave"
     >
       <div v-if="!isPanelCollapsible || isPanelExpanded">
-        <div v-if="loading" class="hot-tags-groups">
-          <div
-            v-for="group in loadingSkeletonGroups"
-            :key="group.key"
-            class="hot-tags-group"
-          >
-            <div class="hot-tags-group__title">
-              {{ group.title }}
-            </div>
-            <div class="hot-tags-skeleton">
-              <span
-                v-for="index in group.count"
-                :key="`${group.key}-${index}`"
-                class="skeleton-chip"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div v-else ref="containerRef" class="hot-tags-groups">
-          <div v-if="categoryTags.length > 0" class="hot-tags-group">
-            <div class="hot-tags-group__header">
-              <div class="hot-tags-group__title">
-                热门分类
-              </div>
-              <div class="hot-tags-group__desc">
-                点击后直接切换筛选回显
-              </div>
-            </div>
-
-            <div class="hot-tags-list">
-              <div
-                v-for="tag in visibleCategoryTags"
-                :key="`category-${tag.tag}`"
-                class="hot-tag-chip-wrapper"
-                @mouseenter="handleTagHover(tag, $event)"
-                @mouseleave="handleTagLeave"
-              >
-                <button
-                  :ref="setChipInitialState"
-                  class="hot-tag-chip hot-tag-chip--category"
-                  :class="{ 'hot-tag-chip--active': activeTag === tag.tag }"
-                  @click="handleTagSelect(tag)"
-                >
-                  <span class="hot-tag-chip__name">{{ tag.tag }}</span>
-                  <span class="hot-tag-chip__meta">{{ tag.wallpaperCount }} 张</span>
-                </button>
-                <Transition name="preview-fade">
-                  <div
-                    v-if="showPreview && hoveredTag === tag.tag && tag.topWallpapers?.length"
-                    class="hot-tag-preview"
-                    :class="[
-                      previewClass,
-                      `hot-tag-preview--align-${hoveredPreviewPlacement.horizontal}`,
-                      { 'hot-tag-preview--below': hoveredPreviewPlacement.vertical === 'bottom' },
-                    ]"
-                    :style="getPreviewStyle(tag)"
-                  >
-                    <img
-                      v-for="(wp, i) in tag.topWallpapers.slice(0, 3)"
-                      :key="i"
-                      :src="getThumbnailUrl(wp)"
-                      :alt="tag.tag"
-                      class="hot-tag-preview__img"
-                      loading="lazy"
-                    >
-                  </div>
-                </Transition>
-              </div>
-            </div>
-
-            <button
-              v-if="showCategoryToggle"
-              class="hot-tags-toggle"
-              type="button"
-              @click="isCategoryExpanded = !isCategoryExpanded"
+        <LoadingSurface :busy="loading" label="正在加载推荐" :size="44">
+          <div v-if="loading" class="hot-tags-groups">
+            <div
+              v-for="group in loadingSkeletonGroups"
+              :key="group.key"
+              class="hot-tags-group"
             >
-              {{ isCategoryExpanded ? '收起热门分类' : '展开更多分类' }}
-            </button>
-          </div>
-
-          <div v-if="keywordTags.length > 0" class="hot-tags-group">
-            <div class="hot-tags-group__header">
               <div class="hot-tags-group__title">
-                热门关键词
+                {{ group.title }}
               </div>
-              <div class="hot-tags-group__desc">
-                点击后在当前系列内搜索
-              </div>
-            </div>
-
-            <div class="hot-tags-list">
-              <div
-                v-for="tag in visibleKeywordTags"
-                :key="`keyword-${tag.tag}`"
-                class="hot-tag-chip-wrapper"
-                @mouseenter="handleTagHover(tag, $event)"
-                @mouseleave="handleTagLeave"
-              >
-                <button
-                  :ref="setChipInitialState"
-                  class="hot-tag-chip hot-tag-chip--keyword"
-                  :class="{ 'hot-tag-chip--active': activeTag === tag.tag }"
-                  @click="handleTagSelect(tag)"
-                >
-                  <span class="hot-tag-chip__name"># {{ tag.tag }}</span>
-                  <span class="hot-tag-chip__meta">{{ tag.wallpaperCount }} 张</span>
-                </button>
-                <Transition name="preview-fade">
-                  <div
-                    v-if="showPreview && hoveredTag === tag.tag && tag.topWallpapers?.length"
-                    class="hot-tag-preview"
-                    :class="[
-                      previewClass,
-                      `hot-tag-preview--align-${hoveredPreviewPlacement.horizontal}`,
-                      { 'hot-tag-preview--below': hoveredPreviewPlacement.vertical === 'bottom' },
-                    ]"
-                    :style="getPreviewStyle(tag)"
-                  >
-                    <img
-                      v-for="(wp, i) in tag.topWallpapers.slice(0, 3)"
-                      :key="i"
-                      :src="getThumbnailUrl(wp)"
-                      :alt="tag.tag"
-                      class="hot-tag-preview__img"
-                      loading="lazy"
-                    >
-                  </div>
-                </Transition>
+              <div class="hot-tags-skeleton">
+                <span
+                  v-for="index in group.count"
+                  :key="`${group.key}-${index}`"
+                  class="skeleton-chip"
+                />
               </div>
             </div>
-
-            <button
-              v-if="showKeywordToggle"
-              class="hot-tags-toggle"
-              type="button"
-              @click="isKeywordExpanded = !isKeywordExpanded"
-            >
-              {{ isKeywordExpanded ? '收起热门关键词' : '展开更多关键词' }}
-            </button>
           </div>
-        </div>
+
+          <div v-else ref="containerRef" class="hot-tags-groups">
+            <div v-if="categoryTags.length > 0" class="hot-tags-group">
+              <div class="hot-tags-group__header">
+                <div class="hot-tags-group__title">
+                  热门分类
+                </div>
+                <div class="hot-tags-group__desc">
+                  点击后直接切换筛选回显
+                </div>
+              </div>
+
+              <div class="hot-tags-list">
+                <div
+                  v-for="tag in visibleCategoryTags"
+                  :key="`category-${tag.tag}`"
+                  class="hot-tag-chip-wrapper"
+                  @mouseenter="handleTagHover(tag, $event)"
+                  @mouseleave="handleTagLeave"
+                >
+                  <button
+                    :ref="setChipInitialState"
+                    class="hot-tag-chip hot-tag-chip--category"
+                    :class="{ 'hot-tag-chip--active': activeTag === tag.tag }"
+                    @click="handleTagSelect(tag)"
+                  >
+                    <span class="hot-tag-chip__name">{{ tag.tag }}</span>
+                    <span class="hot-tag-chip__meta">{{ tag.wallpaperCount }} 张</span>
+                  </button>
+                  <Transition name="preview-fade">
+                    <div
+                      v-if="showPreview && hoveredTag === tag.tag && tag.topWallpapers?.length"
+                      class="hot-tag-preview"
+                      :class="[
+                        previewClass,
+                        `hot-tag-preview--align-${hoveredPreviewPlacement.horizontal}`,
+                        { 'hot-tag-preview--below': hoveredPreviewPlacement.vertical === 'bottom' },
+                      ]"
+                      :style="getPreviewStyle(tag)"
+                    >
+                      <img
+                        v-for="(wp, i) in tag.topWallpapers.slice(0, 3)"
+                        :key="i"
+                        :src="getThumbnailUrl(wp)"
+                        :alt="tag.tag"
+                        class="hot-tag-preview__img"
+                        loading="lazy"
+                      >
+                    </div>
+                  </Transition>
+                </div>
+              </div>
+
+              <button
+                v-if="showCategoryToggle"
+                class="hot-tags-toggle"
+                type="button"
+                @click="isCategoryExpanded = !isCategoryExpanded"
+              >
+                {{ isCategoryExpanded ? '收起热门分类' : '展开更多分类' }}
+              </button>
+            </div>
+
+            <div v-if="keywordTags.length > 0" class="hot-tags-group">
+              <div class="hot-tags-group__header">
+                <div class="hot-tags-group__title">
+                  热门关键词
+                </div>
+                <div class="hot-tags-group__desc">
+                  点击后在当前系列内搜索
+                </div>
+              </div>
+
+              <div class="hot-tags-list">
+                <div
+                  v-for="tag in visibleKeywordTags"
+                  :key="`keyword-${tag.tag}`"
+                  class="hot-tag-chip-wrapper"
+                  @mouseenter="handleTagHover(tag, $event)"
+                  @mouseleave="handleTagLeave"
+                >
+                  <button
+                    :ref="setChipInitialState"
+                    class="hot-tag-chip hot-tag-chip--keyword"
+                    :class="{ 'hot-tag-chip--active': activeTag === tag.tag }"
+                    @click="handleTagSelect(tag)"
+                  >
+                    <span class="hot-tag-chip__name"># {{ tag.tag }}</span>
+                    <span class="hot-tag-chip__meta">{{ tag.wallpaperCount }} 张</span>
+                  </button>
+                  <Transition name="preview-fade">
+                    <div
+                      v-if="showPreview && hoveredTag === tag.tag && tag.topWallpapers?.length"
+                      class="hot-tag-preview"
+                      :class="[
+                        previewClass,
+                        `hot-tag-preview--align-${hoveredPreviewPlacement.horizontal}`,
+                        { 'hot-tag-preview--below': hoveredPreviewPlacement.vertical === 'bottom' },
+                      ]"
+                      :style="getPreviewStyle(tag)"
+                    >
+                      <img
+                        v-for="(wp, i) in tag.topWallpapers.slice(0, 3)"
+                        :key="i"
+                        :src="getThumbnailUrl(wp)"
+                        :alt="tag.tag"
+                        class="hot-tag-preview__img"
+                        loading="lazy"
+                      >
+                    </div>
+                  </Transition>
+                </div>
+              </div>
+
+              <button
+                v-if="showKeywordToggle"
+                class="hot-tags-toggle"
+                type="button"
+                @click="isKeywordExpanded = !isKeywordExpanded"
+              >
+                {{ isKeywordExpanded ? '收起热门关键词' : '展开更多关键词' }}
+              </button>
+            </div>
+          </div>
+        </LoadingSurface>
       </div>
     </Transition>
   </section>
@@ -522,8 +542,6 @@ onBeforeUnmount(() => {
     linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(239, 246, 255, 0.8)),
     radial-gradient(circle at top left, rgba(var(--color-accent-rgb), 0.18), transparent 58%),
     radial-gradient(circle at bottom right, rgba(var(--color-accent-secondary-rgb), 0.12), transparent 62%);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
   box-shadow:
     0 18px 36px rgba(15, 23, 42, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.5);
@@ -627,6 +645,7 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-height: 72px;
 }
 
 .hot-tags-group__header {
@@ -850,8 +869,7 @@ onBeforeUnmount(() => {
     rgba(var(--color-accent-secondary-rgb), 0.18),
     rgba(var(--color-accent-rgb), 0.08)
   );
-  background-size: 200% 100%;
-  animation: hot-tags-shimmer 1.4s linear infinite;
+  // 统一由覆盖层的圆环反馈加载，避免每个占位标签持续重绘。
 }
 
 @keyframes hot-tags-shimmer {

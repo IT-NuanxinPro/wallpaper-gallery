@@ -70,6 +70,19 @@ describe('近期热门标签', () => {
     expect(tags.every(t => t.views === 0 && t.score < 1)).toBe(true)
   })
 
+  it('规范快照以资源路径分别加权，不回落到同名 legacy 行', () => {
+    const rows = [
+      wallpaper('same.jpg', 1, '海洋', { path: '/wallpaper/desktop/ocean/same.jpg' }),
+      wallpaper('same.jpg', 1, '雪山', { path: '/wallpaper/desktop/mountain/same.jpg' }),
+    ]
+    const tags = buildHotTags(rows, { schema: 2, items: [
+      { asset_key: 'desktop:path:/wallpaper/desktop/ocean/same.jpg', views: 10 },
+      { asset_key: 'desktop:same.jpg', views: 500, legacy_ambiguous: true },
+    ] }, 'desktop', now)
+    expect(tags.find(tag => tag.tag === '海洋').views).toBe(10)
+    expect(tags.find(tag => tag.tag === '雪山').views).toBe(0)
+  })
+
   it('没有近期内容时不回退到历史榜，累计孤立记录不能生成标签', () => {
     expect(buildHotTags([wallpaper('old.jpg', 180, '旧图')], [
       { image_id: 'old.jpg', views: 9999 },

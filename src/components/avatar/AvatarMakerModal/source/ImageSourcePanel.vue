@@ -3,6 +3,7 @@
  * 图片来源面板 - 本地上传/在线链接
  */
 import { computed, ref } from 'vue'
+import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import { SUPPORTED_IMAGE_EXTENSIONS, validateImageFile, validateImageUrl } from '@/utils/avatar/maker'
 
 defineProps({
@@ -134,7 +135,7 @@ function switchTab(tab) {
           <input ref="fileInputRef" type="file" :accept="acceptedTypes" class="upload-input" @change="handleFileChange">
 
           <div v-if="isLoading" class="upload-loading">
-            <span class="loading-spinner" />
+            <LoadingSpinner size="md" />
             <span>正在加载图片...</span>
           </div>
 
@@ -172,7 +173,7 @@ function switchTab(tab) {
             @keydown="handleUrlKeydown"
           >
           <button class="url-submit-btn" :disabled="isLoading || !urlInput.trim()" @click="handleUrlSubmit">
-            <span v-if="isLoading" class="loading-spinner loading-spinner--small" />
+            <LoadingSpinner v-if="isLoading" size="sm" />
             <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
@@ -442,26 +443,6 @@ function switchTab(tab) {
     width: 18px;
     height: 18px;
     flex-shrink: 0;
-  }
-}
-
-.loading-spinner {
-  width: 24px;
-  height: 24px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  border-top-color: #fff;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-
-  &--small {
-    width: 18px;
-    height: 18px;
-  }
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
   }
 }
 

@@ -1,5 +1,5 @@
 <script setup>
-import LoadingSpinner from './LoadingSpinner.vue'
+import SoftLoading from './SoftLoading.vue'
 
 defineProps({
   text: {
@@ -17,7 +17,7 @@ defineProps({
   <div class="page-loading-scene" role="status" aria-live="polite" aria-busy="true">
     <div class="page-loading-scene__shell">
       <div class="page-loading-scene__visual">
-        <LoadingSpinner size="lg" />
+        <SoftLoading :size="64" decorative />
       </div>
       <p class="page-loading-scene__title">
         {{ title }}

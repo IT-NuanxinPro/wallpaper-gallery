@@ -1,5 +1,6 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
+import WallpaperImageStage from '@/components/wallpaper/shared/WallpaperImageStage.vue'
 import { useDevice } from '@/composables/useDevice'
 
 const props = defineProps({
@@ -133,12 +134,13 @@ onUnmounted(() => {
         >
           <!-- 屏幕容器 -->
           <div class="screen-container">
-            <img
+            <WallpaperImageStage
+              class="device-media-stage"
               :src="imageSrc"
               :alt="imageAlt"
-              :class="{ loaded: imageLoaded }"
+              fallback-ratio="9 / 16"
               @load="handleImageLoad"
-            >
+            />
           </div>
 
           <!-- 灵动岛 -->
@@ -631,5 +633,11 @@ onUnmounted(() => {
 .device-mode-leave-to {
   opacity: 0;
   transform: scale(0.95) translateY(20px);
+}
+
+.device-media-stage {
+  height: 100%;
+  max-height: none;
+  border-radius: inherit;
 }
 </style>

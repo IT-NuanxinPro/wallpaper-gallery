@@ -12,7 +12,7 @@ import {
   toggleLike,
 } from '@/services/interactionService'
 import { formatInteractionError } from '@/utils/interaction/errors'
-import { buildWallpaperAssetKey, normalizeWallpaperFilename } from '@/utils/wallpaper/identity'
+import { buildWallpaperAssetKey } from '@/utils/wallpaper/identity'
 
 export const useInteractionStore = defineStore('interaction', () => {
   // ========================================
@@ -114,13 +114,13 @@ export const useInteractionStore = defineStore('interaction', () => {
     allCollectionItems.value = allCollectionItems.value.filter(item => item.asset_key !== assetKey)
   }
 
-  const isLiked = computed(() => (filename, series) => {
-    const assetKey = buildWallpaperAssetKey(filename, series)
+  const isLiked = computed(() => (wallpaperOrKey, series) => {
+    const assetKey = buildWallpaperAssetKey(wallpaperOrKey, series)
     return likedBySeriesMap.value[series]?.has(assetKey) || false
   })
 
-  const isCollected = computed(() => (filename, series) => {
-    const assetKey = buildWallpaperAssetKey(filename, series)
+  const isCollected = computed(() => (wallpaperOrKey, series) => {
+    const assetKey = buildWallpaperAssetKey(wallpaperOrKey, series)
     return collectedBySeriesMap.value[series]?.has(assetKey) || false
   })
 
@@ -170,8 +170,8 @@ export const useInteractionStore = defineStore('interaction', () => {
   /**
    * 切换喜欢（乐观更新）
    */
-  async function handleToggleLike(filename, series) {
-    const assetKey = buildWallpaperAssetKey(filename, series)
+  async function handleToggleLike(wallpaperOrKey, series) {
+    const assetKey = buildWallpaperAssetKey(wallpaperOrKey, series)
     if (!assetKey || pendingOperations.value.has(`like:${assetKey}`))
       return { success: false, ignored: true }
 
@@ -185,7 +185,7 @@ export const useInteractionStore = defineStore('interaction', () => {
     pendingOperations.value.add(`like:${assetKey}`)
 
     try {
-      const liked = await toggleLike(filename, series)
+      const liked = await toggleLike(assetKey, series)
       stats.value = {
         ...stats.value,
         likes: stats.value.likes + (liked ? 1 : -1),
@@ -193,8 +193,7 @@ export const useInteractionStore = defineStore('interaction', () => {
 
       const { usePopularityStore } = await import('@/stores/popularity')
       const popularityStore = usePopularityStore()
-      const normalizedFilename = normalizeWallpaperFilename(filename, series)
-      popularityStore.adjustLikeCount(normalizedFilename, liked ? 1 : -1)
+      popularityStore.adjustLikeCount(assetKey, liked ? 1 : -1)
       ElMessage.success(liked ? '已加入我的喜欢' : '已取消喜欢')
       return { success: true, liked }
     }
@@ -214,8 +213,8 @@ export const useInteractionStore = defineStore('interaction', () => {
   /**
    * 切换收藏（乐观更新）
    */
-  async function handleToggleCollect(filename, series) {
-    const assetKey = buildWallpaperAssetKey(filename, series)
+  async function handleToggleCollect(wallpaperOrKey, series) {
+    const assetKey = buildWallpaperAssetKey(wallpaperOrKey, series)
     if (!assetKey || pendingOperations.value.has(`collect:${assetKey}`))
       return { success: false, ignored: true }
 
@@ -237,7 +236,7 @@ export const useInteractionStore = defineStore('interaction', () => {
       updateSeriesSet(collectedBySeriesMap, series, assetKey, nextCollected)
       syncCollectionsSnapshot(assetKey, nextCollected, defaultCollectionId.value)
 
-      const collected = await toggleCollect(filename, series, defaultCollectionId.value)
+      const collected = await toggleCollect(assetKey, series, defaultCollectionId.value)
       stats.value = {
         ...stats.value,
         collections: stats.value.collections + (collected ? 1 : -1),
@@ -245,8 +244,7 @@ export const useInteractionStore = defineStore('interaction', () => {
 
       const { usePopularityStore } = await import('@/stores/popularity')
       const popularityStore = usePopularityStore()
-      const normalizedFilename = normalizeWallpaperFilename(filename, series)
-      popularityStore.adjustCollectCount(normalizedFilename, collected ? 1 : -1)
+      popularityStore.adjustCollectCount(assetKey, collected ? 1 : -1)
       ElMessage.success(collected ? '已加入收藏' : '已取消收藏')
       return { success: true, collected }
     }

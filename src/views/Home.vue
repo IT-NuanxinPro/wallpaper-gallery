@@ -24,6 +24,7 @@ import { useSeriesStore } from '@/stores/series'
 import { useWallpaperStore } from '@/stores/wallpaper'
 import { SERIES_CONFIG } from '@/utils/config/constants'
 import { getDefaultCategoryFilter } from '@/utils/filter/defaults'
+import { canDisplayLatestSlice } from '@/utils/filter/firstScreen'
 
 const route = useRoute()
 const AvatarMakerModal = defineAsyncModal(() => import('@/components/avatar/AvatarMakerModal/index.vue'))
@@ -63,9 +64,44 @@ const mobileNoticeContent = computed(() => {
 
 const usePortraitModal = computed(() => ['mobile', 'avatar'].includes(currentSeries.value))
 const hideFormatFilter = computed(() => SERIES_CONFIG[currentSeries.value]?.hideFormatFilter === true)
-const categoryOptions = computed(() => filterStore.createCategoryOptions(visibleWallpapers.value))
+const categoryOptions = computed(() => {
+  if (wallpaperStore.isDataComplete || !seriesCategoryDefinitions.value.length)
+    return filterStore.createCategoryOptions(visibleWallpapers.value)
+
+  // 分类索引已包含完整计数，不能用最新切片推导分类选项。
+  const categories = seriesCategoryDefinitions.value.map(category => ({
+    value: category.id || category.name,
+    label: filterStore.getCategoryLabel(category.id || category.name),
+    count: category.count,
+    subcategories: category.subcategories || [],
+  }))
+  return isVideoSeries.value
+    ? categories
+    : [{ value: 'all', label: '全部分类', count: wallpaperStore.displayTotal }, ...categories]
+})
 const subcategoryOptions = computed(() => filterStore.createSubcategoryOptions(categoryOptions.value))
-const filteredWallpapers = computed(() => filterStore.getFilteredAndSorted(visibleWallpapers.value))
+const selectedBingYear = computed(() => currentSeries.value === 'bing'
+  && /^\d{4}-\d{2}$/.test(filterStore.categoryFilter)
+  ? Number.parseInt(filterStore.categoryFilter.slice(0, 4))
+  : null)
+const areSelectedResultsComplete = computed(() => selectedBingYear.value === null
+  ? wallpaperStore.isDataComplete
+  : wallpaperStore.isBingYearLoaded(selectedBingYear.value))
+const waitingForCompleteResults = computed(() => isSeriesContentReady.value
+  && !areSelectedResultsComplete.value
+  && !canDisplayLatestSlice({
+    currentSeries: currentSeries.value,
+    sortBy: filterStore.sortBy,
+    searchQuery: filterStore.searchQuery || filterStore.debouncedQuery,
+    exactSearchValue: filterStore.exactSearchValue,
+    formatFilter: filterStore.formatFilter,
+    resolutionFilter: filterStore.resolutionFilter,
+    categoryFilter: filterStore.categoryFilter,
+    subcategoryFilter: filterStore.subcategoryFilter,
+  }))
+const filteredWallpapers = computed(() => waitingForCompleteResults.value
+  ? []
+  : filterStore.getFilteredAndSorted(visibleWallpapers.value))
 const hotTagLookup = computed(() => {
   const categorySet = new Set()
   const subcategorySet = new Set()
@@ -107,6 +143,21 @@ const activeHotTag = ref('')
 const isHotTagsVisible = ref(false)
 const resultCount = computed(() => filteredWallpapers.value.length)
 const hasActiveFilters = computed(() => filterStore.hasActiveFilters(currentSeries.value))
+const statsNotice = computed(() => {
+  if (popularityStore.currentSeries !== currentSeries.value || popularityStore.loading)
+    return ''
+  if (popularityStore.snapshotError)
+    return popularityStore.snapshotError
+  const metadata = popularityStore.statsMetadata
+  const period = filterStore.sortBy === 'weekly-hot' ? 'week' : filterStore.sortBy === 'monthly-hot' ? 'month' : null
+  if (!period)
+    return metadata?.stale ? '统计数据待更新，当前显示上次记录' : ''
+  if (!metadata?.[`${period}Available`])
+    return '当前期间统计待更新，暂按最新壁纸展示'
+  const start = new Date(metadata.periodStartedAt).toLocaleDateString('zh-CN', { timeZone: 'Asia/Shanghai' })
+  const updated = new Date(metadata.exportedAt).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai', hour12: false })
+  return `按北京时间${period === 'week' ? '本周' : '本月'}互动排序 · 期间统计自 ${start} 开始记录 · 更新于 ${updated}`
+})
 const showInteractionSummary = computed(() => authStore.isConfigured && authStore.isAuthenticated)
 
 let hotTagsRevealTimer = null
@@ -126,16 +177,25 @@ const { error, handleReload, loading } = useHomeDataLoader({
   wallpaperStore,
 })
 
+const gridLoading = computed(() => loading.value
+  || (waitingForCompleteResults.value && !wallpaperStore.backgroundError))
+const visibleError = computed(() => error.value
+  || (waitingForCompleteResults.value ? wallpaperStore.backgroundError : null))
+
 const isHotTagsDataStable = computed(() =>
   hotTagsStore.currentSeries === currentSeries.value
   && wallpaperStore.currentRenderedSeries === currentSeries.value
   && !hotTagsStore.loading
   && !wallpaperStore.loading
-  && !wallpaperStore.isBackgroundLoading
   && !loading.value,
 )
 
 routeSyncReady.value = true
+
+watch(() => filterStore.sortBy, (sortBy) => {
+  if (['weekly-hot', 'monthly-hot'].includes(sortBy))
+    void popularityStore.fetchPopularityData(currentSeries.value)
+})
 
 // 用户登录后，预取当前系列的交互数据（喜欢/收藏）
 watch(
@@ -379,7 +439,7 @@ function handleAvatarMakerClose() {
           :subcategory-options="subcategoryOptions"
           :result-count="resultCount"
           :total-count="wallpaperStore.displayTotal"
-          :loading="loading"
+          :loading="loading || !areSelectedResultsComplete"
           :hide-format-filter="hideFormatFilter"
           :current-series="currentSeries"
           :show-interaction-summary="showInteractionSummary"
@@ -389,13 +449,17 @@ function handleAvatarMakerClose() {
           @reset="handleReset"
         />
 
-        <div v-if="error" class="error-state">
+        <p v-if="statsNotice" class="stats-notice" role="status">
+          {{ statsNotice }}
+        </p>
+
+        <div v-if="visibleError" class="error-state">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="10" />
             <path d="M12 8v4M12 16h.01" />
           </svg>
           <h3>加载失败</h3>
-          <p>{{ error }}</p>
+          <p>{{ visibleError }}</p>
           <button class="series-action-button series-action-button--primary" @click="handleReload">
             重新加载
           </button>
@@ -404,7 +468,7 @@ function handleAvatarMakerClose() {
         <WallpaperGrid
           v-else
           :wallpapers="filteredWallpapers"
-          :loading="loading"
+          :loading="gridLoading"
           :search-query="filterStore.searchQuery"
           :total-count="wallpaperStore.displayTotal"
           :has-filters="hasActiveFilters"
@@ -412,6 +476,21 @@ function handleAvatarMakerClose() {
           @select="handleSelectWallpaper"
           @reset-filters="handleReset"
         />
+
+        <div
+          v-if="isSeriesContentReady && !visibleError && !areSelectedResultsComplete"
+          class="series-load-status"
+          role="status"
+          aria-live="polite"
+        >
+          <template v-if="wallpaperStore.backgroundError">
+            <span>{{ wallpaperStore.backgroundError }}</span>
+            <button type="button" @click="handleReload">
+              重新加载
+            </button>
+          </template>
+          <span v-else>正在加载其余壁纸…</span>
+        </div>
       </template>
     </div>
 
@@ -501,6 +580,42 @@ function handleAvatarMakerClose() {
       width: 100%;
     }
   }
+}
+
+.series-load-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  padding: $spacing-lg 0;
+  color: var(--color-text-secondary);
+  font-size: $font-size-sm;
+
+  button {
+    padding: $spacing-sm $spacing-md;
+    border: 1px solid var(--color-border);
+    border-radius: $radius-md;
+    background: var(--color-bg-card);
+    color: var(--color-accent);
+    cursor: pointer;
+
+    &:hover {
+      background: var(--color-bg-hover);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+  }
+}
+
+.stats-notice {
+  margin: -4px 0 16px;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  line-height: 1.6;
 }
 
 .error-state {
