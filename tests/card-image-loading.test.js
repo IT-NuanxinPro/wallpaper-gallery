@@ -95,5 +95,5 @@ describe('懒加载图片与卡片入场解耦', () => {
   })
 })
 import { readFileSync } from 'node:fs'
-import { compileScript, parse } from '@vue/compiler-sfc'
+import { compileScript, parse } from 'vue/compiler-sfc'
 import * as Vue from 'vue'

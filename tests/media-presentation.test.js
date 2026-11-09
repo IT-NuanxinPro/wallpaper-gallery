@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises'
-import { compileScript, parse } from '@vue/compiler-sfc'
+import { compileScript, parse } from 'vue/compiler-sfc'
 import * as Vue from 'vue'
 import { createRenderer, effectScope, h, nextTick, ref } from 'vue'
 import { describe, expect, it } from 'vitest'
