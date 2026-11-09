@@ -356,6 +356,7 @@
 
         // 计算并应用主题
         const theme = computeTheme(themeMode)
+        document.documentElement.setAttribute('data-theme-mode', themeMode)
         applyTheme(theme)
       })()
     </script>

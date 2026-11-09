@@ -74,7 +74,8 @@ const isCropModalOpen = ref(false)
 
 // 打开裁剪弹窗
 function openCropModal() {
-  isCropModalOpen.value = true
+  if (showCropFeature.value && props.wallpaper?.url)
+    isCropModalOpen.value = true
 }
 
 // 关闭裁剪弹窗
@@ -733,7 +734,7 @@ usePreviewTracking({
               <button
                 v-if="showCropFeature"
                 class="crop-btn"
-                :disabled="!imageLoaded || imageError"
+                :disabled="!wallpaper?.url"
                 @click="openCropModal"
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

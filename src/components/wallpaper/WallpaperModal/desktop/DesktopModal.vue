@@ -208,7 +208,8 @@ function handleImageError() {
 }
 
 function handleOpenCrop() {
-  emit('openCrop')
+  if (props.wallpaper?.url)
+    emit('openCrop')
 }
 
 function resetState() {
@@ -372,7 +373,7 @@ usePreviewTracking({
               <button
                 v-if="effectiveSeries === 'desktop'"
                 class="crop-btn"
-                :disabled="!imageLoaded"
+                :disabled="!wallpaper?.url"
                 @click="handleOpenCrop"
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

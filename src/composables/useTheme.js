@@ -90,6 +90,8 @@ function applyThemeToDom(resolvedTheme) {
     return
 
   document.documentElement.setAttribute('data-theme', resolvedTheme)
+  // 桌面壳必须识别用户模式，不能把system当前解析出的light/dark锁成手动主题。
+  document.documentElement.setAttribute('data-theme-mode', themeMode.value)
   document.documentElement.style.colorScheme = resolvedTheme
 
   const themeColorMeta = document.querySelector('meta[name="theme-color"]')
@@ -151,9 +153,15 @@ function scheduleAutoThemeRefresh() {
   }, delay)
 }
 
-function handleSystemThemeChange() {
+function handleSystemThemeChange(event) {
   if (themeMode.value === THEME_MODES.SYSTEM) {
-    syncResolvedTheme()
+    if (typeof event?.matches === 'boolean') {
+      theme.value = event.matches ? THEMES.DARK : THEMES.LIGHT
+      applyThemeToDom(theme.value)
+    }
+    else {
+      syncResolvedTheme()
+    }
   }
 }
 
@@ -164,7 +172,7 @@ function bindSystemThemeListener() {
   cleanupSystemListener?.()
 
   mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)')
-  const listener = () => handleSystemThemeChange()
+  const listener = event => handleSystemThemeChange(event)
 
   if (mediaQueryList.addEventListener) {
     mediaQueryList.addEventListener('change', listener)
@@ -195,6 +203,7 @@ function bindDocumentListeners() {
 
   document.addEventListener('visibilitychange', handleVisibilitySync)
   window.addEventListener('focus', handleVisibilitySync)
+  window.addEventListener('pageshow', handleVisibilitySync)
   documentListenersBound = true
 }
 

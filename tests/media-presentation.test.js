@@ -135,6 +135,36 @@ describe('桌面预览事件集成', () => {
     app.unmount()
   })
 
+  it('裁剪独立加载原图，预览未完成或失败时仍可打开，有效原图缺失才禁用', async () => {
+    const { DesktopModal } = await createComponents()
+    const { elements, renderer } = createTestRenderer()
+    const wallpaper = ref({ id: 'crop-image', filename: 'image.jpg', url: 'https://example.com/original.jpg', previewUrl: 'https://example.com/preview.webp' })
+    let cropRequests = 0
+    const app = renderer.createApp({ render: () => h(DesktopModal, {
+      wallpaper: wallpaper.value,
+      isOpen: true,
+      onOpenCrop: () => { cropRequests++ },
+    }) })
+    app.config.warnHandler = (message) => {
+      if (!message.includes('Non-function value encountered for default slot'))
+        throw new Error(message)
+    }
+    app.mount({})
+    const button = elements.find(element => element.props.class === 'crop-btn')
+    expect(button.props.disabled).toBe(false)
+    button.props.onClick()
+    expect(cropRequests).toBe(1)
+    elements.find(element => element.type === 'img').props.onError()
+    await nextTick()
+    expect(button.props.disabled).toBe(false)
+    button.props.onClick()
+    expect(cropRequests).toBe(2)
+    wallpaper.value = { ...wallpaper.value, url: '' }
+    await nextTick()
+    expect(button.props.disabled).toBe(true)
+    app.unmount()
+  })
+
   it('同一图片完成回退并解码后，元数据引用替换不能清空尺寸或恢复裁剪禁用', async () => {
     const { DesktopModal } = await createComponents()
     const { elements, renderer } = createTestRenderer()
