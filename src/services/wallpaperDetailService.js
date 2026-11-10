@@ -7,7 +7,7 @@ export function detailRequestError(status, message) {
 
 export async function loadWallpaperDetail(token, { signal, fetchImpl = fetch } = {}) {
   if (!decodeWallpaperShareToken(token))
-    throw detailRequestError(400, '分享链接无效')
+    throw detailRequestError(404, '分享链接无效')
   const response = await fetchImpl(getWallpaperDetailBucketPath(token), { signal })
   if (!response.ok)
     throw detailRequestError(response.status === 404 ? 404 : 503, '详情数据暂时无法加载')

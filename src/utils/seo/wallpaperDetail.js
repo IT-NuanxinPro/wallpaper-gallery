@@ -1,10 +1,11 @@
-import { getWallpaperDetailSeo } from '../wallpaper/detailRecords.js'
+import { getWallpaperDetailSeo, serializeWallpaperStructuredData } from '../wallpaper/detailRecords.js'
 
 export function applyWallpaperDetailSeo(record) {
   document.head.querySelector('meta[name="robots"][data-detail-status]')?.remove()
   const seo = getWallpaperDetailSeo(record)
   document.title = seo.title
   const tags = [
+    ['name', 'robots', 'index, follow, max-image-preview:large'],
     ['name', 'description', seo.description],
     ['property', 'og:type', 'article'],
     ['property', 'og:title', seo.title],
@@ -33,4 +34,10 @@ export function applyWallpaperDetailSeo(record) {
     document.head.appendChild(canonical)
   }
   canonical.setAttribute('href', seo.canonical)
+  document.head.querySelectorAll('script[type="application/ld+json"]').forEach(element => element.remove())
+  const structuredData = document.createElement('script')
+  structuredData.setAttribute('type', 'application/ld+json')
+  structuredData.setAttribute('data-wallpaper-seo', '')
+  structuredData.textContent = serializeWallpaperStructuredData(seo.structuredData)
+  document.head.appendChild(structuredData)
 }

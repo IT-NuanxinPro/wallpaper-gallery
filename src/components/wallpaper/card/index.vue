@@ -1,8 +1,10 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
+import { RouterLink } from 'vue-router'
 import { useDevice } from '@/composables/useDevice'
 import { buildWallpaperImageFallbackUrls, formatBingDate, formatFileSize, formatRelativeTime, getDisplayFilename, highlightText } from '@/utils/common/format'
 import { VIDEO_USAGE_SHORT_LABELS } from '@/utils/config/constants'
+import { buildWallpaperSharePath } from '@/utils/wallpaper/share'
 import { vCardReveal } from '../WallpaperGrid/composables/cardReveal'
 import WallpaperCardInfo from './shared/WallpaperCardInfo.vue'
 import WallpaperCardMedia from './shared/WallpaperCardMedia.vue'
@@ -15,6 +17,10 @@ const props = defineProps({
   index: {
     type: Number,
     default: 0,
+  },
+  series: {
+    type: String,
+    default: '',
   },
   searchQuery: {
     type: String,
@@ -38,8 +44,9 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['click', 'imageLoad'])
+const emit = defineEmits(['click', 'imageLoad', 'navigate'])
 const { isMobile } = useDevice()
+const detailPath = computed(() => buildWallpaperSharePath(props.wallpaper, props.series))
 
 const imageLoaded = ref(false)
 const imageError = ref(false)
@@ -162,6 +169,11 @@ function handleClick() {
   emit('click', props.wallpaper)
 }
 
+function handleNavigate(event) {
+  if (detailPath.value && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey && (!('button' in event) || event.button === 0))
+    emit('navigate', props.wallpaper, event)
+}
+
 function handleMouseEnter() {
   if (!isMobile.value)
     isMediaHovered.value = true
@@ -178,47 +190,107 @@ function handleMouseLeave() {
     class="wallpaper-card"
     :class="{ 'is-media-hovered': isMediaHovered, 'is-bing-card': isBingWallpaper }"
   >
-    <WallpaperCardMedia
-      :bing-date="bingDate"
-      :category-display="categoryDisplay"
-      :image-alt="imageAlt"
-      :image-error="imageError"
-      :image-loaded="imageLoaded"
-      :index="index"
-      :is-bing-wallpaper="isBingWallpaper"
-      :is-video-wallpaper="isVideoWallpaper"
-      :is-mobile="isMobile"
-      :popular-rank="popularRank"
-      :style="cardImageStyle"
-      :thumbnail-url="thumbnailUrl"
-      @click="handleClick"
-      @load="handleImageLoad"
-      @error="handleImageError"
-      @hover-enter="handleMouseEnter"
-      @hover-leave="handleMouseLeave"
-    />
+    <component
+      :is="detailPath ? RouterLink : 'div'"
+      :to="detailPath || undefined"
+      class="card-detail-link"
+      @click="handleNavigate"
+    >
+      <WallpaperCardMedia
+        :bing-date="bingDate"
+        :category-display="categoryDisplay"
+        :image-alt="imageAlt"
+        :image-error="imageError"
+        :image-loaded="imageLoaded"
+        :index="index"
+        :is-bing-wallpaper="isBingWallpaper"
+        :is-video-wallpaper="isVideoWallpaper"
+        :is-mobile="isMobile"
+        :popular-rank="popularRank"
+        :style="cardImageStyle"
+        :thumbnail-url="thumbnailUrl"
+        @load="handleImageLoad"
+        @error="handleImageError"
+        @hover-enter="handleMouseEnter"
+        @hover-leave="handleMouseLeave"
+      />
 
-    <WallpaperCardInfo
-      :ai-keywords="aiKeywords"
-      :bing-copyright="bingCopyright"
-      :bing-date="bingDate"
-      :bing-title="bingTitle"
-      :category-display="categoryDisplay"
-      :display-filename="displayFilename"
-      :download-count="downloadCount"
-      :file-format="fileFormat"
-      :formatted-size="formattedSize"
-      :highlighted-filename="highlightedFilename"
-      :is-bing-wallpaper="isBingWallpaper"
-      :is-video-wallpaper="isVideoWallpaper"
-      :relative-time="relativeTime"
-      :view-count="viewCount"
-      :wallpaper-copyright="wallpaper.copyright || ''"
-    />
+      <WallpaperCardInfo
+        :ai-keywords="aiKeywords"
+        :bing-copyright="bingCopyright"
+        :bing-date="bingDate"
+        :bing-title="bingTitle"
+        :category-display="categoryDisplay"
+        :display-filename="displayFilename"
+        :download-count="downloadCount"
+        :file-format="fileFormat"
+        :formatted-size="formattedSize"
+        :highlighted-filename="highlightedFilename"
+        :is-bing-wallpaper="isBingWallpaper"
+        :is-video-wallpaper="isVideoWallpaper"
+        :relative-time="relativeTime"
+        :view-count="viewCount"
+        :wallpaper-copyright="wallpaper.copyright || ''"
+      />
+    </component>
+    <button class="card-quick-preview" type="button" :aria-label="`快速预览${bingTitle || displayFilename}`" @click.stop="handleClick">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
+        <circle cx="12" cy="12" r="3" />
+      </svg>
+      <span>预览</span>
+    </button>
   </div>
 </template>
 
 <style lang="scss" scoped>
+.card-detail-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+
+  &:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: -3px;
+    border-radius: inherit;
+  }
+}
+
+.wallpaper-card > .card-quick-preview {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid rgba(191, 219, 254, 0.6);
+  border-radius: 999px;
+  background: rgba(15, 45, 85, 0.86);
+  box-shadow: 0 3px 10px rgba(2, 8, 23, 0.2);
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    background: #2563eb;
+  }
+
+  &:focus-visible {
+    outline: 3px solid #bfdbfe;
+    outline-offset: 2px;
+  }
+}
+
 .wallpaper-card {
   position: relative;
   background:

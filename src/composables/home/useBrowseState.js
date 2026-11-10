@@ -128,6 +128,14 @@ export function useBrowseState({ route, router, filterStore, currentSeries, resu
     savePosition()
   }
 
+  function leave() {
+    // 在路由切换前保存旧列表；卸载时 route 已可能指向详情页。
+    savePosition()
+    disposed = true
+    version += 1
+    pending = null
+  }
+
   async function writeQuery(state, replace = false) {
     const query = compactQuery(state, toValue(currentSeries))
     const signature = `${route.path}:${querySignature(query)}`
@@ -198,12 +206,13 @@ export function useBrowseState({ route, router, filterStore, currentSeries, resu
   }
 
   watch(() => route.fullPath, () => {
-    if (!started || ownNavigations.has(`${route.path}:${querySignature(route.query)}`))
+    if (disposed || !started || ownNavigations.has(`${route.path}:${querySignature(route.query)}`))
       return
     void applyRoute()
   }, { flush: 'post' })
   watch([results, () => toValue(resultsReady), () => toValue(gridReady), () => toValue(categoriesReady)], () => {
-    void restoreResults()
+    if (!disposed)
+      void restoreResults()
   }, { flush: 'post' })
   watch([filterState, imageKey], async () => {
     await nextTick()
@@ -233,5 +242,5 @@ export function useBrowseState({ route, router, filterStore, currentSeries, resu
     window.removeEventListener('scroll', savePosition)
     window.removeEventListener('pagehide', savePosition)
   })
-  return { minimumDisplayCount, restoring, onDisplayCountChange, savePosition, restoreFromRoute: applyRoute }
+  return { minimumDisplayCount, restoring, onDisplayCountChange, savePosition, leave, restoreFromRoute: applyRoute }
 }

@@ -1,12 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { detectDevice, DEVICE_TYPES } from '@/composables/useDevice'
-import { WALLPAPER_COLLECTIONS } from '@/content/collections'
-import { DEVICE_SERIES } from '@/utils/config/constants'
+import { canonicalizePagePath, getRouteSeo, SITE_SEO } from '@/utils/seo/routes'
 
-const SITE_NAME = 'Wallpaper Gallery'
 const SITE_URL = 'https://wallpaper.061129.xyz'
-const DEFAULT_TITLE = '4K高清壁纸下载_电脑桌面壁纸_手机壁纸 - Wallpaper Gallery'
-const DEFAULT_DESCRIPTION = 'Wallpaper Gallery 提供 4K 高清壁纸免费下载，涵盖电脑桌面壁纸、手机壁纸、动漫头像和每日 Bing 壁纸等分类，适配 Windows、Mac、iPhone 和 Android 设备，支持高清预览。'
+const DEFAULT_TITLE = SITE_SEO['/'].title
+const DEFAULT_DESCRIPTION = SITE_SEO['/'].description
 
 // ========================================
 // 路由配置（使用标准懒加载，骨架屏由 App.vue Suspense 处理）
@@ -30,12 +27,13 @@ const routes = [
     component: () => import('@/views/CollectionDetail.vue'),
     meta: { compactMain: true },
   },
-  // 首页 - 根据设备类型自动选择系列
+  // 首页 URL 固定，设备偏好不改变页面内容身份
   {
     path: '/',
     name: 'Home',
     component: () => import('@/views/Home.vue'),
     meta: {
+      series: 'desktop',
       title: DEFAULT_TITLE,
       description: DEFAULT_DESCRIPTION,
       canonicalPath: '/',
@@ -47,8 +45,7 @@ const routes = [
     name: 'Desktop',
     component: () => import('@/views/Home.vue'),
     meta: {
-      title: '4K电脑桌面壁纸_高清电脑背景图片下载 - Wallpaper Gallery',
-      description: '精选 4K 电脑桌面壁纸免费下载，涵盖风景、动漫、游戏、人像等高清电脑背景图片，适配 Windows 和 Mac 大屏显示器。',
+      ...SITE_SEO['/desktop'],
       canonicalPath: '/desktop',
       series: 'desktop',
       aspectType: 'landscape',
@@ -60,8 +57,7 @@ const routes = [
     name: 'Video',
     component: () => import('@/views/Home.vue'),
     meta: {
-      title: '动态壁纸下载_电脑动态壁纸_视频壁纸 - Wallpaper Gallery',
-      description: '精选电脑动态壁纸、视频壁纸与动态背景资源，支持高清预览、播放与下载。',
+      ...SITE_SEO['/video'],
       canonicalPath: '/video',
       series: 'video',
       aspectType: 'landscape',
@@ -73,8 +69,7 @@ const routes = [
     name: 'Bing',
     component: () => import('@/views/Home.vue'),
     meta: {
-      title: 'Bing每日壁纸_必应高清壁纸下载 - Wallpaper Gallery',
-      description: '汇集每日 Bing 高清壁纸，提供必应精选图片大图预览与下载，适合电脑桌面和宽屏设备使用。',
+      ...SITE_SEO['/bing'],
       canonicalPath: '/bing',
       series: 'bing',
       aspectType: 'landscape',
@@ -86,8 +81,7 @@ const routes = [
     name: 'Mobile',
     component: () => import('@/views/Home.vue'),
     meta: {
-      title: '4K手机壁纸_高清手机锁屏壁纸下载 - Wallpaper Gallery',
-      description: '提供海量 4K 手机壁纸和高清锁屏壁纸，适配 iPhone 与 Android 机型，支持竖屏预览与免费下载。',
+      ...SITE_SEO['/mobile'],
       canonicalPath: '/mobile',
       series: 'mobile',
       aspectType: 'portrait',
@@ -99,8 +93,7 @@ const routes = [
     name: 'Avatar',
     component: () => import('@/views/Home.vue'),
     meta: {
-      title: '高清头像_动漫头像_个性头像下载 - Wallpaper Gallery',
-      description: '精选高清头像、动漫头像和个性头像资源，适合微信、QQ、社交平台使用，支持正方形头像预览与下载。',
+      ...SITE_SEO['/avatar'],
       canonicalPath: '/avatar',
       series: 'avatar',
       aspectType: 'square',
@@ -118,8 +111,7 @@ const routes = [
     name: 'About',
     component: () => import('@/views/About.vue'),
     meta: {
-      title: '关于 Wallpaper Gallery - 4K 高清壁纸站',
-      description: '了解 Wallpaper Gallery 的项目定位、特色功能与壁纸资源分类，查看更多关于 4K 高清壁纸站的信息。',
+      ...SITE_SEO['/about'],
       canonicalPath: '/about',
       hideHeader: true,
     },
@@ -217,21 +209,6 @@ const router = createRouter({
 // 路由守卫配置
 const STORAGE_KEY = 'wallpaper-gallery-current-series'
 
-function getDeviceType() {
-  const deviceType = detectDevice()
-  return deviceType === DEVICE_TYPES.MOBILE ? 'mobile' : deviceType
-}
-
-// 获取默认系列
-function getDefaultSeries() {
-  const device = getDeviceType()
-  const available = DEVICE_SERIES[device]
-  const saved = localStorage.getItem(STORAGE_KEY)
-  if (saved && available.includes(saved))
-    return saved
-  return device === 'mobile' ? 'mobile' : 'desktop'
-}
-
 function updateMetaTag(selector, attributes) {
   let element = document.head.querySelector(selector)
 
@@ -261,73 +238,36 @@ function updateLinkTag(selector, attributes) {
 function applyRouteSeo(to) {
   if (to.meta.dynamicSeo)
     return
-  const collection = to.name === 'CollectionDetail' ? WALLPAPER_COLLECTIONS.find(item => item.slug === to.params.slug) : null
-  document.head.querySelector('meta[name="robots"][data-detail-status]')?.remove()
-  const title = collection ? `${collection.title} - Wallpaper Gallery` : to.meta.title || DEFAULT_TITLE
-  const description = collection?.description || to.meta.description || DEFAULT_DESCRIPTION
-  const canonicalPath = to.meta.canonicalPath || to.path || '/'
-  const url = new URL(canonicalPath, SITE_URL).toString()
-
-  document.title = title
-
-  updateMetaTag('meta[name="description"]', {
-    name: 'description',
-    content: description,
-  })
-
-  updateMetaTag('meta[property="og:title"]', {
-    property: 'og:title',
-    content: title,
-  })
-
-  updateMetaTag('meta[property="og:type"]', {
-    property: 'og:type',
-    content: 'website',
-  })
-
-  updateMetaTag('meta[property="og:description"]', {
-    property: 'og:description',
-    content: description,
-  })
-
-  updateMetaTag('meta[property="og:url"]', {
-    property: 'og:url',
-    content: url,
-  })
-
-  updateMetaTag('meta[property="og:image"]', {
-    property: 'og:image',
-    content: `${SITE_URL}/og-image.jpg`,
-  })
-  updateMetaTag('meta[name="twitter:image"]', {
-    name: 'twitter:image',
-    content: `${SITE_URL}/twitter-card.jpg`,
-  })
-
-  updateMetaTag('meta[property="og:site_name"]', {
-    property: 'og:site_name',
-    content: SITE_NAME,
-  })
-
-  updateMetaTag('meta[name="twitter:title"]', {
-    name: 'twitter:title',
-    content: title,
-  })
-
-  updateMetaTag('meta[name="twitter:description"]', {
-    name: 'twitter:description',
-    content: description,
-  })
-
-  updateMetaTag('meta[name="twitter:url"]', {
-    name: 'twitter:url',
-    content: url,
-  })
-
-  updateLinkTag('link[rel="canonical"]', {
-    rel: 'canonical',
-    href: url,
-  })
+  const seo = getRouteSeo(to.path, to.meta)
+  document.title = seo.title
+  document.head.querySelectorAll('script[type="application/ld+json"]').forEach(element => element.remove())
+  document.head.querySelector('meta[name="robots"]')?.removeAttribute('data-detail-status')
+  const tags = [
+    ['name', 'robots', seo.robots],
+    ['name', 'description', seo.description],
+    ['property', 'og:title', seo.title],
+    ['property', 'og:type', 'website'],
+    ['property', 'og:description', seo.description],
+    ['property', 'og:url', seo.canonical || new URL(to.path, SITE_URL).href],
+    ['property', 'og:image', `${SITE_URL}/apple-touch-icon.png`],
+    ['property', 'og:site_name', 'Wallpaper Gallery'],
+    ['name', 'twitter:title', seo.title],
+    ['name', 'twitter:description', seo.description],
+    ['name', 'twitter:url', seo.canonical || new URL(to.path, SITE_URL).href],
+    ['name', 'twitter:image', `${SITE_URL}/apple-touch-icon.png`],
+  ]
+  for (const [attribute, key, content] of tags)
+    updateMetaTag(`meta[${attribute}="${key}"]`, { [attribute]: key, content })
+  if (seo.canonical)
+    updateLinkTag('link[rel="canonical"]', { rel: 'canonical', href: seo.canonical })
+  else
+    document.head.querySelector('link[rel="canonical"]')?.remove()
+  if (seo.structuredData) {
+    const script = document.createElement('script')
+    script.type = 'application/ld+json'
+    script.textContent = JSON.stringify(seo.structuredData)
+    document.head.appendChild(script)
+  }
 }
 
 // 路由守卫
@@ -337,9 +277,9 @@ router.beforeEach((to, from, next) => {
     return
   }
 
-  // 首页重定向到默认系列
-  if (to.path === '/') {
-    next({ path: `/${getDefaultSeries()}`, replace: true })
+  const canonicalPath = canonicalizePagePath(to.path)
+  if (to.path !== canonicalPath) {
+    next({ path: canonicalPath, query: to.query, hash: to.hash, replace: true })
     return
   }
 
@@ -351,7 +291,10 @@ router.afterEach((to) => {
   applyRouteSeo(to)
 
   if (to.meta?.series) {
-    localStorage.setItem(STORAGE_KEY, to.meta.series)
+    try {
+      localStorage.setItem(STORAGE_KEY, to.meta.series)
+    }
+    catch { /* 隐私模式仍可直接访问分类。 */ }
   }
 })
 

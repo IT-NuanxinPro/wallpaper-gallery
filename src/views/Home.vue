@@ -1,16 +1,17 @@
 <script setup>
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router'
 import AvatarMakerBanner from '@/components/avatar/AvatarMakerBanner.vue'
 import DiyAvatarBanner from '@/components/avatar/DiyAvatarBanner.vue'
 import AnnouncementBanner from '@/components/common/feedback/AnnouncementBanner.vue'
 import { defineAsyncModal } from '@/components/common/feedback/defineAsyncModal'
 import BackToTop from '@/components/common/navigation/BackToTop.vue'
+import BrowseIntroduction from '@/components/home/BrowseIntroduction.vue'
 import HomeModalHost from '@/components/home/HomeModalHost.vue'
 import HotTagsPanel from '@/components/home/HotTagsPanel.vue'
-import MobileSeriesNotice from '@/components/home/MobileSeriesNotice.vue'
 import FilterPanel from '@/components/wallpaper/filter/index.vue'
 import WallpaperGrid from '@/components/wallpaper/WallpaperGrid/index.vue'
+import { handleBrowseRouteLeave } from '@/composables/home/browseRouteGuard'
 import { useBrowseState, validateBrowseQuery } from '@/composables/home/useBrowseState'
 import { useHomeDataLoader } from '@/composables/home/useHomeDataLoader'
 import { useHomeSeriesSync } from '@/composables/home/useHomeSeriesSync'
@@ -26,6 +27,7 @@ import { useWallpaperStore } from '@/stores/wallpaper'
 import { SERIES_CONFIG } from '@/utils/config/constants'
 import { getDefaultCategoryFilter } from '@/utils/filter/defaults'
 import { canDisplayLatestSlice } from '@/utils/filter/firstScreen'
+import { rememberBrowseReturn } from '@/utils/wallpaper/browseReturn'
 
 const route = useRoute()
 const router = useRouter()
@@ -42,27 +44,10 @@ const authStore = useAuthStore()
 
 const currentSeries = computed(() => seriesStore.currentSeries)
 const isVideoSeries = computed(() => currentSeries.value === 'video')
-const showMobileSeriesNotice = computed(() => isMobile.value && ['desktop', 'bing'].includes(currentSeries.value))
 const isSeriesContentReady = computed(() => wallpaperStore.currentRenderedSeries === currentSeries.value)
 const visibleWallpapers = computed(() => isSeriesContentReady.value ? wallpaperStore.wallpapers : [])
 const seriesCategoryDefinitions = computed(() => wallpaperStore.getSeriesCategories(currentSeries.value))
 const showHotTagsPanel = computed(() => !isVideoSeries.value)
-
-const mobileNoticeContent = computed(() => {
-  if (currentSeries.value === 'bing') {
-    return {
-      eyebrow: '移动端浏览提示',
-      title: '每日 Bing 壁纸更适合在电脑端浏览',
-      description: '当前页面以宽屏大图为主，推荐在电脑端查看每日 Bing 壁纸，以获得更完整的预览和下载体验。你也可以先前往更适合手机浏览的专区继续挑选。',
-    }
-  }
-
-  return {
-    eyebrow: '移动端浏览提示',
-    title: '电脑桌面壁纸更适合在大屏设备浏览',
-    description: '当前页面收录的是 4K 电脑桌面壁纸，推荐在电脑或平板上浏览，以获得更完整的构图和预览效果。你也可以先前往手机壁纸或头像专区查看更适合当前设备的内容。',
-  }
-})
 
 const usePortraitModal = computed(() => ['mobile', 'avatar'].includes(currentSeries.value))
 const hideFormatFilter = computed(() => SERIES_CONFIG[currentSeries.value]?.hideFormatFilter === true)
@@ -170,7 +155,6 @@ syncSeriesFromRoute()
 
 const { error, handleReload: reloadSeriesData, loading } = useHomeDataLoader({
   currentSeries,
-  showMobileSeriesNotice,
   filterStore,
   hotTagsStore,
   popularityStore,
@@ -250,7 +234,7 @@ const restoredBingYear = computed(() => {
   return image ? Number(image.slice('bing:bing-'.length, 'bing:bing-'.length + 4)) : null
 })
 watch([restoredBingYear, isSeriesContentReady], ([year, ready]) => {
-  if (year && ready && !showMobileSeriesNotice.value)
+  if (year && ready)
     void wallpaperStore.loadBingYear(year)
 }, { immediate: true })
 const navigationReady = computed(() => isSeriesContentReady.value
@@ -268,7 +252,7 @@ const {
   handleSelectWallpaper,
   isOpen,
 } = navigator
-const { minimumDisplayCount, onDisplayCountChange, restoreFromRoute } = useBrowseState({
+const { minimumDisplayCount, onDisplayCountChange, restoreFromRoute, savePosition, leave } = useBrowseState({
   route,
   router,
   filterStore,
@@ -279,6 +263,10 @@ const { minimumDisplayCount, onDisplayCountChange, restoreFromRoute } = useBrows
   categoriesReady: computed(() => isSeriesContentReady.value && wallpaperStore.isDataComplete),
   gridReady: computed(() => Boolean(gridRef.value)),
   navigator,
+})
+onBeforeRouteLeave((to) => {
+  rememberBrowseReturn(route.fullPath)
+  handleBrowseRouteLeave(to, { savePosition, leave })
 })
 
 function handleReload() {
@@ -444,12 +432,8 @@ function handleAvatarMakerClose() {
     <div class="container">
       <AnnouncementBanner />
 
-      <MobileSeriesNotice
-        v-if="showMobileSeriesNotice"
-        :content="mobileNoticeContent"
-      />
-
-      <template v-else>
+      <BrowseIntroduction :path="route.path" />
+      <div :data-browse-ready="isSeriesContentReady && !gridLoading && !visibleError ? 'ready' : 'loading'">
         <div v-if="currentSeries === 'avatar' && !isMobile" class="avatar-banners">
           <DiyAvatarBanner />
           <AvatarMakerBanner @click="handleAvatarMakerClick" />
@@ -515,6 +499,7 @@ function handleAvatarMakerClose() {
           :minimum-display-count="minimumDisplayCount"
           @display-count-change="onDisplayCountChange"
           @select="handleSelectWallpaper"
+          @navigate="savePosition"
           @reset-filters="handleReset"
         />
 
@@ -532,7 +517,7 @@ function handleAvatarMakerClose() {
           </template>
           <span v-else>正在加载其余壁纸…</span>
         </div>
-      </template>
+      </div>
     </div>
 
     <HomeModalHost
@@ -540,7 +525,6 @@ function handleAvatarMakerClose() {
       :wallpaper="currentWallpaper"
       :is-open="isOpen"
       :use-portrait-modal="usePortraitModal"
-      :show-mobile-series-notice="showMobileSeriesNotice"
       @close="close"
       @prev="handlePrevWallpaper"
       @next="handleNextWallpaper"

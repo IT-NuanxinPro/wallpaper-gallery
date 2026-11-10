@@ -2,7 +2,6 @@ import { computed, onMounted, ref, watch } from 'vue'
 
 export function useHomeDataLoader({
   currentSeries,
-  showMobileSeriesNotice,
   filterStore,
   hotTagsStore,
   popularityStore,
@@ -19,7 +18,7 @@ export function useHomeDataLoader({
   const error = computed(() => wallpaperStore.error)
 
   async function loadSeriesData(series, forceRefresh = false) {
-    if (!series || showMobileSeriesNotice.value)
+    if (!series)
       return
 
     const currentRequestVersion = ++visualRequestVersion
@@ -63,7 +62,7 @@ export function useHomeDataLoader({
   })
 
   watch(() => filterStore.categoryFilter, async (newValue) => {
-    if (!isInitialized.value || currentSeries.value !== 'bing' || showMobileSeriesNotice.value)
+    if (!isInitialized.value || currentSeries.value !== 'bing')
       return
 
     if (newValue && /^\d{4}-\d{2}$/.test(newValue)) {

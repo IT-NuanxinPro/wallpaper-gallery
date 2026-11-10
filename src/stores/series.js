@@ -24,7 +24,7 @@ export const useSeriesStore = defineStore('series', () => {
   }
 
   function initFromRoute(seriesId) {
-    if (seriesId && availableSeries.value.includes(seriesId)) {
+    if (seriesId && Object.hasOwn(SERIES_CONFIG, seriesId)) {
       currentSeries.value = seriesId
       localStorage.setItem(STORAGE_KEYS.CURRENT_SERIES, seriesId)
     }

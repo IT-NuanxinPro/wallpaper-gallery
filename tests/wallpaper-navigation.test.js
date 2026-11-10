@@ -1,8 +1,9 @@
 import { createPinia, setActivePinia } from 'pinia'
-import { computed, createRenderer, nextTick, reactive, ref } from 'vue'
-import { createMemoryHistory, createRouter } from 'vue-router'
+import { computed, createRenderer, h, nextTick, onBeforeUnmount, reactive, ref } from 'vue'
+import { createMemoryHistory, createRouter, onBeforeRouteLeave, RouterView, useRoute } from 'vue-router'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useBrowseState, validateBrowseQuery } from '../src/composables/home/useBrowseState'
+import { handleBrowseRouteLeave } from '../src/composables/home/browseRouteGuard'
 import { useWallpaperNavigator } from '../src/composables/home/useWallpaperNavigator'
 import { useGridPagination } from '../src/components/wallpaper/WallpaperGrid/composables/useGridPagination'
 import { useFilterStore } from '../src/stores/filter'
@@ -112,6 +113,80 @@ describe('当前结果内导航', () => {
 })
 
 describe('浏览参数校验与恢复', () => {
+  it('同一Home实例跨系列后仍同步筛选和保存位置，离开到详情时才停止旧列表监听', async () => {
+    const filters = reactive({
+      searchQuery: '', debouncedQuery: '', exactSearchValue: '', sortBy: 'newest', categoryFilter: 'all',
+      subcategoryFilter: 'all', formatFilter: 'all', resolutionFilter: 'all',
+      clearExactSearch() { this.exactSearchValue = '' },
+      setExactSearch(label, key) { this.searchQuery = label; this.exactSearchValue = key },
+    })
+    const results = ref([item('a')])
+    let browse, setups = 0, unmounts = 0
+    const Home = {
+      setup() {
+        setups++
+        const route = useRoute()
+        const currentSeries = computed(() => route.meta.series)
+        const navigator = useWallpaperNavigator(results)
+        browse = useBrowseState({
+          route, router, filterStore: filters, currentSeries, results, resultsReady: ref(true),
+          categories: ref([{ value: 'all' }]), categoriesReady: ref(true), gridReady: ref(true), navigator,
+        })
+        onBeforeRouteLeave(to => handleBrowseRouteLeave(to, browse))
+        onBeforeUnmount(() => { unmounts++ })
+        return () => null
+      },
+    }
+    const router = createRouter({
+      history: createMemoryHistory(),
+      routes: [
+        { path: '/desktop', name: 'Desktop', meta: { series: 'desktop' }, component: Home },
+        { path: '/mobile', name: 'Mobile', meta: { series: 'mobile' }, component: Home },
+        { path: '/wallpaper/:token', name: 'WallpaperDetail', component: { render: () => null } },
+      ],
+    })
+    await router.push('/desktop?q=desktop')
+    const app = renderer.createApp({ render: () => h(RouterView) })
+    app.use(router)
+    app.mount({})
+    cleanups.push(() => app.unmount())
+    await flush()
+    window.scrollY = 480
+    browse.onDisplayCountChange(40)
+    await router.push('/mobile?q=mobile')
+    await flush()
+    expect(setups).toBe(1)
+    expect(unmounts).toBe(0)
+    expect(filters.searchQuery).toBe('mobile')
+    expect(JSON.parse(sessionStorage.getItem('wallpaper_browse_v1:/desktop:[["q","desktop"]]'))).toEqual({ count: 40, top: 480 })
+
+    filters.searchQuery = '手机星空'
+    filters.debouncedQuery = '手机星空'
+    await flush()
+    expect(router.currentRoute.value.path).toBe('/mobile')
+    expect(router.currentRoute.value.query.q).toBe('手机星空')
+    window.scrollY = 920
+    browse.onDisplayCountChange(60)
+    browse.savePosition()
+    expect(JSON.parse(sessionStorage.getItem('wallpaper_browse_v1:/mobile:[["q","手机星空"]]'))).toEqual({ count: 60, top: 920 })
+
+    router.beforeResolve(async (to) => {
+      if (to.name !== 'WallpaperDetail')
+        return
+      // 模拟数据回调在离开守卫之后、组件卸载之前到达。
+      expect(unmounts).toBe(0)
+      filters.searchQuery = '迟到的筛选'
+      filters.debouncedQuery = '迟到的筛选'
+      results.value = [...results.value, item('late')]
+      for (let i = 0; i < 8; i++) await nextTick()
+    })
+    await router.push('/wallpaper/detail-token')
+    await flush()
+    expect(router.currentRoute.value.fullPath).toBe('/wallpaper/detail-token')
+    expect(unmounts).toBe(1)
+    expect(JSON.parse(sessionStorage.getItem('wallpaper_browse_v1:/mobile:[["q","手机星空"]]'))).toEqual({ count: 60, top: 920 })
+  })
+
   it('拒绝数组、非法枚举、非规范资源键、跨系列图与未知分类，保留 Bing 月份', () => {
     const state = validateBrowseQuery({ q: ['bad'], sort: 'evil', format: 'exe', resolution: '999K', category: 'unknown', color: 'fake', image: 'desktop:same.jpg' }, { series: 'desktop', categories: [{ value: '自然' }], categoriesReady: true })
     expect(state).not.toHaveProperty('color')
@@ -179,6 +254,29 @@ describe('浏览参数校验与恢复', () => {
     expect(h.filters.searchQuery).toBe('')
     expect(h.browse.minimumDisplayCount.value).toBe(60)
     expect(window.scrollTo).toHaveBeenLastCalledWith({ top: 900, behavior: 'instant' })
+  })
+  it('进入真实详情前保存旧列表，迟到数据不会改写详情 URL，返回可恢复分页位置', async () => {
+    const rows = Array.from({ length: 65 }, (_, i) => item(String(i)))
+    const h = harness({ q: '山' }, rows)
+    h.ready.value = true
+    await flush()
+    h.browse.onDisplayCountChange(60)
+    window.scrollY = 960
+    h.browse.leave()
+    h.router.push.mockClear()
+    h.router.replace.mockClear()
+    h.route.path = '/wallpaper/token'
+    h.route.query = {}
+    h.route.fullPath = '/wallpaper/token'
+    h.results.value = [...rows, item('late')]
+    await flush()
+    expect(h.router.push).not.toHaveBeenCalled()
+    expect(h.router.replace).not.toHaveBeenCalled()
+    const restored = harness({ q: '山' }, rows)
+    restored.ready.value = true
+    await flush()
+    expect(restored.browse.minimumDisplayCount.value).toBe(60)
+    expect(window.scrollTo).toHaveBeenLastCalledWith({ top: 960, behavior: 'instant' })
   })
   it('无效图只在完整结果就绪后移除', async () => {
     const h = harness({ image: buildWallpaperAssetKey(item('missing')) })

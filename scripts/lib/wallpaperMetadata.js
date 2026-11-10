@@ -25,7 +25,7 @@ async function exists(file) {
   catch { return false }
 }
 
-export async function loadWallpaperMetadata(dataDir) {
+export async function loadWallpaperMetadata(dataDir, { onInvalidItem } = {}) {
   const wallpapers = new Map()
   for (const series of WALLPAPER_SERIES) {
     const directory = path.join(dataDir, series)
@@ -52,6 +52,8 @@ export async function loadWallpaperMetadata(dataDir) {
         const key = buildWallpaperAssetKey(wallpaper, series)
         if (key)
           wallpapers.set(key, wallpaper)
+        else
+          onInvalidItem?.(wallpaper)
       }
     }
   }

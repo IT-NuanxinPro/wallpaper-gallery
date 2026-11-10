@@ -113,12 +113,59 @@ export function isValidWallpaperDetailRecord(record, token) {
 }
 
 export function getWallpaperDetailSeo(record) {
-  return {
-    title: `${record.title || record.filename} - Wallpaper Gallery`,
-    description: text(record.description || `${record.title || record.filename}，${record.category || '精选壁纸'}高清预览与下载。`, 240),
-    image: new URL(record.thumbnailUrl, WALLPAPER_SITE_ORIGIN).href,
-    canonical: `${WALLPAPER_SITE_ORIGIN}${record.sharePath}`,
+  const series = record.series || record._series
+  const seriesName = { desktop: '电脑壁纸', mobile: '手机壁纸', avatar: '头像图片', bing: '必应壁纸', video: '动态壁纸' }[series] || '壁纸'
+  const dimensions = normalizeWallpaperDimensions(record.resolution)
+  const is4k = Math.max(dimensions.width || 0, dimensions.height || 0) >= 3840 && Math.min(dimensions.width || 0, dimensions.height || 0) >= 2160
+  const clean = value => text(value, 300).replace(/\.(?:avif|bmp|gif|ico|jpe?g|png|webp|mp4|webm|mov)\s*$/i, '').replace(/_+/g, ' ').replace(/\s+/g, ' ').trim()
+  const name = clean(record.displayTitle || record.title || record.filename) || seriesName
+  // 文件名里的宣传词不能作为尺寸证据；只有元数据尺寸达到标准才标注 4K。
+  const seoName = (is4k ? name : name.replace(/4k/gi, '').replace(/\s+/g, ' ').trim()) || seriesName
+  const subject = [...new Set([record.category, record.subcategory].filter(Boolean))].join(' · ')
+  const title = `${seoName} - ${is4k ? '4K ' : ''}${subject ? `${subject} ` : ''}${seriesName}预览与下载 | Wallpaper Gallery`
+  const sourceDescription = typeof record.description === 'string' ? record.description.replace(/\s+/g, ' ').trim() : ''
+  const description = text(sourceDescription || `${seoName}，${subject ? `${subject}主题的` : ''}${seriesName}${dimensions.width && dimensions.height ? `，原文件尺寸 ${dimensions.width} × ${dimensions.height}` : ''}，在 Wallpaper Gallery 查看${series === 'video' ? '视频海报' : '图片'}预览与原文件下载。`, 240)
+  const preview = series === 'video' ? record.thumbnailUrl : record.previewUrl || record.thumbnailUrl
+  const image = new URL(preview, WALLPAPER_SITE_ORIGIN).href
+  const canonical = `${WALLPAPER_SITE_ORIGIN}${record.sharePath}`
+  const imageData = {
+    '@type': 'ImageObject',
+    '@id': `${canonical}#image`,
+    'name': series === 'video' ? `${seoName}视频海报` : seoName,
+    'contentUrl': image,
+    'thumbnailUrl': image,
+    'caption': seoName,
+    ...(record.author ? { creditText: record.author } : {}),
+    ...(record.copyright ? { copyrightNotice: record.copyright } : {}),
   }
+  return {
+    name,
+    title,
+    description,
+    image,
+    canonical,
+    seriesName,
+    structuredData: {
+      '@context': 'https://schema.org',
+      '@graph': [
+        { '@type': 'WebPage', '@id': `${canonical}#webpage`, 'url': canonical, 'name': title, 'description': description, 'inLanguage': 'zh-CN', 'primaryImageOfPage': { '@id': `${canonical}#image` }, 'breadcrumb': { '@id': `${canonical}#breadcrumb` } },
+        imageData,
+        {
+          '@type': 'BreadcrumbList',
+          '@id': `${canonical}#breadcrumb`,
+          'itemListElement': [
+            { '@type': 'ListItem', 'position': 1, 'name': '首页', 'item': `${WALLPAPER_SITE_ORIGIN}/` },
+            { '@type': 'ListItem', 'position': 2, 'name': seriesName, 'item': `${WALLPAPER_SITE_ORIGIN}/${series}` },
+            { '@type': 'ListItem', 'position': 3, 'name': seoName, 'item': canonical },
+          ],
+        },
+      ],
+    },
+  }
+}
+
+export function serializeWallpaperStructuredData(data) {
+  return JSON.stringify(data).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029')
 }
 
 export function isValidWallpaperCatalogItem(item) {

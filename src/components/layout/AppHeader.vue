@@ -374,11 +374,11 @@ watch(isMobile, () => {
           </svg>
         </div>
         <div class="brand-text">
-          <h1 class="brand-title">
+          <p class="brand-title">
             Wallpaper Gallery
-          </h1>
+          </p>
           <HeaderClientVersion v-if="isNativeClient" />
-          <span v-else class="brand-subtitle">精选4k高清壁纸</span>
+          <span v-else class="brand-subtitle">精选高清壁纸</span>
         </div>
       </div>
 

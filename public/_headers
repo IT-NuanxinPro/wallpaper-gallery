@@ -1,0 +1,16 @@
+/detail-shell.html
+  X-Robots-Tag: noindex
+/detail-shell
+  X-Robots-Tag: noindex
+/login
+  X-Robots-Tag: noindex
+/signup
+  X-Robots-Tag: noindex
+/auth/*
+  X-Robots-Tag: noindex
+/account
+  X-Robots-Tag: noindex
+/library
+  X-Robots-Tag: noindex
+/local-wallpapers
+  X-Robots-Tag: noindex

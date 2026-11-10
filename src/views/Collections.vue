@@ -1,18 +1,12 @@
 <script setup>
-import { computed, watch } from 'vue'
+import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useCollectionsContent } from '@/composables/useCollectionsContent'
 import { WALLPAPER_COLLECTIONS } from '@/content/collections'
-import { applyWallpaperDetailSeo } from '@/utils/seo/wallpaperDetail'
 import { resolveWallpaperCollection } from '@/utils/wallpaper/collections'
 
 const { records, loading, failedKeys, reload } = useCollectionsContent()
 const collections = computed(() => WALLPAPER_COLLECTIONS.map(collection => resolveWallpaperCollection(collection, records.value)))
-watch(collections, (items) => {
-  const cover = items.find(collection => collection.cover)?.cover
-  if (cover)
-    applyWallpaperDetailSeo({ title: '精选专题', description: '静夜、山间与海岸：人工挑选的主题壁纸与电脑手机搭配。', thumbnailUrl: cover.thumbnailUrl, sharePath: '/collections' })
-})
 </script>
 
 <template>

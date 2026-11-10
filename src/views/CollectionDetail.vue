@@ -1,12 +1,11 @@
 <script setup>
 import { ElMessage } from 'element-plus'
-import { computed, watch } from 'vue'
+import { computed } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import CollectionWallpaperCard from '@/components/collections/CollectionWallpaperCard.vue'
 import { useCollectionsContent } from '@/composables/useCollectionsContent'
 import { WALLPAPER_COLLECTIONS } from '@/content/collections'
 import { copyText } from '@/utils/common/clipboard'
-import { applyWallpaperDetailSeo } from '@/utils/seo/wallpaperDetail'
 import { getCollectionRelatedWallpapers, resolveWallpaperCollection } from '@/utils/wallpaper/collections'
 import { WALLPAPER_SITE_ORIGIN } from '@/utils/wallpaper/share'
 
@@ -16,12 +15,6 @@ const definition = computed(() => WALLPAPER_COLLECTIONS.find(collection => colle
 const collection = computed(() => definition.value ? resolveWallpaperCollection(definition.value, records.value) : null)
 const visibleItems = computed(() => collection.value ? collection.value.items : [])
 const related = computed(() => getCollectionRelatedWallpapers(collection.value, records.value))
-watch(collection, (value) => {
-  if (value?.cover)
-    applyWallpaperDetailSeo({ title: value.title, description: value.description, thumbnailUrl: value.cover.thumbnailUrl, sharePath: `/collections/${value.slug}` })
-  else if (!value)
-    document.title = '专题不存在 - Wallpaper Gallery'
-})
 
 async function copyLink() {
   try {

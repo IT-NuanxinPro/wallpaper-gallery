@@ -1,7 +1,8 @@
 <script setup>
-import { ElMessage } from 'element-plus'
-import { computed, defineAsyncComponent, onBeforeUnmount, ref, watch } from 'vue'
+import { ElButton, ElMessage } from 'element-plus'
+import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
+import SoftLoading from '@/components/common/feedback/SoftLoading.vue'
 import WallpaperCardActions from '@/components/wallpaper/card/shared/WallpaperCardActions.vue'
 import WallpaperDesktopActions from '@/components/wallpaper/desktop/WallpaperDesktopActions.vue'
 import WallpaperImageStage from '@/components/wallpaper/shared/WallpaperImageStage.vue'
@@ -15,7 +16,8 @@ import { copyText } from '@/utils/common/clipboard'
 import { formatFileSize } from '@/utils/common/format'
 import { createInteractionFeedback } from '@/utils/interaction/feedback'
 import { applyWallpaperDetailSeo } from '@/utils/seo/wallpaperDetail'
-import { getRelatedWallpapers, isTrustedWallpaperDetailUrl } from '@/utils/wallpaper/detailRecords'
+import { getBrowseReturn, isBrowseReturnPath } from '@/utils/wallpaper/browseReturn'
+import { getRelatedWallpapers, getWallpaperDetailSeo, isTrustedWallpaperDetailUrl } from '@/utils/wallpaper/detailRecords'
 import { buildWallpaperShareUrl } from '@/utils/wallpaper/share'
 
 const ImageCropModal = defineAsyncComponent(() => import('@/components/wallpaper/crop/index.vue'))
@@ -28,8 +30,16 @@ const ready = ref(false)
 const cropOpen = ref(false)
 const catalog = ref([])
 const mediaFailed = ref(false)
+const mediaAttempt = ref(0)
+const serverToken = String(route.params.token || '')
+const serverArticle = typeof document === 'undefined' ? null : document.querySelector('[data-wallpaper-detail]')
+const serverContentVisible = ref(Boolean(serverArticle))
 let catalogController
 const series = computed(() => record.value?._series || '')
+const seo = computed(() => record.value ? getWallpaperDetailSeo(record.value) : null)
+const listPath = computed(() => `/${series.value || 'desktop'}`)
+const fileFormat = computed(() => record.value?.format || record.value?.filename?.split('.').pop()?.toUpperCase() || '')
+const mediaStyle = computed(() => ({ aspectRatio: record.value?.resolution ? `${record.value.resolution.width} / ${record.value.resolution.height}` : '16 / 10' }))
 const primarySource = computed(() => record.value?.mediaType === 'video' ? record.value?.thumbnailUrl : record.value?.previewUrl || '')
 const { displayUrl, advance, reset } = useImageFallback(primarySource)
 const { liked, collected, isAuthenticated, toggleLike, toggleCollect } = useInteraction(record, series)
@@ -52,14 +62,20 @@ const loader = createWallpaperDetailLoader({
     catalog.value = []
     if (state.record) {
       applyWallpaperDetailSeo(state.record)
+      nextTick(() => {
+        if (record.value?.assetKey === state.record.assetKey) {
+          clearServerContent()
+        }
+      })
       catalogController = new AbortController()
       loadWallpaperCatalog({ series: state.record._series, signal: catalogController.signal }).then((items) => {
         if (record.value?.assetKey === state.record.assetKey)
           catalog.value = items
       }).catch(() => {})
     }
-    else if (state.error) {
+    else if (state.error && !serverContentVisible.value) {
       document.title = state.error.status === 404 ? '壁纸不存在 - Wallpaper Gallery' : '详情加载失败 - Wallpaper Gallery'
+      document.head.querySelectorAll('link[rel="canonical"], script[type="application/ld+json"], meta[property^="og:"], meta[name^="twitter:"], meta[name="description"]').forEach(element => element.remove())
       let robots = document.head.querySelector('meta[name="robots"]')
       if (!robots) {
         robots = document.createElement('meta')
@@ -74,13 +90,24 @@ const loader = createWallpaperDetailLoader({
 
 watch(() => route.params.token, (token) => {
   cancelDownload()
+  if (String(token || '') !== serverToken) {
+    clearServerContent()
+  }
   loader.load(String(token || ''))
 }, { immediate: true })
 onBeforeUnmount(() => {
   loader.cancel()
   catalogController?.abort()
+  clearServerContent()
 })
 usePreviewTracking({ wallpaper: record, series, isOpen: () => Boolean(record.value), ready })
+
+function clearServerContent() {
+  serverArticle?.remove()
+  if (typeof document !== 'undefined')
+    document.body.removeAttribute('data-wallpaper-fallback')
+  serverContentVisible.value = false
+}
 
 function imageReady(event) {
   if (isCurrentMediaEvent(event, displayUrl.value)) {
@@ -109,34 +136,65 @@ async function copyLink() {
 }
 
 function retryMedia() {
+  ready.value = false
   reset()
+  mediaAttempt.value++
   mediaFailed.value = false
+}
+
+function returnToList() {
+  const previous = router.options.history.state.back
+  if (isBrowseReturnPath(previous))
+    router.back()
+  else
+    router.push(getBrowseReturn() || listPath.value)
 }
 </script>
 
 <template>
-  <article class="wallpaper-detail">
-    <RouterLink :to="record ? `/${record._series}` : '/desktop'" class="detail-back">
-      返回壁纸列表
-    </RouterLink>
-    <p v-if="loading" role="status">
-      正在加载壁纸详情…
-    </p>
-    <section v-else-if="failure" class="detail-error" role="status">
+  <article class="wallpaper-detail" :class="{ 'has-server-content': serverContentVisible && !record }">
+    <div v-if="!serverContentVisible || record" class="detail-topbar">
+      <nav v-if="record" class="detail-breadcrumbs" aria-label="面包屑">
+        <RouterLink to="/">
+          首页
+        </RouterLink>
+        <span aria-hidden="true">/</span>
+        <RouterLink :to="listPath">
+          {{ seo.seriesName }}
+        </RouterLink>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{{ seo.name }}</span>
+      </nav>
+      <ElButton class="detail-back" round @click="returnToList">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m14 6-6 6 6 6" /></svg>
+        返回列表
+      </ElButton>
+    </div>
+    <div v-if="loading && !serverContentVisible" class="detail-loading">
+      <SoftLoading :size="64" label="正在加载壁纸详情" />
+    </div>
+    <section v-else-if="failure && !serverContentVisible" class="detail-error" role="status">
       <h1>{{ failure.status === 404 ? '壁纸不存在' : failure.status === 400 ? '分享链接无效' : '详情暂时无法加载' }}</h1>
       <p>{{ failure.message }}</p>
-      <button v-if="failure.status !== 404 && failure.status !== 400" type="button" @click="loader.load(String(route.params.token))">
+      <ElButton v-if="failure.status !== 404 && failure.status !== 400" round type="primary" @click="loader.load(String(route.params.token))">
         重新加载
-      </button>
+      </ElButton>
     </section>
+    <div v-else-if="failure && serverContentVisible" class="detail-server-retry" role="status">
+      <span>已保留壁纸内容，互动功能暂时无法加载。</span>
+      <ElButton round @click="loader.load(String(route.params.token))">
+        重新加载
+      </ElButton>
+    </div>
     <template v-else-if="record">
       <div class="detail-layout">
-        <section class="detail-media" :aria-label="record.title">
+        <section class="detail-media" :aria-label="seo.name">
           <video
             v-if="record.mediaType === 'video'"
             :key="record.assetKey"
             :src="record.previewUrl || record.url"
             :poster="record.thumbnailUrl"
+            :style="mediaStyle"
             controls
             playsinline
             preload="metadata"
@@ -145,42 +203,51 @@ function retryMedia() {
           />
           <WallpaperImageStage
             v-else
-            :key="`${record.assetKey}:${displayUrl}`"
+            :key="`${record.assetKey}:${displayUrl}:${mediaAttempt}`"
             :src="displayUrl"
-            :alt="record.title"
+            :alt="seo.name"
             :resolution="record.resolution"
             @load="imageReady"
             @error="imageError"
           />
-          <button v-if="mediaFailed && record.mediaType !== 'video'" type="button" @click="retryMedia">
+          <ElButton v-if="mediaFailed && record.mediaType !== 'video'" round class="detail-media-retry" @click="retryMedia">
             重新加载图片
-          </button>
+          </ElButton>
           <p v-if="mediaFailed && record.mediaType === 'video'" role="status">
             视频暂时无法播放，请稍后重试或下载原文件。
           </p>
         </section>
         <section class="detail-info">
           <p class="detail-category">
-            {{ [record.category, record.subcategory].filter(Boolean).join(' / ') }}
+            {{ seo.seriesName }}<span v-if="record.category"> · {{ record.category }}</span><span v-if="record.subcategory"> / {{ record.subcategory }}</span>
           </p>
-          <h1>{{ record.title }}</h1>
-          <p v-if="record.description">
-            {{ record.description }}
+          <h1>{{ seo.name }}</h1>
+          <p class="detail-description">
+            {{ record.description || seo.description }}
           </p>
-          <p>{{ dimensionLabel }}<span v-if="record.size"> · {{ formatFileSize(record.size) }}</span></p>
-          <div class="detail-tags">
+          <dl class="detail-facts">
+            <div><dt>原文件尺寸</dt><dd>{{ dimensionLabel }}</dd></div>
+            <div v-if="fileFormat">
+              <dt>文件格式</dt><dd>{{ fileFormat }}</dd>
+            </div>
+            <div v-if="record.size">
+              <dt>文件大小</dt><dd>{{ formatFileSize(record.size) }}</dd>
+            </div>
+          </dl>
+          <div v-if="record.tags?.length" class="detail-tags" aria-label="壁纸标签">
             <span v-for="tag in record.tags" :key="tag">{{ tag }}</span>
           </div>
           <div class="detail-actions">
-            <button type="button" :disabled="downloading" @click="handleDownload">
+            <ElButton type="primary" round :loading="downloading" :disabled="downloading" @click="handleDownload">
+              <svg v-if="!downloading" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 15v5h16v-5" /></svg>
               {{ downloading ? '正在下载…' : '下载原文件' }}
-            </button>
-            <button type="button" @click="copyLink">
+            </ElButton>
+            <ElButton round @click="copyLink">
               复制分享链接
-            </button>
-            <button v-if="record._series === 'desktop' && record.mediaType === 'image'" type="button" @click="cropOpen = true">
+            </ElButton>
+            <ElButton v-if="record._series === 'desktop' && record.mediaType === 'image'" round @click="cropOpen = true">
               裁剪壁纸
-            </button>
+            </ElButton>
           </div>
           <WallpaperCardActions
             :liked="liked"
@@ -193,22 +260,26 @@ function retryMedia() {
           <div class="detail-extensions">
             <WallpaperDesktopActions :wallpaper="record" />
           </div>
-          <dl class="detail-attribution">
+          <dl v-if="record.author || record.source || record.license" class="detail-attribution">
             <template v-if="record.author">
               <dt>作者</dt><dd>{{ record.author }}</dd>
             </template>
             <template v-if="record.source">
               <dt>来源</dt><dd>{{ record.source }}</dd>
             </template>
-            <dt>授权</dt><dd>{{ record.license || '来源未提供授权信息，请自行确认使用权限。' }}</dd>
+            <template v-if="record.license">
+              <dt>授权</dt><dd>{{ record.license }}</dd>
+            </template>
           </dl>
         </section>
       </div>
       <section v-if="related.length" class="detail-related">
-        <h2>相关推荐</h2>
+        <div class="detail-related-heading">
+          <h2>继续发现</h2><p>更多同系列壁纸</p>
+        </div>
         <div class="detail-related-grid">
           <RouterLink v-for="item in related" :key="item.assetKey" :to="item.sharePath">
-            <img :src="item.thumbnailUrl" :alt="item.title" loading="lazy" decoding="async">
+            <img :src="item.thumbnailUrl" :alt="item.title" :width="item.resolution?.width || 800" :height="item.resolution?.height || 500" loading="lazy" decoding="async">
             <span>{{ item.title }}</span>
           </RouterLink>
         </div>
@@ -227,36 +298,113 @@ function retryMedia() {
 
 <style scoped>
 .wallpaper-detail {
-  max-width: 1280px;
+  max-width: 1360px;
   margin: 0 auto;
-  padding: 28px 20px 64px;
+  padding: 28px 28px 72px;
   color: var(--color-text-primary);
 }
+.wallpaper-detail.has-server-content {
+  padding-block: 0;
+}
+.detail-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+.detail-breadcrumbs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+}
+.detail-breadcrumbs a {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+}
+.detail-breadcrumbs [aria-current] {
+  overflow: hidden;
+  max-width: 36ch;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 .detail-back {
-  display: inline-block;
-  padding: 10px 0;
-  margin-bottom: 16px;
-  color: var(--color-accent);
+  flex: none;
+}
+.detail-loading,
+.detail-error {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 18px;
+  min-height: min(55dvh, 460px);
+  text-align: center;
+}
+.detail-error h1 {
+  font-size: 26px;
+}
+.detail-error p,
+.detail-server-retry {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+.detail-server-retry {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-block: 20px;
 }
 .detail-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(280px, 1fr);
-  gap: 28px;
+  grid-template-columns: minmax(0, 1.7fr) minmax(320px, 1fr);
+  align-items: start;
+  gap: clamp(28px, 4vw, 52px);
 }
 .detail-media {
+  position: relative;
   min-width: 0;
-  border-radius: 16px;
+  border-radius: var(--radius-xl, 24px);
   overflow: hidden;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--accent-border);
+  box-shadow: var(--shadow-md);
+  --media-stage-max-height: min(72dvh, 780px);
 }
 .detail-media video {
+  display: block;
   width: 100%;
-  max-height: 70dvh;
+  max-height: 72dvh;
+  object-fit: contain;
   background: #101827;
 }
+.detail-media-retry {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.detail-media > p {
+  padding: 18px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+}
+.detail-info {
+  min-width: 0;
+  padding-block: 8px;
+}
 .detail-info h1 {
-  font-size: clamp(24px, 3vw, 36px);
-  line-height: 1.3;
-  margin: 8px 0 16px;
+  font-size: clamp(26px, 2.5vw, 36px);
+  line-height: 1.4;
+  letter-spacing: -0.025em;
+  overflow-wrap: anywhere;
+  margin: 12px 0 18px;
 }
 .detail-info p {
   line-height: 1.8;
@@ -264,6 +412,29 @@ function retryMedia() {
 }
 .detail-category {
   font-size: 13px;
+  font-weight: 550;
+}
+.detail-description {
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.detail-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 24px;
+  padding: 22px 0;
+  margin-top: 6px;
+  border-bottom: 1px solid var(--color-border);
+}
+.detail-facts dt {
+  margin-bottom: 7px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+.detail-facts dd {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
 }
 .detail-tags,
 .detail-actions {
@@ -273,29 +444,36 @@ function retryMedia() {
   margin: 20px 0;
 }
 .detail-tags span {
-  border: 1px solid var(--color-border, #94a3b8);
-  border-radius: 24px;
-  padding: 4px 10px;
+  border: 1px solid var(--accent-border);
+  border-radius: 999px;
+  padding: 5px 11px;
   font-size: 12px;
+  color: var(--color-accent);
+  background: var(--accent-gradient-soft);
 }
-.detail-actions button,
-.detail-error button,
-.detail-media button {
+.wallpaper-detail :deep(.el-button) {
   min-height: 44px;
-  padding: 10px 16px;
-  border: 1px solid var(--color-border, #94a3b8);
-  border-radius: 10px;
-  background: var(--color-bg-card);
-  color: var(--color-text-primary);
-  cursor: pointer;
+  margin-left: 0;
+  padding: 11px 19px;
+  font-weight: 550;
 }
-.detail-actions button:first-child {
-  background: var(--color-accent);
-  color: #fff;
+.wallpaper-detail :deep(.el-button:not(.el-button--primary)) {
+  --el-button-bg-color: var(--accent-surface);
+  --el-button-border-color: var(--accent-border);
+  --el-button-text-color: var(--color-accent);
 }
-.detail-actions button:disabled {
-  opacity: 0.6;
-  cursor: wait;
+.wallpaper-detail :deep(.el-button svg) {
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+}
+.wallpaper-detail :deep(.card-actions) {
+  margin-top: 6px;
+}
+.wallpaper-detail a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+  border-radius: 4px;
 }
 .detail-attribution {
   display: grid;
@@ -321,7 +499,23 @@ function retryMedia() {
   overflow-wrap: anywhere;
 }
 .detail-related {
-  margin-top: 48px;
+  margin-top: 64px;
+}
+.detail-related-heading {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.detail-related-heading h2 {
+  margin: 0;
+  font-size: 23px;
+  letter-spacing: -0.02em;
+}
+.detail-related-heading p {
+  font-size: 13px;
+  color: var(--color-text-muted);
 }
 .detail-related-grid {
   display: grid;
@@ -329,21 +523,65 @@ function retryMedia() {
   gap: 16px;
 }
 .detail-related-grid a {
+  min-width: 0;
   color: inherit;
+  text-decoration: none;
 }
 .detail-related-grid img {
   width: 100%;
   aspect-ratio: 16 / 10;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 16px;
+  background: var(--color-bg-hover);
 }
 .detail-related-grid span {
   display: block;
-  padding: 8px 0;
+  padding: 10px 2px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px;
+}
+@media (max-width: 1023px) {
+  .detail-layout {
+    grid-template-columns: minmax(0, 1.25fr) minmax(280px, 1fr);
+    gap: 28px;
+  }
 }
 @media (max-width: 767px) {
+  .wallpaper-detail {
+    padding: 18px 16px 48px;
+  }
+  .detail-topbar {
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .detail-breadcrumbs {
+    gap: 6px;
+    font-size: 12px;
+  }
+  .detail-breadcrumbs [aria-current] {
+    display: none;
+  }
+  .detail-breadcrumbs span[aria-hidden]:last-of-type {
+    display: none;
+  }
+  .detail-back {
+    padding-inline: 12px;
+  }
   .detail-layout {
     grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .detail-info {
+    padding-block: 0;
+  }
+  .detail-media {
+    border-radius: 18px;
+    --media-stage-max-height: 66dvh;
+  }
+  .detail-related {
+    margin-top: 44px;
   }
   .detail-related-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

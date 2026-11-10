@@ -45,7 +45,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['select', 'resetFilters', 'displayCountChange'])
+const emit = defineEmits(['select', 'resetFilters', 'displayCountChange', 'navigate'])
 
 const router = useRouter()
 const { currentSeries, currentSeriesConfig, availableSeriesOptions } = useWallpaperType()
@@ -202,6 +202,7 @@ const skeletonCount = PAGE_SIZE
         >
           <WallpaperCard
             :wallpaper="wallpaper"
+            :series="currentSeries"
             :index="index"
             :search-query="searchQuery"
             :aspect-ratio="currentSeriesConfig?.aspectRatio || '16/10'"
@@ -209,6 +210,7 @@ const skeletonCount = PAGE_SIZE
             :download-count="getDownloadCount(wallpaper)"
             :view-count="getViewCount(wallpaper)"
             @click="handleSelect"
+            @navigate="(wallpaper, event) => emit('navigate', wallpaper, event)"
           />
         </div>
       </div>

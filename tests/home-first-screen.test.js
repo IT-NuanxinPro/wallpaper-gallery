@@ -48,7 +48,7 @@ describe('首页加载遮罩', () => {
     app = renderer.createApp({
       setup() {
         loader = useHomeDataLoader({
-          currentSeries: ref('desktop'), showMobileSeriesNotice: ref(false),
+          currentSeries: ref('desktop'), showMobileSeriesNotice: ref(true),
           filterStore: { setDefaultSortBySeries: vi.fn() },
           hotTagsStore: { fetchHotTags: vi.fn().mockResolvedValue([]) },
           popularityStore: { fetchPopularityData: vi.fn().mockResolvedValue([]) },

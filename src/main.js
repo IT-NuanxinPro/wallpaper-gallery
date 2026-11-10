@@ -62,8 +62,9 @@ useAuthStore(pinia).initialize().catch((error) => {
 })
 app.use(router)
 app.mount('#app')
+document.documentElement.removeAttribute('data-static-page')
 signalAppReady(router).catch((error) => {
   console.warn('[main] 首屏初始化失败:', error)
 })
-// 详情由 Vue 接管后移除服务端无脚本正文，避免重复可见。
-document.querySelector('[data-wallpaper-detail]')?.remove()
+// 通用首屏由 Vue 接管；单图服务端正文在详情数据就绪后再移除。
+router.isReady().then(() => document.querySelector('[data-page-fallback]')?.remove())

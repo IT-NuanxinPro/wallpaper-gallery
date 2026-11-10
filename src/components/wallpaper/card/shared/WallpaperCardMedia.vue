@@ -76,7 +76,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['click', 'error', 'load', 'hoverEnter', 'hoverLeave'])
+const emit = defineEmits(['error', 'load', 'hoverEnter', 'hoverLeave'])
 const imageRef = ref(null)
 const mediaReady = ref(false)
 let loadVersion = 0
@@ -114,11 +114,6 @@ function handleImageError(event) {
   emit('error')
 }
 
-function handleKeydown(event) {
-  if (!event.repeat)
-    emit('click')
-}
-
 onMounted(() => {
   if (imageRef.value?.complete && imageRef.value.naturalWidth > 0)
     void handleImageLoad({ target: imageRef.value })
@@ -128,13 +123,7 @@ onMounted(() => {
 <template>
   <div
     class="card-image"
-    role="button"
-    tabindex="0"
-    :aria-label="imageAlt"
     :style="style"
-    @click="emit('click')"
-    @keydown.enter.prevent="handleKeydown"
-    @keydown.space.prevent="handleKeydown"
     @mouseenter="emit('hoverEnter')"
     @mouseleave="emit('hoverLeave')"
   >
@@ -198,7 +187,7 @@ onMounted(() => {
             <path d="M11 8v6M8 11h6" />
           </svg>
         </span>
-        <span class="overlay-text">{{ isVideoWallpaper ? '查看详情' : '查看大图' }}</span>
+        <span class="overlay-text">查看详情</span>
       </div>
     </div>
   </div>
