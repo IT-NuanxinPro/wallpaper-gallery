@@ -157,33 +157,53 @@ describe('轮换状态轮询生命周期', () => {
 describe('原生控件实际组件', () => {
   async function render(componentPath, props) {
     vi.resetModules()
+    const feedback = { success: vi.fn(), error: vi.fn() }
+    const wrapper = { inheritAttrs: false, setup: (_props, { slots }) => () => slots.default?.() }
     const dependencies = {
-      vue: Vue,
+      vue: { ...Vue, Teleport: wrapper, Transition: Vue.BaseTransition },
+      'element-plus': { ElMessage: feedback },
       'vue-router': { RouterLink: { render: () => null } },
+      '@/components/common/feedback/SoftLoading.vue': { default: { props: ['label'], setup: props => () => h('span', { role: 'status' }, props.label) } },
+      '@/components/common/feedback/useLoadingSurface': await import('../src/components/common/feedback/useLoadingSurface'),
       '@/composables/useDesktopWallpaper': await import('../src/composables/useDesktopWallpaper'),
       '@/services/desktopWallpaperService': await import('../src/services/desktopWallpaperService'),
     }
     const { descriptor } = parse(await readFile(new URL(componentPath, import.meta.url), 'utf8'))
     const compiled = compileScript(descriptor, { id: componentPath, inlineTemplate: true }).content
       .replace(/import\s+\{([^}]+)\}\s+from\s+['"]([^'"]+)['"]/g, (_, names, dependency) => `const {${names.replace(/\bas\b/g, ':')}} = dependencies[${JSON.stringify(dependency)}]`)
+      .replace(/import\s+(\w+)\s+from\s+['"]([^'"]+)['"]/g, (_, name, dependency) => `const ${name} = dependencies[${JSON.stringify(dependency)}].default`)
       .replace('export default', 'return')
     const component = new Function('dependencies', compiled)(dependencies)
     const elements = []
     const renderer = createRenderer({
-      createElement(type) { const el = { type, props: {}, children: [], options: [], tagName: type.toUpperCase(), addEventListener() {}, removeEventListener() {} }; elements.push(el); return el },
+      createElement(type) { const el = { type, props: {}, children: [], options: [], tagName: type.toUpperCase(), focus: vi.fn(), addEventListener() {}, removeEventListener() {} }; elements.push(el); return el },
       createText: text => ({ text }), createComment: () => ({}),
-      insert(el, parent) { parent.children ||= []; parent.children.push(el); el.parent = parent },
-      remove(el) { const index = el.parent?.children?.indexOf(el); if (index >= 0) el.parent.children.splice(index, 1); el.removed = true },
+      insert(el, parent, anchor) {
+        const previous = el.parent?.children
+        const previousIndex = previous?.indexOf(el)
+        if (previousIndex >= 0) previous.splice(previousIndex, 1)
+        parent.children ||= []
+        const index = anchor ? parent.children.indexOf(anchor) : -1
+        if (index < 0) parent.children.push(el)
+        else parent.children.splice(index, 0, el)
+        el.parent = parent
+      },
+      remove(el) { const index = el?.parent?.children?.indexOf(el); if (index >= 0) el.parent.children.splice(index, 1); if (el) el.removed = true },
       setText(el, text) { el.text = text }, setElementText(el, text) { el.text = text },
       patchProp(el, name, oldValue, value) { el.props[name] = value },
-      parentNode: el => el.parent, nextSibling: () => null,
+      parentNode: el => el.parent,
+      nextSibling: el => el.parent?.children?.[el.parent.children.indexOf(el) + 1] || null,
     })
     const app = renderer.createApp({ render: () => h(component, props.value || props) })
+    app.config.warnHandler = message => {
+      if (!message.includes('Non-function value encountered for default slot'))
+        throw new Error(message)
+    }
     app.component('RouterLink', { render() { return null } })
     app.mount({})
     const settle = async () => { for (let i = 0; i < 12; i++) await nextTick() }
     await settle()
-    return { elements, app, settle }
+    return { elements, app, settle, feedback }
   }
   it('普通浏览器仅显示客户端下载入口，没有设置按钮', async () => {
     window.__TAURI__ = undefined
@@ -192,6 +212,52 @@ describe('原生控件实际组件', () => {
     expect(elements.some(el => el.type === 'a' && el.text === '下载客户端')).toBe(true)
     expect(invoke).not.toHaveBeenCalled()
     app.unmount()
+  })
+  it('设置时显示居中进度、阻止重复请求，完成只提示一次并移除持久状态文字', async () => {
+    let finish
+    invoke.mockImplementation(command => command === 'wallpaper_capabilities' ? Promise.resolve(capabilities) : command === 'wallpaper_apply' ? new Promise(resolve => { finish = resolve }) : Promise.resolve(status()))
+    const { elements, app, settle, feedback } = await render('../src/components/wallpaper/desktop/WallpaperDesktopActions.vue', { wallpaper: picture() })
+    const apply = elements.find(el => el.type === 'button' && (el.text === '设为桌面壁纸' || el.props.class?.includes('desktop-wallpaper-actions__apply')))
+    const pending = apply.props.onClick()
+    await settle()
+    expect(elements.some(el => el.props.class?.includes('desktop-wallpaper-progress') && !el.removed)).toBe(true)
+    expect(apply.props.disabled).toBe(true)
+    await apply.props.onClick()
+    expect(invoke.mock.calls.filter(([command]) => command === 'wallpaper_apply')).toHaveLength(1)
+    finish({ ...status(), current: buildDesktopWallpaperItem(picture()).item })
+    await pending
+    await settle()
+    await vi.advanceTimersByTimeAsync(500)
+    await settle()
+    expect(feedback.success).toHaveBeenCalledTimes(1)
+    expect(elements.some(el => el.type === 'p' && /当前应用|已设置/.test(el.text || '') && !el.removed)).toBe(false)
+    expect(elements.some(el => /收藏轮换/.test(el.text || '') && !el.removed)).toBe(false)
+    expect(elements.some(el => el.props.role === 'dialog' && !el.removed)).toBe(false)
+    app.unmount()
+  })
+
+  it('原生失败结束进度并反馈，关闭后的迟到成功不污染下一次打开', async () => {
+    const props = ref({ wallpaper: picture(), visible: true })
+    const { elements, app, settle, feedback } = await render('../src/components/wallpaper/desktop/WallpaperDesktopActions.vue', props)
+    const apply = elements.find(el => el.type === 'button' && (el.text === '设为桌面壁纸' || el.props.class?.includes('desktop-wallpaper-actions__apply')))
+    invoke.mockRejectedValueOnce('native failed')
+    await apply.props.onClick()
+    expect(feedback.success).not.toHaveBeenCalled()
+    expect(feedback.error).toHaveBeenCalledTimes(1)
+    let finish
+    invoke.mockImplementation(command => command === 'wallpaper_apply' ? new Promise(resolve => { finish = resolve }) : Promise.resolve(status()))
+    const pending = apply.props.onClick()
+    await settle()
+    props.value = { ...props.value, visible: false }
+    await settle()
+    props.value = { wallpaper: picture('b.jpg'), visible: true }
+    await settle()
+    finish({ ...status(), current: buildDesktopWallpaperItem(picture()).item })
+    await pending
+    await settle()
+    expect(feedback.success).not.toHaveBeenCalled()
+    app.unmount()
+    expect(vi.getTimerCount()).toBe(0)
   })
   it('轮换面板明确启用，删除收藏不改已保存配置且空列表仍可停止', async () => {
     const props = ref({ wallpapers: [picture(), picture('b.png'), picture('c.webp')], totalCount: 3 })

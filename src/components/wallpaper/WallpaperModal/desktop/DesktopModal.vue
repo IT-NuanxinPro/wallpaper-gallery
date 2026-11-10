@@ -372,25 +372,23 @@ usePreviewTracking({
                 @toggle-collect="emit('toggleCollect')"
               />
 
-              <button
-                v-if="effectiveSeries === 'desktop'"
-                class="crop-btn"
-                :disabled="!wallpaper?.url"
-                @click="handleOpenCrop"
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M6 2v4M6 14v8M18 2v4M18 14v8M2 6h4M14 6h8M2 18h4M14 18h8" />
-                </svg>
-                <span>智能裁剪</span>
-              </button>
-
-              <WallpaperDesktopActions :wallpaper="wallpaper" :visible="isOpen && isVisible" />
-              <div class="download-row">
+              <div class="utility-row">
+                <button
+                  v-if="effectiveSeries === 'desktop'"
+                  class="crop-btn"
+                  :disabled="!wallpaper?.url"
+                  @click="handleOpenCrop"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 2v4M6 14v8M18 2v4M18 14v8M2 6h4M14 6h8M2 18h4M14 18h8" />
+                  </svg>
+                  <span>智能裁剪</span>
+                </button>
                 <button
                   class="copy-url-btn"
                   :disabled="!wallpaper?.url"
                   aria-label="复制链接"
-                  title="复制直链"
+                  title="复制分享链接"
                   @click="handleCopyUrl"
                 >
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -398,18 +396,19 @@ usePreviewTracking({
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
                   </svg>
                 </button>
-                <button
-                  class="download-btn"
-                  :disabled="downloading" :aria-busy="downloading"
-                  @click="handleDownload"
-                >
-                  <LoadingSpinner v-if="downloading" size="sm" />
-                  <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
-                  </svg>
-                  <span>{{ downloading ? '下载中...' : '下载原图' }}</span>
-                </button>
               </div>
+              <WallpaperDesktopActions :wallpaper="wallpaper" :visible="isOpen && isVisible" appearance="dark" />
+              <button
+                class="download-btn"
+                :disabled="downloading" :aria-busy="downloading"
+                @click="handleDownload"
+              >
+                <LoadingSpinner v-if="downloading" size="sm" />
+                <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                </svg>
+                <span>{{ downloading ? '下载中...' : '下载原图' }}</span>
+              </button>
             </div>
           </div>
         </div>
@@ -758,6 +757,8 @@ usePreviewTracking({
 }
 
 .crop-btn {
+  flex: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -793,7 +794,7 @@ usePreviewTracking({
   }
 }
 
-.download-row {
+.utility-row {
   display: flex;
   gap: 10px;
   align-items: stretch;
@@ -805,6 +806,8 @@ usePreviewTracking({
   align-items: center;
   justify-content: center;
   width: 58px;
+  min-height: 56px;
+  margin-left: auto;
   background: linear-gradient(180deg, rgba(34, 47, 76, 0.96), rgba(23, 33, 56, 0.92));
   border: 1px solid rgba(96, 165, 250, 0.2);
   color: #dbeafe;
@@ -838,7 +841,8 @@ usePreviewTracking({
 }
 
 .download-btn {
-  flex: 1;
+  flex: none;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
