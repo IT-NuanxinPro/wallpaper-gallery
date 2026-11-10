@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-11-10T00:50:58.713Z",
+  "generatedAt": "2026-11-10T22:31:43.482Z",
   "windowDays": 90,
   "halfLifeDays": 30,
-  "windowStart": "2026-08-12T00:50:58.713Z",
+  "windowStart": "2026-08-12T22:31:43.482Z",
   "series": "desktop",
-  "total": 610,
+  "total": 623,
   "tags": [
     {
       "tag": "插画",
-      "score": 41.314218,
-      "views": 1213,
-      "downloads": 392,
-      "wallpaperCount": 68,
-      "latestCreatedAt": "2026-11-09T06:12:23.160Z",
+      "score": 43.403557,
+      "views": 1239,
+      "downloads": 401,
+      "wallpaperCount": 69,
+      "latestCreatedAt": "2026-11-10T12:15:53.446Z",
       "series": [
         "desktop"
       ],
@@ -22,30 +22,30 @@
           "cdnTag": "v1.4.96"
         },
         {
-          "thumbnail": "/thumbnail/desktop/插画/国风/07_image_#wallpaper #美图分享..._7_4K.webp",
-          "cdnTag": "v1.4.94"
+          "thumbnail": "/thumbnail/desktop/插画/创意/会说话的眼睛2 [3529118677]_3840x2160.webp",
+          "cdnTag": "v1.5.0"
         },
         {
           "thumbnail": "/thumbnail/desktop/插画/国风/13_image_#wallpaper #美图分享..._5_4K.webp",
           "cdnTag": "v1.4.94"
         },
         {
-          "thumbnail": "/thumbnail/desktop/插画/场景/04_image_#wallpaper #美图分享..._3_4K.webp",
+          "thumbnail": "/thumbnail/desktop/插画/国风/08_image_#wallpaper #美图分享..._0_4K.webp",
           "cdnTag": "v1.4.94"
         },
         {
-          "thumbnail": "/thumbnail/desktop/插画/国风/09_image_#wallpaper #美图分享..._1_4K.webp",
+          "thumbnail": "/thumbnail/desktop/插画/国风/12_image_#wallpaper #美图分享..._4_4K.webp",
           "cdnTag": "v1.4.94"
         }
       ]
     },
     {
       "tag": "动漫",
-      "score": 29.841301,
-      "views": 773,
-      "downloads": 254,
-      "wallpaperCount": 46,
-      "latestCreatedAt": "2026-11-08T12:06:41.877Z",
+      "score": 33.7139,
+      "views": 810,
+      "downloads": 255,
+      "wallpaperCount": 49,
+      "latestCreatedAt": "2026-11-10T12:15:53.446Z",
       "series": [
         "desktop"
       ],
@@ -59,7 +59,36 @@
           "cdnTag": "v1.4.94"
         },
         {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/image_008517611938253.webp",
+          "cdnTag": "v1.4.94"
+        },
+        {
           "thumbnail": "/thumbnail/desktop/动漫/二次元/03_image_#wallpaper #美图分享..._2_4K.webp",
+          "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/17_image_#电脑桌面 #wallpaper..._1_4K.webp",
+          "cdnTag": "v1.4.99"
+        }
+      ]
+    },
+    {
+      "tag": "二次元",
+      "score": 30.926713,
+      "views": 697,
+      "downloads": 213,
+      "wallpaperCount": 44,
+      "latestCreatedAt": "2026-11-10T12:15:53.446Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/winter_portrait_4k_with_background.webp",
+          "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/01_image_#wallpaper #美图分享..._0_4K.webp",
           "cdnTag": "v1.4.94"
         },
         {
@@ -67,16 +96,20 @@
           "cdnTag": "v1.4.94"
         },
         {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/02_image_#wallpaper #美图分享..._1_4K.webp",
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/03_image_#wallpaper #美图分享..._2_4K.webp",
           "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/17_image_#电脑桌面 #wallpaper..._1_4K.webp",
+          "cdnTag": "v1.4.99"
         }
       ]
     },
     {
       "tag": "风景",
-      "score": 28.94573,
-      "views": 1449,
-      "downloads": 615,
+      "score": 28.38903,
+      "views": 1460,
+      "downloads": 617,
       "wallpaperCount": 59,
       "latestCreatedAt": "2026-10-13T07:23:16.897Z",
       "series": [
@@ -106,45 +139,12 @@
       ]
     },
     {
-      "tag": "二次元",
-      "score": 26.995333,
-      "views": 660,
-      "downloads": 212,
-      "wallpaperCount": 41,
-      "latestCreatedAt": "2026-11-08T12:06:41.877Z",
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/winter_portrait_4k_with_background.webp",
-          "cdnTag": "v1.4.94"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/01_image_#wallpaper #美图分享..._0_4K.webp",
-          "cdnTag": "v1.4.94"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/03_image_#wallpaper #美图分享..._2_4K.webp",
-          "cdnTag": "v1.4.94"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/image_008517611938253.webp",
-          "cdnTag": "v1.4.94"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/02_image_#wallpaper #美图分享..._1_4K.webp",
-          "cdnTag": "v1.4.94"
-        }
-      ]
-    },
-    {
       "tag": "人像",
-      "score": 22.844475,
-      "views": 1081,
+      "score": 23.753721,
+      "views": 1089,
       "downloads": 226,
-      "wallpaperCount": 50,
-      "latestCreatedAt": "2026-11-08T12:05:44.442Z",
+      "wallpaperCount": 51,
+      "latestCreatedAt": "2026-11-10T12:13:40.467Z",
       "series": [
         "desktop"
       ],
@@ -152,6 +152,10 @@
         {
           "thumbnail": "/thumbnail/desktop/人像/氛围感/05_image_#wallpaper #美图分享..._4_4K.webp",
           "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/氛围感/夏柠柒 [3814078588]_2560x1440.webp",
+          "cdnTag": "v1.5.0"
         },
         {
           "thumbnail": "/thumbnail/desktop/人像/氛围感/21_image_#电脑桌面 #wallpaper..._2_4K.webp",
@@ -164,18 +168,47 @@
         {
           "thumbnail": "/thumbnail/desktop/人像/魅力/2025-09-05_1649.webp",
           "cdnTag": "v1.4.61"
+        }
+      ]
+    },
+    {
+      "tag": "场景",
+      "score": 15.146532,
+      "views": 414,
+      "downloads": 130,
+      "wallpaperCount": 25,
+      "latestCreatedAt": "2026-11-09T06:12:23.160Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/插画/场景/冬日风光-动漫风景.webp",
+          "cdnTag": "v1.4.96"
         },
         {
-          "thumbnail": "/thumbnail/desktop/人像/氛围感/29_image_1御图网- 无心无念 2李擎洲-..._2_4K.webp",
+          "thumbnail": "/thumbnail/desktop/插画/场景/30_image_1御图网- 无心无念 2李擎洲-..._6_4K.webp",
           "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/场景/14_image_#wallpaper #美图分享..._6_4K.webp",
+          "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/场景/04_image_#wallpaper #美图分享..._3_4K.webp",
+          "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/场景/壁纸-情侣-冬日.webp",
+          "cdnTag": "v1.4.67"
         }
       ]
     },
     {
       "tag": "自然",
-      "score": 15.315965,
-      "views": 613,
-      "downloads": 279,
+      "score": 15.038026,
+      "views": 622,
+      "downloads": 281,
       "wallpaperCount": 28,
       "latestCreatedAt": "2026-10-10T03:19:48.607Z",
       "series": [
@@ -205,49 +238,20 @@
       ]
     },
     {
-      "tag": "场景",
-      "score": 14.702184,
-      "views": 400,
-      "downloads": 128,
-      "wallpaperCount": 25,
-      "latestCreatedAt": "2026-11-09T06:12:23.160Z",
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/插画/场景/冬日风光-动漫风景.webp",
-          "cdnTag": "v1.4.96"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/场景/04_image_#wallpaper #美图分享..._3_4K.webp",
-          "cdnTag": "v1.4.94"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/场景/壁纸-情侣-冬日.webp",
-          "cdnTag": "v1.4.67"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/场景/14_image_#wallpaper #美图分享..._6_4K.webp",
-          "cdnTag": "v1.4.94"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/场景/15_image_#wallpaper #美图分享..._7_4K.webp",
-          "cdnTag": "v1.4.94"
-        }
-      ]
-    },
-    {
       "tag": "创意",
-      "score": 12.025567,
-      "views": 371,
-      "downloads": 123,
-      "wallpaperCount": 21,
-      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
+      "score": 13.187494,
+      "views": 375,
+      "downloads": 125,
+      "wallpaperCount": 22,
+      "latestCreatedAt": "2026-11-10T12:15:53.446Z",
       "series": [
         "desktop"
       ],
       "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/插画/创意/会说话的眼睛2 [3529118677]_3840x2160.webp",
+          "cdnTag": "v1.5.0"
+        },
         {
           "thumbnail": "/thumbnail/desktop/插画/创意/2023-12-21_10265.webp",
           "cdnTag": "v1.4.61"
@@ -263,18 +267,14 @@
         {
           "thumbnail": "/thumbnail/desktop/插画/创意/2026-01-16_317.webp",
           "cdnTag": "v1.4.60"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/创意/2024-01-05_10537.webp",
-          "cdnTag": "v1.4.61"
         }
       ]
     },
     {
       "tag": "国风",
-      "score": 10.987005,
-      "views": 232,
-      "downloads": 57,
+      "score": 11.539781,
+      "views": 236,
+      "downloads": 59,
       "wallpaperCount": 19,
       "latestCreatedAt": "2026-11-08T12:05:44.442Z",
       "series": [
@@ -282,15 +282,7 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/desktop/插画/国风/07_image_#wallpaper #美图分享..._7_4K.webp",
-          "cdnTag": "v1.4.94"
-        },
-        {
           "thumbnail": "/thumbnail/desktop/插画/国风/13_image_#wallpaper #美图分享..._5_4K.webp",
-          "cdnTag": "v1.4.94"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/国风/09_image_#wallpaper #美图分享..._1_4K.webp",
           "cdnTag": "v1.4.94"
         },
         {
@@ -300,13 +292,21 @@
         {
           "thumbnail": "/thumbnail/desktop/插画/国风/12_image_#wallpaper #美图分享..._4_4K.webp",
           "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/国风/07_image_#wallpaper #美图分享..._7_4K.webp",
+          "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/国风/09_image_#wallpaper #美图分享..._1_4K.webp",
+          "cdnTag": "v1.4.94"
         }
       ]
     },
     {
       "tag": "清新",
-      "score": 9.814163,
-      "views": 299,
+      "score": 9.677971,
+      "views": 303,
       "downloads": 69,
       "wallpaperCount": 19,
       "latestCreatedAt": "2026-11-08T12:05:44.442Z",
@@ -338,8 +338,8 @@
     },
     {
       "tag": "自然风光",
-      "score": 9.050322,
-      "views": 365,
+      "score": 8.87153,
+      "views": 370,
       "downloads": 168,
       "wallpaperCount": 16,
       "latestCreatedAt": "2026-10-10T03:19:48.607Z",
@@ -370,9 +370,42 @@
       ]
     },
     {
+      "tag": "国风插画",
+      "score": 8.209567,
+      "views": 95,
+      "downloads": 19,
+      "wallpaperCount": 9,
+      "latestCreatedAt": "2026-11-08T12:05:44.442Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/插画/国风/13_image_#wallpaper #美图分享..._5_4K.webp",
+          "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/国风/08_image_#wallpaper #美图分享..._0_4K.webp",
+          "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/国风/12_image_#wallpaper #美图分享..._4_4K.webp",
+          "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/国风/07_image_#wallpaper #美图分享..._7_4K.webp",
+          "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/国风/09_image_#wallpaper #美图分享..._1_4K.webp",
+          "cdnTag": "v1.4.94"
+        }
+      ]
+    },
+    {
       "tag": "夜晚",
-      "score": 8.34901,
-      "views": 348,
+      "score": 8.177512,
+      "views": 349,
       "downloads": 107,
       "wallpaperCount": 14,
       "latestCreatedAt": "2026-10-13T07:23:16.897Z",
@@ -403,45 +436,12 @@
       ]
     },
     {
-      "tag": "国风插画",
-      "score": 7.586556,
-      "views": 91,
-      "downloads": 17,
-      "wallpaperCount": 9,
-      "latestCreatedAt": "2026-11-08T12:05:44.442Z",
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/插画/国风/07_image_#wallpaper #美图分享..._7_4K.webp",
-          "cdnTag": "v1.4.94"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/国风/13_image_#wallpaper #美图分享..._5_4K.webp",
-          "cdnTag": "v1.4.94"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/国风/09_image_#wallpaper #美图分享..._1_4K.webp",
-          "cdnTag": "v1.4.94"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/国风/08_image_#wallpaper #美图分享..._0_4K.webp",
-          "cdnTag": "v1.4.94"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/国风/12_image_#wallpaper #美图分享..._4_4K.webp",
-          "cdnTag": "v1.4.94"
-        }
-      ]
-    },
-    {
       "tag": "氛围感",
-      "score": 6.924226,
-      "views": 340,
+      "score": 8.161349,
+      "views": 348,
       "downloads": 86,
-      "wallpaperCount": 13,
-      "latestCreatedAt": "2026-11-08T12:05:44.442Z",
+      "wallpaperCount": 14,
+      "latestCreatedAt": "2026-11-10T12:13:40.467Z",
       "series": [
         "desktop"
       ],
@@ -449,6 +449,10 @@
         {
           "thumbnail": "/thumbnail/desktop/人像/氛围感/05_image_#wallpaper #美图分享..._4_4K.webp",
           "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/氛围感/夏柠柒 [3814078588]_2560x1440.webp",
+          "cdnTag": "v1.5.0"
         },
         {
           "thumbnail": "/thumbnail/desktop/人像/氛围感/21_image_#电脑桌面 #wallpaper..._2_4K.webp",
@@ -461,17 +465,13 @@
         {
           "thumbnail": "/thumbnail/desktop/风景/自然/2026-09-09_25178.webp",
           "cdnTag": "v1.4.36"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/氛围感/2026-04-30_2020.webp",
-          "cdnTag": "v1.4.19"
         }
       ]
     },
     {
       "tag": "日落",
-      "score": 6.840959,
-      "views": 269,
+      "score": 6.701472,
+      "views": 270,
       "downloads": 95,
       "wallpaperCount": 15,
       "latestCreatedAt": "2026-10-10T03:19:48.607Z",
@@ -502,8 +502,41 @@
       ]
     },
     {
+      "tag": "银发少女",
+      "score": 6.519071,
+      "views": 34,
+      "downloads": 2,
+      "wallpaperCount": 6,
+      "latestCreatedAt": "2026-11-10T12:15:53.446Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/winter_portrait_4k_with_background.webp",
+          "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/image_008517611938253.webp",
+          "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/叶瞬光 [3670060903]_3840x2160.webp",
+          "cdnTag": "v1.5.0"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/22_image_#电脑桌面 #wallpaper..._3_4K.webp",
+          "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/25_image_#电脑桌面 #wallpaper..._7_4K.webp",
+          "cdnTag": "v1.4.94"
+        }
+      ]
+    },
+    {
       "tag": "魅力",
-      "score": 6.573876,
+      "score": 6.438098,
       "views": 556,
       "downloads": 94,
       "wallpaperCount": 16,
@@ -536,9 +569,9 @@
     },
     {
       "tag": "宁静",
-      "score": 6.429887,
-      "views": 179,
-      "downloads": 88,
+      "score": 6.322322,
+      "views": 185,
+      "downloads": 89,
       "wallpaperCount": 9,
       "latestCreatedAt": "2026-10-13T07:23:16.897Z",
       "series": [
@@ -568,9 +601,42 @@
       ]
     },
     {
+      "tag": "柔光",
+      "score": 5.733534,
+      "views": 45,
+      "downloads": 11,
+      "wallpaperCount": 6,
+      "latestCreatedAt": "2026-11-10T12:13:40.467Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/image_008517611938253.webp",
+          "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/03_image_#wallpaper #美图分享..._2_4K.webp",
+          "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/氛围感/夏柠柒 [3814078588]_2560x1440.webp",
+          "cdnTag": "v1.5.0"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/国风/9364f548f9d90201693796601.webp",
+          "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/人像/魅力/2026-07-23_10065.webp",
+          "cdnTag": "v1.4.19"
+        }
+      ]
+    },
+    {
       "tag": "星空",
-      "score": 5.768387,
-      "views": 305,
+      "score": 5.651165,
+      "views": 307,
       "downloads": 115,
       "wallpaperCount": 11,
       "latestCreatedAt": "2026-10-13T07:23:16.897Z",
@@ -602,8 +668,8 @@
     },
     {
       "tag": "阳光",
-      "score": 5.64141,
-      "views": 196,
+      "score": 5.526176,
+      "views": 197,
       "downloads": 61,
       "wallpaperCount": 11,
       "latestCreatedAt": "2026-10-10T03:19:48.607Z",
@@ -634,43 +700,43 @@
       ]
     },
     {
-      "tag": "银发少女",
-      "score": 5.036131,
-      "views": 15,
-      "downloads": 2,
-      "wallpaperCount": 5,
-      "latestCreatedAt": "2026-11-08T12:06:41.877Z",
+      "tag": "雪山",
+      "score": 4.991275,
+      "views": 155,
+      "downloads": 72,
+      "wallpaperCount": 7,
+      "latestCreatedAt": "2026-11-09T06:12:23.160Z",
       "series": [
         "desktop"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/winter_portrait_4k_with_background.webp",
-          "cdnTag": "v1.4.94"
+          "thumbnail": "/thumbnail/desktop/插画/场景/冬日风光-动漫风景.webp",
+          "cdnTag": "v1.4.96"
         },
         {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/image_008517611938253.webp",
-          "cdnTag": "v1.4.94"
+          "thumbnail": "/thumbnail/desktop/风景/雪山/公路-冬季-夜景.webp",
+          "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/22_image_#电脑桌面 #wallpaper..._3_4K.webp",
-          "cdnTag": "v1.4.94"
+          "thumbnail": "/thumbnail/desktop/风景/雪山/2024-04-11_10816.webp",
+          "cdnTag": "v1.4.61"
         },
         {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/25_image_#电脑桌面 #wallpaper..._7_4K.webp",
-          "cdnTag": "v1.4.94"
+          "thumbnail": "/thumbnail/desktop/风景/自然/2026-02-18_3806.webp",
+          "cdnTag": "v1.4.60"
         },
         {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/2025-06-20_15261.webp",
-          "cdnTag": "v1.4.0"
+          "thumbnail": "/thumbnail/desktop/风景/雪山/2026-05-07_3808.webp",
+          "cdnTag": "v1.4.19"
         }
       ]
     },
     {
       "tag": "卡通",
-      "score": 4.944919,
-      "views": 263,
-      "downloads": 88,
+      "score": 4.848955,
+      "views": 266,
+      "downloads": 92,
       "wallpaperCount": 9,
       "latestCreatedAt": "2026-10-10T03:01:54.110Z",
       "series": [
@@ -690,18 +756,18 @@
           "cdnTag": "v1.4.36"
         },
         {
-          "thumbnail": "/thumbnail/desktop/插画/卡通/2026-10-05_514.webp",
-          "cdnTag": "v1.4.60"
-        },
-        {
           "thumbnail": "/thumbnail/desktop/插画/卡通/2026-09-02_42184.webp",
           "cdnTag": "v1.4.36"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/插画/卡通/2026-10-05_514.webp",
+          "cdnTag": "v1.4.60"
         }
       ]
     },
     {
       "tag": "优雅",
-      "score": 4.904704,
+      "score": 4.803401,
       "views": 316,
       "downloads": 74,
       "wallpaperCount": 12,
@@ -734,9 +800,9 @@
     },
     {
       "tag": "山脉",
-      "score": 4.87645,
-      "views": 106,
-      "downloads": 37,
+      "score": 4.789497,
+      "views": 109,
+      "downloads": 38,
       "wallpaperCount": 7,
       "latestCreatedAt": "2026-10-10T03:19:48.607Z",
       "series": [
@@ -766,43 +832,39 @@
       ]
     },
     {
-      "tag": "雪山",
-      "score": 4.708778,
-      "views": 144,
-      "downloads": 72,
-      "wallpaperCount": 7,
-      "latestCreatedAt": "2026-11-09T06:12:23.160Z",
+      "tag": "冷色调",
+      "score": 4.598268,
+      "views": 13,
+      "downloads": 0,
+      "wallpaperCount": 4,
+      "latestCreatedAt": "2026-11-08T12:06:41.877Z",
       "series": [
         "desktop"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/desktop/插画/场景/冬日风光-动漫风景.webp",
-          "cdnTag": "v1.4.96"
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/image_008517611938253.webp",
+          "cdnTag": "v1.4.94"
         },
         {
-          "thumbnail": "/thumbnail/desktop/风景/雪山/公路-冬季-夜景.webp",
-          "cdnTag": "v1.4.67"
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/17_image_#电脑桌面 #wallpaper..._1_4K.webp",
+          "cdnTag": "v1.4.99"
         },
         {
-          "thumbnail": "/thumbnail/desktop/风景/雪山/2024-04-11_10816.webp",
-          "cdnTag": "v1.4.61"
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/19_image_#电脑桌面 #wallpaper..._11_4K.webp",
+          "cdnTag": "v1.4.94"
         },
         {
-          "thumbnail": "/thumbnail/desktop/风景/自然/2026-02-18_3806.webp",
-          "cdnTag": "v1.4.60"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/雪山/2026-05-07_3808.webp",
-          "cdnTag": "v1.4.19"
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/25_image_#电脑桌面 #wallpaper..._7_4K.webp",
+          "cdnTag": "v1.4.94"
         }
       ]
     },
     {
       "tag": "夜景",
-      "score": 4.399153,
-      "views": 315,
-      "downloads": 110,
+      "score": 4.315,
+      "views": 317,
+      "downloads": 112,
       "wallpaperCount": 11,
       "latestCreatedAt": "2026-09-17T17:35:04.763Z",
       "series": [
@@ -832,43 +894,10 @@
       ]
     },
     {
-      "tag": "柔光",
-      "score": 4.285343,
-      "views": 34,
-      "downloads": 11,
-      "wallpaperCount": 5,
-      "latestCreatedAt": "2026-11-08T12:06:41.877Z",
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/03_image_#wallpaper #美图分享..._2_4K.webp",
-          "cdnTag": "v1.4.94"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/image_008517611938253.webp",
-          "cdnTag": "v1.4.94"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/国风/9364f548f9d90201693796601.webp",
-          "cdnTag": "v1.4.94"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/2026-07-23_10065.webp",
-          "cdnTag": "v1.4.19"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/人像/魅力/2026-04-08_663.webp",
-          "cdnTag": "v1.4.19"
-        }
-      ]
-    },
-    {
       "tag": "自然景观",
-      "score": 4.171542,
-      "views": 102,
-      "downloads": 44,
+      "score": 4.105496,
+      "views": 105,
+      "downloads": 45,
       "wallpaperCount": 6,
       "latestCreatedAt": "2026-10-10T03:19:48.607Z",
       "series": [
@@ -898,39 +927,10 @@
       ]
     },
     {
-      "tag": "冷色调",
-      "score": 4.150899,
-      "views": 3,
-      "downloads": 0,
-      "wallpaperCount": 4,
-      "latestCreatedAt": "2026-11-08T12:06:41.877Z",
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/image_008517611938253.webp",
-          "cdnTag": "v1.4.94"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/17_image_#电脑桌面 #wallpaper..._1_4K.webp",
-          "cdnTag": "v1.4.94"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/19_image_#电脑桌面 #wallpaper..._11_4K.webp",
-          "cdnTag": "v1.4.94"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/25_image_#电脑桌面 #wallpaper..._7_4K.webp",
-          "cdnTag": "v1.4.94"
-        }
-      ]
-    },
-    {
       "tag": "海滨",
-      "score": 3.746409,
+      "score": 3.673939,
       "views": 176,
-      "downloads": 79,
+      "downloads": 80,
       "wallpaperCount": 7,
       "latestCreatedAt": "2026-10-10T03:01:54.110Z",
       "series": [
@@ -961,8 +961,8 @@
     },
     {
       "tag": "蓝发少女",
-      "score": 3.472109,
-      "views": 22,
+      "score": 3.45932,
+      "views": 23,
       "downloads": 0,
       "wallpaperCount": 4,
       "latestCreatedAt": "2026-11-08T12:05:44.442Z",
@@ -990,9 +990,9 @@
     },
     {
       "tag": "夕阳",
-      "score": 3.436824,
+      "score": 3.367826,
       "views": 229,
-      "downloads": 80,
+      "downloads": 81,
       "wallpaperCount": 7,
       "latestCreatedAt": "2026-10-10T03:19:48.607Z",
       "series": [
@@ -1023,7 +1023,7 @@
     },
     {
       "tag": "长发",
-      "score": 3.328447,
+      "score": 3.2597,
       "views": 214,
       "downloads": 58,
       "wallpaperCount": 8,
@@ -1055,9 +1055,30 @@
       ]
     },
     {
+      "tag": "针织围巾",
+      "score": 2.982927,
+      "views": 27,
+      "downloads": 1,
+      "wallpaperCount": 2,
+      "latestCreatedAt": "2026-11-08T12:06:41.877Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/winter_portrait_4k_with_background.webp",
+          "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/image_008517611938253.webp",
+          "cdnTag": "v1.4.94"
+        }
+      ]
+    },
+    {
       "tag": "日出",
-      "score": 3.007212,
-      "views": 171,
+      "score": 2.951399,
+      "views": 172,
       "downloads": 65,
       "wallpaperCount": 6,
       "latestCreatedAt": "2026-10-10T03:01:54.110Z",
@@ -1089,9 +1110,9 @@
     },
     {
       "tag": "山谷",
-      "score": 2.792604,
-      "views": 107,
-      "downloads": 50,
+      "score": 2.748379,
+      "views": 110,
+      "downloads": 51,
       "wallpaperCount": 4,
       "latestCreatedAt": "2026-10-10T03:19:48.607Z",
       "series": [
@@ -1117,9 +1138,9 @@
       ]
     },
     {
-      "tag": "针织围巾",
-      "score": 2.74016,
-      "views": 11,
+      "tag": "三维渲染",
+      "score": 2.67483,
+      "views": 20,
       "downloads": 1,
       "wallpaperCount": 2,
       "latestCreatedAt": "2026-11-08T12:06:41.877Z",
@@ -1132,16 +1153,66 @@
           "cdnTag": "v1.4.94"
         },
         {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/image_008517611938253.webp",
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/22_image_#电脑桌面 #wallpaper..._3_4K.webp",
+          "cdnTag": "v1.4.94"
+        }
+      ]
+    },
+    {
+      "tag": "游戏",
+      "score": 2.645199,
+      "views": 18,
+      "downloads": 1,
+      "wallpaperCount": 4,
+      "latestCreatedAt": "2026-11-08T12:05:44.442Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/游戏/原神/06_image_#wallpaper #美图分享..._5_4K.webp",
+          "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/游戏/原神/11_image_#wallpaper #美图分享..._3_4K.webp",
+          "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/游戏/通用/2026-04-10_10791.webp",
+          "cdnTag": "v1.4.19"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/游戏/崩坏/2024-11-02_15198.webp",
+          "cdnTag": "v1.4.0"
+        }
+      ]
+    },
+    {
+      "tag": "霓虹夜景",
+      "score": 2.624598,
+      "views": 8,
+      "downloads": 1,
+      "wallpaperCount": 2,
+      "latestCreatedAt": "2026-11-08T12:05:44.442Z",
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/03_image_#wallpaper #美图分享..._2_4K.webp",
+          "cdnTag": "v1.4.94"
+        },
+        {
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/10_image_#wallpaper #美图分享..._2_4K.webp",
           "cdnTag": "v1.4.94"
         }
       ]
     },
     {
       "tag": "草地",
-      "score": 2.634285,
-      "views": 174,
-      "downloads": 86,
+      "score": 2.583317,
+      "views": 175,
+      "downloads": 87,
       "wallpaperCount": 5,
       "latestCreatedAt": "2026-09-17T17:34:17.768Z",
       "series": [
@@ -1171,106 +1242,27 @@
       ]
     },
     {
-      "tag": "游戏",
-      "score": 2.616184,
-      "views": 17,
-      "downloads": 1,
-      "wallpaperCount": 4,
+      "tag": "长发少女",
+      "score": 2.497736,
+      "views": 53,
+      "downloads": 6,
+      "wallpaperCount": 3,
       "latestCreatedAt": "2026-11-08T12:05:44.442Z",
       "series": [
         "desktop"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/desktop/游戏/原神/06_image_#wallpaper #美图分享..._5_4K.webp",
+          "thumbnail": "/thumbnail/desktop/动漫/二次元/02_image_#wallpaper #美图分享..._1_4K.webp",
           "cdnTag": "v1.4.94"
         },
         {
-          "thumbnail": "/thumbnail/desktop/游戏/原神/11_image_#wallpaper #美图分享..._3_4K.webp",
+          "thumbnail": "/thumbnail/desktop/插画/通用/16_image_#电脑桌面 #wallpaper..._0_4K.webp",
           "cdnTag": "v1.4.94"
         },
         {
-          "thumbnail": "/thumbnail/desktop/游戏/通用/2026-04-10_10791.webp",
-          "cdnTag": "v1.4.19"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/游戏/崩坏/2024-11-02_15198.webp",
-          "cdnTag": "v1.4.0"
-        }
-      ]
-    },
-    {
-      "tag": "三维渲染",
-      "score": 2.595172,
-      "views": 9,
-      "downloads": 1,
-      "wallpaperCount": 2,
-      "latestCreatedAt": "2026-11-08T12:06:41.877Z",
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/winter_portrait_4k_with_background.webp",
-          "cdnTag": "v1.4.94"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/22_image_#电脑桌面 #wallpaper..._3_4K.webp",
-          "cdnTag": "v1.4.94"
-        }
-      ]
-    },
-    {
-      "tag": "霓虹夜景",
-      "score": 2.534982,
-      "views": 4,
-      "downloads": 1,
-      "wallpaperCount": 2,
-      "latestCreatedAt": "2026-11-08T12:05:44.442Z",
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/03_image_#wallpaper #美图分享..._2_4K.webp",
-          "cdnTag": "v1.4.94"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/动漫/二次元/10_image_#wallpaper #美图分享..._2_4K.webp",
-          "cdnTag": "v1.4.94"
-        }
-      ]
-    },
-    {
-      "tag": "云海",
-      "score": 2.515246,
-      "views": 171,
-      "downloads": 74,
-      "wallpaperCount": 5,
-      "latestCreatedAt": "2026-10-10T03:19:48.607Z",
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/desktop/插画/场景/2025-09-04_4041.webp",
-          "cdnTag": "v1.4.61"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/自然/2026-09-14_43968.webp",
-          "cdnTag": "v1.4.36"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/插画/创意/7735_wallhaven壁纸_#7730.webp",
-          "cdnTag": "v1.4.15"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/日落/2026-07-15_3856.webp",
-          "cdnTag": "v1.4.19"
-        },
-        {
-          "thumbnail": "/thumbnail/desktop/风景/天空/2025-06-20_15567.webp",
-          "cdnTag": "v1.4.0"
+          "thumbnail": "/thumbnail/desktop/人像/魅力/【恋风】20260819161002.webp",
+          "cdnTag": "v1.3.97"
         }
       ]
     }
