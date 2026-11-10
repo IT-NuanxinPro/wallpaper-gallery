@@ -52,3 +52,22 @@ it('实际未提供作者与授权时，不生成虚构署名或授权声明', a
   expect(html).not.toContain('<dt>作者</dt>')
   expect(html).not.toContain('<dt>授权</dt>')
 })
+
+it('动态详情与预览一样静音循环播放，不输出原生控制条', async () => {
+  Object.assign(state.record, {
+    _series: 'video', series: 'video', mediaType: 'video', filename: 'lake.mp4', format: 'MP4',
+    url: 'https://img.061129.xyz/wallpaper/video/desktop/lake.mp4',
+    previewUrl: 'https://img.061129.xyz/preview/video/desktop/lake.mp4',
+    thumbnailUrl: 'https://img.061129.xyz/thumbnail/video/desktop/lake.png',
+  })
+  const html = await renderDetail()
+  const video = html.match(/<video\b[^>]*>/)?.[0]
+  expect(video).toBeTruthy()
+  expect(video).not.toMatch(/\scontrols(?:[\s=>])/)
+  expect(video).toMatch(/\sautoplay(?:[\s=>])/)
+  expect(video).toMatch(/\smuted(?:[\s=>])/)
+  expect(video).toMatch(/\sloop(?:[\s=>])/)
+  expect(video).toMatch(/\splaysinline(?:[\s=>])/)
+  const mediaClass = html.match(/<section class="([^"]+)" aria-label=/)?.[1].split(' ')
+  expect(mediaClass).toEqual(expect.arrayContaining(['detail-media', 'is-video']))
+})

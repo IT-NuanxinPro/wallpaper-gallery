@@ -256,12 +256,31 @@ html[data-theme='dark'] .detail-static-brand { color: #60a5fa; }
   box-shadow: var(--shadow-md);
   --media-stage-max-height: min(72dvh, 780px);
 }
-.wallpaper-detail .detail-media video {
-  display: block;
+.wallpaper-detail .detail-media.is-video {
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+}
+.wallpaper-detail .detail-media.is-video .detail-static-stage {
+  background: transparent;
+}
+.wallpaper-detail .detail-video-player {
   width: 100%;
-  max-height: 72dvh;
+  max-height: var(--media-stage-max-height);
+}
+.wallpaper-detail .detail-video-player .video-wallpaper-player__stage {
+  height: 100%;
+  min-height: 0;
+}
+.wallpaper-detail .detail-video-player .video-wallpaper-player__media {
+  width: 100%;
+  height: 100%;
+  max-height: inherit;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
   object-fit: contain;
-  background: #101827;
 }
 .wallpaper-detail .detail-media-retry {
   position: absolute;

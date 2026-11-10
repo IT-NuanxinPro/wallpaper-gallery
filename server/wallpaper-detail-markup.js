@@ -47,7 +47,7 @@ export function buildDetailPresentation(record, related = []) {
         <a class="detail-back detail-static-button" href="${listPath}">${arrow}返回列表</a>
       </div>
       <div class="detail-layout">
-        <section class="detail-media" aria-label="${name}">
+        <section class="detail-media${record.mediaType === 'video' ? ' is-video' : ''}" aria-label="${name}">
           <div class="detail-static-stage" style="aspect-ratio:${width} / ${height}"><img src="${escapeDetailHtml(previewSource)}" alt="${name}${record.mediaType === 'video' ? '视频海报' : ''}" width="${width}" height="${height}" fetchpriority="high" decoding="async"></div>
         </section>
         <section class="detail-info">

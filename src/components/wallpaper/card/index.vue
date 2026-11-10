@@ -79,7 +79,7 @@ watch(() => props.wallpaper?.id, () => {
 
 const formattedSize = computed(() => formatFileSize(props.wallpaper.size))
 const fileFormat = computed(() => props.wallpaper.filename.split('.').pop()?.toUpperCase() || '')
-const relativeTime = computed(() => formatRelativeTime(props.wallpaper.createdAt))
+const relativeTime = computed(() => formatRelativeTime(props.wallpaper.createdAt || props.wallpaper.date))
 const isVideoWallpaper = computed(() => props.wallpaper?.mediaType === 'video')
 const displayFilename = computed(() => {
   if (props.wallpaper.displayTitle) {
@@ -313,6 +313,13 @@ function handleMouseLeave() {
 
   &.is-bing-card :deep(.card-info) {
     min-height: 140px;
+  }
+
+  @include mobile-only {
+    :deep(.card-info),
+    &.is-bing-card :deep(.card-info) {
+      min-height: 0;
+    }
   }
 
   &::before {

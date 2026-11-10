@@ -76,6 +76,18 @@ const wallpaper = { filename: 'lake.jpg', path: '/wallpaper/desktop/lake.jpg', d
 const detailPath = '/wallpaper/ZGVza3RvcDpwYXRoOi93YWxscGFwZXIvZGVza3RvcC9sYWtlLmpwZw'
 
 describe('卡片详情入口与快速预览', () => {
+  it('动态卡片按真实上传日期显示相对时间，无日期不伪造刚刚上传', async () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-11-10T10:00:00Z'))
+    try {
+      const dated = await mountCard({ ...wallpaper, mediaType: 'video', createdAt: '2026-11-07T10:00:00Z' })
+      const time = dated.elements.find(element => element.props.class === 'meta-item meta-time')
+      expect(time?.text).toBe('3 天前')
+      const missing = await mountCard({ ...wallpaper, mediaType: 'video' })
+      expect(missing.elements.some(element => element.props.class === 'meta-item meta-time')).toBe(false)
+    }
+    finally { vi.useRealTimers() }
+  })
   it('图像和标题包含真实详情链接，普通点击进入详情且不打开预览', async () => {
     const { elements, router, preview, navigate } = await mountCard(wallpaper)
     const link = elements.find(element => element.tag === 'a')

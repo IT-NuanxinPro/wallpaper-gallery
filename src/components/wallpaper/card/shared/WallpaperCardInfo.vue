@@ -157,7 +157,7 @@ defineProps({
       </div>
       <div class="card-footer">
         <div class="card-meta-secondary">
-          <span v-if="!isVideoWallpaper" class="meta-item meta-time">{{ relativeTime }}</span>
+          <span v-if="relativeTime" class="meta-item meta-time">{{ relativeTime }}</span>
           <span class="meta-item meta-format">{{ fileFormat }}</span>
         </div>
       </div>
@@ -176,7 +176,20 @@ defineProps({
     margin 220ms ease;
 
   @include mobile-only {
-    display: none;
+    padding: 8px 10px;
+
+    > :not(.card-footer):not(.card-bing-meta) {
+      display: none;
+    }
+
+    .card-footer,
+    .card-bing-meta {
+      margin: 0;
+    }
+
+    .card-meta-secondary {
+      justify-content: space-between;
+    }
   }
 
   [data-theme='dark'] & {

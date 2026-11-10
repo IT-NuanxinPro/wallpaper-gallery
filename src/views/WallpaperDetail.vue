@@ -6,6 +6,7 @@ import SoftLoading from '@/components/common/feedback/SoftLoading.vue'
 import WallpaperCardActions from '@/components/wallpaper/card/shared/WallpaperCardActions.vue'
 import WallpaperDesktopActions from '@/components/wallpaper/desktop/WallpaperDesktopActions.vue'
 import WallpaperImageStage from '@/components/wallpaper/shared/WallpaperImageStage.vue'
+import VideoWallpaperPlayer from '@/components/wallpaper/VideoWallpaperPlayer.vue'
 import { useImageFallback } from '@/composables/useImageFallback'
 import { useInteraction } from '@/composables/useInteraction'
 import { useInteractionPrefetch } from '@/composables/useInteractionPrefetch'
@@ -198,17 +199,17 @@ function returnToList() {
     </div>
     <template v-else-if="record">
       <div class="detail-layout">
-        <section class="detail-media" :aria-label="seo.name">
-          <video
+        <section class="detail-media" :class="{ 'is-video': record.mediaType === 'video' }" :aria-label="seo.name">
+          <VideoWallpaperPlayer
             v-if="record.mediaType === 'video'"
             :key="record.assetKey"
+            class="detail-video-player"
             :src="record.previewUrl || record.url"
             :poster="record.thumbnailUrl"
             :style="mediaStyle"
-            controls
-            playsinline
-            preload="metadata"
-            @loadeddata="videoReady"
+            :autoplay="true"
+            :controls="false"
+            @canplay="videoReady"
             @error="mediaFailed = true"
           />
           <WallpaperImageStage

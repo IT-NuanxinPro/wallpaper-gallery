@@ -104,8 +104,14 @@ export function formatDate(date) {
  * @returns {string} 相对时间字符串
  */
 export function formatRelativeTime(date) {
+  if (date === undefined || date === null || date === '')
+    return ''
   const now = new Date()
-  const d = new Date(date)
+  // 图床旧记录使用空格分隔时间，转成 Safari 也支持的 ISO 分隔形式。
+  const value = typeof date === 'string' ? date.replace(/^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2})$/, '$1T$2') : date
+  const d = new Date(value)
+  if (!Number.isFinite(d.getTime()))
+    return ''
   const diff = now - d
 
   const seconds = Math.floor(diff / 1000)

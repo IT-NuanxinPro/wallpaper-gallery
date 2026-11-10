@@ -1,5 +1,16 @@
-import { describe, expect, it } from 'vitest'
-import { buildWallpaperDownloadFilename, buildWallpaperImageFallbackUrls } from '../src/utils/common/format.js'
+import { describe, expect, it, vi } from 'vitest'
+import { buildWallpaperDownloadFilename, buildWallpaperImageFallbackUrls, formatRelativeTime } from '../src/utils/common/format.js'
+
+it('缺失或无效上传时间不显示刚刚，兼容图床时间格式', () => {
+  vi.useFakeTimers()
+  vi.setSystemTime(new Date('2026-11-10T10:00:00Z'))
+  try {
+    for (const value of [undefined, null, '', 'not-a-date'])
+      expect(formatRelativeTime(value)).toBe('')
+    expect(formatRelativeTime('2026-07-01 17:22:14')).toBe('4 个月前')
+  }
+  finally { vi.useRealTimers() }
+})
 
 describe('buildWallpaperDownloadFilename', () => {
   it('prefers metadata titles over generic upload filenames', () => {
