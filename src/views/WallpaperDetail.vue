@@ -11,7 +11,7 @@ import { useInteraction } from '@/composables/useInteraction'
 import { useInteractionPrefetch } from '@/composables/useInteractionPrefetch'
 import { isCurrentMediaEvent, usePreviewTracking } from '@/composables/usePreviewTracking'
 import { useWallpaperDownload } from '@/composables/useWallpaperDownload'
-import { createWallpaperDetailLoader, loadWallpaperCatalog } from '@/services/wallpaperDetailService'
+import { createWallpaperDetailLoader, loadWallpaperCatalog, readInitialWallpaperDetail } from '@/services/wallpaperDetailService'
 import { copyText } from '@/utils/common/clipboard'
 import { formatFileSize } from '@/utils/common/format'
 import { createInteractionFeedback } from '@/utils/interaction/feedback'
@@ -33,6 +33,9 @@ const mediaFailed = ref(false)
 const mediaAttempt = ref(0)
 const serverToken = String(route.params.token || '')
 const serverArticle = typeof document === 'undefined' ? null : document.querySelector('[data-wallpaper-detail]')
+const initialDetail = readInitialWallpaperDetail(serverToken)
+const initialImage = serverArticle?.querySelector('.detail-static-stage img')
+const initialImageSource = initialImage?.complete && initialImage.naturalWidth ? initialImage.currentSrc || initialImage.src : ''
 const serverContentVisible = ref(Boolean(serverArticle))
 let catalogController
 const series = computed(() => record.value?._series || '')
@@ -42,6 +45,8 @@ const fileFormat = computed(() => record.value?.format || record.value?.filename
 const mediaStyle = computed(() => ({ aspectRatio: record.value?.resolution ? `${record.value.resolution.width} / ${record.value.resolution.height}` : '16 / 10' }))
 const primarySource = computed(() => record.value?.mediaType === 'video' ? record.value?.thumbnailUrl : record.value?.previewUrl || '')
 const { displayUrl, advance, reset } = useImageFallback(primarySource)
+const hasServerPreview = computed(() => Boolean(initialImageSource && record.value?.assetKey === initialDetail?.record.assetKey
+  && new URL(displayUrl.value, globalThis.location?.href || 'https://wallpaper.061129.xyz').href === initialImageSource))
 const { liked, collected, isAuthenticated, toggleLike, toggleCollect } = useInteraction(record, series)
 const withFeedback = createInteractionFeedback({ router, getRedirect: () => route.fullPath, message: ElMessage })
 const handleLike = withFeedback(toggleLike)
@@ -62,11 +67,16 @@ const loader = createWallpaperDetailLoader({
     catalog.value = []
     if (state.record) {
       applyWallpaperDetailSeo(state.record)
+      const embedded = initialDetail?.record.assetKey === state.record.assetKey ? initialDetail : null
+      if (embedded)
+        catalog.value = embedded.related
       nextTick(() => {
         if (record.value?.assetKey === state.record.assetKey) {
           clearServerContent()
         }
       })
+      if (embedded)
+        return
       catalogController = new AbortController()
       loadWallpaperCatalog({ series: state.record._series, signal: catalogController.signal }).then((items) => {
         if (record.value?.assetKey === state.record.assetKey)
@@ -205,6 +215,7 @@ function returnToList() {
             v-else
             :key="`${record.assetKey}:${displayUrl}:${mediaAttempt}`"
             :src="displayUrl"
+            :class="{ 'has-server-preview': hasServerPreview }"
             :alt="seo.name"
             :resolution="record.resolution"
             @load="imageReady"
@@ -296,295 +307,4 @@ function returnToList() {
   </article>
 </template>
 
-<style scoped>
-.wallpaper-detail {
-  max-width: 1360px;
-  margin: 0 auto;
-  padding: 28px 28px 72px;
-  color: var(--color-text-primary);
-}
-.wallpaper-detail.has-server-content {
-  padding-block: 0;
-}
-.detail-topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  margin-bottom: 28px;
-}
-.detail-breadcrumbs {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  min-width: 0;
-  font-size: 13px;
-  line-height: 1.7;
-  color: var(--color-text-muted);
-}
-.detail-breadcrumbs a {
-  color: var(--color-text-secondary);
-  text-decoration: none;
-}
-.detail-breadcrumbs [aria-current] {
-  overflow: hidden;
-  max-width: 36ch;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-.detail-back {
-  flex: none;
-}
-.detail-loading,
-.detail-error {
-  display: grid;
-  place-items: center;
-  align-content: center;
-  gap: 18px;
-  min-height: min(55dvh, 460px);
-  text-align: center;
-}
-.detail-error h1 {
-  font-size: 26px;
-}
-.detail-error p,
-.detail-server-retry {
-  color: var(--color-text-secondary);
-  font-size: 14px;
-}
-.detail-server-retry {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 16px;
-  padding-block: 20px;
-}
-.detail-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.7fr) minmax(320px, 1fr);
-  align-items: start;
-  gap: clamp(28px, 4vw, 52px);
-}
-.detail-media {
-  position: relative;
-  min-width: 0;
-  border-radius: var(--radius-xl, 24px);
-  overflow: hidden;
-  background: var(--color-bg-secondary);
-  border: 1px solid var(--accent-border);
-  box-shadow: var(--shadow-md);
-  --media-stage-max-height: min(72dvh, 780px);
-}
-.detail-media video {
-  display: block;
-  width: 100%;
-  max-height: 72dvh;
-  object-fit: contain;
-  background: #101827;
-}
-.detail-media-retry {
-  position: absolute;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.detail-media > p {
-  padding: 18px;
-  font-size: 14px;
-  line-height: 1.7;
-  color: var(--color-text-secondary);
-}
-.detail-info {
-  min-width: 0;
-  padding-block: 8px;
-}
-.detail-info h1 {
-  font-size: clamp(26px, 2.5vw, 36px);
-  line-height: 1.4;
-  letter-spacing: -0.025em;
-  overflow-wrap: anywhere;
-  margin: 12px 0 18px;
-}
-.detail-info p {
-  line-height: 1.8;
-  color: var(--color-text-secondary);
-}
-.detail-category {
-  font-size: 13px;
-  font-weight: 550;
-}
-.detail-description {
-  font-size: 14px;
-  overflow-wrap: anywhere;
-}
-.detail-facts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px 24px;
-  padding: 22px 0;
-  margin-top: 6px;
-  border-bottom: 1px solid var(--color-border);
-}
-.detail-facts dt {
-  margin-bottom: 7px;
-  color: var(--color-text-muted);
-  font-size: 12px;
-}
-.detail-facts dd {
-  margin: 0;
-  font-size: 14px;
-  font-weight: 600;
-}
-.detail-tags,
-.detail-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 20px 0;
-}
-.detail-tags span {
-  border: 1px solid var(--accent-border);
-  border-radius: 999px;
-  padding: 5px 11px;
-  font-size: 12px;
-  color: var(--color-accent);
-  background: var(--accent-gradient-soft);
-}
-.wallpaper-detail :deep(.el-button) {
-  min-height: 44px;
-  margin-left: 0;
-  padding: 11px 19px;
-  font-weight: 550;
-}
-.wallpaper-detail :deep(.el-button:not(.el-button--primary)) {
-  --el-button-bg-color: var(--accent-surface);
-  --el-button-border-color: var(--accent-border);
-  --el-button-text-color: var(--color-accent);
-}
-.wallpaper-detail :deep(.el-button svg) {
-  width: 18px;
-  height: 18px;
-  margin-right: 6px;
-}
-.wallpaper-detail :deep(.card-actions) {
-  margin-top: 6px;
-}
-.wallpaper-detail a:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 4px;
-  border-radius: 4px;
-}
-.detail-attribution {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 10px;
-  margin-top: 24px;
-  font-size: 13px;
-  line-height: 1.7;
-}
-
-.detail-extensions {
-  display: grid;
-  gap: 12px;
-  margin-top: 20px;
-  min-width: 0;
-}
-
-.detail-attribution dt {
-  color: var(--color-text-secondary);
-}
-.detail-attribution dd {
-  margin: 0;
-  overflow-wrap: anywhere;
-}
-.detail-related {
-  margin-top: 64px;
-}
-.detail-related-heading {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 14px;
-  margin-bottom: 22px;
-}
-.detail-related-heading h2 {
-  margin: 0;
-  font-size: 23px;
-  letter-spacing: -0.02em;
-}
-.detail-related-heading p {
-  font-size: 13px;
-  color: var(--color-text-muted);
-}
-.detail-related-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-}
-.detail-related-grid a {
-  min-width: 0;
-  color: inherit;
-  text-decoration: none;
-}
-.detail-related-grid img {
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
-  border-radius: 16px;
-  background: var(--color-bg-hover);
-}
-.detail-related-grid span {
-  display: block;
-  padding: 10px 2px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  font-size: 14px;
-}
-@media (max-width: 1023px) {
-  .detail-layout {
-    grid-template-columns: minmax(0, 1.25fr) minmax(280px, 1fr);
-    gap: 28px;
-  }
-}
-@media (max-width: 767px) {
-  .wallpaper-detail {
-    padding: 18px 16px 48px;
-  }
-  .detail-topbar {
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-  .detail-breadcrumbs {
-    gap: 6px;
-    font-size: 12px;
-  }
-  .detail-breadcrumbs [aria-current] {
-    display: none;
-  }
-  .detail-breadcrumbs span[aria-hidden]:last-of-type {
-    display: none;
-  }
-  .detail-back {
-    padding-inline: 12px;
-  }
-  .detail-layout {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-  .detail-info {
-    padding-block: 0;
-  }
-  .detail-media {
-    border-radius: 18px;
-    --media-stage-max-height: 66dvh;
-  }
-  .detail-related {
-    margin-top: 44px;
-  }
-  .detail-related-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-</style>
+<style src="../assets/styles/wallpaper-detail.css"></style>

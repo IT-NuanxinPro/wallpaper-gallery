@@ -7,6 +7,7 @@ import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import puppeteer from 'puppeteer'
 import { getRouteSeo, PUBLIC_SITE_PATHS } from '../src/utils/seo/routes.js'
+import { buildDetailShell } from './lib/detailShell.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT_DIR = path.resolve(__dirname, '..')
@@ -165,7 +166,9 @@ async function main() {
     })
 
     // 详情模板必须保持空应用容器，避免边缘详情混入预渲染首页。
-    await fs.copyFile(path.join(DIST_DIR, 'index.html'), path.join(DIST_DIR, 'detail-shell.html'))
+    const detailCss = await fs.readFile(path.join(ROOT_DIR, 'src/assets/styles/wallpaper-detail.css'), 'utf8')
+    const detailShell = buildDetailShell(await fs.readFile(path.join(DIST_DIR, 'index.html'), 'utf8'), detailCss)
+    await fs.writeFile(path.join(DIST_DIR, 'detail-shell.html'), detailShell)
     const missingPage = (await fs.readFile(path.join(DIST_DIR, 'index.html'), 'utf8'))
       .replace(/<meta name="robots"[^>]+>/, '<meta name="robots" content="noindex, follow">')
       .replace(/<link rel="canonical"[^>]+>/, '')

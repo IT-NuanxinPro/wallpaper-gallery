@@ -5,9 +5,30 @@ export function detailRequestError(status, message) {
   return Object.assign(new Error(message), { status })
 }
 
+export function readInitialWallpaperDetail(token, document = globalThis.document) {
+  try {
+    const content = document?.getElementById('wallpaper-detail-data')?.textContent
+    if (!content || content.length > 256 * 1024)
+      return null
+    const payload = JSON.parse(content)
+    if (payload?.schema !== 1 || !isValidWallpaperDetailRecord(payload.record, token))
+      return null
+    return {
+      record: payload.record,
+      related: Array.isArray(payload.related) ? payload.related.filter(item => item.series === payload.record.series && isValidWallpaperCatalogItem(item)) : [],
+    }
+  }
+  catch { return null }
+}
+
 export async function loadWallpaperDetail(token, { signal, fetchImpl = fetch } = {}) {
   if (!decodeWallpaperShareToken(token))
     throw detailRequestError(404, '分享链接无效')
+  if (signal?.aborted)
+    throw new DOMException('Aborted', 'AbortError')
+  const initial = readInitialWallpaperDetail(token)
+  if (initial)
+    return initial.record
   const response = await fetchImpl(getWallpaperDetailBucketPath(token), { signal })
   if (!response.ok)
     throw detailRequestError(response.status === 404 ? 404 : 503, '详情数据暂时无法加载')

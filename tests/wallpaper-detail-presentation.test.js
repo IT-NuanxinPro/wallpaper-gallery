@@ -8,6 +8,7 @@ const state = vi.hoisted(() => ({ record: null }))
 vi.mock('../src/services/wallpaperDetailService.js', () => ({
   createWallpaperDetailLoader: ({ onState }) => ({ load: () => onState({ loading: false, record: state.record, error: null }), cancel() {} }),
   loadWallpaperCatalog: () => Promise.resolve([]),
+  readInitialWallpaperDetail: () => null,
 }))
 vi.mock('../src/utils/seo/wallpaperDetail.js', () => ({ applyWallpaperDetailSeo() {} }))
 vi.mock('../src/composables/useInteraction.js', () => ({ useInteraction: () => ({ liked: false, collected: false, isAuthenticated: false, toggleLike() {}, toggleCollect() {} }) }))

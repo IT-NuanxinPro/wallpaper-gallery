@@ -3,6 +3,7 @@ import { createApp } from 'vue'
 import { useTheme } from '@/composables/useTheme'
 import { useAuthStore } from '@/stores/auth'
 import { signalAppReady } from '@/utils/platform/appReady'
+import { prepareDetailStyles } from '@/utils/platform/detailStyles'
 import App from './App.vue'
 
 import router from './router'
@@ -60,11 +61,14 @@ app.use(pinia)
 useAuthStore(pinia).initialize().catch((error) => {
   console.warn('[main] 初始化认证状态失败:', error)
 })
-app.use(router)
-app.mount('#app')
-document.documentElement.removeAttribute('data-static-page')
-signalAppReady(router).catch((error) => {
-  console.warn('[main] 首屏初始化失败:', error)
+prepareDetailStyles().then(() => {
+  app.use(router)
+  app.mount('#app')
+  document.documentElement.removeAttribute('data-static-page')
+  return signalAppReady(router)
+}).then(() => {
+  document.querySelector('[data-page-fallback]')?.remove()
+}).catch((error) => {
+  // 首屏脚本或样式失败时保留已经排版的服务端详情及可用链接。
+  console.warn('[main] 首屏接管失败:', error)
 })
-// 通用首屏由 Vue 接管；单图服务端正文在详情数据就绪后再移除。
-router.isReady().then(() => document.querySelector('[data-page-fallback]')?.remove())

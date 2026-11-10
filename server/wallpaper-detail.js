@@ -1,10 +1,9 @@
-import { formatFileSize } from '../src/utils/common/fileSize.js'
 import { getRelatedWallpapers, getWallpaperDetailSeo, isValidWallpaperCatalogItem, isValidWallpaperDetailRecord, serializeWallpaperStructuredData } from '../src/utils/wallpaper/detailRecords.js'
 import { decodeWallpaperShareToken, getWallpaperDetailBucketPath } from '../src/utils/wallpaper/share.js'
 
-export function escapeDetailHtml(value) {
-  return String(value || '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', '\'': '&#39;' })[char])
-}
+import { buildDetailPresentation, escapeDetailHtml } from './wallpaper-detail-markup.js'
+
+export { escapeDetailHtml } from './wallpaper-detail-markup.js'
 
 function errorResponse(status, message, method = 'GET') {
   return new Response(method === 'HEAD' ? null : `<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="robots" content="noindex"><title>${escapeDetailHtml(message)} - Wallpaper Gallery</title></head><body><h1>${escapeDetailHtml(message)}</h1><a href="/desktop">返回壁纸列表</a></body></html>`, {
@@ -29,12 +28,7 @@ export function buildDetailHtmlFragments(record, { related = [] } = {}) {
     ['name', 'twitter:image', seo.image],
     ['name', 'twitter:url', seo.canonical],
   ].map(([attribute, key, value]) => `<meta ${attribute}="${key}" content="${escapeDetailHtml(value)}">`).join('')
-  const dimensions = record.resolution ? `${record.resolution.width} × ${record.resolution.height}` : '尺寸未提供'
-  const fileFormat = record.format || record.filename?.split('.').pop()?.toUpperCase()
-  const facts = [['分类', [record.category, record.subcategory].filter(Boolean).join(' / ')], ['原文件尺寸', dimensions], ['文件格式', fileFormat], ['文件大小', record.size ? formatFileSize(record.size) : ''], ['作者', record.author], ['来源', record.source], ['版权说明', record.copyright], ['授权', record.license]].filter(([, value]) => value).map(([label, value]) => `<dt>${label}</dt><dd>${escapeDetailHtml(value)}</dd>`).join('')
-  const tags = record.tags?.length ? `<div aria-label="壁纸标签">${record.tags.map(tag => `<span>${escapeDetailHtml(tag)}</span>`).join(' ')}</div>` : ''
-  const recommendations = related.filter(item => item.series === record.series && item.assetKey !== record.assetKey && isValidWallpaperCatalogItem(item)).map(item => `<li><a href="${escapeDetailHtml(item.sharePath)}">${escapeDetailHtml(item.title || item.category || '查看壁纸')}</a></li>`).join('')
-  const article = `<article class="seo-noscript" data-wallpaper-detail><nav aria-label="面包屑"><a href="/">首页</a> / <a href="/${record._series}">${seo.seriesName}</a> / <span>${escapeDetailHtml(seo.name)}</span></nav><h1>${escapeDetailHtml(seo.name)}</h1><img src="${escapeDetailHtml(seo.image)}" alt="${escapeDetailHtml(seo.name)}${record.mediaType === 'video' ? '视频海报' : ''}" width="640"><p>${escapeDetailHtml(record.description || seo.description)}</p><dl>${facts}</dl>${tags}<a href="${escapeDetailHtml(record.downloadUrl)}" rel="noreferrer">下载原文件</a> · <a href="/${record._series}">返回壁纸列表</a>${recommendations ? `<section aria-label="相关壁纸"><h2>相关壁纸</h2><ul>${recommendations}</ul></section>` : ''}</article>`
+  const article = buildDetailPresentation(record, related)
   return { title: seo.title, head: `${meta}<link rel="canonical" href="${escapeDetailHtml(seo.canonical)}"><script type="application/ld+json" data-wallpaper-seo>${serializeWallpaperStructuredData(seo.structuredData)}</script>`, article }
 }
 
