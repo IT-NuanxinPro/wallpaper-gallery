@@ -43,6 +43,46 @@ describe('版本和发布数据边界', () => {
 })
 
 describe('网页和客户端更新状态', () => {
+  it('立即区分浏览器与native，安装版本独立于网页版本，失败不假报最新', async () => {
+    const browser = checker()
+    expect(browser.isNativeClient.value).toBe(false)
+    native()
+    const state = checker({ currentVersion: '5.2.0' })
+    expect(state.isNativeClient.value).toBe(true)
+    expect(state.clientVersion.value).toBe('')
+    invoke.mockResolvedValue({ appVersion: '5.1.2' })
+    fetchImpl.mockImplementation(async url => ({ ok: !url.startsWith('/api'), json: async () => ({ version: '5.2.0' }) }))
+    await state.checkForUpdates({ manual: true })
+    expect(state.clientVersion.value).toBe('5.1.2')
+    expect(state.currentVersion).toBe('5.2.0')
+    expect(state.clientState.value).toBe('current')
+    expect(state.clientCheckResult.value).toBe('error')
+    expect(state.latestClientInfo.value).toBeNull()
+    expect(state.hasNewVersion.value).toBe(false)
+  })
+  it('手动检查重新展示同版本更新，且区分current与available=false', async () => {
+    native()
+    const state = checker({ currentVersion: '5.2.0' })
+    await state.checkForUpdates()
+    state.dismissUpdate()
+    expect(state.hasNewVersion.value).toBe(false)
+    await state.checkForUpdates({ manual: true })
+    expect(state.newVersionInfo.value.kind).toBe('desktop')
+    expect(state.clientCheckResult.value).toBe('update')
+    state.dismissUpdate()
+    await state.checkForUpdates()
+    expect(state.hasNewVersion.value).toBe(false)
+    fetchImpl.mockImplementation(async url => ({ ok: true, json: async () => url.startsWith('/api') ? { available: false } : { version: '5.2.0' } }))
+    await state.checkForUpdates({ manual: true })
+    expect(state.clientCheckResult.value).toBe('unavailable')
+    const current = checker({ currentVersion: '5.2.0' })
+    invoke.mockResolvedValue({ appVersion: '5.2.0' })
+    fetchImpl.mockImplementation(async url => ({ ok: true, json: async () => url.startsWith('/api') ? manifest() : { version: '5.2.0' } }))
+    await current.checkForUpdates({ manual: true })
+    expect(current.clientCheckResult.value).toBe('current')
+    expect(current.clientVersion.value).toBe('5.2.0')
+    expect(current.hasNewVersion.value).toBe(false)
+  })
   it('网页仅请求version，不请求native manifest；更新通过用户按钮刷新', async () => {
     const state = checker()
     await state.checkForUpdates()
@@ -67,6 +107,8 @@ describe('网页和客户端更新状态', () => {
     const state = checker({ currentVersion: '5.2.0' })
     await state.checkForUpdates()
     expect(state.newVersionInfo.value).toMatchObject({ kind: 'desktop', legacy: true })
+    expect(state.clientState.value).toBe('legacy')
+    expect(state.clientVersion.value).toBe('')
   })
   it('generic错误/超时/缺桥不误判旧客户端，available=false不提醒安装', async () => {
     native()
@@ -132,6 +174,72 @@ describe('网页和客户端更新状态', () => {
     fetchImpl.mockImplementation(async url => ({ ok: true, json: async () => url.startsWith('/api') ? { ...manifest(), version: '5.1.9' } : { version: '5.1.2' } }))
     await state.checkForUpdates()
     expect(state.hasNewVersion.value).toBe(false)
+  })
+})
+
+describe('头部安装版本组件', () => {
+  function renderHeader(state) {
+    const filename = '../src/components/layout/header/HeaderClientVersion.vue'
+    const { descriptor } = parse(readFileSync(new URL(filename, import.meta.url), 'utf8'))
+    const dependencies = {
+      vue: Vue,
+      'element-plus': { ElPopover: { setup: (_props, { slots }) => () => h('section', [slots.reference?.(), slots.default?.()]) } },
+      '@/composables/useVersionCheck': { useVersionCheck: () => state },
+    }
+    const content = compileScript(descriptor, { id: filename, inlineTemplate: true }).content
+      .replace(/import\s+\{([^}]+)\}\s+from\s+['"]([^'"]+)['"]/g, (_, names, dependency) => `const {${names.replace(/\bas\b/g, ':')}} = dependencies[${JSON.stringify(dependency)}]`)
+      .replace('export default', 'return')
+    const component = new Function('dependencies', content)(dependencies)
+    const root = { children: [] }
+    const renderer = createRenderer({
+      createElement: type => ({ type, props: {}, children: [] }), createText: text => ({ text }), createComment: () => ({}),
+      insert(el, parent) { parent.children ||= []; parent.children.push(el); el.parent = parent },
+      remove(el) { const siblings = el.parent?.children || []; const index = siblings.indexOf(el); if (index >= 0) siblings.splice(index, 1) },
+      setText(el, text) { el.text = text }, setElementText(el, text) { el.children = []; el.text = text },
+      patchProp(el, key, previous, value) { el.props[key] = value }, parentNode: el => el.parent, nextSibling: () => null,
+    })
+    const app = renderer.createApp(component)
+    app.mount(root)
+    const nodes = () => { const result = []; const visit = el => { result.push(el); (el.children || []).forEach(visit) }; visit(root); return result }
+    return { app, nodes, text: () => nodes().map(el => el.text || '').join(' ') }
+  }
+  it('浏览器隐藏版本入口，native分别展示安装版本和网页版本并提供手动检查', async () => {
+    const browser = renderHeader(checker())
+    expect(browser.nodes().some(el => el.type === 'button')).toBe(false)
+    browser.app.unmount()
+    native()
+    const state = checker({ currentVersion: '5.2.0' })
+    const header = renderHeader(state)
+    expect(header.text()).toContain('读取客户端版本')
+    expect(header.text()).not.toContain('客户端 v5.2.0')
+    await state.checkForUpdates()
+    await nextTick()
+    expect(header.text()).toContain('客户端 v5.1.2')
+    expect(header.text()).toContain('网页 v5.2.0')
+    expect(header.nodes().some(el => el.type === 'a' && el.props.href?.includes('app.msi'))).toBe(true)
+    state.dismissUpdate()
+    const check = header.nodes().find(el => el.type === 'button' && el.props.class === 'client-version-check')
+    await check.props.onClick()
+    expect(state.hasNewVersion.value).toBe(true)
+    header.app.unmount()
+  })
+  it('legacy显示未知安装版本；检查503显示失败且不展示最新或下载链接', async () => {
+    native()
+    invoke.mockRejectedValue('Command wallpaper_capabilities not found')
+    const state = checker({ currentVersion: '5.2.0' })
+    const header = renderHeader(state)
+    await state.checkForUpdates()
+    await nextTick()
+    expect(header.text()).toContain('旧版客户端')
+    expect(header.text()).not.toContain('客户端 v5.2.0')
+    fetchImpl.mockImplementation(async url => ({ ok: !url.startsWith('/api'), status: 503, json: async () => ({ version: '5.2.0' }) }))
+    await state.checkForUpdates({ manual: true })
+    await nextTick()
+    expect(header.text()).toContain('检查未完成')
+    expect(header.text()).not.toContain('已是最新')
+    expect(header.nodes().some(el => el.type === 'a')).toBe(false)
+    expect(state.hasNewVersion.value).toBe(false)
+    header.app.unmount()
   })
 })
 
@@ -206,3 +314,7 @@ describe('可见性和引用计数', () => {
     expect(vi.getTimerCount()).toBe(0)
   })
 })
+import { readFileSync } from 'node:fs'
+import * as Vue from 'vue'
+import { createRenderer, h, nextTick } from 'vue'
+import { compileScript, parse } from 'vue/compiler-sfc'

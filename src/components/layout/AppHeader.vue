@@ -8,6 +8,7 @@ import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import EnvBadge from '@/components/common/ui/EnvBadge.vue'
 import RemoteAvatar from '@/components/common/ui/RemoteAvatar.vue'
 import WallpaperSeriesIcon from '@/components/common/ui/WallpaperSeriesIcon.vue'
+import HeaderClientVersion from '@/components/layout/header/HeaderClientVersion.vue'
 import HeaderMobileDrawer from '@/components/layout/header/mobile/HeaderMobileDrawer.vue'
 import HeaderMobileSearchPopup from '@/components/layout/header/mobile/HeaderMobileSearchPopup.vue'
 import HeaderThemeSwitcher from '@/components/layout/header/theme/HeaderThemeSwitcher.vue'
@@ -16,6 +17,7 @@ import { useHeaderNavSlider } from '@/composables/header/useHeaderNavSlider'
 import { useDevice } from '@/composables/useDevice'
 import { useFullscreen } from '@/composables/useFullscreen'
 import { useTheme } from '@/composables/useTheme'
+import { useVersionCheck } from '@/composables/useVersionCheck'
 import { useWallpaperType } from '@/composables/useWallpaperType'
 import { useAuthStore } from '@/stores/auth'
 import { useFilterStore } from '@/stores/filter'
@@ -25,6 +27,7 @@ import { normalizeRedirectTarget } from '@/utils/auth/redirect'
 
 const route = useRoute()
 const router = useRouter()
+const { isNativeClient } = useVersionCheck()
 const { theme, themeMode, themeOptions, toggleTheme, setThemeMode } = useTheme()
 const { isFullscreen, toggleFullscreen } = useFullscreen()
 const { isMobile, isTablet, windowWidth } = useDevice()
@@ -374,7 +377,8 @@ watch(isMobile, () => {
           <h1 class="brand-title">
             Wallpaper Gallery
           </h1>
-          <span class="brand-subtitle">精选4k高清壁纸</span>
+          <HeaderClientVersion v-if="isNativeClient" />
+          <span v-else class="brand-subtitle">精选4k高清壁纸</span>
         </div>
       </div>
 
@@ -437,7 +441,7 @@ watch(isMobile, () => {
           </button>
         </div>
 
-        <HeaderDesktopDownload />
+        <HeaderDesktopDownload v-if="!isNativeClient" />
 
         <!-- Fullscreen Toggle -->
         <button

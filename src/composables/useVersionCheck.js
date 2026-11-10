@@ -14,6 +14,18 @@ export function createVersionChecker({ currentVersion = CURRENT_VERSION, fetchIm
   const desktopNotice = ref(null)
   const isChecking = ref(false)
   const dismissed = ref(new Set())
+  const manuallyShown = ref(new Set())
+  const detectNative = () => {
+    try {
+      return Boolean(getWindow().__TAURI__ || getWindow().__TAURI_INTERNALS__)
+    }
+    catch { return false }
+  }
+  const isNativeClient = ref(detectNative())
+  const clientVersion = ref('')
+  const clientState = ref(isNativeClient.value ? 'checking' : 'browser')
+  const latestClientInfo = ref(null)
+  const clientCheckResult = ref('idle')
   let references = 0
   let timer = null
   let lastCheck = -Infinity
@@ -27,6 +39,8 @@ export function createVersionChecker({ currentVersion = CURRENT_VERSION, fetchIm
 
   function isDismissed(notice) {
     const key = `${notice.kind}:${notice.latest}`
+    if (manuallyShown.value.has(key))
+      return false
     if (dismissed.value.has(key))
       return true
     try {
@@ -37,14 +51,16 @@ export function createVersionChecker({ currentVersion = CURRENT_VERSION, fetchIm
   const newVersionInfo = computed(() => [desktopNotice.value, webNotice.value].find(notice => notice && !isDismissed(notice)) || null)
   const hasNewVersion = computed(() => Boolean(newVersionInfo.value))
   const visible = () => getDocument().visibilityState !== 'hidden'
-  const isNative = () => Boolean(getWindow().__TAURI__ || getWindow().__TAURI_INTERNALS__)
 
   async function identifyNative() {
     if (nativeIdentity)
       return nativeIdentity
     const invoke = getWindow().__TAURI__?.core?.invoke
-    if (typeof invoke !== 'function')
+    if (typeof invoke !== 'function') {
+      clientState.value = 'error'
       return null
+    }
+    clientState.value = 'checking'
     try {
       const value = await Promise.race([
         invoke('wallpaper_capabilities'),
@@ -53,12 +69,23 @@ export function createVersionChecker({ currentVersion = CURRENT_VERSION, fetchIm
           invokeTimer = setTimeout(cancelInvoke, 8000)
         }),
       ])
-      if (parseVersion(value?.appVersion))
+      if (parseVersion(value?.appVersion)) {
         nativeIdentity = { version: value.appVersion, legacy: false }
+        clientVersion.value = value.appVersion
+        clientState.value = 'current'
+      }
+      else {
+        clientState.value = 'error'
+      }
     }
     catch (error) {
-      if (isLegacyCapabilityError(error))
+      if (isLegacyCapabilityError(error)) {
         nativeIdentity = { version: '', legacy: true }
+        clientState.value = 'legacy'
+      }
+      else {
+        clientState.value = 'error'
+      }
     }
     finally {
       clearTimeout(invokeTimer)
@@ -68,7 +95,7 @@ export function createVersionChecker({ currentVersion = CURRENT_VERSION, fetchIm
     return nativeIdentity
   }
 
-  async function checkForUpdates() {
+  async function checkForUpdates({ manual = false } = {}) {
     if (isChecking.value || !visible())
       return
     isChecking.value = true
@@ -76,7 +103,10 @@ export function createVersionChecker({ currentVersion = CURRENT_VERSION, fetchIm
     const request = ++generation
     controller = new AbortController()
     const signal = controller.signal
-    const native = isNative()
+    const native = detectNative()
+    isNativeClient.value = native
+    if (native)
+      clientCheckResult.value = 'checking'
     try {
       const [web, desktop] = await Promise.allSettled([
         fetchUpdateJson(`${import.meta.env.BASE_URL}version.json?t=${Date.now()}`, { fetchImpl, signal }),
@@ -99,6 +129,22 @@ export function createVersionChecker({ currentVersion = CURRENT_VERSION, fetchIm
         const release = validateDesktopRelease(manifest, getNavigator().userAgent)
         const older = release && identity && (identity.legacy ? compareVersions(release.latest, '5.2.0') >= 0 : compareVersions(release.latest, identity.version) === 1)
         desktopNotice.value = older ? { kind: 'desktop', ...release, current: identity.version, legacy: identity.legacy } : null
+        latestClientInfo.value = release
+        clientCheckResult.value = manifest?.available === false
+          ? 'unavailable'
+          : !release || !identity
+              ? 'error'
+              : older ? 'update' : identity.legacy ? 'unavailable' : 'current'
+      }
+      else if (native) {
+        desktopNotice.value = null
+        latestClientInfo.value = null
+        clientCheckResult.value = 'error'
+      }
+      if (manual) {
+        manuallyShown.value = new Set([desktopNotice.value, webNotice.value]
+          .filter(Boolean)
+          .map(notice => `${notice.kind}:${notice.latest}`))
       }
     }
     finally {
@@ -142,6 +188,7 @@ export function createVersionChecker({ currentVersion = CURRENT_VERSION, fetchIm
       return
     lifecycle += 1
     retainedAt = Date.now()
+    isNativeClient.value = detectNative()
     getWindow().addEventListener('focus', foreground)
     getWindow().addEventListener('pageshow', foreground)
     getDocument().addEventListener('visibilitychange', foreground)
@@ -169,6 +216,7 @@ export function createVersionChecker({ currentVersion = CURRENT_VERSION, fetchIm
     if (!notice)
       return
     const key = `${notice.kind}:${notice.latest}`
+    manuallyShown.value = new Set([...manuallyShown.value].filter(value => value !== key))
     dismissed.value = new Set([...dismissed.value, key])
     try {
       getStorage().setItem(`dismissed_update:${key}`, 'true')
@@ -180,7 +228,7 @@ export function createVersionChecker({ currentVersion = CURRENT_VERSION, fetchIm
     url.searchParams.set('_t', Date.now())
     getWindow().location.href = url.href
   }
-  return { hasNewVersion, newVersionInfo, isChecking: readonly(isChecking), currentVersion, buildTime: BUILD_TIME, checkForUpdates, forceRefresh, dismissUpdate, retain, release }
+  return { hasNewVersion, newVersionInfo, isChecking: readonly(isChecking), isNativeClient: readonly(isNativeClient), clientVersion: readonly(clientVersion), clientState: readonly(clientState), latestClientInfo: readonly(latestClientInfo), clientCheckResult: readonly(clientCheckResult), currentVersion, buildTime: BUILD_TIME, checkForUpdates, forceRefresh, dismissUpdate, retain, release }
 }
 
 const checker = createVersionChecker()
