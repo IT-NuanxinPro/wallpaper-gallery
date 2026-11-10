@@ -1,5 +1,6 @@
 <script setup>
 defineProps({
+  outputError: { type: String, default: '' },
   exactOutputEnabled: {
     type: Boolean,
     default: false,
@@ -126,9 +127,12 @@ function handleHeightInput(event) {
         </label>
       </div>
       <p class="exact-size-hint" :class="{ 'exact-size-hint--error': !exactOutputValid }">
-        {{ exactOutputValid ? '会按你填写的尺寸精确导出，并自动同步裁剪比例' : '请输入有效的宽度和高度' }}
+        {{ exactOutputValid ? '会按你填写的尺寸精确导出，并自动同步裁剪比例' : outputError || '请输入有效的宽度和高度' }}
       </p>
     </div>
+    <p v-if="outputError && !exactOutputEnabled" class="exact-size-hint exact-size-hint--error" role="alert">
+      {{ outputError }}，可启用精确输出尺寸后调整。
+    </p>
   </div>
 </template>
 

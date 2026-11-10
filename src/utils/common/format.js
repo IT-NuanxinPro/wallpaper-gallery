@@ -5,6 +5,7 @@
 import { CDN_VERSION, RESOLUTION_THRESHOLDS, SERIES_CONFIG } from '@/utils/config/constants'
 import { resolveWallpaperSeries } from '@/utils/wallpaper/identity'
 import { buildImageDeliveryUrl, resolveDirectImageUrl } from '@/utils/wallpaper/imageDelivery'
+import { fetchWallpaperImage } from '@/utils/wallpaper/imageFetch'
 
 const IMAGE_EXTENSION_PATTERN = /\.(?:jpg|jpeg|png|gif|bmp|webp|svg|tiff|tif|ico|heic|heif|mp4|webm|mov|m4v)$/i
 const VIDEO_EXTENSION_PATTERN = /\.(?:mp4|webm|mov|m4v)(?:[?#].*)?$/i
@@ -331,8 +332,9 @@ function triggerBrowserBlobDownload(blob, filename) {
  * @param {string} url - 文件 URL
  * @param {string} filename - 保存的文件名
  */
-export async function downloadFile(url, filename) {
+export async function downloadFile(url, filename, options = {}) {
   try {
+    options.signal?.throwIfAborted()
     // 动态重建 URL（如果是 CDN 链接）
     let finalUrl = url
     if (url.includes('@main')) {
@@ -359,28 +361,14 @@ export async function downloadFile(url, filename) {
       }
     }
 
-    const response = await fetch(finalUrl)
-
-    // 如果 CDN 返回 403 或 404，回退到 GitHub Raw CDN
-    if (!response.ok || response.status === 403 || response.status === 404) {
-      console.warn('[downloadFile] CDN 失败，回退到 GitHub Raw CDN:', response.status)
-      finalUrl = buildRawImageUrl(finalUrl)
-      const fallbackResponse = await fetch(finalUrl)
-
-      if (!fallbackResponse.ok) {
-        throw new Error(`GitHub Raw CDN 失败: ${fallbackResponse.status}`)
-      }
-
-      const blob = await fallbackResponse.blob()
-      triggerBrowserBlobDownload(blob, filename)
-    }
-    else {
-      const blob = await response.blob()
-      triggerBrowserBlobDownload(blob, filename)
-    }
+    const blob = await fetchWallpaperImage(finalUrl, { ...options, allowMedia: true })
+    options.signal?.throwIfAborted()
+    triggerBrowserBlobDownload(blob, filename)
     return { status: 'browser-started' }
   }
   catch (error) {
+    if (error?.name === 'AbortError' || options.signal?.aborted)
+      throw error
     // 降级方案：直接打开链接
     const opened = window.open(url, '_blank')
     if (opened) {

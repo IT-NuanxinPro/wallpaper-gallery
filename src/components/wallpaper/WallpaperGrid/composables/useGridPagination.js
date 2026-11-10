@@ -1,9 +1,10 @@
-import { computed, nextTick, onUnmounted, ref, shallowRef, watch } from 'vue'
+import { computed, nextTick, onUnmounted, ref, shallowRef, toValue, watch } from 'vue'
 
 const PAGE_SIZE = 20
 
-export function useGridPagination({ wallpapers }) {
-  const displayCount = ref(PAGE_SIZE)
+export function useGridPagination({ wallpapers, minimumDisplayCount = PAGE_SIZE }) {
+  const requestedCount = () => Math.max(PAGE_SIZE, Math.min(100000, Math.ceil(Number(toValue(minimumDisplayCount)) || PAGE_SIZE)))
+  const displayCount = ref(requestedCount())
   const isLoadingMore = ref(false)
   const loadMoreSentinel = shallowRef(null)
   const observationVersion = ref(0)
@@ -64,9 +65,13 @@ export function useGridPagination({ wallpapers }) {
     cancelAnimationFrame(loadRafId)
     loadRafId = null
     isLoadingMore.value = false
-    displayCount.value = PAGE_SIZE
+    displayCount.value = requestedCount()
     observationVersion.value += 1
   }
+
+  watch(() => toValue(minimumDisplayCount), () => {
+    displayCount.value = requestedCount()
+  })
 
   onUnmounted(() => {
     disposed = true

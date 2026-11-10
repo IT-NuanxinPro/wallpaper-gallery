@@ -16,6 +16,7 @@ import { usePopularityStore } from '@/stores/popularity'
 import { copyText } from '@/utils/common/clipboard'
 import { formatDate, formatFileSize, formatRelativeTime, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/common/format'
 import { resolveWallpaperSeries } from '@/utils/wallpaper/identity'
+import { buildWallpaperShareUrl } from '@/utils/wallpaper/share'
 import ImageCropModal from '../crop/index.vue'
 import DesktopModal from './desktop/DesktopModal.vue'
 import BingWallpaperInfo from './shared/BingWallpaperInfo.vue'
@@ -397,7 +398,7 @@ function handleNext() {
 }
 
 async function handleCopyUrl() {
-  const url = props.wallpaper?.url
+  const url = buildWallpaperShareUrl(props.wallpaper)
   if (!url)
     return
 

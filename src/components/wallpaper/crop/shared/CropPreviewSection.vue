@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { onUnmounted, ref, watch } from 'vue'
 
 defineProps({
   cropInfo: {
@@ -20,9 +20,20 @@ defineProps({
   },
 })
 
-defineEmits(['immersivePreview'])
+const emit = defineEmits(['immersivePreview', 'resize'])
 
 const previewCanvasEl = ref(null)
+let resizeObserver
+watch(previewCanvasEl, (canvas) => {
+  resizeObserver?.disconnect()
+  if (canvas?.parentElement && typeof ResizeObserver !== 'undefined') {
+    resizeObserver = new ResizeObserver(() => emit('resize'))
+    resizeObserver.observe(canvas.parentElement)
+  }
+  if (canvas)
+    emit('resize')
+}, { flush: 'post' })
+onUnmounted(() => resizeObserver?.disconnect())
 
 function getCanvasElement() {
   return previewCanvasEl.value
@@ -74,6 +85,8 @@ defineExpose({
     radial-gradient(circle at top, rgba(var(--color-accent-rgb), 0.12), transparent 55%),
     linear-gradient(180deg, rgba(8, 14, 32, 0.72) 0%, rgba(8, 14, 32, 0.9) 100%);
   height: 340px;
+  max-height: 45%;
+  min-height: 0;
 }
 
 .preview-header {

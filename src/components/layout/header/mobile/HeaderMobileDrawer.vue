@@ -210,6 +210,12 @@ defineEmits(['close', 'navigate', 'signout', 'update:show'])
               </div>
               <span>首页</span>
             </button>
+            <button class="nav-card" @click="$emit('navigate', '/collections')">
+              <div class="nav-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="18" height="7" rx="1" /></svg>
+              </div>
+              <span>精选专题</span>
+            </button>
             <button class="nav-card" @click="$emit('navigate', '/about')">
               <div class="nav-card-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

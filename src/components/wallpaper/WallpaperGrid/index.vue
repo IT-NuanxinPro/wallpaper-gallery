@@ -5,6 +5,7 @@ import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import { useDevice } from '@/composables/useDevice'
 import { useWallpaperType } from '@/composables/useWallpaperType'
 import { usePopularityStore } from '@/stores/popularity'
+import { buildWallpaperAssetKey } from '@/utils/wallpaper/identity'
 import WallpaperCard from '../card/index.vue'
 import { PAGE_SIZE, useGridPagination } from './composables/useGridPagination'
 import GridEmptyState from './shared/GridEmptyState.vue'
@@ -38,9 +39,13 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  minimumDisplayCount: {
+    type: Number,
+    default: 20,
+  },
 })
 
-const emit = defineEmits(['select', 'resetFilters'])
+const emit = defineEmits(['select', 'resetFilters', 'displayCountChange'])
 
 const router = useRouter()
 const { currentSeries, currentSeriesConfig, availableSeriesOptions } = useWallpaperType()
@@ -62,6 +67,7 @@ function getViewCount(filename) {
 
 const wallpapersRef = computed(() => props.wallpapers)
 const {
+  displayCount,
   displayedItems,
   hasMoreData,
   isLoadingMore,
@@ -71,7 +77,10 @@ const {
   supportsIntersectionObserver,
 } = useGridPagination({
   wallpapers: wallpapersRef,
+  minimumDisplayCount: () => props.minimumDisplayCount,
 })
+
+watch(displayCount, count => emit('displayCountChange', count), { immediate: true, flush: 'post' })
 
 // 空状态类型判断
 const emptyStateType = computed(() => {
@@ -131,7 +140,7 @@ function hasSameLeadingItems(listA, listB, count = PAGE_SIZE) {
   }
 
   for (let i = 0; i < limit; i++) {
-    if (listA[i]?.id !== listB[i]?.id) {
+    if (buildWallpaperAssetKey(listA[i]) !== buildWallpaperAssetKey(listB[i])) {
       return false
     }
   }
@@ -188,7 +197,7 @@ const skeletonCount = PAGE_SIZE
       >
         <div
           v-for="(wallpaper, index) in displayedItems"
-          :key="wallpaper.id"
+          :key="buildWallpaperAssetKey(wallpaper)"
           class="wallpaper-grid-item"
         >
           <WallpaperCard

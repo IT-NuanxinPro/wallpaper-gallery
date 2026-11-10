@@ -1,18 +1,20 @@
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onUnmounted, ref } from 'vue'
 
 const STORAGE_KEY = 'announcement_banner_closed_v1'
-const isVisible = ref(false)
+const isVisible = ref(readBannerVisibility())
 const isClosing = ref(false)
 let closeTimer = null // 关闭动画定时器
 
-onMounted(() => {
-  // 检查用户是否之前关闭过横幅
-  const closed = localStorage.getItem(STORAGE_KEY)
-  if (closed !== 'true') {
-    isVisible.value = true
+function readBannerVisibility() {
+  try {
+    return localStorage.getItem(STORAGE_KEY) !== 'true'
   }
-})
+  catch {
+    // 存储不可用时正常展示，不在挂载后插入横幅造成跳动。
+    return true
+  }
+}
 
 // 组件卸载时清理定时器
 onUnmounted(() => {
@@ -23,14 +25,22 @@ onUnmounted(() => {
 })
 
 function closeBanner() {
+  if (isClosing.value)
+    return
+
   // 先播放关闭动画
   isClosing.value = true
   // 动画结束后隐藏并保存状态
   closeTimer = setTimeout(() => {
     closeTimer = null
     isVisible.value = false
-    localStorage.setItem(STORAGE_KEY, 'true')
-  }, 300)
+    try {
+      localStorage.setItem(STORAGE_KEY, 'true')
+    }
+    catch {
+      // 存储不可用不影响本次关闭。
+    }
+  }, window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 300)
 }
 </script>
 
@@ -62,8 +72,8 @@ function closeBanner() {
       </div>
 
       <!-- 关闭按钮 -->
-      <button class="close-btn" aria-label="关闭通知" @click="closeBanner">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <button class="close-btn" type="button" aria-label="关闭通知" :disabled="isClosing" @click="closeBanner">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <path d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
@@ -74,14 +84,13 @@ function closeBanner() {
 <style scoped lang="scss">
 .announcement-wrapper {
   overflow: hidden;
-  transition: all 0.3s ease-out;
+  transition:
+    max-height 0.3s ease-out,
+    opacity 0.3s ease-out,
+    margin-bottom 0.3s ease-out;
   max-height: 200px;
   opacity: 1;
-  margin-bottom: 20px;
-
-  @media (max-width: 768px) {
-    margin-bottom: 16px;
-  }
+  margin-bottom: 8px;
 
   &.is-closing {
     max-height: 0;
@@ -93,17 +102,18 @@ function closeBanner() {
 .announcement-banner {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
+  gap: 10px;
+  min-height: 46px;
+  padding: 0 12px;
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
-  transition: all 0.2s ease;
+  transition: box-shadow 0.2s ease;
 
   @media (max-width: 768px) {
-    padding: 12px 14px;
-    gap: 10px;
+    padding: 0 8px;
+    gap: 8px;
     border-radius: var(--radius-md);
   }
 
@@ -116,13 +126,9 @@ function closeBanner() {
   flex-shrink: 0;
 
   .icon-emoji {
-    font-size: 24px;
+    font-size: 20px;
     display: block;
-    animation: shake 2s ease-in-out infinite;
-
-    @media (max-width: 768px) {
-      font-size: 20px;
-    }
+    animation: shake 2s ease-in-out;
   }
 }
 
@@ -151,12 +157,12 @@ function closeBanner() {
 
 .banner-text {
   margin: 0;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.6;
   color: var(--color-text-primary);
 
   @media (max-width: 768px) {
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.5;
   }
 
@@ -209,8 +215,8 @@ function closeBanner() {
 
 .close-btn {
   flex-shrink: 0;
-  width: 28px;
-  height: 28px;
+  width: 44px;
+  height: 44px;
   border: none;
   background: var(--color-bg-hover);
   border-radius: var(--radius-sm);
@@ -220,11 +226,6 @@ function closeBanner() {
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
-
-  @media (max-width: 768px) {
-    width: 24px;
-    height: 24px;
-  }
 
   svg {
     width: 16px;
@@ -245,6 +246,28 @@ function closeBanner() {
 
   &:active {
     transform: scale(0.95);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: -3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .announcement-wrapper,
+  .announcement-banner,
+  .close-btn {
+    transition: none;
+  }
+
+  .banner-icon .icon-emoji {
+    animation: none;
+  }
+
+  .close-btn:hover,
+  .close-btn:active {
+    transform: none;
   }
 }
 </style>

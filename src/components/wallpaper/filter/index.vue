@@ -97,7 +97,6 @@ const showCategoryDrawer = ref(false) // 分类选择抽屉
 // 临时筛选值（用于弹窗内）
 const tempSortBy = ref(props.sortBy)
 const tempFormatFilter = ref(props.formatFilter)
-
 // 是否有激活的筛选条件
 const hasActiveFilters = computed(() => {
   return hasActiveSeriesFilters({
@@ -380,10 +379,9 @@ const videoUsageTabs = computed(() => [
 .filter-panel {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: $spacing-md;
-  padding: $spacing-md $spacing-lg;
+  align-items: flex-start;
+  gap: 8px 12px;
+  padding: 10px 14px;
   // 吸顶筛选栏使用不透明表面，避免随长列表滚动持续重算模糊。
   background-color: var(--color-bg-card);
   border-radius: $radius-lg;
@@ -423,14 +421,24 @@ const videoUsageTabs = computed(() => [
 }
 
 .desktop-filter-slot {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 18px;
-  min-height: 38px;
-  flex: 1 1 800px;
-  flex-wrap: wrap;
+  display: contents;
+}
+
+.filter-panel :deep(.filter-left) {
+  flex: 0 1 auto;
+  min-height: 44px;
   min-width: 0;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+
+.filter-panel :deep(.search-context-wrap) {
+  flex-wrap: wrap;
+}
+
+.filter-panel :deep(.search-context) {
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .desktop-interaction-summary {
@@ -602,6 +610,12 @@ const videoUsageTabs = computed(() => [
     transform: none;
     // 移动端强制不换行
     flex-wrap: nowrap;
+    align-items: center;
+
+    :deep(.filter-left) {
+      flex: 1;
+      flex-wrap: nowrap;
+    }
 
     [data-theme='dark'] & {
       background: rgba(15, 23, 42, 0.95);

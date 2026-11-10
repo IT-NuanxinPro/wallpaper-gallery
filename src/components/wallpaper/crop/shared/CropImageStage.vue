@@ -25,7 +25,7 @@ defineProps({
   },
 })
 
-const emit = defineEmits(['error', 'load'])
+const emit = defineEmits(['error', 'load', 'retry'])
 const stageImageRef = ref(null)
 
 function getImageElement() {
@@ -52,7 +52,7 @@ defineExpose({
       <span class="size-ratio">{{ currentRatioDisplay }}</span>
     </div>
 
-    <div v-if="!imageLoaded" class="crop-loading">
+    <div v-if="!imageLoaded && !imageError" class="crop-loading">
       <LoadingSpinner size="lg" />
       <p>正在加载原图...</p>
       <p class="loading-hint">
@@ -66,16 +66,21 @@ defineExpose({
         <path d="M12 8v4M12 16h.01" />
       </svg>
       <p>原图加载失败</p>
+      <button type="button" class="crop-retry" @click="emit('retry')">
+        重新加载
+      </button>
     </div>
 
     <img
+      v-if="imageUrl"
       v-show="imageLoaded && !imageError"
+      :key="imageUrl"
       ref="stageImageRef"
       :src="imageUrl"
       class="crop-image"
       crossorigin="anonymous"
-      @load="emit('load')"
-      @error="emit('error')"
+      @load="emit('load', $event)"
+      @error="emit('error', $event)"
     >
   </div>
 </template>
@@ -192,5 +197,20 @@ defineExpose({
   max-height: 100%;
   position: relative;
   z-index: 1;
+}
+
+.crop-retry {
+  min-height: 44px;
+  padding: 8px 20px;
+  border: 1px solid var(--color-accent);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-accent);
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
 }
 </style>

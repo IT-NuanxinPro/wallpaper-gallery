@@ -21,6 +21,22 @@ beforeEach(() => {
 afterEach(() => vi.restoreAllMocks())
 
 describe('下载操作的资源快照', () => {
+  it('取消下载不产生统计与错误提示，并允许重试', async () => {
+    let signal
+    mocks.download.mockImplementation((_url, _filename, options) => new Promise((_resolve, reject) => {
+      signal = options.signal
+      signal.addEventListener('abort', () => reject(new DOMException('cancelled', 'AbortError')), { once: true })
+    }))
+    const state = useWallpaperDownload(ref({ filename: 'a.jpg', url: '/a.jpg' }), ref('desktop'))
+    const pending = state.handleDownload()
+    expect(state.cancelDownload).toBeTypeOf('function')
+    state.cancelDownload()
+    expect(signal.aborted).toBe(true)
+    expect(await pending).toEqual({ status: 'cancelled' })
+    expect(mocks.record).not.toHaveBeenCalled()
+    expect(mocks.error).not.toHaveBeenCalled()
+    expect(state.downloading.value).toBe(false)
+  })
   it('下载A时切到B，仍只对A记录一次；重复点击不重复下载', async () => {
     let finish
     mocks.download.mockImplementation(() => new Promise(resolve => { finish = resolve }))
@@ -32,7 +48,7 @@ describe('下载操作的资源快照', () => {
     wallpaper.value = { filename: 'b.jpg', url: '/b.jpg' }
     series.value = 'mobile'
     await state.handleDownload()
-    expect(mocks.download).toHaveBeenCalledExactlyOnceWith('/a.jpg', 'a.jpg')
+    expect(mocks.download).toHaveBeenCalledExactlyOnceWith('/a.jpg', 'a.jpg', { signal: expect.any(AbortSignal) })
     finish({ status: 'browser-started' })
     await pending
     expect(mocks.record).toHaveBeenCalledExactlyOnceWith(a, 'desktop')

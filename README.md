@@ -201,12 +201,14 @@ pnpm dev
 ```bash
 # 开发
 pnpm dev              # 启动开发服务器
-pnpm build            # 构建生产版本
+pnpm build            # 生成分享详情元数据并构建生产版本
 pnpm build:seo        # 构建并生成预渲染 SEO 页面
 pnpm preview          # 预览构建结果
 
 # 数据同步
-pnpm sync             # 从线上 CDN 同步最新数据
+pnpm sync             # 从线上 CDN 同步最新数据并更新分享详情
+pnpm build:metadata   # 单独更新派生元数据（分享详情和精选专题）
+pnpm generate:details # 重新生成分享详情与推荐目录
 pnpm export:hot-tags  # 导出热门标签数据
 
 # 代码质量
@@ -214,6 +216,14 @@ pnpm lint             # 检查代码规范
 pnpm lint:fix         # 自动修复代码问题
 pnpm test             # 运行测试
 ```
+
+### 单图分享详情
+
+图片和视频弹窗的复制入口提供 `/wallpaper/{token}` 站内详情地址，token 保留完整资源身份，跨分类同名文件不会混淆。独立详情支持刷新、原文件下载、喜欢/收藏和电脑静态壁纸裁剪；来源与授权只展示已有信息，不推断可商用。
+
+`pnpm build:metadata` 执行 `pnpm generate:details`；因此标准同步、本地构建和 CI 构建都会更新详情。生成的 `public/data/details/00.json` 到 `3f.json` 是 64 个短文件桶，桶内按完整 token 查找；`index.json` 保存相关推荐和专题可复用的简要目录。每轮重写全部桶（含空桶），已移除图片不从旧文件继续公开。生成文件应与现有 public 元数据一起保留。损坏的身份或来源会明确列入生成脚本的 `skippedItems`，不会构造任意来源下载代理。
+
+Cloudflare Pages 的 `/wallpaper/*` Function 从同一详情桶生成真实标题、说明、分享卡片图片和 canonical，并提供无需 JavaScript 的图文摘要；无效链接返回 400，已移除记录返回 404，临时故障不缓存。Vite 开发服务器通过现有 SPA fallback 显示相同独立详情页面；本地 Node 不具备 Edge `HTMLRewriter`，服务端 HTML 重写需在支持该 API 的环境验证。
 
 ### 数据来源
 
@@ -543,3 +553,9 @@ wallpaper-gallery/
 ## 📄 License
 
 MIT
+
+### 精选专题与主题搭配
+
+`/collections` 收录静夜留白、山间晨光、海岸来信三个人工核对专题；电脑与手机配套表示主题搭配，不表示同一作者或同一原作。清单在 `src/content/collections.js` 中按完整资源键维护；构建同时派生仅含有效精选完整记录的 `public/data/collections.json`，专题一次读取该小文件，不逐张请求详情桶；失效资源和缺失任一方的配对不展示，作者、来源与授权未提供时保留未知。专题详情通过原下载、喜欢/收藏和单图详情继续操作。
+
+桌面“更多导航”和移动快捷导航提供入口。`build:seo` 根据内容清单预渲染专题列表与三个详情，等待真实内容加载完成后写出 HTML；单图分享继续由 Edge Function 处理。详情相关推荐读取 `public/data/details/index-{series}.json` 当前系列分片并缓存，前台不默认加载全站目录；全局 `index.json` 保留供离线工具兼容。

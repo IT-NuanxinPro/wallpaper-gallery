@@ -1,3 +1,4 @@
+import { buildWallpaperShareUrl } from '../src/utils/wallpaper/share.js'
 import { readFile } from 'node:fs/promises'
 import { compileScript, parse } from 'vue/compiler-sfc'
 import * as Vue from 'vue'
@@ -51,7 +52,7 @@ describe('图片解码展示', () => {
 })
 
 describe('桌面预览事件集成', () => {
-  async function createComponents() {
+  async function createComponents(copyText = () => {}) {
     const Empty = { render: () => null }
     const slotWrapper = { inheritAttrs: false, setup: (_props, { slots }) => () => slots.default?.() }
     const dependencies = {
@@ -65,12 +66,14 @@ describe('桌面预览事件集成', () => {
       'element-plus': { ElMessage: { success() {}, error() {} } },
       '@/components/common/feedback/LoadingSpinner.vue': { default: Empty },
       '@/components/wallpaper/card/shared/WallpaperCardActions.vue': { default: Empty },
+      '@/components/wallpaper/desktop/WallpaperDesktopActions.vue': { default: Empty },
       '@/composables/useWallpaperType': { useWallpaperType: () => ({ currentSeries: ref('desktop') }) },
       '@/stores/popularity': { usePopularityStore: () => ({ getDownloadCount: () => 0, getViewCount: () => 0 }) },
       '@/utils/common/analytics': { trackWallpaperDownload() {}, trackWallpaperPreview() {} },
-      '@/utils/common/clipboard': { copyText() {} },
+      '@/utils/common/clipboard': { copyText },
       '@/utils/common/format': new Proxy({}, { get: () => () => '' }),
       '@/utils/integrations/supabase': { recordDownload() {}, recordView() {} },
+      '@/utils/wallpaper/share': { buildWallpaperShareUrl },
       '@/utils/wallpaper/identity': { resolveWallpaperSeries: () => 'desktop' },
     }
     async function compileComponent(path, key) {
@@ -132,6 +135,41 @@ describe('桌面预览事件集成', () => {
     expect(loaded?.target.naturalWidth).toBe(1920)
     expect(loaded?.target.naturalHeight).toBe(1080)
     expect(loaded?.dimensions).toEqual({ width: 1920, height: 1080 })
+    app.unmount()
+  })
+
+  it('异步解码期间事件target被清空仍用原图片传递真实尺寸', async () => {
+    const { DesktopImageStage } = await createComponents()
+    const { elements, renderer } = createTestRenderer()
+    let loaded
+    let finishDecode
+    const app = renderer.createApp({ render: () => h(DesktopImageStage, { imageSrc: '/event.webp', onLoad: value => { loaded = value } }) })
+    app.mount({})
+    let target = { naturalWidth: 2560, naturalHeight: 1440, decode: () => new Promise(resolve => { finishDecode = resolve }) }
+    const original = target
+    const event = { get target() { return target } }
+    const pending = elements.find(element => element.type === 'img').props.onLoad(event)
+    target = null
+    finishDecode()
+    await pending
+    expect(loaded.target).toBe(original)
+    expect(loaded.dimensions).toEqual({ width: 2560, height: 1440 })
+    app.unmount()
+  })
+
+  it('复制按钮提供独立详情站内链接，下载仍保留原始URL', async () => {
+    let copied
+    const { DesktopModal } = await createComponents(value => { copied = value })
+    const { elements, renderer } = createTestRenderer()
+    const wallpaper = { _series: 'desktop', filename: 'same.jpg', path: '/wallpaper/desktop/风景/same.jpg', url: 'https://cdn.jsdelivr.net/gh/IT-NuanxinPro/nuanXinProPic@v1.2.63/wallpaper/desktop/image.jpg' }
+    const app = renderer.createApp({ render: () => h(DesktopModal, { wallpaper, isOpen: true }) })
+    app.config.warnHandler = () => {}
+    app.mount({})
+    await elements.find(element => element.props.class === 'copy-url-btn').props.onClick()
+    expect(copied).toBe(buildWallpaperShareUrl(wallpaper))
+    expect(copied).toContain('/wallpaper/')
+    expect(copied).not.toContain('cdn.jsdelivr.net')
+    expect(wallpaper.url).toContain('cdn.jsdelivr.net')
     app.unmount()
   })
 

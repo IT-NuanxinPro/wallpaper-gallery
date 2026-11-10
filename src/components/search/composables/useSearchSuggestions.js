@@ -1,5 +1,7 @@
 import { computed, ref, watch } from 'vue'
 import { getDisplayFilename } from '@/utils/common/format'
+import { buildWallpaperAssetKey } from '@/utils/wallpaper/identity'
+import { matchesWallpaperQuery, normalizeWallpaperQuery } from '@/utils/wallpaper/search'
 
 export function useSearchSuggestions({ modelValue, wallpapers }) {
   const isFocused = ref(false)
@@ -10,24 +12,17 @@ export function useSearchSuggestions({ modelValue, wallpapers }) {
   const suggestionsPosition = ref({ top: 0, left: 0, width: 0 })
 
   const suggestions = computed(() => {
-    if (!localValue.value || !wallpapers.value.length) {
+    if (!normalizeWallpaperQuery(localValue.value) || !wallpapers.value.length) {
       return []
     }
 
-    const query = localValue.value.toLowerCase()
     return wallpapers.value
-      .filter((wallpaper) => {
-        const displayLabel = wallpaper.displayTitle || getDisplayFilename(wallpaper.filename)
-        return [
-          wallpaper.filename?.toLowerCase() || '',
-          displayLabel.toLowerCase(),
-        ].some(text => text.includes(query))
-      })
+      .filter(wallpaper => matchesWallpaperQuery(wallpaper, localValue.value))
       .slice(0, 6)
       .map((wallpaper) => {
         const label = wallpaper.displayTitle || getDisplayFilename(wallpaper.filename)
         return {
-          exactValue: wallpaper.filename,
+          exactValue: buildWallpaperAssetKey(wallpaper) || wallpaper.filename,
           label,
           value: label,
         }

@@ -27,6 +27,58 @@ function memoryCache() {
 afterEach(() => vi.useRealTimers())
 
 describe('图片入口', () => {
+  it('原图仅使用同仓库版本路径，允许超过预览上限但限制32MiB', async () => {
+    const fetch = vi.fn(async () => imageResponse('original', { 'Content-Length': String(6 * 1024 * 1024) }))
+    const response = await handleImageRequest(request('/images/v1.2.63/wallpaper/desktop/a.png'), { fetch })
+    expect(response.status).toBe(200)
+    expect(await response.text()).toBe('original')
+    expect(fetch.mock.calls[0][0]).toBe('https://raw.githubusercontent.com/IT-NuanxinPro/nuanXinProPic/v1.2.63/wallpaper/desktop/a.png')
+    const oversized = await handleImageRequest(request('/images/v1.2.63/wallpaper/mobile/a.png'), {
+      fetch: async () => imageResponse('small', { 'Content-Length': String(32 * 1024 * 1024 + 1) }),
+    })
+    expect(oversized.status).toBe(502)
+  })
+
+  it('原图响应体超过32MiB时取消流，不写缓存', async () => {
+    const cancel = vi.fn()
+    const cache = memoryCache()
+    const response = await handleImageRequest(request('/images/v1.2.63/wallpaper/avatar/a.png'), {
+      cache,
+      fetch: async () => imageResponse(new ReadableStream({
+        pull(controller) { controller.enqueue(new Uint8Array(1024 * 1024)) }, cancel,
+      })),
+    })
+    expect(response.status).toBe(502)
+    expect(cancel).toHaveBeenCalledOnce()
+    expect(cache.put).not.toHaveBeenCalled()
+  })
+
+  it('原图响应体使用30秒总超时并在请求取消时释放上游', async () => {
+    vi.useFakeTimers()
+    const cancel = vi.fn()
+    const pending = handleImageRequest(request('/images/v1.2.63/wallpaper/desktop/a.png'), {
+      fetch: async () => imageResponse(new ReadableStream({ cancel })),
+    })
+    await vi.advanceTimersByTimeAsync(10_001)
+    expect(cancel).not.toHaveBeenCalled()
+    await vi.advanceTimersByTimeAsync(20_000)
+    expect((await pending).status).toBe(504)
+    expect(cancel).toHaveBeenCalledOnce()
+  })
+
+  it('客户端取消原图请求时立即取消响应流且不缓存', async () => {
+    const controller = new AbortController()
+    const cancel = vi.fn()
+    const cache = memoryCache()
+    const fetch = vi.fn(async () => imageResponse(new ReadableStream({ cancel })))
+    const pending = handleImageRequest(request('/images/v1.2.63/wallpaper/desktop/a.png', { signal: controller.signal }), { fetch, cache })
+    await vi.waitFor(() => expect(fetch).toHaveBeenCalled())
+    controller.abort()
+    expect((await pending).status).toBe(499)
+    expect(cancel).toHaveBeenCalledOnce()
+    expect(cache.put).not.toHaveBeenCalled()
+  })
+
   it('返回固定 Raw 上游图片实体，并保留编码文件名及安全响应头', async () => {
     const fetch = vi.fn(async () => imageResponse('image-bytes', {
       'Set-Cookie': 'secret=not-forwarded',
@@ -51,7 +103,7 @@ describe('图片入口', () => {
 
   it.each([
     '/images/main/thumbnail/desktop/a.webp',
-    '/images/v1.2.63/wallpaper/desktop/a.webp',
+    '/images/v1.2.63/wallpaper/video/a.webp',
     '/images/v1.2.63/thumbnail/video/a.webp',
     '/images/v1.2.63/thumbnail/desktop/a.svg',
     '/images/v1.2.63/thumbnail/desktop/a.html',

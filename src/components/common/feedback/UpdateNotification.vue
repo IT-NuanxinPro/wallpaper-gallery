@@ -10,6 +10,7 @@ import { computed } from 'vue'
 import { useVersionCheck } from '@/composables/useVersionCheck'
 
 const { hasNewVersion, newVersionInfo, forceRefresh, dismissUpdate } = useVersionCheck()
+const isDesktopUpdate = computed(() => newVersionInfo.value?.kind === 'desktop')
 
 // 格式化版本号显示
 const versionDisplay = computed(() => {
@@ -21,7 +22,7 @@ const versionDisplay = computed(() => {
 
 <template>
   <Transition name="slide-up">
-    <div v-if="hasNewVersion" class="update-notification">
+    <div v-if="hasNewVersion" class="update-notification" role="status" aria-live="polite">
       <div class="update-card">
         <!-- 背景装饰 -->
         <div class="card-bg">
@@ -35,26 +36,30 @@ const versionDisplay = computed(() => {
           <div class="update-info">
             <p class="update-title">
               <span class="sparkle">✨</span>
-              发现新版本
+              {{ isDesktopUpdate ? '桌面客户端可升级' : '发现网页新版本' }}
               <span class="version-badge">{{ versionDisplay }}</span>
             </p>
             <p class="update-desc">
-              新内容已就绪，刷新页面即可获取
+              {{ isDesktopUpdate ? (newVersionInfo.legacy ? '建议安装新版客户端，使用原生壁纸与离线轮换。' : '安装新版客户端后可使用更新后的桌面能力。') : '网页已更新，刷新页面即可获取。' }}
             </p>
           </div>
 
           <!-- 操作按钮 -->
           <div class="update-actions">
-            <button class="btn-refresh" @click="forceRefresh">
+            <template v-if="isDesktopUpdate">
+              <a class="btn-refresh" :href="newVersionInfo.downloadUrl" target="_blank" rel="noopener noreferrer">下载安装</a>
+              <a class="btn-notes" :href="newVersionInfo.notesUrl" target="_blank" rel="noopener noreferrer">查看说明</a>
+            </template>
+            <button v-else class="btn-refresh" type="button" @click="forceRefresh">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M1 4V10H7" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M3.51 15C4.16 17.96 6.74 20.5 10 21C14.42 21.67 18.5 18.5 19.5 14" stroke-linecap="round" />
                 <path d="M23 20V14H17" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M20.49 9C19.84 6.04 17.26 3.5 14 3C9.58 2.33 5.5 5.5 4.5 10" stroke-linecap="round" />
               </svg>
-              <span>立即刷新</span>
+              <span>刷新更新</span>
             </button>
-            <button class="btn-dismiss" aria-label="稍后再说" @click="dismissUpdate">
+            <button class="btn-dismiss" type="button" aria-label="稍后再说" @click="dismissUpdate">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" />
               </svg>
@@ -299,6 +304,7 @@ const versionDisplay = computed(() => {
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
+  flex-wrap: wrap;
 
   @media (max-width: 768px) {
     gap: 6px;
@@ -307,6 +313,9 @@ const versionDisplay = computed(() => {
 
 .btn-refresh {
   display: flex;
+  align-items: center;
+  min-height: 44px;
+  text-decoration: none;
   align-items: center;
   gap: 6px;
   padding: 10px 16px;
@@ -355,8 +364,8 @@ const versionDisplay = computed(() => {
 }
 
 .btn-dismiss {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -368,8 +377,8 @@ const versionDisplay = computed(() => {
   transition: all 0.2s ease;
 
   @media (max-width: 768px) {
-    width: 32px;
-    height: 32px;
+    width: 44px;
+    height: 44px;
     border-radius: 6px;
   }
 
@@ -407,5 +416,38 @@ const versionDisplay = computed(() => {
 .slide-up-leave-to {
   opacity: 0;
   transform: translateX(-50%) translateY(20px) scale(0.95);
+}
+
+.btn-notes {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: white;
+  font-size: 13px;
+}
+
+.update-actions :is(a, button):focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+@media (max-width: 520px) {
+  .card-content {
+    flex-wrap: wrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-glow,
+  .sparkle {
+    animation: none !important;
+  }
+
+  .slide-up-enter-active,
+  .slide-up-leave-active,
+  .btn-refresh,
+  .btn-dismiss {
+    transition: none;
+  }
 }
 </style>

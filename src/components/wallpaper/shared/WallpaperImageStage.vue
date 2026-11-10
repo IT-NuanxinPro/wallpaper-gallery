@@ -14,8 +14,8 @@ const { ready, failed, handleLoad, handleError } = useDecodedImage(toRef(props, 
 const frameStyle = computed(() => ({ aspectRatio: getMediaAspectRatio(props.resolution, props.fallbackRatio) }))
 
 async function onLoad(event) {
+  const image = event.target
   if (await handleLoad(event)) {
-    const image = event.target
     // 在解码完成时快照尺寸，父组件无需在异步事件链中再次读取 DOM 属性。
     emit('load', {
       target: image,

@@ -1,6 +1,6 @@
 <script setup>
 import { gsap } from 'gsap'
-import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, useId, watch } from 'vue'
 import LoadingSurface from '@/components/common/feedback/LoadingSurface.vue'
 import { buildImageUrl } from '@/utils/common/format'
 import { HOT_TAGS_WINDOW_DAYS } from '@/utils/config/hotTags'
@@ -35,7 +35,8 @@ const props = defineProps({
 const emit = defineEmits(['select'])
 
 const containerRef = ref(null)
-const animationPlayed = ref(false)
+const panelToggleRef = ref(null)
+const panelDetailsId = useId()
 const hoveredTag = ref(null)
 const hoveredPreviewPlacement = ref({
   horizontal: 'center',
@@ -43,22 +44,28 @@ const hoveredPreviewPlacement = ref({
 })
 const isCategoryExpanded = ref(false)
 const isKeywordExpanded = ref(false)
-const isPanelExpanded = ref(!props.isMobile)
+const isPanelExpanded = ref(false)
+const panelPreferences = new Map()
 
-const MOBILE_VISIBLE_COUNT = 6
+const VISIBLE_COUNT = 6
+const STORAGE_KEY = 'hot_tags_panel_expanded_v1'
 
-const isPanelCollapsible = computed(() => props.isMobile)
+const summaryTags = computed(() => {
+  const categories = props.categoryTags.slice(0, 3).map(tag => ({ tag, kind: 'category' }))
+  const keywords = props.keywordTags.slice(0, 3).map(tag => ({ tag, kind: 'keyword' }))
+  return [...categories, ...keywords]
+})
 
 const visibleCategoryTags = computed(() =>
-  isCategoryExpanded.value ? props.categoryTags : props.categoryTags.slice(0, MOBILE_VISIBLE_COUNT),
+  isCategoryExpanded.value ? props.categoryTags : props.categoryTags.slice(0, VISIBLE_COUNT),
 )
 
 const visibleKeywordTags = computed(() =>
-  isKeywordExpanded.value ? props.keywordTags : props.keywordTags.slice(0, MOBILE_VISIBLE_COUNT),
+  isKeywordExpanded.value ? props.keywordTags : props.keywordTags.slice(0, VISIBLE_COUNT),
 )
 
-const showCategoryToggle = computed(() => props.categoryTags.length > MOBILE_VISIBLE_COUNT)
-const showKeywordToggle = computed(() => props.keywordTags.length > MOBILE_VISIBLE_COUNT)
+const showCategoryToggle = computed(() => props.categoryTags.length > VISIBLE_COUNT)
+const showKeywordToggle = computed(() => props.keywordTags.length > VISIBLE_COUNT)
 
 const showPreview = computed(() => props.currentSeries !== 'bing')
 const loadingSkeletonGroups = computed(() => {
@@ -186,6 +193,33 @@ function handleTagLeave() {
 
 function handlePanelToggle() {
   isPanelExpanded.value = !isPanelExpanded.value
+  savePanelPreference()
+  handleTagLeave()
+}
+
+function savePanelPreference() {
+  const preference = {
+    expanded: isPanelExpanded.value,
+    categoryExpanded: isCategoryExpanded.value,
+    keywordExpanded: isKeywordExpanded.value,
+  }
+  panelPreferences.set(props.currentSeries, preference)
+  try {
+    localStorage.setItem(`${STORAGE_KEY}:${props.currentSeries}`, JSON.stringify(preference))
+  }
+  catch {
+    // 存储不可用时保留本次会话的展开偏好。
+  }
+}
+
+function toggleTagGroup(kind) {
+  if (kind === 'category') {
+    isCategoryExpanded.value = !isCategoryExpanded.value
+  }
+  else {
+    isKeywordExpanded.value = !isKeywordExpanded.value
+  }
+  savePanelPreference()
 }
 
 function onPanelBeforeEnter(el) {
@@ -259,13 +293,11 @@ function handleTagSelect(tag) {
   }
 
   handleTagLeave()
-  isPanelExpanded.value = false
-}
-
-function setChipInitialState(el) {
-  if (el && !animationPlayed.value && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    gsap.set(el, { opacity: 0, y: 12 })
+  if (containerRef.value?.contains(document.activeElement)) {
+    panelToggleRef.value?.focus({ preventScroll: true })
   }
+  isPanelExpanded.value = false
+  savePanelPreference()
 }
 
 watch(
@@ -277,12 +309,10 @@ watch(
   ],
   async ([loading, categoryCount, keywordCount, isExpanded]) => {
     if (loading || (!categoryCount && !keywordCount)) {
-      animationPlayed.value = false
       return
     }
 
-    if (isPanelCollapsible.value && !isExpanded) {
-      animationPlayed.value = false
+    if (!isExpanded) {
       return
     }
 
@@ -298,33 +328,35 @@ watch(
     gsap.killTweensOf(chips)
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       gsap.set(chips, { clearProps: 'opacity,transform' })
-      animationPlayed.value = true
       return
     }
-    gsap.to(chips, {
+    gsap.fromTo(chips, { opacity: 0, y: 12 }, {
       duration: 0.32,
       ease: 'power2.out',
       opacity: 1,
       y: 0,
       stagger: { amount: 0.18 },
       clearProps: 'opacity,transform',
-      onComplete: () => {
-        animationPlayed.value = true
-      },
     })
   },
-  { flush: 'post' },
+  { flush: 'post', immediate: true },
 )
 
-watch(() => props.currentSeries, () => {
-  isPanelExpanded.value = !props.isMobile
-  isCategoryExpanded.value = false
-  isKeywordExpanded.value = false
-})
-
-watch(() => props.isMobile, (isMobile) => {
-  isPanelExpanded.value = !isMobile
-})
+watch(() => props.currentSeries, (series) => {
+  let preference = panelPreferences.get(series)
+  if (!preference) {
+    try {
+      preference = JSON.parse(localStorage.getItem(`${STORAGE_KEY}:${series}`))
+    }
+    catch {
+      // 损坏或不可访问的存储回退到紧凑首屏。
+    }
+  }
+  isPanelExpanded.value = preference?.expanded === true
+  isCategoryExpanded.value = preference?.categoryExpanded === true
+  isKeywordExpanded.value = preference?.keywordExpanded === true
+  handleTagLeave()
+}, { immediate: true })
 
 onBeforeUnmount(() => {
   if (!containerRef.value) {
@@ -340,21 +372,35 @@ onBeforeUnmount(() => {
   <section v-if="loading || categoryTags.length > 0 || keywordTags.length > 0" class="hot-tags-panel">
     <div class="hot-tags-header">
       <div class="hot-tags-header__content">
-        <p class="hot-tags-eyebrow">
-          热门标签
-        </p>
         <h2 class="hot-tags-title">
-          近 {{ HOT_TAGS_WINDOW_DAYS }} 天的热门内容
+          热门标签
         </h2>
+        <span class="hot-tags-hint">近 {{ HOT_TAGS_WINDOW_DAYS }} 天</span>
+      </div>
+      <div class="hot-tags-summary" role="group" aria-label="热门标签摘要，可横向浏览">
+        <span v-if="loading" class="hot-tags-summary__loading" role="status">正在加载热门标签…</span>
+        <button
+          v-for="item in summaryTags"
+          v-else
+          :key="`${item.kind}-${item.tag.tag}`"
+          class="hot-tags-summary__chip"
+          :class="{ 'hot-tags-summary__chip--active': activeTag === item.tag.tag }"
+          type="button"
+          :aria-pressed="activeTag === item.tag.tag"
+          @click="handleTagSelect(item.tag)"
+        >
+          {{ item.kind === 'keyword' ? '# ' : '' }}{{ item.tag.tag }}
+        </button>
       </div>
       <button
-        v-if="isPanelCollapsible"
+        ref="panelToggleRef"
         class="hot-tags-panel-toggle"
         type="button"
         :aria-expanded="isPanelExpanded"
+        :aria-controls="panelDetailsId"
         @click="handlePanelToggle"
       >
-        <span>{{ isPanelExpanded ? '收起热门推荐' : '展开热门推荐' }}</span>
+        <span>{{ isPanelExpanded ? '收起推荐' : '展开全部' }}</span>
         <span
           class="hot-tags-panel-toggle__icon"
           :class="{ 'hot-tags-panel-toggle__icon--expanded': isPanelExpanded }"
@@ -365,12 +411,7 @@ onBeforeUnmount(() => {
           </svg>
         </span>
       </button>
-      <span v-else class="hot-tags-hint">分类会直接切换筛选，关键词会进入搜索</span>
     </div>
-
-    <p v-if="isPanelCollapsible && isPanelExpanded" class="hot-tags-hint hot-tags-hint--mobile">
-      分类会直接切换筛选，关键词会进入搜索
-    </p>
 
     <Transition
       @before-enter="onPanelBeforeEnter"
@@ -380,7 +421,10 @@ onBeforeUnmount(() => {
       @leave="onPanelLeave"
       @after-leave="onPanelAfterLeave"
     >
-      <div v-if="!isPanelCollapsible || isPanelExpanded">
+      <div v-show="isPanelExpanded" :id="panelDetailsId" class="hot-tags-details">
+        <p class="hot-tags-hint hot-tags-hint--details">
+          分类会直接切换筛选，关键词会进入搜索
+        </p>
         <LoadingSurface :busy="loading" label="正在加载推荐" :size="44">
           <div v-if="loading" class="hot-tags-groups">
             <div
@@ -421,9 +465,10 @@ onBeforeUnmount(() => {
                   @mouseleave="handleTagLeave"
                 >
                   <button
-                    :ref="setChipInitialState"
                     class="hot-tag-chip hot-tag-chip--category"
                     :class="{ 'hot-tag-chip--active': activeTag === tag.tag }"
+                    type="button"
+                    :aria-pressed="activeTag === tag.tag"
                     @click="handleTagSelect(tag)"
                   >
                     <span class="hot-tag-chip__name">{{ tag.tag }}</span>
@@ -457,7 +502,8 @@ onBeforeUnmount(() => {
                 v-if="showCategoryToggle"
                 class="hot-tags-toggle"
                 type="button"
-                @click="isCategoryExpanded = !isCategoryExpanded"
+                :aria-expanded="isCategoryExpanded"
+                @click="toggleTagGroup('category')"
               >
                 {{ isCategoryExpanded ? '收起热门分类' : '展开更多分类' }}
               </button>
@@ -482,9 +528,10 @@ onBeforeUnmount(() => {
                   @mouseleave="handleTagLeave"
                 >
                   <button
-                    :ref="setChipInitialState"
                     class="hot-tag-chip hot-tag-chip--keyword"
                     :class="{ 'hot-tag-chip--active': activeTag === tag.tag }"
+                    type="button"
+                    :aria-pressed="activeTag === tag.tag"
                     @click="handleTagSelect(tag)"
                   >
                     <span class="hot-tag-chip__name"># {{ tag.tag }}</span>
@@ -518,7 +565,8 @@ onBeforeUnmount(() => {
                 v-if="showKeywordToggle"
                 class="hot-tags-toggle"
                 type="button"
-                @click="isKeywordExpanded = !isKeywordExpanded"
+                :aria-expanded="isKeywordExpanded"
+                @click="toggleTagGroup('keyword')"
               >
                 {{ isKeywordExpanded ? '收起热门关键词' : '展开更多关键词' }}
               </button>
@@ -534,8 +582,8 @@ onBeforeUnmount(() => {
 .hot-tags-panel {
   position: relative;
   z-index: 90;
-  margin-bottom: $spacing-lg;
-  padding: $spacing-lg;
+  margin-bottom: 12px;
+  padding: 8px 16px;
   border-radius: $radius-lg;
   border: 1px solid var(--accent-border);
   background:
@@ -559,30 +607,24 @@ onBeforeUnmount(() => {
 }
 
 .hot-tags-header {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: $spacing-md;
-  margin-bottom: $spacing-md;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
 }
 
 .hot-tags-header__content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   min-width: 0;
 }
 
-.hot-tags-eyebrow {
-  margin-bottom: 6px;
-  font-size: 12px;
-  font-weight: $font-weight-semibold;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-}
-
 .hot-tags-title {
-  font-size: $font-size-lg;
+  font-size: $font-size-md;
   font-weight: $font-weight-bold;
   color: var(--color-text-primary);
+  white-space: nowrap;
 }
 
 .hot-tags-hint {
@@ -591,9 +633,65 @@ onBeforeUnmount(() => {
   white-space: nowrap;
 }
 
-.hot-tags-hint--mobile {
-  margin-bottom: $spacing-md;
+.hot-tags-hint--details {
+  margin-bottom: 12px;
   white-space: normal;
+}
+
+.hot-tags-details {
+  padding-top: 12px;
+}
+
+.hot-tags-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  height: 52px;
+  overflow-x: auto;
+  padding: 3px;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.hot-tags-summary__chip {
+  flex-shrink: 0;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--accent-border);
+  border-radius: $radius-full;
+  color: var(--color-text-primary);
+  background: rgba(255, 255, 255, 0.72);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  white-space: nowrap;
+  transition:
+    background 180ms ease,
+    color 180ms ease;
+
+  [data-theme='dark'] & {
+    background: rgba(7, 17, 31, 0.78);
+  }
+
+  &:hover,
+  &--active {
+    color: #fff;
+    background: var(--accent-gradient);
+    border-color: transparent;
+  }
+}
+
+.hot-tags-summary__loading {
+  font-size: $font-size-xs;
+  color: var(--color-text-muted);
+}
+
+.hot-tags-panel button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 .hot-tags-panel-toggle {
@@ -602,7 +700,7 @@ onBeforeUnmount(() => {
   justify-content: center;
   gap: 6px;
   flex-shrink: 0;
-  min-height: 36px;
+  min-height: 44px;
   padding: 0 14px;
   border: 1px solid var(--accent-border);
   border-radius: $radius-full;
@@ -746,7 +844,17 @@ onBeforeUnmount(() => {
 }
 
 .hot-tags-toggle {
-  display: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  min-height: 44px;
+  padding: 0 4px;
+  border: none;
+  background: transparent;
+  color: var(--color-accent);
+  font-size: 12px;
+  font-weight: $font-weight-semibold;
 }
 
 .hot-tag-preview {
@@ -884,17 +992,26 @@ onBeforeUnmount(() => {
 
 @include mobile-only {
   .hot-tags-panel {
-    padding: $spacing-md;
-    margin-bottom: $spacing-md;
+    padding: 8px 12px;
+    margin-bottom: 12px;
   }
 
   .hot-tags-header {
-    align-items: flex-start;
-    margin-bottom: 0;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 4px 8px;
+  }
+
+  .hot-tags-summary {
+    grid-row: 2;
+    grid-column: 1 / -1;
+    height: 58px;
+  }
+
+  .hot-tags-summary__chip {
+    min-height: 44px;
   }
 
   .hot-tags-panel-toggle {
-    min-height: 34px;
     padding: 0 12px;
   }
 
@@ -950,19 +1067,6 @@ onBeforeUnmount(() => {
   .hot-tag-chip__meta {
     white-space: nowrap;
   }
-
-  .hot-tags-toggle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    align-self: flex-start;
-    padding: 0;
-    border: none;
-    background: transparent;
-    color: var(--color-accent);
-    font-size: 12px;
-    font-weight: $font-weight-semibold;
-  }
 }
 
 @media (max-width: 420px) {
@@ -978,6 +1082,20 @@ onBeforeUnmount(() => {
 
   .hot-tag-chip__name {
     max-width: 72px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hot-tags-panel-toggle__icon,
+  .hot-tags-summary__chip,
+  .hot-tag-chip,
+  .preview-fade-enter-active,
+  .preview-fade-leave-active {
+    transition: none;
+  }
+
+  .hot-tag-chip:hover {
+    transform: none;
   }
 }
 </style>

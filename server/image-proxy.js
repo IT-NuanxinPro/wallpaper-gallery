@@ -2,6 +2,8 @@ const IMAGE_CACHE_CONTROL = 'public, max-age=31536000, s-maxage=31536000, immuta
 const UPSTREAM_BASE = 'https://raw.githubusercontent.com/IT-NuanxinPro/nuanXinProPic'
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024
 const UPSTREAM_TIMEOUT_MS = 10_000
+const MAX_ORIGINAL_BYTES = 32 * 1024 * 1024
+const ORIGINAL_TIMEOUT_MS = 30_000
 const TAG_PATTERN = /^v\d+\.\d+\.\d+(?:-[a-z\d]+(?:[.-][a-z\d]+)*)?(?:\+[a-z\d]+(?:[.-][a-z\d]+)*)?$/i
 const IMAGE_EXTENSION = /\.(?:avif|bmp|gif|ico|jpe?g|png|webp)$/i
 const IMAGE_TYPES = new Set(['image/avif', 'image/bmp', 'image/gif', 'image/jpeg', 'image/png', 'image/webp', 'image/x-icon', 'image/vnd.microsoft.icon'])
@@ -30,13 +32,18 @@ function imageLocation(request) {
   const segments = url.pathname.slice('/images/'.length).split('/').map(decodeURIComponent)
   const [tag, kind, series, ...file] = segments
   if (!tag || tag.length > 100 || !TAG_PATTERN.test(tag)
-    || !['thumbnail', 'preview'].includes(kind)
+    || !['thumbnail', 'preview', 'wallpaper'].includes(kind)
     || !['desktop', 'mobile', 'avatar'].includes(series)
     || !file.length || !IMAGE_EXTENSION.test(file.at(-1)) || !file.every(safeSegment)) {
     return null
   }
   const path = segments.map(encodeURIComponent).join('/')
-  return { upstream: `${UPSTREAM_BASE}/${path}`, cacheKey: new Request(`${url.origin}/images/${path}`) }
+  return {
+    upstream: `${UPSTREAM_BASE}/${path}`,
+    cacheKey: new Request(`${url.origin}/images/${path}`),
+    maxBytes: kind === 'wallpaper' ? MAX_ORIGINAL_BYTES : MAX_IMAGE_BYTES,
+    timeoutMs: kind === 'wallpaper' ? ORIGINAL_TIMEOUT_MS : UPSTREAM_TIMEOUT_MS,
+  }
 }
 
 function errorResponse(request, status) {
@@ -76,7 +83,7 @@ function responseForRequest(request, response, cacheStatus) {
   return new Response(response.body, { headers })
 }
 
-async function readLimitedBody(response, signal) {
+async function readLimitedBody(response, signal, maxBytes) {
   const reader = response.body?.getReader()
   if (!reader)
     throw new Error('Missing image body')
@@ -94,7 +101,7 @@ async function readLimitedBody(response, signal) {
       if (done)
         break
       length += value.byteLength
-      if (length > MAX_IMAGE_BYTES) {
+      if (length > maxBytes) {
         void reader.cancel().catch(() => {})
         throw new Error('Image too large')
       }
@@ -116,11 +123,15 @@ async function readLimitedBody(response, signal) {
   }
 }
 
-async function fetchImage(request, upstreamUrl, fetch, signal) {
+async function fetchImage(request, upstreamUrl, fetch, signal, maxBytes) {
+  signal.throwIfAborted()
   const upstream = await fetch(upstreamUrl, { method: request.method, redirect: 'manual', signal })
+  if (signal.aborted)
+    void upstream.body?.cancel().catch(() => {})
+  signal.throwIfAborted()
   const contentType = imageType(upstream)
   const declaredLength = upstream.headers.get('Content-Length')
-  if (upstream.status !== 200 || !contentType || Number(declaredLength) > MAX_IMAGE_BYTES) {
+  if (upstream.status !== 200 || !contentType || Number(declaredLength) > maxBytes) {
     void upstream.body?.cancel().catch(() => {})
     return errorResponse(request, upstream.status === 404 ? 404 : 502)
   }
@@ -137,28 +148,38 @@ async function fetchImage(request, upstreamUrl, fetch, signal) {
       headers.set('Content-Length', declaredLength)
     return new Response(null, { headers })
   }
-  const body = await readLimitedBody(upstream, signal)
+  const body = await readLimitedBody(upstream, signal, maxBytes)
   headers.set('Content-Length', String(body.byteLength))
   return new Response(body, { headers })
 }
 
-async function fetchWithDeadline(request, upstream, fetch) {
+async function fetchWithDeadline(request, location, fetch) {
   const controller = new AbortController()
   let timeout
+  let abortRequest
   const deadline = new Promise((_, reject) => {
+    abortRequest = () => {
+      controller.abort()
+      reject(new Error('Image request cancelled'))
+    }
+    if (request.signal.aborted)
+      abortRequest()
+    else
+      request.signal.addEventListener('abort', abortRequest, { once: true })
     timeout = setTimeout(() => {
       reject(new Error('Image request timeout'))
       controller.abort()
-    }, UPSTREAM_TIMEOUT_MS)
+    }, location.timeoutMs)
   })
   try {
-    return await Promise.race([fetchImage(request, upstream, fetch, controller.signal), deadline])
+    return await Promise.race([fetchImage(request, location.upstream, fetch, controller.signal, location.maxBytes), deadline])
   }
   catch {
-    return errorResponse(request, controller.signal.aborted ? 504 : 502)
+    return errorResponse(request, request.signal.aborted ? 499 : controller.signal.aborted ? 504 : 502)
   }
   finally {
     clearTimeout(timeout)
+    request.signal.removeEventListener('abort', abortRequest)
   }
 }
 
@@ -184,7 +205,7 @@ export async function handleImageRequest(request, { fetch = globalThis.fetch, ca
     // 缓存不可用时仍然请求固定上游，缓存不成为图片可用性的前提。
   }
 
-  const response = await fetchWithDeadline(request, location.upstream, fetch)
+  const response = await fetchWithDeadline(request, location, fetch)
   if (response.status !== 200)
     return response
   if (cache && request.method === 'GET') {

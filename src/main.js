@@ -61,3 +61,5 @@ useAuthStore(pinia).initialize().catch((error) => {
 })
 app.use(router)
 app.mount('#app')
+// 详情由 Vue 接管后移除服务端无脚本正文，避免重复可见。
+document.querySelector('[data-wallpaper-detail]')?.remove()

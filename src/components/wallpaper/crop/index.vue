@@ -9,7 +9,9 @@ import { gsap } from 'gsap'
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import { trackImageCrop } from '@/utils/common/analytics'
-import { buildRawImageUrl } from '@/utils/common/format'
+import { getCropOutputSizeError } from '@/utils/wallpaper/cropOutput'
+import { fetchWallpaperImage } from '@/utils/wallpaper/imageFetch'
+import { resizePreviewCanvas } from '@/utils/wallpaper/previewCanvas'
 import CropBatchExportSection from './shared/CropBatchExportSection.vue'
 import CropImageStage from './shared/CropImageStage.vue'
 import CropModalHeader from './shared/CropModalHeader.vue'
@@ -91,7 +93,9 @@ const customWidth = ref('')
 const customHeight = ref('')
 const previewUpdateTimer = ref(null)
 const previewRAF = ref(null) // requestAnimationFrame ID
-const actualImageUrl = ref('') // 实际使用的图片 URL（可能回退到 GitHub Raw）
+const actualImageUrl = ref('') // 当前原图 Blob URL，随加载切换及时释放
+let imageLoadController
+let imageLoadVersion = 0
 const imageNaturalSize = ref({ width: 0, height: 0 }) // 图片原始尺寸
 
 // 获取用户屏幕分辨率
@@ -152,14 +156,16 @@ const currentRatioDisplay = computed(() => {
   return currentPreset.value?.name || ''
 })
 
-// 处理大文件：使用 jsDelivr CDN，如果失败则回退到 GitHub Raw
-const croppedImageUrl = computed(() => actualImageUrl.value || props.imageUrl)
+const croppedImageUrl = computed(() => actualImageUrl.value)
 const outputFormatInfo = computed(() => OUTPUT_FORMAT_CONFIG[outputFormat.value] || OUTPUT_FORMAT_CONFIG.jpeg)
 const parsedOutputWidth = computed(() => parseDimensionValue(outputWidth.value))
 const parsedOutputHeight = computed(() => parseDimensionValue(outputHeight.value))
 const exactOutputValid = computed(() =>
-  !exactOutputEnabled.value || (parsedOutputWidth.value > 0 && parsedOutputHeight.value > 0),
+  !exactOutputEnabled.value || !getCropOutputSizeError(parsedOutputWidth.value, parsedOutputHeight.value),
 )
+const outputError = computed(() => exactOutputEnabled.value
+  ? getCropOutputSizeError(parsedOutputWidth.value, parsedOutputHeight.value)
+  : cropInfo.value.width && cropInfo.value.height ? getCropOutputSizeError(cropInfo.value.width, cropInfo.value.height) : '')
 const currentAspectRatio = computed(() => {
   if (cropInfo.value.width > 0 && cropInfo.value.height > 0) {
     return cropInfo.value.width / cropInfo.value.height
@@ -168,6 +174,9 @@ const currentAspectRatio = computed(() => {
   if (imageNaturalSize.value.width > 0 && imageNaturalSize.value.height > 0) {
     return imageNaturalSize.value.width / imageNaturalSize.value.height
   }
+
+  if (selectedRatio.value === 'custom' && exactOutputEnabled.value && parsedOutputWidth.value > 0 && parsedOutputHeight.value > 0)
+    return parsedOutputWidth.value / parsedOutputHeight.value
 
   if (Number.isFinite(currentPreset.value?.ratio) && currentPreset.value.ratio > 0) {
     return currentPreset.value.ratio
@@ -212,7 +221,7 @@ const exportScaleHint = computed(() => {
   return '当前单张导出会保持裁剪区域的原生尺寸。'
 })
 const canSingleExport = computed(() =>
-  imageLoaded.value && !imageError.value && !isProcessing.value && Boolean(cropper.value) && exactOutputValid.value,
+  imageLoaded.value && !imageError.value && !isProcessing.value && Boolean(cropper.value) && exactOutputValid.value && !outputError.value,
 )
 const rawBatchPresets = computed(() => {
   const ratio = currentAspectRatio.value
@@ -260,7 +269,7 @@ const recommendedBatchPresetIds = computed(() => {
   return sourceIds.slice(0, 3)
 })
 const batchPresets = computed(() =>
-  rawBatchPresets.value.map(preset => ({
+  rawBatchPresets.value.filter(preset => !getCropOutputSizeError(preset.width, preset.height)).map(preset => ({
     ...preset,
     recommended: recommendedBatchPresetIds.value.includes(preset.id),
   })),
@@ -367,11 +376,15 @@ function buildBatchPreset(id, width, height, ratio, isNative = false) {
 // 初始化 Cropper
 function initCropper() {
   const imageElement = getImageElement()
+  const version = imageLoadVersion
   if (!imageElement || cropper.value)
     return
 
   const preset = currentPreset.value
-  const aspectRatio = Number.isNaN(preset.ratio) ? Number.NaN : preset.ratio
+  const customRatio = Number(customWidth.value) / Number(customHeight.value)
+  const aspectRatio = selectedRatio.value === 'custom' && Number.isFinite(customRatio) && customRatio > 0
+    ? customRatio
+    : preset.ratio
 
   cropper.value = new Cropper(imageElement, {
     aspectRatio,
@@ -393,6 +406,8 @@ function initCropper() {
     background: false, // 关闭背景网格，更简洁
     responsive: true, // 响应式
     ready() {
+      if (version !== imageLoadVersion || !props.isOpen || !cropper.value)
+        return
       // 记录初始缩放比例
       const canvasData = cropper.value.getCanvasData()
       const imageData = cropper.value.getImageData()
@@ -401,6 +416,8 @@ function initCropper() {
       updatePreview()
     },
     crop(event) {
+      if (version !== imageLoadVersion || !props.isOpen)
+        return
       cropInfo.value = {
         width: Math.round(event.detail.width),
         height: Math.round(event.detail.height),
@@ -408,6 +425,8 @@ function initCropper() {
       debouncedUpdatePreview()
     },
     zoom(event) {
+      if (version !== imageLoadVersion || !props.isOpen)
+        return
       // 计算相对于初始状态的缩放比例
       if (initialZoomRatio.value > 0) {
         zoomLevel.value = event.detail.ratio / initialZoomRatio.value
@@ -453,9 +472,11 @@ function updatePreview() {
     })
 
     if (previewCanvas) {
+      const size = resizePreviewCanvas(previewCanvasElement, window.devicePixelRatio || 1)
+      if (!size)
+        return
       const ctx = previewCanvasElement.getContext('2d', { alpha: false })
-      const containerWidth = previewCanvasElement.offsetWidth || 800
-      const containerHeight = previewCanvasElement.offsetHeight || 220
+      const { width: containerWidth, height: containerHeight, dpr } = size
 
       // 计算缩放比例保持比例
       const scale = Math.min(
@@ -474,19 +495,6 @@ function updatePreview() {
       const coverHeight = previewCanvas.height * coverScale
       const coverOffsetX = (containerWidth - coverWidth) / 2
       const coverOffsetY = (containerHeight - coverHeight) / 2
-
-      // 使用设备像素比提高清晰度
-      const dpr = Math.min(window.devicePixelRatio || 1, 2) // 限制最大 2x
-      const canvasWidth = containerWidth * dpr
-      const canvasHeight = containerHeight * dpr
-
-      // 只在尺寸变化时重设 canvas
-      if (previewCanvasElement.width !== canvasWidth || previewCanvasElement.height !== canvasHeight) {
-        previewCanvasElement.width = canvasWidth
-        previewCanvasElement.height = canvasHeight
-        previewCanvasElement.style.width = `${containerWidth}px`
-        previewCanvasElement.style.height = `${containerHeight}px`
-      }
 
       // 清除并绘制
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
@@ -517,6 +525,7 @@ function selectRatio(ratioId) {
   if (selectedRatio.value === ratioId)
     return
 
+  exactOutputEnabled.value = false
   selectedRatio.value = ratioId
   showCustomInput.value = false
 
@@ -533,6 +542,7 @@ function applyCustomResolution() {
   const h = Number.parseInt(customHeight.value)
 
   if (w > 0 && h > 0 && cropper.value) {
+    exactOutputEnabled.value = false
     const ratio = w / h
     cropper.value.setAspectRatio(ratio)
     selectedRatio.value = 'custom'
@@ -606,10 +616,15 @@ function closeImmersivePreview() {
 }
 
 // 图片加载完成
-function handleImageLoad() {
+function handleImageLoad(event) {
+  const imageElement = getImageElement()
+  const version = imageLoadVersion
+  if (!props.isOpen || !actualImageUrl.value || event?.target !== imageElement
+    || imageElement?.getAttribute?.('src') !== actualImageUrl.value) {
+    return
+  }
   imageLoaded.value = true
   // 记录图片原始尺寸
-  const imageElement = getImageElement()
   if (imageElement) {
     imageNaturalSize.value = {
       width: imageElement.naturalWidth,
@@ -617,28 +632,57 @@ function handleImageLoad() {
     }
   }
   nextTick(() => {
-    initCropper()
+    if (version === imageLoadVersion && props.isOpen)
+      initCropper()
   })
 }
 
-// 图片加载失败
-function handleImageError() {
-  // 如果还没有尝试过回退，则回退到 GitHub Raw CDN
-  if (!actualImageUrl.value && props.imageUrl) {
-    console.warn('[ImageCropModal] 图片加载失败，尝试回退到 GitHub Raw CDN')
-    actualImageUrl.value = buildRawImageUrl(props.imageUrl)
-    imageError.value = false
-    imageLoaded.value = false
-    // 稍后重试加载
+function handleImageError(event) {
+  if (!props.isOpen || !actualImageUrl.value || event?.target !== getImageElement())
     return
-  }
-
-  // 如果已经回退过，则显示错误
   imageError.value = true
-  imageLoaded.value = true
+  imageLoaded.value = false
+}
+
+function cancelImageLoad() {
+  imageLoadVersion++
+  imageLoadController?.abort()
+  imageLoadController = null
+  if (actualImageUrl.value)
+    URL.revokeObjectURL(actualImageUrl.value)
+  actualImageUrl.value = ''
+}
+
+// 重试只重载图片，保留比例、自定义尺寸与输出选择。
+async function loadOriginalImage() {
+  cancelImageLoad()
+  destroyCropper()
+  cropInfo.value = { width: 0, height: 0 }
+  imageNaturalSize.value = { width: 0, height: 0 }
+  imageLoaded.value = false
+  imageError.value = false
+  const version = imageLoadVersion
+  const controller = new AbortController()
+  imageLoadController = controller
+  try {
+    const blob = await fetchWallpaperImage(props.imageUrl, { signal: controller.signal })
+    if (version !== imageLoadVersion || controller.signal.aborted || !props.isOpen)
+      return
+    actualImageUrl.value = URL.createObjectURL(blob)
+  }
+  catch {
+    if (version === imageLoadVersion && !controller.signal.aborted && props.isOpen)
+      imageError.value = true
+  }
 }
 
 function buildCanvasOptions(targetSize = null) {
+  const size = targetSize || (exactOutputEnabled.value
+    ? { width: parsedOutputWidth.value, height: parsedOutputHeight.value }
+    : cropInfo.value)
+  const error = getCropOutputSizeError(size.width, size.height)
+  if (error)
+    throw new Error(error)
   const options = {
     imageSmoothingEnabled: true,
     imageSmoothingQuality: 'high',
@@ -656,8 +700,8 @@ function buildCanvasOptions(targetSize = null) {
     return options
   }
 
-  options.maxWidth = 8192
-  options.maxHeight = 8192
+  options.width = size.width
+  options.height = size.height
 
   return options
 }
@@ -737,7 +781,7 @@ watch(
 
 // 裁剪并下载
 async function handleCropAndDownload() {
-  if (!cropper.value || isProcessing.value || !exactOutputValid.value)
+  if (!canSingleExport.value)
     return
 
   isProcessing.value = true
@@ -875,6 +919,7 @@ watch(() => props.isOpen, async (isOpen) => {
     animateIn()
   }
   else {
+    cancelImageLoad()
     destroyCropper()
     // 清理预览更新定时器
     if (previewUpdateTimer.value) {
@@ -895,7 +940,12 @@ watch(() => props.isOpen, async (isOpen) => {
     actualImageUrl.value = ''
     imageNaturalSize.value = { width: 0, height: 0 }
   }
-})
+}, { immediate: true })
+
+watch([() => props.isOpen, () => props.imageUrl], ([isOpen]) => {
+  if (isOpen)
+    void loadOriginalImage()
+}, { immediate: true, flush: 'sync' })
 
 // 键盘事件
 function handleKeydown(e) {
@@ -930,6 +980,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   document.removeEventListener('keydown', handleKeydown)
+  cancelImageLoad()
   destroyCropper()
   // 清理预览更新定时器和 RAF
   if (previewUpdateTimer.value) {
@@ -970,6 +1021,7 @@ onUnmounted(() => {
                 :image-url="croppedImageUrl"
                 @load="handleImageLoad"
                 @error="handleImageError"
+                @retry="loadOriginalImage"
               />
 
               <CropPreviewSection
@@ -978,6 +1030,7 @@ onUnmounted(() => {
                 :current-aspect-ratio="currentAspectRatio"
                 :image-loaded="imageLoaded"
                 :is-processing="isProcessing"
+                @resize="debouncedUpdatePreview"
                 @immersive-preview="showImmersivePreview"
               />
             </div>
@@ -1004,6 +1057,7 @@ onUnmounted(() => {
               />
 
               <CropOutputSection
+                :output-error="outputError"
                 :exact-output-enabled="exactOutputEnabled"
                 :exact-output-valid="exactOutputValid"
                 :output-format="outputFormat"
@@ -1107,6 +1161,11 @@ onUnmounted(() => {
 
 .crop-modal-overlay {
   // 裁剪弹窗固定使用深色视觉，不跟随全局亮色主题切换
+  --color-text-primary: #edf3ff;
+  --color-text-secondary: #bac9e3;
+  --color-text-muted: #a0b0ca;
+  --color-bg-card: #152139;
+  --color-bg-secondary: #101a2d;
   --color-accent: #6ea8ff;
   --color-accent-rgb: 110, 168, 255;
   --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);

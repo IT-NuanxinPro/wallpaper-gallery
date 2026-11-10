@@ -7,6 +7,7 @@ import PageLoadingScene from '@/components/common/feedback/PageLoadingScene.vue'
 import RemoteAvatar from '@/components/common/ui/RemoteAvatar.vue'
 import HomeModalHost from '@/components/home/HomeModalHost.vue'
 import WallpaperCard from '@/components/wallpaper/card/index.vue'
+import WallpaperRotationPanel from '@/components/wallpaper/desktop/WallpaperRotationPanel.vue'
 import { useDevice } from '@/composables/useDevice'
 import { useAuthStore } from '@/stores/auth'
 import { useInteractionStore } from '@/stores/interaction'
@@ -395,6 +396,10 @@ onMounted(() => {
   <div class="library-page">
     <div class="container">
       <section class="library-shell">
+        <WallpaperRotationPanel
+          :wallpapers="isAuthenticated && activeTab === 'collections' && !resolving ? resolvedWallpapers : []"
+          :total-count="isAuthenticated && activeTab === 'collections' ? currentAssetKeys.length : 0"
+        />
         <PageLoadingScene
           v-if="pageState === 'loading'"
           title="壁纸库加载中"

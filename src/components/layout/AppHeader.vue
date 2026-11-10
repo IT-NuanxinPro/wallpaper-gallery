@@ -469,16 +469,24 @@ watch(isMobile, () => {
           @select="handleThemeOptionSelect"
         />
 
-        <router-link
-          to="/about"
-          class="header-about-link"
-          aria-label="关于项目"
-        >
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M12 16v-4M12 8h.01" />
-          </svg>
-        </router-link>
+        <el-dropdown trigger="click" placement="bottom-end">
+          <button type="button" class="header-about-link" aria-label="更多导航">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 16v-4M12 8h.01" />
+            </svg>
+          </button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item @click="router.push('/collections')">
+                精选专题
+              </el-dropdown-item>
+              <el-dropdown-item @click="router.push('/about')">
+                关于项目
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
 
         <a
           href="https://github.com/IT-NuanxinPro/wallpaper-gallery"

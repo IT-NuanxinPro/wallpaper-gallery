@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { detectDevice, DEVICE_TYPES } from '@/composables/useDevice'
+import { WALLPAPER_COLLECTIONS } from '@/content/collections'
 import { DEVICE_SERIES } from '@/utils/config/constants'
 
 const SITE_NAME = 'Wallpaper Gallery'
@@ -11,6 +12,18 @@ const DEFAULT_DESCRIPTION = 'Wallpaper Gallery 提供 4K 高清壁纸免费下�
 // 路由配置（使用标准懒加载，骨架屏由 App.vue Suspense 处理）
 // ========================================
 const routes = [
+  {
+    path: '/collections',
+    name: 'Collections',
+    component: () => import('@/views/Collections.vue'),
+    meta: { compactMain: true, title: '精选专题 - Wallpaper Gallery', description: '人工挑选的静夜、山间与海岸壁纸，以及电脑与手机主题搭配。', canonicalPath: '/collections' },
+  },
+  {
+    path: '/collections/:slug',
+    name: 'CollectionDetail',
+    component: () => import('@/views/CollectionDetail.vue'),
+    meta: { compactMain: true },
+  },
   // 首页 - 根据设备类型自动选择系列
   {
     path: '/',
@@ -86,6 +99,12 @@ const routes = [
       series: 'avatar',
       aspectType: 'square',
     },
+  },
+  {
+    path: '/wallpaper/:token',
+    name: 'WallpaperDetail',
+    component: () => import('@/views/WallpaperDetail.vue'),
+    meta: { compactMain: true, dynamicSeo: true },
   },
   // 关于页面
   {
@@ -178,6 +197,10 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
   scrollBehavior(to, from, savedPosition) {
+    // 首页列表需先补足分页后恢复位置；同页参数变化也不应重置滚动。
+    if (['Home', 'Desktop', 'Video', 'Bing', 'Mobile', 'Avatar'].includes(to.name)) {
+      return false
+    }
     if (savedPosition) {
       return savedPosition
     }
@@ -230,8 +253,12 @@ function updateLinkTag(selector, attributes) {
 }
 
 function applyRouteSeo(to) {
-  const title = to.meta.title || DEFAULT_TITLE
-  const description = to.meta.description || DEFAULT_DESCRIPTION
+  if (to.meta.dynamicSeo)
+    return
+  const collection = to.name === 'CollectionDetail' ? WALLPAPER_COLLECTIONS.find(item => item.slug === to.params.slug) : null
+  document.head.querySelector('meta[name="robots"][data-detail-status]')?.remove()
+  const title = collection ? `${collection.title} - Wallpaper Gallery` : to.meta.title || DEFAULT_TITLE
+  const description = collection?.description || to.meta.description || DEFAULT_DESCRIPTION
   const canonicalPath = to.meta.canonicalPath || to.path || '/'
   const url = new URL(canonicalPath, SITE_URL).toString()
 
@@ -247,6 +274,11 @@ function applyRouteSeo(to) {
     content: title,
   })
 
+  updateMetaTag('meta[property="og:type"]', {
+    property: 'og:type',
+    content: 'website',
+  })
+
   updateMetaTag('meta[property="og:description"]', {
     property: 'og:description',
     content: description,
@@ -255,6 +287,15 @@ function applyRouteSeo(to) {
   updateMetaTag('meta[property="og:url"]', {
     property: 'og:url',
     content: url,
+  })
+
+  updateMetaTag('meta[property="og:image"]', {
+    property: 'og:image',
+    content: `${SITE_URL}/og-image.jpg`,
+  })
+  updateMetaTag('meta[name="twitter:image"]', {
+    name: 'twitter:image',
+    content: `${SITE_URL}/twitter-card.jpg`,
   })
 
   updateMetaTag('meta[property="og:site_name"]', {

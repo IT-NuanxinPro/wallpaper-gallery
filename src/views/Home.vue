@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import AvatarMakerBanner from '@/components/avatar/AvatarMakerBanner.vue'
 import DiyAvatarBanner from '@/components/avatar/DiyAvatarBanner.vue'
 import AnnouncementBanner from '@/components/common/feedback/AnnouncementBanner.vue'
@@ -11,6 +11,7 @@ import HotTagsPanel from '@/components/home/HotTagsPanel.vue'
 import MobileSeriesNotice from '@/components/home/MobileSeriesNotice.vue'
 import FilterPanel from '@/components/wallpaper/filter/index.vue'
 import WallpaperGrid from '@/components/wallpaper/WallpaperGrid/index.vue'
+import { useBrowseState, validateBrowseQuery } from '@/composables/home/useBrowseState'
 import { useHomeDataLoader } from '@/composables/home/useHomeDataLoader'
 import { useHomeSeriesSync } from '@/composables/home/useHomeSeriesSync'
 import { useWallpaperNavigator } from '@/composables/home/useWallpaperNavigator'
@@ -27,6 +28,7 @@ import { getDefaultCategoryFilter } from '@/utils/filter/defaults'
 import { canDisplayLatestSlice } from '@/utils/filter/firstScreen'
 
 const route = useRoute()
+const router = useRouter()
 const AvatarMakerModal = defineAsyncModal(() => import('@/components/avatar/AvatarMakerModal/index.vue'))
 
 const seriesStore = useSeriesStore()
@@ -166,7 +168,7 @@ const routeSyncReady = ref(false)
 const { syncSeriesFromRoute } = useHomeSeriesSync(route, seriesStore, routeSyncReady)
 syncSeriesFromRoute()
 
-const { error, handleReload, loading } = useHomeDataLoader({
+const { error, handleReload: reloadSeriesData, loading } = useHomeDataLoader({
   currentSeries,
   showMobileSeriesNotice,
   filterStore,
@@ -240,6 +242,24 @@ onBeforeUnmount(() => {
   }
 })
 
+const restoredBingYear = computed(() => {
+  if (currentSeries.value !== 'bing' || filterStore.categoryFilter !== 'all')
+    return null
+  const state = validateBrowseQuery(route.query, { series: 'bing' })
+  const image = state.image || state.exact
+  return image ? Number(image.slice('bing:bing-'.length, 'bing:bing-'.length + 4)) : null
+})
+watch([restoredBingYear, isSeriesContentReady], ([year, ready]) => {
+  if (year && ready && !showMobileSeriesNotice.value)
+    void wallpaperStore.loadBingYear(year)
+}, { immediate: true })
+const navigationReady = computed(() => isSeriesContentReady.value
+  && areSelectedResultsComplete.value
+  && (restoredBingYear.value === null || wallpaperStore.isBingYearLoaded(restoredBingYear.value))
+  && (filterStore.searchQuery === filterStore.debouncedQuery || Boolean(filterStore.exactSearchValue))
+  && (!['popular', 'downloads', 'views', 'weekly-hot', 'monthly-hot'].includes(filterStore.sortBy) || !popularityStore.loading))
+const gridRef = ref(null)
+const navigator = useWallpaperNavigator(() => filteredWallpapers.value, { resultsReady: navigationReady })
 const {
   close,
   currentWallpaper,
@@ -247,7 +267,25 @@ const {
   handlePrevWallpaper,
   handleSelectWallpaper,
   isOpen,
-} = useWallpaperNavigator(wallpaperStore)
+} = navigator
+const { minimumDisplayCount, onDisplayCountChange, restoreFromRoute } = useBrowseState({
+  route,
+  router,
+  filterStore,
+  currentSeries,
+  results: filteredWallpapers,
+  resultsReady: navigationReady,
+  categories: categoryOptions,
+  categoriesReady: computed(() => isSeriesContentReady.value && wallpaperStore.isDataComplete),
+  gridReady: computed(() => Boolean(gridRef.value)),
+  navigator,
+})
+
+function handleReload() {
+  reloadSeriesData()
+  // 加载器会重置系列默认值，重试时仍以当前 URL 的浏览条件为准。
+  void restoreFromRoute()
+}
 
 function handleReset() {
   // 周/月热门同时限定上传时间，清除筛选时也需要解除该限制。
@@ -467,12 +505,15 @@ function handleAvatarMakerClose() {
 
         <WallpaperGrid
           v-else
+          ref="gridRef"
           :wallpapers="filteredWallpapers"
           :loading="gridLoading"
           :search-query="filterStore.searchQuery"
           :total-count="wallpaperStore.displayTotal"
           :has-filters="hasActiveFilters"
           :popularity-data="popularityStore.allTimeData"
+          :minimum-display-count="minimumDisplayCount"
+          @display-count-change="onDisplayCountChange"
           @select="handleSelectWallpaper"
           @reset-filters="handleReset"
         />

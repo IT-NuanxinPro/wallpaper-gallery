@@ -17,6 +17,7 @@ import { usePopularityStore } from '@/stores/popularity'
 import { copyText } from '@/utils/common/clipboard'
 import { buildRawImageUrl, formatDate, formatFileSize, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/common/format'
 import { resolveWallpaperSeries } from '@/utils/wallpaper/identity'
+import { buildWallpaperShareUrl } from '@/utils/wallpaper/share'
 
 const props = defineProps({
   wallpaper: {
@@ -215,7 +216,7 @@ function onModalAfterLeave() {
 }
 
 async function handleCopyUrl() {
-  const url = props.wallpaper?.url
+  const url = buildWallpaperShareUrl(props.wallpaper)
   if (!url)
     return
 

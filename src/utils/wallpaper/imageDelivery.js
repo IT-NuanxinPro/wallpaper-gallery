@@ -31,10 +31,13 @@ function getImageBaseUrl() {
   return DEFAULT_IMAGE_BASE_URL
 }
 
-function canProxyImage(path) {
+function canProxyImage(path, includeOriginal = false) {
   const segments = path.split('/')
-  if (!IMAGE_DIRECTORY_PATTERN.test(segments.slice(0, 3).join('/')) || segments.length < 4)
+  const directory = segments.slice(0, 3).join('/')
+  if ((!IMAGE_DIRECTORY_PATTERN.test(directory)
+    && !(includeOriginal && /^\/wallpaper\/(?:desktop|mobile|avatar)$/.test(directory))) || segments.length < 4 || path.length > 4096) {
     return false
+  }
 
   try {
     const fileSegments = segments.slice(3).map(segment => decodeURIComponent(segment))
@@ -66,6 +69,17 @@ function isSupportedTag(cdnTag) {
   return cdnTag.length <= 100 && CDN_TAG_PATTERN.test(cdnTag)
 }
 
+function isSafeRepositoryPath(path) {
+  if (!path.startsWith('/') || path.length > 4096)
+    return false
+  try {
+    return path.slice(1).split('/').map(decodeURIComponent).every(isSafeImageSegment)
+  }
+  catch {
+    return false
+  }
+}
+
 function buildDirectImageUrl(path, cdnTag) {
   return `https://cdn.jsdelivr.net/gh/IT-NuanxinPro/nuanXinProPic@${cdnTag}${path}`
 }
@@ -91,8 +105,23 @@ export function resolveDirectImageUrl(url) {
     const separator = resource.indexOf('/')
     const cdnTag = resource.slice(0, separator)
     const path = resource.slice(separator)
-    if (separator > 0 && isSupportedTag(cdnTag) && canProxyImage(path))
+    if (separator > 0 && isSupportedTag(cdnTag) && canProxyImage(path, true))
       return buildDirectImageUrl(path, cdnTag)
   }
   return url
+}
+
+/** 原图仅将固定仓库的安全路径交给入口；直连回退始终保留版本和原始尺寸。 */
+export function buildImageFetchUrls(url) {
+  const direct = resolveDirectImageUrl(url)
+  const match = direct?.match(/^https:\/\/(?:cdn\.jsdelivr\.net\/gh\/IT-NuanxinPro\/nuanXinProPic@|raw\.githubusercontent\.com\/IT-NuanxinPro\/nuanXinProPic\/)([^/]+)(\/[^?#]*)$/)
+  if (!match || !isSupportedTag(match[1]) || !isSafeRepositoryPath(match[2]))
+    return url ? [url] : []
+
+  const [, tag, path] = match
+  const gateway = String(import.meta.env.VITE_IMAGE_PROXY_ENABLED).toLowerCase() === 'false' || !canProxyImage(path, true)
+    ? ''
+    : `${getImageBaseUrl()}/${tag}${path}`
+  const raw = `https://raw.githubusercontent.com/IT-NuanxinPro/nuanXinProPic/${tag}${path}`
+  return [...new Set([gateway, direct, buildDirectImageUrl(path, tag), raw].filter(Boolean))]
 }

@@ -12,6 +12,7 @@ import { copyText } from '@/utils/common/clipboard'
 import { formatDate, formatFileSize, getDisplayFilename } from '@/utils/common/format'
 import { VIDEO_USAGE_SHORT_LABELS } from '@/utils/config/constants'
 import { resolveWallpaperSeries } from '@/utils/wallpaper/identity'
+import { buildWallpaperShareUrl } from '@/utils/wallpaper/share'
 
 const props = defineProps({
   wallpaper: {
@@ -171,7 +172,7 @@ function handleVideoError() {
 }
 
 async function handleCopyUrl() {
-  const url = props.wallpaper?.downloadUrl || props.wallpaper?.url
+  const url = buildWallpaperShareUrl(props.wallpaper)
   if (!url)
     return
 

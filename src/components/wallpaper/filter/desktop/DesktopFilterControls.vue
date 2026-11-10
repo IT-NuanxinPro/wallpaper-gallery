@@ -129,10 +129,10 @@ defineEmits([
 .filter-right {
   display: flex;
   align-items: center;
-  gap: 12px 16px;
-  flex: 1 1 760px;
+  gap: 8px 12px;
+  flex: 1 1 560px;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  justify-content: flex-start;
   min-width: 0;
 }
 
@@ -141,7 +141,8 @@ defineEmits([
   align-items: center;
   gap: $spacing-sm;
   min-width: 0;
-  flex: 1 1 150px;
+  flex: 1 1 128px;
+  min-width: min(145px, 100%);
   max-width: 200px;
 
   :deep(.el-select) {
@@ -159,7 +160,7 @@ defineEmits([
       box-shadow: none !important;
       transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1) !important;
       padding: 0 14px !important;
-      height: 38px !important;
+      min-height: 44px !important;
 
       [data-theme='dark'] & {
         background: rgba(15, 23, 42, 0.6) !important;
@@ -206,11 +207,11 @@ defineEmits([
 }
 
 .filter-item--date {
-  flex: 0 0 196px;
+  flex: 1 1 180px;
 }
 
 .filter-item--category {
-  flex-basis: 180px;
+  flex-basis: 170px;
   max-width: 220px;
 
   :deep(.category-dropdown) {
@@ -222,6 +223,7 @@ defineEmits([
   :deep(.dropdown-trigger) {
     width: 100%;
     min-width: 0;
+    min-height: 44px;
   }
 }
 

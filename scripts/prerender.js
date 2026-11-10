@@ -5,6 +5,7 @@ import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import puppeteer from 'puppeteer'
+import { WALLPAPER_COLLECTIONS } from '../src/content/collections.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT_DIR = path.resolve(__dirname, '..')
@@ -17,6 +18,8 @@ const PRERENDER_ROUTES = [
   '/avatar',
   '/bing',
   '/about',
+  '/collections',
+  ...WALLPAPER_COLLECTIONS.map(collection => `/collections/${collection.slug}`),
 ]
 const BROWSER_CANDIDATES = [
   process.env.PUPPETEER_EXECUTABLE_PATH,
@@ -130,6 +133,9 @@ async function waitForSeo(page, route, baseUrl) {
   }, { timeout: 15000 })
 
   await page.waitForFunction(() => document.querySelector('#app')?.children.length > 0, { timeout: 15000 })
+  if (route.startsWith('/collections')) {
+    await page.waitForFunction(() => document.querySelector('[data-collection-ready]')?.dataset.collectionReady === 'ready', { timeout: 30000 })
+  }
   await new Promise(resolve => setTimeout(resolve, 500))
 }
 

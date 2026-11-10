@@ -9,6 +9,7 @@ import { computed, ref, watch } from 'vue'
 
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import WallpaperCardActions from '@/components/wallpaper/card/shared/WallpaperCardActions.vue'
+import WallpaperDesktopActions from '@/components/wallpaper/desktop/WallpaperDesktopActions.vue'
 import { useImageFallback } from '@/composables/useImageFallback'
 import { usePreviewTracking } from '@/composables/usePreviewTracking'
 import { useWallpaperDownload } from '@/composables/useWallpaperDownload'
@@ -17,6 +18,7 @@ import { usePopularityStore } from '@/stores/popularity'
 import { copyText } from '@/utils/common/clipboard'
 import { formatDate, formatFileSize, formatRelativeTime, getDisplayFilename, getFileExtension, getResolutionLabel } from '@/utils/common/format'
 import { resolveWallpaperSeries } from '@/utils/wallpaper/identity'
+import { buildWallpaperShareUrl } from '@/utils/wallpaper/share'
 import DesktopImageStage from './DesktopImageStage.vue'
 
 const props = defineProps({
@@ -180,7 +182,7 @@ function onModalAfterLeave() {
 }
 
 async function handleCopyUrl() {
-  const url = props.wallpaper?.url
+  const url = buildWallpaperShareUrl(props.wallpaper)
   if (!url)
     return
 
@@ -382,6 +384,7 @@ usePreviewTracking({
                 <span>智能裁剪</span>
               </button>
 
+              <WallpaperDesktopActions :wallpaper="wallpaper" :visible="isOpen && isVisible" />
               <div class="download-row">
                 <button
                   class="copy-url-btn"
