@@ -1,5 +1,55 @@
 <script setup>
+import { computed, onBeforeUnmount, ref } from 'vue'
+import { fetchUpdateJson, validateDesktopRelease } from '@/utils/update/version'
+
 const releaseBase = 'https://github.com/IT-NuanxinPro/wallpaper-gallery/releases/download/desktop'
+const release = ref(null)
+const isLoading = ref(false)
+let cachedAt = 0
+let requestId = 0
+let requestController
+let disposed = false
+
+const publishedDate = computed(() => {
+  const timestamp = Date.parse(release.value?.publishedAt || '')
+  return Number.isFinite(timestamp)
+    ? new Date(timestamp).toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' })
+    : ''
+})
+
+async function onVisibleChange(visible) {
+  if (!visible || disposed || isLoading.value || (release.value && Date.now() - cachedAt < 5 * 60 * 1000))
+    return
+  const id = ++requestId
+  const controller = new AbortController()
+  requestController = controller
+  isLoading.value = true
+  release.value = null
+  try {
+    const value = await fetchUpdateJson('/api/desktop-release', { timeoutMs: 8000, signal: controller.signal })
+    if (disposed || id !== requestId)
+      return
+    release.value = validateDesktopRelease(value)
+    if (release.value)
+      cachedAt = Date.now()
+  }
+  catch {
+    if (!disposed && id === requestId)
+      release.value = null
+  }
+  finally {
+    if (!disposed && id === requestId) {
+      isLoading.value = false
+      requestController = undefined
+    }
+  }
+}
+
+onBeforeUnmount(() => {
+  disposed = true
+  requestId++
+  requestController?.abort()
+})
 
 const desktopDownloads = [
   {
@@ -30,6 +80,7 @@ const desktopDownloads = [
     popper-class="header-desktop-download-dropdown"
     :show-timeout="90"
     :hide-timeout="120"
+    @visible-change="onVisibleChange"
   >
     <button
       class="header-desktop-download-trigger"
@@ -46,6 +97,9 @@ const desktopDownloads = [
 
     <template #dropdown>
       <div class="desktop-download-menu">
+        <p class="desktop-download-status" role="status" aria-live="polite">
+          {{ release ? (publishedDate ? `更新于 ${publishedDate}` : '已发布客户端版本') : isLoading ? '正在读取版本…' : '版本信息暂不可用' }}
+        </p>
         <a
           v-for="item in desktopDownloads"
           :key="item.id"
@@ -69,7 +123,10 @@ const desktopDownloads = [
           </span>
 
           <span class="desktop-download-item__content">
-            <strong>{{ item.name }}</strong>
+            <span class="desktop-download-item__title">
+              <strong>{{ item.name }}</strong>
+              <span v-if="release" class="desktop-download-version">v{{ release.latest }}</span>
+            </span>
             <small>{{ item.meta }}</small>
           </span>
 
@@ -99,6 +156,7 @@ const desktopDownloads = [
 
 .desktop-download-menu {
   width: 286px;
+  max-width: calc(100vw - 24px);
   padding: 10px;
   border: 1px solid rgba(255, 255, 255, 0.68);
   border-radius: 20px;
@@ -108,6 +166,13 @@ const desktopDownloads = [
     inset 0 1px 0 rgba(255, 255, 255, 0.76);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+}
+
+.desktop-download-status {
+  margin: 2px 10px 8px;
+  color: #64748b;
+  font-size: 11px;
+  line-height: 1.5;
 }
 
 .desktop-download-item {
@@ -183,6 +248,23 @@ const desktopDownloads = [
   white-space: nowrap;
 }
 
+.desktop-download-item__title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.desktop-download-version {
+  flex-shrink: 0;
+  padding: 2px 5px;
+  border-radius: 5px;
+  color: #0369a1;
+  background: rgba(14, 165, 233, 0.1);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
 .desktop-download-item__content small {
   color: #94a3b8;
   font-size: 12px;
@@ -194,7 +276,9 @@ const desktopDownloads = [
   height: 17px;
   flex: 0 0 17px;
   color: #94a3b8;
-  transition: transform 180ms ease, color 180ms ease;
+  transition:
+    transform 180ms ease,
+    color 180ms ease;
 }
 
 .desktop-download-item:hover .desktop-download-item__arrow,
@@ -218,6 +302,15 @@ html[data-theme='dark'] .desktop-download-menu {
 
 html[data-theme='dark'] .desktop-download-item {
   color: #dbeafe;
+}
+
+html[data-theme='dark'] .desktop-download-status {
+  color: #94a3b8;
+}
+
+html[data-theme='dark'] .desktop-download-version {
+  color: #7dd3fc;
+  background: rgba(56, 189, 248, 0.12);
 }
 
 html[data-theme='dark'] .desktop-download-item:hover,

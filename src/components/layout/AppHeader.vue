@@ -482,6 +482,9 @@ watch(isMobile, () => {
           </button>
           <template #dropdown>
             <el-dropdown-menu>
+              <el-dropdown-item v-if="isNativeClient" @click="router.push('/local-wallpapers')">
+                本地壁纸
+              </el-dropdown-item>
               <el-dropdown-item @click="router.push('/collections')">
                 精选专题
               </el-dropdown-item>

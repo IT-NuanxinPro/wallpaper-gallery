@@ -13,6 +13,12 @@ const DEFAULT_DESCRIPTION = 'Wallpaper Gallery 提供 4K 高清壁纸免费下�
 // ========================================
 const routes = [
   {
+    path: '/local-wallpapers',
+    name: 'LocalWallpapers',
+    component: () => import('@/views/LocalWallpapers.vue'),
+    meta: { compactMain: true, title: '本地壁纸 - Wallpaper Gallery', description: '管理这台设备上已缓存的壁纸，查看本地图片、切换壁纸和整理存储空间。', canonicalPath: '/local-wallpapers' },
+  },
+  {
     path: '/collections',
     name: 'Collections',
     component: () => import('@/views/Collections.vue'),

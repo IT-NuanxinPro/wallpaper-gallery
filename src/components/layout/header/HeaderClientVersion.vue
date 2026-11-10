@@ -41,6 +41,9 @@ const checkMessage = computed(() => ({
         <a :href="latestClientInfo.downloadUrl" target="_blank" rel="noopener noreferrer">下载安装 v{{ latestClientInfo.latest }}</a>
         <a :href="latestClientInfo.notesUrl" target="_blank" rel="noopener noreferrer">查看说明</a>
       </div>
+      <RouterLink to="/local-wallpapers" class="client-version-local-wallpapers">
+        管理本地壁纸
+      </RouterLink>
     </div>
   </ElPopover>
 </template>
@@ -99,6 +102,14 @@ const checkMessage = computed(() => ({
   display: flex;
   flex-wrap: wrap;
   gap: 0 12px;
+}
+.client-version-local-wallpapers {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 10px;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-accent);
 }
 :is(button, a):focus-visible {
   outline: 2px solid var(--color-accent);

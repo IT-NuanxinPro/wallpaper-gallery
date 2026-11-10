@@ -2,6 +2,7 @@ import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import { useTheme } from '@/composables/useTheme'
 import { useAuthStore } from '@/stores/auth'
+import { signalAppReady } from '@/utils/platform/appReady'
 import App from './App.vue'
 
 import router from './router'
@@ -61,5 +62,8 @@ useAuthStore(pinia).initialize().catch((error) => {
 })
 app.use(router)
 app.mount('#app')
+signalAppReady(router).catch((error) => {
+  console.warn('[main] 首屏初始化失败:', error)
+})
 // 详情由 Vue 接管后移除服务端无脚本正文，避免重复可见。
 document.querySelector('[data-wallpaper-detail]')?.remove()
