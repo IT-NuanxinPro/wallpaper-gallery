@@ -1,30 +1,66 @@
 {
-  "exportedAt": "2026-11-08 21:20:27",
+  "schema": 2,
+  "exportedAt": "2026-11-10T00:50:51.078Z",
   "series": {
     "desktop": {
-      "count": 500,
-      "totalViews": 32429,
-      "totalDownloads": 11182
+      "count": 904,
+      "totalViews": 37308,
+      "totalDownloads": 12768,
+      "periodStartedAt": "2026-11-09T04:45:31.225389+00:00",
+      "weekStart": "2026-11-09",
+      "monthStart": "2026-11-01",
+      "legacyCount": 11,
+      "legacyAmbiguousCount": 0,
+      "legacyViews": 18,
+      "legacyDownloads": 5
     },
     "mobile": {
-      "count": 500,
-      "totalViews": 17499,
-      "totalDownloads": 5864
+      "count": 943,
+      "totalViews": 19064,
+      "totalDownloads": 6444,
+      "periodStartedAt": "2026-11-09T04:45:31.225389+00:00",
+      "weekStart": "2026-11-09",
+      "monthStart": "2026-11-01",
+      "legacyCount": 11,
+      "legacyAmbiguousCount": 7,
+      "legacyViews": 385,
+      "legacyDownloads": 156
     },
     "avatar": {
-      "count": 500,
-      "totalViews": 1879,
-      "totalDownloads": 988
+      "count": 685,
+      "totalViews": 1888,
+      "totalDownloads": 996,
+      "periodStartedAt": "2026-11-09T04:45:31.225389+00:00",
+      "weekStart": "2026-11-09",
+      "monthStart": "2026-11-01",
+      "legacyCount": 18,
+      "legacyAmbiguousCount": 6,
+      "legacyViews": 81,
+      "legacyDownloads": 34
     },
     "video": {
-      "count": 50,
-      "totalViews": 1824,
-      "totalDownloads": 244
+      "count": 56,
+      "totalViews": 1833,
+      "totalDownloads": 246,
+      "periodStartedAt": "2026-11-09T04:45:31.225389+00:00",
+      "weekStart": "2026-11-09",
+      "monthStart": "2026-11-01",
+      "legacyCount": 7,
+      "legacyAmbiguousCount": 0,
+      "legacyViews": 55,
+      "legacyDownloads": 1
     },
     "bing": {
-      "count": 499,
-      "totalViews": 2133,
-      "totalDownloads": 1060
+      "count": 2724,
+      "totalViews": 4367,
+      "totalDownloads": 3255,
+      "periodStartedAt": "2026-11-09T04:45:31.225389+00:00",
+      "weekStart": "2026-11-09",
+      "monthStart": "2026-11-01",
+      "legacyCount": 6,
+      "legacyAmbiguousCount": 0,
+      "legacyViews": 11,
+      "legacyDownloads": 2
     }
   }
 }
