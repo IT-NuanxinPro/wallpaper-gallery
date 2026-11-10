@@ -183,7 +183,10 @@ describe('头部安装版本组件', () => {
     const { descriptor } = parse(readFileSync(new URL(filename, import.meta.url), 'utf8'))
     const dependencies = {
       vue: Vue,
-      'element-plus': { ElPopover: { setup: (_props, { slots }) => () => h('section', [slots.reference?.(), slots.default?.()]) } },
+      'element-plus': {
+        ElPopover: { setup: (_props, { slots }) => () => h('section', [slots.reference?.(), slots.default?.()]) },
+        ElButton: { setup: (_props, { attrs, slots }) => () => h('button', attrs, slots.default?.()) },
+      },
       '@/composables/useVersionCheck': { useVersionCheck: () => state },
     }
     const content = compileScript(descriptor, { id: filename, inlineTemplate: true }).content
