@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: desktop-release
@@ -23,6 +24,7 @@ jobs:
     uses: IT-NuanxinPro/Pake/.github/workflows/wallpaper-gallery.yaml@main
     permissions:
       contents: write
+      actions: write
     with:
       source_repository: ${{ github.repository }}
       source_ref: main

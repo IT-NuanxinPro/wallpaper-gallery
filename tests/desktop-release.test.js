@@ -39,4 +39,14 @@ describe('客户端发布通知', () => {
     expect(failed.status).toBe(503)
     expect(failed.headers.get('Cache-Control')).toBe('no-store')
   })
+
+  it('生产从已核验的本站发布清单读取，不依赖访问者请求GitHub API', async () => {
+    const manifest = parseDesktopRelease(release())
+    const response = await handleDesktopReleaseRequest(new Request('https://wallpaper.061129.xyz/api/desktop-release'), {
+      assets: { fetch: async request => { expect(new URL(request.url).pathname).toBe('/desktop-release.json'); return Response.json(manifest) } },
+      fetch: () => { throw new Error('Unexpected external request') },
+    })
+    expect(response.status).toBe(200)
+    expect(await response.json()).toEqual(manifest)
+  })
 })

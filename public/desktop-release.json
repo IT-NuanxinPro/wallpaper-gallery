@@ -1,0 +1,13 @@
+{
+  "available": true,
+  "version": "5.2.0",
+  "publishedAt": "2026-11-10T01:48:30Z",
+  "releaseUrl": "https://github.com/IT-NuanxinPro/wallpaper-gallery/releases/tag/desktop",
+  "notesUrl": "https://github.com/IT-NuanxinPro/wallpaper-gallery/releases/tag/v5.2.0",
+  "downloads": {
+    "windows": "https://github.com/IT-NuanxinPro/wallpaper-gallery/releases/download/desktop/Wallpaper-Gallery-Windows-x64.msi",
+    "macos": "https://github.com/IT-NuanxinPro/wallpaper-gallery/releases/download/desktop/Wallpaper-Gallery-macOS-universal.dmg",
+    "linux": "https://github.com/IT-NuanxinPro/wallpaper-gallery/releases/download/desktop/Wallpaper-Gallery-linux-x86_64.AppImage",
+    "deb": "https://github.com/IT-NuanxinPro/wallpaper-gallery/releases/download/desktop/Wallpaper-Gallery-linux-x86_64.deb"
+  }
+}

@@ -26,9 +26,28 @@ export function parseDesktopRelease(release) {
   return { available: true, version, publishedAt, releaseUrl: `${RELEASE_BASE}/tag/desktop`, notesUrl: `${RELEASE_BASE}/tag/v${version}`, downloads }
 }
 
-export async function handleDesktopReleaseRequest(request, { fetch: fetchImpl = fetch, cache } = {}) {
+export async function handleDesktopReleaseRequest(request, { fetch: fetchImpl = fetch, cache, assets } = {}) {
   if (!['GET', 'HEAD'].includes(request.method))
     return new Response(null, { status: 405, headers: { Allow: 'GET, HEAD' } })
+  if (assets) {
+    try {
+      const source = await assets.fetch(new Request(new URL('/desktop-release.json', request.url)))
+      if (!source.ok)
+        throw new Error('Release manifest unavailable')
+      const info = await source.json()
+      if (info.available !== false) {
+        if (info.available !== true || !/^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)$/.test(info.version)
+          || info.releaseUrl !== `${RELEASE_BASE}/tag/desktop` || info.notesUrl !== `${RELEASE_BASE}/tag/v${info.version}`
+          || Object.entries(ASSET_NAMES).some(([platform, name]) => info.downloads?.[platform] !== `${RELEASE_BASE}/download/desktop/${name}`)) {
+          throw new Error('Invalid release manifest')
+        }
+      }
+      return new Response(request.method === 'HEAD' ? null : JSON.stringify(info), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=60, s-maxage=300', 'X-Content-Type-Options': 'nosniff' } })
+    }
+    catch {
+      return Response.json({ error: '发布信息暂不可用' }, { status: 503, headers: { 'Cache-Control': 'no-store' } })
+    }
+  }
   const key = new Request(new URL('/api/desktop-release', request.url), { method: 'GET' })
   let response
   try {
