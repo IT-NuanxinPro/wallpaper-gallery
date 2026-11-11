@@ -1,7 +1,16 @@
 {
   "year": 2026,
-  "total": 313,
+  "total": 314,
   "items": [
+    {
+      "date": "2026-11-11",
+      "title": "奇妙纷呈的森林",
+      "copyright": "大西洋森林，巴西 (© FG Trade/Getty Images)",
+      "copyrightlink": "https://www.bing.com/search?q=%E5%B7%B4%E8%A5%BF%E5%A4%A7%E8%A5%BF%E6%B4%8B%E6%A3%AE%E6%9E%97&form=hpcapt&mkt=zh-cn",
+      "quiz": "/search?q=Bing+homepage+quiz&filters=WQOskey:%22HPQuiz_20261110_Atlantica%22&FORM=HPQUIZ",
+      "hsh": "2f8ec1b9756e84d222b20fd5fdf412b3",
+      "urlbase": "/th?id=OHR.Atlantica_ZH-CN6593995386"
+    },
     {
       "date": "2026-11-10",
       "title": "惬意放松，尽享海岛时光",
@@ -2820,5 +2829,5 @@
       "urlbase": "/th?id=OHR.NewYearFox_ZH-CN9312618796"
     }
   ],
-  "updatedAt": "2026-11-10 00:34:53"
+  "updatedAt": "2026-11-10 22:10:59"
 }

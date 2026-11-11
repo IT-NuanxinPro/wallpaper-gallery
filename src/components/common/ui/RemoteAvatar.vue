@@ -54,7 +54,7 @@ const candidateSources = computed(() => {
     && list.indexOf(source) === index,
   )
 })
-const effectiveSrc = computed(() => candidateSources.value[activeSourceIndex.value] || '')
+const effectiveSrc = computed(() => hasLoadError.value ? '' : candidateSources.value[activeSourceIndex.value] || '')
 
 watch([() => props.src, () => props.sources], () => {
   hasLoadError.value = false

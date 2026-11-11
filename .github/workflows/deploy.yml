@@ -107,6 +107,7 @@ jobs:
       # 5. 执行 Vite 打包构建并生成关键路由静态 HTML
       - name: Build
         env:
+          VITE_DOWNLOAD_PROTECTION_ENABLED: ${{ vars.VITE_DOWNLOAD_PROTECTION_ENABLED || 'false' }}
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
         run: pnpm build:seo

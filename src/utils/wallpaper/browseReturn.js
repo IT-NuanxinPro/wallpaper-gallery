@@ -1,7 +1,5 @@
-import { WALLPAPER_COLLECTIONS } from '../../content/collections.js'
-
 const STORAGE_KEY = 'wallpaper-gallery-browse-return'
-const listPaths = new Set(['/', '/desktop', '/mobile', '/avatar', '/video', '/bing', '/library', '/collections', ...WALLPAPER_COLLECTIONS.map(collection => `/collections/${collection.slug}`)])
+const listPaths = new Set(['/', '/desktop', '/mobile', '/avatar', '/video', '/bing', '/library', '/account'])
 
 export function isBrowseReturnPath(path) {
   if (typeof path !== 'string' || !path || path.length > 4096)

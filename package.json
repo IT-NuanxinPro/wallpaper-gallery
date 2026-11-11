@@ -1,7 +1,7 @@
 {
   "name": "wallpaper-gallery",
   "type": "module",
-  "version": "5.4.0",
+  "version": "5.5.0",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -33,7 +33,8 @@
     "swiper": "^12.0.3",
     "vant": "^4.9.22",
     "vue": "^3.5.24",
-    "vue-router": "^4.6.4"
+    "vue-router": "^4.6.4",
+    "vue-turnstile": "1.0.11"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^6.7.1",

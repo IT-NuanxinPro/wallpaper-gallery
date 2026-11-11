@@ -9,6 +9,16 @@ function createStorage() {
 const wallpaper = { filename: 'same.jpg', path: '/wallpaper/desktop/a/same.jpg' }
 
 describe('壁纸事件幂等与重试', () => {
+  it('Bing浏览和下载使用与详情统计一致的日期资源键', async () => {
+    const send = vi.fn().mockResolvedValue({ status: 'accepted' })
+    const recorder = createWallpaperEventRecorder({ send, storage: createStorage() })
+    const bing = { filename: 'bing-2026-11-10.jpg', _series: 'bing', isBing: true }
+    await recorder.recordView(bing, 'bing')
+    await recorder.recordDownload(bing, 'bing')
+    expect(send.mock.calls.map(([event]) => [event.p_asset_key, event.p_event_type])).toEqual([
+      ['bing:bing-2026-11-10.jpg', 'view'], ['bing:bing-2026-11-10.jpg', 'download'],
+    ])
+  })
   it('同一会话跨实例稳定，存储不可用时仍有合法会话ID', () => {
     const storage = createStorage()
     expect(getWallpaperSessionId(storage)).toBe(getWallpaperSessionId(storage))

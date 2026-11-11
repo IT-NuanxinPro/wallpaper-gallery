@@ -2,11 +2,13 @@
 // 常量定义
 // ========================================
 
+import { WALLPAPER_CARD_ASPECT_RATIOS } from '../wallpaper/mediaPresentation.js'
+
 // CDN 版本号
 // - 本地开发：使用此默认值
 // - 线上构建：GitHub Actions 会自动替换为图床最新 tag
 // - jsdelivr 缓存策略：@main 分支有缓存，@tag 版本无缓存
-export const CDN_VERSION = 'v1.4.98'
+export const CDN_VERSION = 'v1.5.2'
 
 // 前端应用版本号（构建时由 vite 注入，用于缓存控制）
 // eslint-disable-next-line no-undef
@@ -42,7 +44,7 @@ export const SERIES_CONFIG = {
     dataUrl: `${import.meta.env.BASE_URL}data/desktop.json${DATA_CACHE_BUSTER}`,
     // 分类数据目录（动态拼接时需手动添加版本参数）
     categoryBaseUrl: `${import.meta.env.BASE_URL}data/desktop`,
-    aspectRatio: '16/10',
+    aspectRatio: WALLPAPER_CARD_ASPECT_RATIOS.desktop,
   },
   mobile: {
     id: 'mobile',
@@ -57,7 +59,7 @@ export const SERIES_CONFIG = {
     dataUrl: `${import.meta.env.BASE_URL}data/mobile.json${DATA_CACHE_BUSTER}`,
     // 分类数据目录（动态拼接时需手动添加版本参数）
     categoryBaseUrl: `${import.meta.env.BASE_URL}data/mobile`,
-    aspectRatio: '9/16',
+    aspectRatio: WALLPAPER_CARD_ASPECT_RATIOS.mobile,
   },
   avatar: {
     id: 'avatar',
@@ -72,7 +74,7 @@ export const SERIES_CONFIG = {
     dataUrl: `${import.meta.env.BASE_URL}data/avatar.json${DATA_CACHE_BUSTER}`,
     // 分类数据目录（动态拼接时需手动添加版本参数）
     categoryBaseUrl: `${import.meta.env.BASE_URL}data/avatar`,
-    aspectRatio: '1/1',
+    aspectRatio: WALLPAPER_CARD_ASPECT_RATIOS.avatar,
   },
   video: {
     id: 'video',
@@ -85,7 +87,7 @@ export const SERIES_CONFIG = {
     latestUrl: `${import.meta.env.BASE_URL}data/video/latest.json${DATA_CACHE_BUSTER}`,
     dataUrl: `${import.meta.env.BASE_URL}data/video.json${DATA_CACHE_BUSTER}`,
     categoryBaseUrl: `${import.meta.env.BASE_URL}data/video`,
-    aspectRatio: '16/9',
+    aspectRatio: WALLPAPER_CARD_ASPECT_RATIOS.video,
     isVideo: true,
     pcOnly: true,
     hideFormatFilter: true,
@@ -104,7 +106,7 @@ export const SERIES_CONFIG = {
     latestUrl: `${import.meta.env.BASE_URL}data/bing/latest.json${DATA_CACHE_BUSTER}`,
     // 年度数据目录（动态拼接时需手动添加版本参数）
     yearBaseUrl: `${import.meta.env.BASE_URL}data/bing`,
-    aspectRatio: '16/9',
+    aspectRatio: WALLPAPER_CARD_ASPECT_RATIOS.bing,
     isDaily: true,
     hasMetadata: true,
     // Bing 壁纸格式固定为 JPG，隐藏格式筛选

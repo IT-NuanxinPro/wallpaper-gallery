@@ -1,6 +1,7 @@
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { getActiveWallpaperSeries } from '@/utils/wallpaper/activeSeries'
 
-export function useHeaderNavSlider({ availableSeriesOptions, currentSeries, isMobile, route }) {
+export function useHeaderNavSlider({ currentSeries, isMobile, route }) {
   const navRef = ref(null)
   const navSliderStyle = ref({
     opacity: 0,
@@ -9,24 +10,8 @@ export function useHeaderNavSlider({ availableSeriesOptions, currentSeries, isMo
   })
   let navSliderRafId = 0
 
-  const isSeriesActive = computed(() => (seriesId) => {
-    if (route.path === '/') {
-      return currentSeries.value === seriesId
-    }
-
-    return seriesId === 'desktop'
-      ? route.path === '/desktop'
-      : route.path === `/${seriesId}`
-  })
-
-  const activeSeriesId = computed(() => {
-    for (const option of availableSeriesOptions.value) {
-      if (isSeriesActive.value(option.id))
-        return option.id
-    }
-
-    return 'desktop'
-  })
+  const activeSeriesId = computed(() => getActiveWallpaperSeries(route, currentSeries.value))
+  const isSeriesActive = computed(() => seriesId => activeSeriesId.value === seriesId)
 
   function resetNavSlider() {
     navSliderStyle.value = {

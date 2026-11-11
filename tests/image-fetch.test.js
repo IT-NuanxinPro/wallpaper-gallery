@@ -121,3 +121,45 @@ describe('原图来源与完整响应体加载', () => {
     await expect(load('https://cn.bing.com/a.jpg')).rejects.toThrow('空')
   })
 })
+
+
+it('已知长度按收到的字节报告进度，不用虚假计时百分比', async () => {
+ let stream
+ const onProgress=vi.fn()
+ vi.stubGlobal('fetch',vi.fn(async()=>new Response(new ReadableStream({start(c){stream=c}}),{headers:{'Content-Type':'image/png','Content-Length':'8'}})))
+ const pending=load('https://example.com/image.png',{onProgress})
+ await vi.waitFor(()=>expect(onProgress).toHaveBeenCalledWith({phase:'receiving',loaded:0,total:8}))
+ stream.enqueue(new Uint8Array(3))
+ await vi.waitFor(()=>expect(onProgress).toHaveBeenCalledWith({phase:'receiving',loaded:3,total:8}))
+ stream.enqueue(new Uint8Array(5));stream.close()
+ expect((await pending).size).toBe(8)
+ expect(onProgress.mock.calls.at(-1)[0]).toEqual({phase:'receiving',loaded:8,total:8})
+})
+
+it('多来源首条响应头卡住时提前取消并切换，而不是耗尽整体30秒', async () => {
+ vi.useFakeTimers()
+ let firstSignal
+ const fetch=vi.fn().mockImplementationOnce((_url,{signal})=>{firstSignal=signal;return new Promise(()=>{})}).mockResolvedValueOnce(new Response('ok',{headers:{'Content-Type':'image/png'}}))
+ vi.stubGlobal('fetch',fetch)
+ const progress=vi.fn()
+ const pending=load(cdn,{sourceTimeoutMs:6000,onProgress:progress})
+ await vi.advanceTimersByTimeAsync(6001)
+ expect(firstSignal.aborted).toBe(true)
+ expect(await (await pending).text()).toBe('ok')
+ expect(fetch.mock.calls.map(c=>c[0])).toEqual([gateway,cdn])
+ expect(progress).toHaveBeenCalledWith({phase:'switching',loaded:0,total:null})
+ expect(vi.getTimerCount()).toBe(0)
+})
+
+it('受保护单入口不派生公开源，取消首条等待立即清理计时器', async () => {
+ vi.useFakeTimers()
+ const controller=new AbortController()
+ vi.stubGlobal('fetch',vi.fn(()=>new Promise(()=>{})))
+ const pending=load('https://wallpaper.061129.xyz/api/download-file?ticket=test.signature',{sourceTimeoutMs:6000,signal:controller.signal})
+ const assertion=expect(pending).rejects.toMatchObject({name:'AbortError'})
+ await vi.advanceTimersByTimeAsync(0)
+ controller.abort()
+ await assertion
+ expect(fetch).toHaveBeenCalledOnce()
+ expect(vi.getTimerCount()).toBe(0)
+})

@@ -1,213 +1,99 @@
-# 🚀 Fork 部署指南 (Cloudflare Pages 托管版)
+# Fork 部署指南
 
-本文档为想要 Fork 本项目的开发者提供完整的配置指南。本项目采用 **GitHub Actions (高性能构建)** + **Cloudflare Pages (全球 CDN 托管)** 的混合方案，彻底解决了单页应用（SPA）在 SEO 和路由上的痛点。
+校对日期：2026-11-11，适用网站 v5.5.0 工作区。部署方式为 GitHub Actions 构建、Cloudflare Pages 托管静态文件与 Functions。Fork 不会继承 Secrets、数据库、OAuth 或域名配置。
 
----
+## 本地启动
 
-## 📋 目录
+使用 Node.js 22、pnpm 9：
 
-1. [快速开始](#1-快速开始)
-2. [GitHub Secrets 配置 (核心)](#2-github-secrets-配置-核心)
-3. [Cloudflare Pages 设置](#3-cloudflare-pages-设置)
-4. [Supabase 登录、用户系统与统计 (可选)](#4-supabase-登录用户系统与统计-可选)
-5. [常见问题](#5-常见问题)
-
----
-
-## 1. 快速开始
-
-### 1.1 Fork 项目
-点击 GitHub 页面右上角的 **Fork** 按钮，将项目克隆到你的账户。
-
-### 1.2 本地运行
-```bash
+```sh
 git clone https://github.com/你的用户名/wallpaper-gallery.git
-cd wallpaper-gallery
-pnpm install
-pnpm dev # 本地开发模式
+cd "wallpaper-gallery"
+pnpm install --frozen-lockfile
+pnpm dev
 ```
 
-### 1.3 核心架构说明
-*   **构建端 (GitHub Actions)**：利用 GitHub 的高性能服务器，自动克隆巨大的图床仓库、同步 JSON 数据并执行生产环境打包。
-*   **托管端 (Cloudflare Pages)**：仅作为静态文件服务器，通过全球 CDN 分发，并识别 `_redirects` 文件以支持 200 状态码路由，完美适配 Google/百度收录。
+需要更新数据时执行 `pnpm sync`，它从图床 GitHub Raw 拉取普通系列及 Bing 元数据并更新详情。已有 `public/data` 可用于本地启动，媒体仍需访问对应图源。
 
-### 1.4 Fork 后不会自动继承的内容
-Fork 只会复制仓库代码，不会复制你原仓库或上游仓库里的以下配置：
+## 选择部署范围
 
-- GitHub Actions Secrets
-- 本地 `.env.local`
-- Cloudflare Pages 项目设置
-- Supabase 项目、Auth Providers 与 URL 配置
+| 范围 | 需要的配置 |
+| --- | --- |
+| 浏览、搜索、预览、分享详情 | Pages 项目、Functions、图源与站点域名 |
+| 登录、喜欢、收藏、实时统计 | 加上自己的 Supabase 项目、完整当前结构和 Auth 配置 |
+| 默认自动部署全部步骤 | 加上资源同步的 service role 及统计导出配置 |
+| 桌面安装包 | 另行维护 Pake 仓库、桌面桥接配置和构建权限 |
 
-这意味着：
+默认 [deploy.yml](../.github/workflows/deploy.yml) 会执行 `sync:assets`、统计导出和热门标签导出；Supabase 并非该工作流的可省略配置。若只部署浏览站，应在自己的 Fork 明确跳过远程资源同步、统计导出及独立统计工作流，保留数据复制和 `pnpm build:seo`。
 
-- 只想浏览壁纸时，Fork 后补齐部署配置即可。
-- 想启用登录、个人中心、喜欢 / 收藏、下载历史与统计时，需要在你自己的 Supabase 项目里重新配置。
+## Secrets 与环境变量
 
----
+| 名称 | 使用位置 | 用途 |
+| --- | --- | --- |
+| `CLOUDFLARE_API_TOKEN` | GitHub Actions Secret | Pages 发布权限 |
+| `CLOUDFLARE_ACCOUNT_ID` | GitHub Actions Secret | Pages 所在账户 |
+| `VITE_SUPABASE_URL` | 本地环境、构建及导出 | Supabase 项目地址 |
+| `VITE_SUPABASE_ANON_KEY` | 本地环境、构建及导出 | 公开客户端凭据，访问受 RLS/授权限制 |
+| `SUPABASE_SERVICE_ROLE_KEY` | 仅维护进程/CI Secret | 全量同步 `wallpaper_assets` |
+| `VITE_UMAMI_WEBSITE_ID` | 构建环境 | 可选的网站分析项目 ID |
+| `VITE_IMAGE_BASE_URL` / `VITE_IMAGE_PROXY_ENABLED` | 构建环境 | 可选的图片入口配置 |
 
-## 2. GitHub Secrets 配置 (核心)
+参考 [.env.example](../.env.example)，同时核对 [.env.production](../.env.production) 中的上游网站分析 ID。每个 Fork 应配置自己的项目，不把访客数据发送给不相关部署。
 
-为了让 GitHub Actions 能够自动将打包好的文件推送到你的 Cloudflare，必须配置以下 Secrets。
+`VITE_*` 会打包进浏览器，不能承载 service role。仅在 Cloudflare 控制台填写构建变量不会自动传递给 GitHub Actions，需在工作流构建步骤的 `env` 中显式配置。
 
-**操作路径**：GitHub 仓库 -> **Settings** -> **Secrets and variables** -> **Actions** -> **New repository secret**。
+## Cloudflare Pages
 
-| Secret 名称 | 必需 | 说明 | 获取方式 |
-| :--- | :---: | :--- | :--- |
-| `CLOUDFLARE_API_TOKEN` | **是** | Cloudflare 身份令牌 | [个人资料] -> [API 令牌] -> [创建自定义令牌] -> 给予 **Pages:编辑** 权限 |
-| `CLOUDFLARE_ACCOUNT_ID` | **是** | 账户唯一标识 | Cloudflare 控制台 -> [概述] -> 右侧栏 [账户 ID] |
-| `VITE_SUPABASE_URL` | 否 | Supabase 项目地址 | 用于启用登录、个人中心、喜欢 / 收藏与统计能力 |
-| `VITE_SUPABASE_ANON_KEY` | 否 | Supabase 匿名 Key | 用于启用登录、个人中心、喜欢 / 收藏与统计能力 |
-| `SUPABASE_SERVICE_ROLE_KEY` | 否 | Supabase 服务端密钥 | 用于工作流执行 `pnpm sync:assets`，同步 `wallpaper_assets` |
+1. 创建 Pages 项目。可以使用直接上传项目由 Actions 发布；如果关联 Git，关闭重复的自动生产/预览构建。
+2. 将工作流 `pages deploy dist --project-name=... --branch=main` 的项目名改成自己的。
+3. 保留根目录 [functions](../functions)；它需要与 `dist` 一起由支持 Pages Functions 的 Wrangler 流程部署。
+4. 构建命令使用 `pnpm build:seo`，生成公共页预渲染和详情桶。
+5. 核对 [public/_routes.json](../public/_routes.json)：`/images/*`、`/wallpaper/*`、`/api/desktop-release` 交给 Functions，其余公共页使用预渲染文件。
 
-如果你保留仓库默认的 [`deploy.yml`](../.github/workflows/deploy.yml)，并且希望工作流继续执行 `pnpm sync:assets`，就必须额外配置：
+不能只将 `dist` 当普通静态目录拖拽上传后，就认为详情边缘函数已生效。也不要恢复全局 `/* /index.html 200` 重写，它会破坏不存在页面的真实状态及详情处理。
 
-- `VITE_SUPABASE_URL`
-- `SUPABASE_SERVICE_ROLE_KEY`
+本地检查生产路由可使用已有 Wrangler：
 
-补充说明：
-
-- `pnpm sync:assets` 会把当前 `public/data` 中解析出的所有系列资产全量写入远端 `wallpaper_assets`
-- 它适合在 CI 中配合最新图床数据执行，不适合拿本地过期数据直接同步线上
-- 如果你只想核对远端状态，请优先做只读查询，而不是先跑同步
-
----
-
-## 3. Cloudflare Pages 设置
-
-### 3.1 创建 Pages 项目
-1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com/)。
-2. 进入 **Workers 和 Pages** -> **创建** -> **Pages** -> **连接到 Git**。
-3. 关联你的仓库，项目名称建议设置为 `wallpaper-gallery-prod`（**需与 deploy.yml 中的 projectName 保持一致**）。
-
-### 3.2 禁用自动构建 (重要步骤)
-由于我们使用 GitHub Actions 主动推送产物，必须关闭 Cloudflare 的自动检测，否则会造成重复构建且速度极慢。
-1. 在 Cloudflare 项目页点击 **设置** -> **构建与部署**。
-2. 在 **分支控制** 处点击“编辑”。
-3. **取消勾选** “启用自动生产分支部署”。
-4. 在 **预览分支** 处选择 “无（禁用自动分支部署）”。
-
----
-
-## 4. Supabase 登录、用户系统与统计 (可选)
-
-如果你只需要一个可浏览的静态壁纸站，可以不接 Supabase。
-
-如果你希望启用以下能力，就需要自己创建并配置 Supabase：
-
-- 登录 / 注册 / 邮箱登录
-- GitHub、Google、Linux.do OAuth
-- 个人中心
-- 喜欢、收藏夹、下载历史
-- 浏览量 / 下载量统计
-
-### 4.1 创建 Supabase 项目
-
-1. 登录 [Supabase](https://supabase.com/) 并创建新项目。
-2. 在项目设置中记录以下值：
-   - `Project URL`
-   - `anon public key`
-   - `service_role key`
-3. 将它们分别填到：
-   - GitHub Actions Secrets
-   - 本地 `.env.local`
-
-### 4.2 配置本地环境变量
-
-可直接参考 [`.env.example`](../.env.example)。
-
-本地开发至少建议配置：
-
-- `VITE_SUPABASE_URL`
-- `VITE_SUPABASE_ANON_KEY`
-
-如果你本地要执行 `pnpm sync:assets`，还需要：
-
-- `SUPABASE_SERVICE_ROLE_KEY`
-
-### 4.3 配置 Supabase Auth URL
-
-由于前端会把 OAuth 和邮箱验证统一回跳到 `/auth/callback`，你需要在 Supabase 后台补齐 URL 配置。
-
-推荐至少添加：
-
-- `Site URL`：你的线上站点根地址，例如 `https://your-project.pages.dev`
-- `Redirect URL`：`https://your-project.pages.dev/auth/callback`
-- 本地开发地址：`http://localhost:5173/auth/callback`
-
-如果你有自定义域名，也要把自定义域名对应的 `/auth/callback` 一并加入允许列表。
-
-### 4.4 启用登录方式
-
-在 Supabase 控制台的 `Authentication -> Providers` 中，按需开启：
-
-- `Email`
-- `GitHub`
-- `Google`
-- `Linux.do`（如果你要接这个 Provider）
-
-如果你希望支持账号中心里的“绑定 / 解绑第三方账号”，还需要在 Auth Providers 中打开：
-
-- `Enable Manual Linking`
-
-### 4.5 执行 SQL 脚本
-
-新建 Supabase 项目时，建议按下面顺序执行：
-
-1. [scripts/supabase-init.sql](../scripts/supabase-init.sql)
-2. [scripts/supabase-user-system.sql](../scripts/supabase-user-system.sql)
-
-原因：
-
-- `supabase-init.sql` 负责初始化匿名统计表、RPC 与热门统计查询。
-- `supabase-user-system.sql` 负责创建 `profiles`、`user_preferences`、`user_wallpaper_likes`、`user_collections`、`user_download_history`、`wallpaper_assets`，并补齐 Auth 触发器与现有 `image_stats` 的兼容修复。
-
-如果你的 Supabase 项目已经是旧版本结构，建议重新检查 `wallpaper_assets` 是否至少满足以下条件：
-
-- `series` 约束包含 `video`
-- 存在 `duration_seconds` 字段
-- `image_stats` 唯一键已升级为 `(series, image_id)`
-
-这些字段与约束缺失时，动态壁纸的 `wallpaper_assets` 同步会失败。
-
-如果你是从只做统计的旧项目升级过来，再根据现状按需使用：
-
-- [scripts/supabase-migration.sql](../scripts/supabase-migration.sql)
-- [scripts/supabase-linuxdo-support.sql](../scripts/supabase-linuxdo-support.sql)
-
-时间字段说明：
-
-- 表里继续使用 `TIMESTAMPTZ`
-- 查询展示北京时间时，推荐使用 `AT TIME ZONE 'Asia/Shanghai'` + `to_char(...)`
-
-详细架构说明请查看 [Supabase统计系统.md](./Supabase统计系统.md)。
-
-<details>
-<summary>点击展开 SQL 脚本</summary>
-
-```sql
--- 直接复制 scripts/supabase-init.sql 全部内容到 Supabase SQL Editor 执行
+```sh
+pnpm build:seo
+wrangler pages dev "dist" --ip 127.0.0.1 --port 8790 --compatibility-date 2026-11-10
 ```
-</details>
 
----
+`pnpm preview` 只验证 Vite 输出与本地图片中间件，不等价于上述 Pages 环境。
 
-## 5. 常见问题
+## 更换站点和图源
 
-### Q: 部署成功了，但页面没有任何图片数据？
-**A:** 请检查 GitHub Actions 的运行日志。重点查看 `Copy data from image repository` 这一步是否报错。如果克隆图床仓库失败，`public/data` 目录将为空，导致网站无数据。
+站点域名目前有多处明确约束，不是只改一项环境变量即可换站：
 
-### Q: 刷新页面出现 404 错误？
-**A:** 请确保 `public/_redirects` 文件存在于你的仓库中。GitHub Actions 构建完成后，该文件应出现在 `dist` 根目录下，Cloudflare 才会识别并启用 200 状态码重定向。
+- [share.js](../src/utils/wallpaper/share.js) 的 `WALLPAPER_SITE_ORIGIN`，路由 SEO 和详情 canonical 依赖它。
+- [router/index.js](../src/router/index.js)、[index.html](../index.html)、[robots.txt](../public/robots.txt) 中的站点地址；sitemap 由构建重新生成。
+- [imageDelivery.js](../src/utils/wallpaper/imageDelivery.js)、[detailRecords.js](../src/utils/wallpaper/detailRecords.js)、[desktopWallpaperService.js](../src/services/desktopWallpaperService.js) 的允许来源与完整资源校验。
+- 桌面安装包下载链接、OAuth 桥接、Pake 配置，以及 Cloudflare 自定义域名。
+- 工作流中的图床仓库、[sync-data.js](../scripts/sync-data.js) 的 GitHub Raw 地址、[constants.js](../src/utils/config/constants.js) 和图片入口的固定仓库。
 
-### Q: 部署显示 "Authentication error" (403)？
-**A:** 请检查 `CLOUDFLARE_API_TOKEN`。确保它拥有 **“账户”级别** 的 `Cloudflare Pages:编辑` 权限。不要使用“区域”令牌，Pages 部署属于账户级操作。
+只继续引用上游图床时，也需遵守对应媒体授权，见 [版权说明](../COPYRIGHT.md)。不要通过取消来源校验实现任意 URL 代理。
 
-### Q: 为什么我 Fork 之后看得到“登录”按钮，但点进去提示 Supabase Auth 未配置？
-**A:** 这是预期行为。仓库现在默认展示登录入口，但 Fork 不会继承你的 Supabase 配置。你需要自己补齐：
+## Supabase 接入
 
-- `VITE_SUPABASE_URL`
-- `VITE_SUPABASE_ANON_KEY`
-- `SUPABASE_SERVICE_ROLE_KEY`
-- Supabase Auth 的 `Site URL` / `Redirect URL`
-- 对应的 Auth Providers 和 SQL 脚本
+Auth 的 Site URL 使用自己的站点地址，Redirect URLs 包含生产及本地 `/auth/callback`。按实际需求配置 Email、GitHub、Google 或 Linux.do，并核对第三方账号绑定需要的 Manual Linking 设置。
+
+当前前端需要规范资源身份、用户关系、统计事件与分页查询等对象。**旧 `supabase-init.sql` 加 `supabase-user-system.sql` 并不是当前完整数据库的一键安装方案。** 它们仍用于理解基础表与历史演进；统计 v2 迁移需要完整资产映射和配套暂存数据。
+
+新项目应先在测试数据库校验结构、RLS、权限、关系汇总触发器和当前 RPC，再接入正式构建。已有数据库按 [Supabase 系统说明](Supabase统计系统.md) 与 [迁移文档](统计口径与迁移.md) 核对，不能直接重复执行历史迁移。
+
+`pnpm sync:assets` 会批量 upsert 最新资源并将不在当前元数据的资源标记 `removed`；不能用本地过期或不完整数据运行线上同步。
+
+## 工作流与验收
+
+| 工作流 | 触发与作用 |
+| --- | --- |
+| `deploy.yml` | main 推送、手动、计划任务；同步资源及统计，测试，构建并部署 |
+| `export-stats.yml` | 手动/计划任务；完整导出统计与热门标签，提交统计目录 |
+| `release-version.yml` | 版本文件/说明变更或手动；用 `gh` 发布网站版本 Release |
+| `desktop-release.yml` | 桌面桥接/图标/工作流变更或手动；调用 Pake 构建安装包 |
+
+默认仓库引用上游 Pake 可复用工作流。Fork 需自行配置发布目标和权限；普通网页更新无需触发桌面构建。
+
+上线验收至少核对：首页/系列/专题正常；有效详情返回 200 且有正文、canonical、关键样式；不存在详情返回 404；图片入口返回图片而非 HTML；`version.json` 为本次网站版本；有 Supabase 时再检查登录、计数口径及操作反馈。
+
+Google、百度提交与是否收录是两件事，构建成功和 HTTP 200 不代表搜索平台必然收录。

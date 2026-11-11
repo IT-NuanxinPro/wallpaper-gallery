@@ -163,12 +163,14 @@ describe('网格按需分页', () => {
   })
 })
 
-describe('卡片首次进入视口的 slide-up', () => {
-  it('已进入视口的卡片不会被动画重新隐藏，也不会覆盖悬停的 transform', () => {
+describe('卡片首次进入视口的轻淡入', () => {
+  it('卡片不位移、不重新隐藏，也不会覆盖悬停的 transform', () => {
     const { card } = addCard()
     observers[0].callback([{ target: card, isIntersecting: true }])
     const [keyframes, options] = card.animate.mock.calls[0]
-    expect(keyframes.every(frame => frame.opacity === undefined || frame.opacity === 1)).toBe(true)
+    expect(keyframes.every(frame => frame.opacity >= 0.9)).toBe(true)
+    expect(keyframes.at(-1).opacity).toBe(1)
+    expect(keyframes.every(frame => frame.translate === undefined)).toBe(true)
     expect(keyframes.every(frame => frame.transform === undefined)).toBe(true)
     expect(options.delay || 0).toBe(0)
     expect(options.fill).not.toBe('backwards')

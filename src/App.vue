@@ -1,6 +1,6 @@
 <script setup>
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
-import { computed, onBeforeUnmount, ref } from 'vue'
+import { computed, defineAsyncComponent, onBeforeUnmount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import PageLoadingScene from '@/components/common/feedback/PageLoadingScene.vue'
@@ -8,6 +8,9 @@ import UpdateNotification from '@/components/common/feedback/UpdateNotification.
 import AppHeader from '@/components/layout/AppHeader.vue'
 import GridLoadingState from '@/components/wallpaper/WallpaperGrid/shared/GridLoadingState.vue'
 import { useVersionCheck } from '@/composables/useVersionCheck'
+import { downloadChallenge } from '@/services/downloadVerification'
+
+const DownloadVerificationDialog = defineAsyncComponent(() => import('@/components/wallpaper/DownloadVerificationDialog.vue'))
 
 // Version check (启动版本检测)
 useVersionCheck()
@@ -19,7 +22,7 @@ const navigationPending = ref(false)
 let pendingDestination
 const removeBeforeNavigation = router.beforeEach((to) => {
   pendingDestination = to
-  navigationPending.value = true
+  navigationPending.value = !(to.meta.browseShell && route.meta.browseShell)
 })
 const removeAfterNavigation = router.afterEach((to) => {
   if (pendingDestination === to)
@@ -84,6 +87,8 @@ const compactMain = computed(() => route.meta?.compactMain === true)
           </Suspense>
         </RouterView>
       </main>
+
+      <DownloadVerificationDialog v-if="downloadChallenge" :key="downloadChallenge.id" :challenge="downloadChallenge" />
 
       <!-- 版本更新提示 -->
       <UpdateNotification v-if="!hideHeader" />

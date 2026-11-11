@@ -2,8 +2,10 @@
 import { computed, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useDevice } from '@/composables/useDevice'
-import { buildWallpaperImageFallbackUrls, formatBingDate, formatFileSize, formatRelativeTime, getDisplayFilename, highlightText } from '@/utils/common/format'
+import { buildWallpaperImageFallbackUrls, formatBingDate, formatFileSize, formatRelativeTime, highlightText } from '@/utils/common/format'
 import { VIDEO_USAGE_SHORT_LABELS } from '@/utils/config/constants'
+import { getWallpaperDisplayTitle } from '@/utils/wallpaper/displayTitle'
+import { getWallpaperCardAspectRatio } from '@/utils/wallpaper/mediaPresentation'
 import { buildWallpaperSharePath } from '@/utils/wallpaper/share'
 import { vCardReveal } from '../WallpaperGrid/composables/cardReveal'
 import WallpaperCardInfo from './shared/WallpaperCardInfo.vue'
@@ -81,12 +83,7 @@ const formattedSize = computed(() => formatFileSize(props.wallpaper.size))
 const fileFormat = computed(() => props.wallpaper.filename.split('.').pop()?.toUpperCase() || '')
 const relativeTime = computed(() => formatRelativeTime(props.wallpaper.createdAt || props.wallpaper.date))
 const isVideoWallpaper = computed(() => props.wallpaper?.mediaType === 'video')
-const displayFilename = computed(() => {
-  if (props.wallpaper.displayTitle) {
-    return props.wallpaper.displayTitle.replace(/\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|tif|ico|heic|heif|mp4|webm|mov|m4v)$/i, '')
-  }
-  return getDisplayFilename(props.wallpaper.filename)
-})
+const displayFilename = computed(() => getWallpaperDisplayTitle(props.wallpaper))
 const aiKeywords = computed(() => props.wallpaper.keywords?.slice(0, 3) || [])
 const highlightedFilename = computed(() => highlightText(displayFilename.value, props.searchQuery))
 const categoryDisplay = computed(() => {
@@ -131,19 +128,7 @@ const bingCopyright = computed(() => {
   return parenIndex > 0 ? copyright.substring(0, parenIndex).trim() : copyright
 })
 
-const computedAspectRatio = computed(() => {
-  if (isVideoWallpaper.value) {
-    if (props.wallpaper?.usage === 'mobile') {
-      return '9/16'
-    }
-    if (props.wallpaper?.usage === 'social-cover') {
-      return '9/16'
-    }
-    return '16/9'
-  }
-
-  return props.aspectRatio
-})
+const computedAspectRatio = computed(() => getWallpaperCardAspectRatio(props.wallpaper, props.aspectRatio))
 const normalizedAspectRatio = computed(() => computedAspectRatio.value.replace('/', ' / '))
 const cardImageStyle = computed(() => ({ aspectRatio: normalizedAspectRatio.value }))
 

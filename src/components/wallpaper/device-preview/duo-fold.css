@@ -1,0 +1,117 @@
+.duo-surface {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  isolation: isolate;
+}
+.duo-surface.is-prepared {
+  visibility: visible;
+}
+.duo-surface__fixed {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  border-radius: inherit;
+  background: linear-gradient(150deg, #d7d9db, #74787b 45%, #a7aaad);
+  box-shadow:
+    inset 0 0 0 1px #9a9fa6,
+    inset 0 0 0 3px #555b63,
+    inset 0 0 0 7px #151617;
+  clip-path: inset(0 0 0 50% round 0 3cqw 3cqw 0);
+}
+.duo-surface__fixed img {
+  position: absolute;
+  inset: 7px;
+  width: calc(100% - 14px);
+  height: calc(100% - 14px);
+  max-width: none;
+  object-fit: cover;
+  border-radius: max(2px, calc(var(--frame-radius, 3.6cqw) - 7px));
+}
+.duo-surface__fixed > i {
+  position: absolute;
+  inset: 0;
+  background: #04060a;
+}
+.duo-surface.is-horizontal .duo-surface__fixed {
+  clip-path: inset(50% 0 0 0 round 0 0 3cqh 3cqh);
+}
+.duo-surface__projection {
+  position: absolute;
+  inset: -30%;
+  pointer-events: none;
+}
+.duo-surface__projection > i,
+.duo-surface__window,
+.duo-surface__blur,
+.duo-surface__shade,
+.duo-surface__sheen {
+  position: absolute;
+  inset: 0;
+}
+.duo-surface__slab {
+  background: linear-gradient(90deg, #5b6168, #a0a6ae 48%, #69717b);
+}
+.duo-surface.is-horizontal .duo-surface__slab {
+  background: linear-gradient(#616871, #a0a6ae 48%, #606872);
+}
+.duo-surface__outline {
+  background: #9a9fa6;
+}
+.duo-surface__rim {
+  background: #969da5;
+}
+.duo-surface__bezel {
+  background: #0e1115;
+}
+.duo-surface__window {
+  overflow: visible;
+}
+.duo-surface__shade {
+  background: #04060a;
+  pointer-events: none;
+}
+.duo-surface__sheen {
+  background: linear-gradient(
+    125deg,
+    rgba(255, 255, 255, 0.2),
+    transparent 35%,
+    rgba(215, 225, 240, 0.12) 78%,
+    transparent
+  );
+  pointer-events: none;
+}
+.duo-surface__camera {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #465263 0, #111720 35%, #000 70%);
+  box-shadow: 0 0 0 1px #0007;
+}
+.duo-surface__ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 5%;
+  bottom: -4%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.13), transparent 70%);
+  filter: blur(5px);
+}
+
+.duo-surface {
+  border-radius: inherit;
+}
+
+.duo-surface__clear {
+  position: absolute;
+  left: calc(18.75% + 7px);
+  top: calc(18.75% + 7px);
+  width: calc(62.5% - 14px);
+  height: calc(62.5% - 14px);
+  max-width: none;
+  object-fit: cover;
+}

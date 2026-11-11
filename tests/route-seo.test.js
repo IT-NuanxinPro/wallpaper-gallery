@@ -10,11 +10,9 @@ describe('公共页面 SEO 身份', () => {
     expect(new Set(pages.map(page => page.title)).size).toBe(pages.length)
     expect(pages.every(page => page.robots.startsWith('index') && page.description)).toBe(true)
   })
-  it('专题面包屑表达层级，分类之间不是相互父子关系', () => {
-    const breadcrumb = getRouteSeo('/collections/quiet-night').structuredData['@graph'].at(-1)
-    expect(breadcrumb.itemListElement.map(item => item.item)).toEqual([
-      'https://wallpaper.061129.xyz/', 'https://wallpaper.061129.xyz/collections', 'https://wallpaper.061129.xyz/collections/quiet-night',
-    ])
+  it('移除精选专题后不再向站点地图及SEO暴露旧页面', () => {
+    expect(PUBLIC_SITE_PATHS.some(path => path.startsWith('/collections'))).toBe(false)
+    expect(getRouteSeo('/collections/quiet-night')).toMatchObject({ robots: 'noindex, follow', canonical: null, structuredData: null })
     expect(getRouteSeo('/desktop').structuredData['@graph'].at(-1).itemListElement).toHaveLength(2)
   })
   it('账号、设备本地图库和不存在页面不生成可收录规范网址', () => {

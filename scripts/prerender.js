@@ -129,9 +129,6 @@ async function waitForSeo(page, route, baseUrl) {
     await page.waitForFunction(() => document.querySelector('[data-browse-ready="ready"]')
       && document.querySelectorAll('.wallpaper-card a[href^="/wallpaper/"]').length > 0, { timeout: 45000 })
   }
-  if (route.startsWith('/collections')) {
-    await page.waitForFunction(() => document.querySelector('[data-collection-ready]')?.dataset.collectionReady === 'ready', { timeout: 30000 })
-  }
 }
 
 async function writeRouteHtml(route, html) {
@@ -166,7 +163,12 @@ async function main() {
     })
 
     // 详情模板必须保持空应用容器，避免边缘详情混入预渲染首页。
-    const detailCss = await fs.readFile(path.join(ROOT_DIR, 'src/assets/styles/wallpaper-detail.css'), 'utf8')
+    const detailCss = (await Promise.all([
+      'src/components/common/feedback/soft-loading.css',
+      'src/components/wallpaper/device-preview/device-preview.css',
+      'src/components/wallpaper/PortraitWallpaperModal/shared/phone-frame.css',
+      'src/assets/styles/wallpaper-detail.css',
+    ].map(file => fs.readFile(path.join(ROOT_DIR, file), 'utf8')))).join('\n')
     const detailShell = buildDetailShell(await fs.readFile(path.join(DIST_DIR, 'index.html'), 'utf8'), detailCss)
     await fs.writeFile(path.join(DIST_DIR, 'detail-shell.html'), detailShell)
     const missingPage = (await fs.readFile(path.join(DIST_DIR, 'index.html'), 'utf8'))

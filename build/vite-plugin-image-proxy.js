@@ -1,4 +1,5 @@
-import { Buffer } from 'node:buffer'
+import { Readable } from 'node:stream'
+import { pipeline } from 'node:stream/promises'
 import { handleImageRequest } from '../server/image-proxy.js'
 
 export function createImageMemoryCache({ maxEntries = 128, maxBytes = 32 * 1024 * 1024 } = {}) {
@@ -39,6 +40,12 @@ export function viteImageProxyPlugin({ fetch = globalThis.fetch } = {}) {
     server.middlewares.use(async (req, res, next) => {
       if (req.url !== '/images' && !req.url?.startsWith('/images/'))
         return next()
+      const controller = new AbortController()
+      const cancel = () => {
+        if (!res.writableEnded)
+          controller.abort(new DOMException('Image client disconnected', 'AbortError'))
+      }
+      res.once('close', cancel)
       try {
         const headers = new Headers()
         for (const [name, value] of Object.entries(req.headers)) {
@@ -46,16 +53,33 @@ export function viteImageProxyPlugin({ fetch = globalThis.fetch } = {}) {
             headers.set(name, Array.isArray(value) ? value.join(', ') : value)
         }
         // 使用固定本地源，避免把不受信任的 Host 头变成上游目标或缓存键。
-        const request = new Request(new URL(req.url, 'http://image-proxy.local'), { method: req.method, headers })
-        const response = await handleImageRequest(request, { fetch, cache })
+        const request = new Request(new URL(req.url, 'http://image-proxy.local'), { method: req.method, headers, signal: controller.signal })
+        const response = await handleImageRequest(request, {
+          fetch,
+          cache,
+          waitUntil: (pending) => {
+            void pending.catch(() => {})
+          },
+        })
         res.statusCode = response.status
         response.headers.forEach((value, name) => res.setHeader(name, value))
-        res.end(response.body ? Buffer.from(await response.arrayBuffer()) : undefined)
+        res.flushHeaders()
+        if (response.body)
+          await pipeline(Readable.fromWeb(response.body), res, { signal: controller.signal })
+        else
+          res.end()
       }
       catch {
+        if (res.headersSent) {
+          res.destroy()
+          return
+        }
         res.statusCode = 502
         res.setHeader('Cache-Control', 'no-store')
         res.end(req.method === 'HEAD' ? undefined : 'Image unavailable')
+      }
+      finally {
+        res.removeListener('close', cancel)
       }
     })
   }

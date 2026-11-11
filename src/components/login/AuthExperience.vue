@@ -603,9 +603,6 @@ watch(isConfigured, (value) => {
           <RouterLink to="/">
             返回壁纸库
           </RouterLink>
-          <RouterLink to="/about">
-            项目介绍
-          </RouterLink>
         </div>
       </section>
 

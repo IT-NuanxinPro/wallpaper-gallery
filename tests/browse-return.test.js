@@ -10,7 +10,7 @@ afterEach(() => vi.unstubAllGlobals())
 
 it.each([
   '/', '/?q=星空', '/desktop?q=%E6%98%9F%E7%A9%BA&category=风景', '/mobile', '/avatar#gallery',
-  '/video?use=mobile', '/bing?category=2024-02', '/library?tab=collections', '/collections', '/collections/quiet-night',
+  '/video?use=mobile', '/bing?category=2024-02', '/library?tab=collections', '/account?tab=likes', '/account',
 ])('原样记住合法站内列表及筛选参数 %s', (path) => {
   expect(isBrowseReturnPath(path)).toBe(true)
   rememberBrowseReturn(path)
@@ -18,7 +18,7 @@ it.each([
 })
 
 it.each([
-  undefined, null, {}, '', '//example.com/desktop', 'https://example.com/desktop', '/wallpaper/token', '/account',
+  undefined, null, {}, '', '//example.com/desktop', 'https://example.com/desktop', '/wallpaper/token',
   '/desktop/unknown', '/collections/quiet-night/unknown', '/collections/not-a-collection',
   '/desktop\\evil', '/desktop?q=a\nb', '/desktop?q=%0ab', '/desktop?q=%5cb', '/desktop?q=//evil',
   '/desktop?q=%2f%2fevil', '/desktop?q=%zz', `/desktop?q=${'a'.repeat(4096)}`,

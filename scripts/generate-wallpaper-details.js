@@ -4,7 +4,6 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath, pathToFileURL } from 'node:url'
-import { WALLPAPER_COLLECTIONS } from '../src/content/collections.js'
 import { buildWallpaperDetailRecord, isValidWallpaperDetailRecord } from '../src/utils/wallpaper/detailRecords.js'
 import { getWallpaperDetailBucketPath } from '../src/utils/wallpaper/share.js'
 import { loadWallpaperMetadata } from './lib/wallpaperMetadata.js'
@@ -22,8 +21,6 @@ export async function generateWallpaperDetails({ dataDir = path.join(projectRoot
   const buckets = Array.from({ length: 64 }, () => ({}))
   const catalog = []
   const records = []
-  const curatedKeys = new Set(WALLPAPER_COLLECTIONS.flatMap(collection => collection.items))
-  const curatedRecords = {}
   for (const wallpaper of wallpapers) {
     const record = buildWallpaperDetailRecord(wallpaper, defaultCdnTag)
     if (!record) {
@@ -36,8 +33,6 @@ export async function generateWallpaperDetails({ dataDir = path.join(projectRoot
     const bucket = Number.parseInt(getWallpaperDetailBucketPath(token).split('/').at(-1), 16)
     buckets[bucket][token] = record
     records.push(record)
-    if (curatedKeys.has(record.assetKey))
-      curatedRecords[record.assetKey] = record
     const { assetKey, series, title, category, subcategory, tags, thumbnailUrl, previewUrl, resolution, mediaType, sharePath, size } = record
     catalog.push({ assetKey, series, title, category, subcategory, tags, thumbnailUrl, previewUrl, resolution, mediaType, sharePath, size })
   }
@@ -48,7 +43,7 @@ export async function generateWallpaperDetails({ dataDir = path.join(projectRoot
   outputs.push([path.join(outputDir, 'index.json'), `${JSON.stringify({ schema: 1, items: catalog })}\n`])
   for (const series of ['desktop', 'mobile', 'avatar', 'video', 'bing'])
     outputs.push([path.join(outputDir, `index-${series}.json`), `${JSON.stringify({ schema: 1, items: catalog.filter(item => item.series === series) })}\n`])
-  outputs.push([path.join(dataDir, 'collections.json'), `${JSON.stringify({ schema: 1, items: curatedRecords })}\n`], [sitemapPath, sitemap.xml])
+  outputs.push([sitemapPath, sitemap.xml])
   await writeValidatedOutputs(outputs)
   return { total: catalog.length + skippedItems.length, generated: catalog.length, skipped: skippedItems.length, skippedItems, buckets: 64, sitemapUrls: sitemap.total }
 }

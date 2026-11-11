@@ -1,153 +1,28 @@
 # Vite 自定义插件
 
-本目录包含项目使用的自定义 Vite 插件。
+校对日期：2026-11-11。当前实际启用情况以 [vite.config.js](../vite.config.js) 为准。沿用原文件名以兼容已有链接。
 
-## 📁 插件列表
+| 插件 | 状态 | 作用 |
+| --- | --- | --- |
+| [vite-plugin-image-proxy.js](../build/vite-plugin-image-proxy.js) | 开发与 preview 启用 | 挂载 `/images/*`，与 Pages 共用图片请求校验及响应逻辑 |
+| [vite-plugin-version.js](../build/vite-plugin-version.js) | 已注册，生产构建写文件 | 从 `package.json` 取网站版本，生成北京时间 `buildTime` 与 `public/version.json` |
+| [vite-plugin-obfuscate.js](../build/vite-plugin-obfuscate.js) | 仅生产启用 | 对 `src/utils/common/codec.js`、`src/utils/config/constants.js`、`src/utils/common/format.js` 做构建混淆 |
+| [vite-plugin-cdn.js](../build/vite-plugin-cdn.js) | 未导入、未启用 | 早期注入外部 Vue/Router 脚本的遗留文件，不应按旧示例重新开启 |
 
-### 1. vite-plugin-cdn.js
+Vue、Vue Router、Pinia 等启动依赖随网站发布。混淆只改变产物可读性，不是加密、访问控制或存放密钥的方式。
 
-**功能**: 在生产环境构建时注入 CDN 脚本,并移除 Import Map
+## 图片入口
 
-**用途**:
-- 将 Vue、Vue Router 等依赖从 CDN 加载,减小打包体积
-- 自动移除开发环境的 Import Map
-- 在正确位置注入 CDN 脚本
+Vite 中间件和边缘 Function 共用 [server/image-proxy.js](../server/image-proxy.js)。本地缓存为内存缓存，重启清空；上线后缓存由 Cloudflare 提供。路径、容量和错误语义见 [图片入口部署](图片入口部署.md)。
 
-**使用**:
-```javascript
-import { cdnPlugin } from './build/vite-plugin-cdn.js'
+## 版本文件
 
-export default defineConfig({
-  plugins: [
-    cdnPlugin({
-      css: [],
-      js: [
-        'https://unpkg.com/vue@3.5.24/dist/vue.global.prod.js',
-        'https://unpkg.com/vue-router@4.6.4/dist/vue-router.global.prod.js',
-      ],
-    }),
-  ],
-})
-```
+`package.json` 是网站语义版本来源；`buildStart` 在生产模式写入 `public/version.json` 并随 `dist` 发布。前端通过该文件发现网页更新。构建时间会变化，因此发布前应检查版本号及这份生成文件。
 
-**默认 CDN**:
-- Vue 3.5.24
-- Vue Demi 0.14.10
-- Vue Router 4.6.4
+网站版本不决定桌面安装包版本。安装包信息来自 `public/desktop-release.json` 与对应 API，网页和原生更新由现有版本检查逻辑分别处理。
 
----
+## 生产构建
 
-### 2. vite-plugin-version.js
+`pnpm build:seo` 依次执行详情数据生成、Vite 构建和公共页面预渲染。Brotli 压缩、组件按需导入属于配置中使用的第三方插件，详情关键 CSS 内联由 [scripts/prerender.js](../scripts/prerender.js) 负责，不属于 CDN 注入。
 
-**功能**: 在构建时自动更新 `public/version.json` 文件
-
-**用途**:
-- 自动记录应用版本号和构建时间
-- 用于前端版本检测和更新提示
-
-**使用**:
-```javascript
-import { versionPlugin } from './build/vite-plugin-version.js'
-
-export default defineConfig({
-  plugins: [
-    versionPlugin({
-      version: '1.0.0',
-      buildTime: '2026-01-10 20:00:00',
-      outputPath: 'public/version.json', // 可选,默认值
-    }),
-  ],
-})
-```
-
-**生成文件示例** (`public/version.json`):
-```json
-{
-  "version": "1.0.0",
-  "buildTime": "2026-01-10 20:00:00"
-}
-```
-
----
-
-### 3. vite-plugin-obfuscate.js
-
-**功能**: 对敏感文件进行代码混淆
-
-**用途**:
-- 保护核心业务逻辑不被轻易查看
-- 混淆加密/解密相关代码
-- 增加逆向工程难度
-
-**使用**:
-```javascript
-import { obfuscatePlugin } from './build/vite-plugin-obfuscate.js'
-
-export default defineConfig({
-  plugins: [
-    obfuscatePlugin({
-      include: [
-        'src/utils/codec.js',        // 加密解密
-        'src/utils/constants.js',    // 常量配置
-        'src/utils/format.js',       // URL 构建
-      ],
-    }),
-  ],
-})
-```
-
----
-
-## 🔧 开发建议
-
-### 创建新插件
-
-1. 在 `build/` 目录下创建新文件 `vite-plugin-xxx.js`
-2. 使用以下模板:
-
-```javascript
-/**
- * 插件名称
- * 插件功能描述
- */
-
-/**
- * 插件函数
- * @param {Object} options 配置选项
- * @returns {import('vite').Plugin}
- */
-export function xxxPlugin(options = {}) {
-  return {
-    name: 'vite-plugin-xxx',
-    // Vite 插件钩子
-    // https://vitejs.dev/guide/api-plugin.html
-  }
-}
-
-export default xxxPlugin
-```
-
-3. 在 `vite.config.js` 中导入并使用:
-
-```javascript
-import { xxxPlugin } from './build/vite-plugin-xxx.js'
-
-export default defineConfig({
-  plugins: [
-    xxxPlugin({ /* options */ }),
-  ],
-})
-```
-
----
-
-## 📚 参考资料
-
-- [Vite 插件 API](https://vitejs.dev/guide/api-plugin.html)
-- [Rollup 插件钩子](https://rollupjs.org/plugin-development/)
-- [插件开发指南](https://vitejs.dev/guide/api-plugin.html#plugin-api)
-
----
-
-**创建时间**: 2026-01-10
-**维护者**: 暖心
+修改插件后按范围验证：图片入口运行对应代理测试；版本插件检查 `dist/version.json`；涉及 HTML 或样式时检查预渲染页、详情 SSR 与客户端接管后的布局。

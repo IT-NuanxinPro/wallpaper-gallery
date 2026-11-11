@@ -55,6 +55,12 @@ export function validateBrowseQuery(query = {}, { series, categories = [], categ
   const parent = categories.find(option => option.value === state.category)
   if (subcategory && state.category !== 'all' && (!categoriesReady || parent?.subcategories?.some(item => (item.name || item.value) === subcategory)))
     state.subcategory = subcategory
+  if (series === 'video') {
+    state.category = 'desktop'
+    state.subcategory = 'all'
+    state.format = 'all'
+    state.resolution = 'all'
+  }
   return state
 }
 

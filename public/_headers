@@ -14,3 +14,7 @@
   X-Robots-Tag: noindex
 /local-wallpapers
   X-Robots-Tag: noindex
+/people
+  X-Robots-Tag: noindex
+/people/*
+  X-Robots-Tag: noindex

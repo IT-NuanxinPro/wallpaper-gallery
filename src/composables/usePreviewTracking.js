@@ -11,7 +11,7 @@ export function isCurrentMediaEvent(event, source) {
   return new URL(loadedSource, base).href === new URL(source, base).href
 }
 
-export function usePreviewTracking({ wallpaper, series, isOpen, ready, enabled = true }) {
+export function usePreviewTracking({ wallpaper, series, isOpen, ready, enabled = true, onRecorded }) {
   let trackedKey = ''
   return watch([
     () => getWallpaperIdentity(toValue(wallpaper), toValue(series)).assetKey,
@@ -27,8 +27,10 @@ export function usePreviewTracking({ wallpaper, series, isOpen, ready, enabled =
     const snapshot = { ...toValue(wallpaper) }
     const previewSeries = toValue(series)
     recordView(snapshot, previewSeries).then((result) => {
-      if (result.status === 'accepted')
+      if (result.status === 'accepted') {
         trackWallpaperPreview(snapshot, previewSeries)
+        onRecorded?.(assetKey)
+      }
     }).catch((error) => {
       if (trackedKey === assetKey)
         trackedKey = ''

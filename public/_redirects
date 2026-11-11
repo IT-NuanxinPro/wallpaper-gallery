@@ -1,13 +1,11 @@
+/collections /desktop 301
+/collections/* /desktop 301
 /desktop/ /desktop 301
 /mobile/ /mobile 301
 /avatar/ /avatar 301
 /bing/ /bing 301
 /video/ /video 301
 /about/ /about 301
-/collections/ /collections 301
-/collections/quiet-night/ /collections/quiet-night 301
-/collections/mountain-light/ /collections/mountain-light 301
-/collections/ocean-breeze/ /collections/ocean-breeze 301
 /login/ /login 301
 /signup/ /signup 301
 /auth/callback/ /auth/callback 301
@@ -20,3 +18,6 @@
 /account /detail-shell 200
 /library /detail-shell 200
 /local-wallpapers /detail-shell 200
+/people/ /desktop 301
+/people /desktop 301
+/people/* /detail-shell 200

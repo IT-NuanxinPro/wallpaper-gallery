@@ -1,7 +1,6 @@
 <script setup>
 import { computed } from 'vue'
 import AnimatedNumber from '@/components/common/ui/AnimatedNumber.vue'
-import { VIDEO_USAGE_SHORT_LABELS } from '@/utils/config/constants'
 
 const props = defineProps({
   activeSearchQuery: {
@@ -46,7 +45,7 @@ defineEmits(['clearSearch', 'reset'])
 
 const categoryLabel = computed(() => {
   if (props.currentSeries === 'video') {
-    return VIDEO_USAGE_SHORT_LABELS[props.categoryFilter] || props.categoryFilter
+    return '电脑'
   }
 
   return props.categoryFilter
@@ -62,13 +61,7 @@ const resultLabel = computed(() => {
   }
 
   if (props.currentSeries === 'video') {
-    const videoLabels = {
-      'desktop': '电脑动态壁纸',
-      'mobile': '手机动态壁纸',
-      'social-cover': '朋友圈封面',
-    }
-
-    return videoLabels[props.categoryFilter] || '动态壁纸'
+    return '电脑动态壁纸'
   }
 
   return '壁纸'

@@ -6,6 +6,8 @@ import * as VueRouter from 'vue-router'
 import { useDevice } from '../src/composables/useDevice.js'
 import * as format from '../src/utils/common/format.js'
 import * as constants from '../src/utils/config/constants.js'
+import * as displayTitle from '../src/utils/wallpaper/displayTitle.js'
+import * as mediaPresentation from '../src/utils/wallpaper/mediaPresentation.js'
 import * as share from '../src/utils/wallpaper/share.js'
 import { vCardReveal } from '../src/components/wallpaper/WallpaperGrid/composables/cardReveal.js'
 
@@ -25,6 +27,8 @@ const card = compileComponent('../src/components/wallpaper/card/index.vue', {
   '@/composables/useDevice': { useDevice },
   '@/utils/common/format': format,
   '@/utils/config/constants': constants,
+  '@/utils/wallpaper/displayTitle': displayTitle,
+  '@/utils/wallpaper/mediaPresentation': mediaPresentation,
   '@/utils/wallpaper/share': share,
   '../WallpaperGrid/composables/cardReveal': { vCardReveal },
   './shared/WallpaperCardMedia.vue': media,
@@ -34,7 +38,7 @@ const card = compileComponent('../src/components/wallpaper/card/index.vue', {
 const apps = []
 afterEach(() => apps.splice(0).forEach(app => app.unmount()))
 
-async function mountCard(wallpaper) {
+async function mountCard(wallpaper, props = {}) {
   const elements = []
   const renderer = Vue.createRenderer({
     createElement(tag) {
@@ -57,7 +61,7 @@ async function mountCard(wallpaper) {
   await router.push('/desktop?q=lake')
   const preview = vi.fn()
   const navigate = vi.fn()
-  const app = renderer.createApp({ render: () => Vue.h(card, { wallpaper, onClick: preview, onNavigate: navigate }) })
+  const app = renderer.createApp({ render: () => Vue.h(card, { wallpaper, onClick: preview, onNavigate: navigate, ...props }) })
   app.use(router)
   app.mount({ children: [] })
   apps.push(app)
@@ -76,6 +80,21 @@ const wallpaper = { filename: 'lake.jpg', path: '/wallpaper/desktop/lake.jpg', d
 const detailPath = '/wallpaper/ZGVza3RvcDpwYXRoOi93YWxscGFwZXIvZGVza3RvcC9sYWtlLmpwZw'
 
 describe('卡片详情入口与快速预览', () => {
+  it.each(['desktop', 'mobile', 'avatar', 'video'])('%s 卡片的标题与替代文本不残留文件后缀', async (series) => {
+    const item = { ...wallpaper, _series: series, displayTitle: '山间__晨光.custom123', mediaType: series === 'video' ? 'video' : 'image' }
+    const { elements } = await mountCard(item)
+    expect(elements.some(element => element.tag === 'span' && element.text === '山间 晨光')).toBe(true)
+    expect(elements.find(element => element.tag === 'img')?.props.alt).toContain('山间 晨光')
+    expect(elements.find(element => element.tag === 'img')?.props.alt).not.toContain('.custom123')
+  })
+  it('静态卡片保留显式自定义比例，视频继续按用途使用横竖比例', async () => {
+    const staticCard = await mountCard(wallpaper, { aspectRatio: '4/3' })
+    expect(staticCard.elements.some(element => element.props.style?.aspectRatio === '4 / 3')).toBe(true)
+    const mobileVideo = await mountCard({ ...wallpaper, mediaType: 'video', usage: 'mobile' }, { aspectRatio: '4/3' })
+    expect(mobileVideo.elements.some(element => element.props.style?.aspectRatio === '9 / 16')).toBe(true)
+    const desktopVideo = await mountCard({ ...wallpaper, mediaType: 'video', usage: 'desktop' }, { aspectRatio: '4/3' })
+    expect(desktopVideo.elements.some(element => element.props.style?.aspectRatio === '16 / 9')).toBe(true)
+  })
   it('动态卡片按真实上传日期显示相对时间，无日期不伪造刚刚上传', async () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date('2026-11-10T10:00:00Z'))

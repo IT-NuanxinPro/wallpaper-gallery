@@ -41,6 +41,7 @@ function imageLocation(request) {
   return {
     upstream: `${UPSTREAM_BASE}/${path}`,
     cacheKey: new Request(`${url.origin}/images/${path}`),
+    original: kind === 'wallpaper',
     maxBytes: kind === 'wallpaper' ? MAX_ORIGINAL_BYTES : MAX_IMAGE_BYTES,
     timeoutMs: kind === 'wallpaper' ? ORIGINAL_TIMEOUT_MS : UPSTREAM_TIMEOUT_MS,
   }
@@ -183,6 +184,148 @@ async function fetchWithDeadline(request, location, fetch) {
   }
 }
 
+/** 原图收到上游头部就返回。完整下载前不承诺缓存成功，也不先把32MiB攒进响应。 */
+async function streamOriginal(request, location, fetch, cache, waitUntil) {
+  const controller = new AbortController()
+  let reader
+  let output
+  let chunks
+  let settled = false
+  let timer
+  let rejectDeadline
+  let finishLifetime
+  let abortRequest
+  const deadline = new Promise((_, reject) => {
+    rejectDeadline = reject
+  })
+  const lifetime = new Promise((resolve) => {
+    finishLifetime = resolve
+  })
+  const cleanup = () => {
+    clearTimeout(timer)
+    request.signal.removeEventListener('abort', abortRequest)
+  }
+  const fail = (error) => {
+    if (settled)
+      return
+    settled = true
+    cleanup()
+    controller.abort(error)
+    if (chunks)
+      chunks.length = 0
+    if (reader) {
+      const currentReader = reader
+      void currentReader.cancel(error).catch(() => {}).finally(() => currentReader.releaseLock())
+    }
+    output?.error(error)
+    rejectDeadline(error)
+    finishLifetime()
+  }
+  abortRequest = () => fail(new DOMException('Image request cancelled', 'AbortError'))
+  timer = setTimeout(() => fail(new DOMException('Image request timeout', 'TimeoutError')), location.timeoutMs)
+  if (request.signal.aborted)
+    abortRequest()
+  else
+    request.signal.addEventListener('abort', abortRequest, { once: true })
+  // 防止已取消或未消费响应把后台缓存等待挂起；没有缓存时也不延长函数生命周期。
+  if (cache && waitUntil)
+    waitUntil(lifetime)
+  try {
+    const fetchUpstream = async () => {
+      controller.signal.throwIfAborted()
+      const response = await fetch(location.upstream, { method: request.method, redirect: 'manual', signal: controller.signal })
+      if (controller.signal.aborted)
+        void response.body?.cancel().catch(() => {})
+      controller.signal.throwIfAborted()
+      return response
+    }
+    const upstream = await Promise.race([fetchUpstream(), deadline])
+    const contentType = imageType(upstream)
+    const lengthValue = upstream.headers.get('Content-Length')
+    const declaredLength = !upstream.headers.has('Content-Encoding') && lengthValue && /^\d+$/.test(lengthValue) ? Number(lengthValue) : null
+    if (upstream.status !== 200 || !contentType || declaredLength > location.maxBytes || (request.method === 'GET' && !upstream.body)) {
+      void upstream.body?.cancel().catch(() => {})
+      settled = true
+      cleanup()
+      finishLifetime()
+      return errorResponse(request, upstream.status === 404 ? 404 : 502)
+    }
+    const headers = new Headers({
+      'Content-Type': contentType,
+      'Cache-Control': IMAGE_CACHE_CONTROL,
+      'X-Content-Type-Options': 'nosniff',
+    })
+    if (declaredLength !== null)
+      headers.set('Content-Length', String(declaredLength))
+    if (upstream.headers.has('ETag'))
+      headers.set('ETag', upstream.headers.get('ETag'))
+    if (request.method === 'HEAD') {
+      void upstream.body?.cancel().catch(() => {})
+      settled = true
+      cleanup()
+      finishLifetime()
+      return new Response(null, { headers })
+    }
+    reader = upstream.body.getReader()
+    // 仅有缓存时保留受32MiB硬上限约束的块；不使用tee让快缓存分支拖着慢客户端无限预读。
+    chunks = cache ? [] : null
+    let size = 0
+    const body = new ReadableStream({
+      start(streamController) { output = streamController },
+      async pull(streamController) {
+        try {
+          controller.signal.throwIfAborted()
+          const { done, value } = await reader.read()
+          controller.signal.throwIfAborted()
+          if (done) {
+            if (!size || (declaredLength !== null && size !== declaredLength))
+              throw new Error('Incomplete image body')
+            settled = true
+            cleanup()
+            reader.releaseLock()
+            streamController.close()
+            if (chunks) {
+              const cacheHeaders = new Headers(headers)
+              cacheHeaders.set('Content-Length', String(size))
+              const complete = new Response(new Blob(chunks, { type: contentType }), { headers: cacheHeaders })
+              chunks.length = 0
+              Promise.resolve().then(() => cache.put(location.cacheKey, complete)).catch(() => {}).finally(finishLifetime)
+            }
+            else {
+              finishLifetime()
+            }
+            return
+          }
+          size += value.byteLength
+          if (size > location.maxBytes)
+            throw new Error('Image too large')
+          chunks?.push(value)
+          streamController.enqueue(value)
+        }
+        catch (error) {
+          if (chunks)
+            chunks.length = 0
+          fail(error)
+        }
+      },
+      cancel(reason) {
+        if (chunks)
+          chunks.length = 0
+        // 下游已经取消，不能再对关闭的stream调用error。
+        output = null
+        fail(reason instanceof Error ? reason : new DOMException('Image stream cancelled', 'AbortError'))
+      },
+    }, { highWaterMark: 0 })
+    return new Response(body, { headers })
+  }
+  catch {
+    settled = true
+    cleanup()
+    finishLifetime()
+    return errorResponse(request, request.signal.aborted ? 499 : controller.signal.aborted ? 504 : 502)
+  }
+}
+
 export async function handleImageRequest(request, { fetch = globalThis.fetch, cache, waitUntil } = {}) {
   if (!['GET', 'HEAD'].includes(request.method))
     return errorResponse(request, 405)
@@ -203,6 +346,11 @@ export async function handleImageRequest(request, { fetch = globalThis.fetch, ca
   }
   catch {
     // 缓存不可用时仍然请求固定上游，缓存不成为图片可用性的前提。
+  }
+
+  if (location.original) {
+    const response = await streamOriginal(request, location, fetch, cache, waitUntil)
+    return response.status === 200 ? responseForRequest(request, response, 'MISS') : response
   }
 
   const response = await fetchWithDeadline(request, location, fetch)

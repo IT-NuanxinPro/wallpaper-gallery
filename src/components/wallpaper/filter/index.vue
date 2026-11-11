@@ -7,8 +7,7 @@ import MobileFilterPopup from '@/components/wallpaper/filter/mobile/MobileFilter
 import FilterSummary from '@/components/wallpaper/filter/shared/FilterSummary.vue'
 import { useDevice } from '@/composables/useDevice'
 import { trackFilter } from '@/utils/common/analytics'
-import { VIDEO_USAGE_SHORT_LABELS } from '@/utils/config/constants'
-import { hasActiveSeriesFilters } from '@/utils/filter/defaults'
+import { getDefaultCategoryFilter, hasActiveSeriesFilters } from '@/utils/filter/defaults'
 
 const props = defineProps({
   sortBy: {
@@ -83,7 +82,7 @@ const props = defineProps({
 const emit = defineEmits(['clearSearch', 'update:sortBy', 'update:formatFilter', 'update:resolutionFilter', 'update:categoryFilter', 'update:subcategoryFilter', 'reset'])
 
 const { isMobile } = useDevice()
-const showVideoUsageTabs = computed(() => props.currentSeries === 'video')
+const isVideoSeries = computed(() => props.currentSeries === 'video')
 
 const DesktopFilterControls = defineAsyncComponent({
   loader: () => import('@/components/wallpaper/filter/desktop/DesktopFilterControls.vue'),
@@ -111,10 +110,6 @@ const hasActiveFilters = computed(() => {
 })
 
 function getCategoryLabel(categoryValue) {
-  if (props.currentSeries === 'video') {
-    return VIDEO_USAGE_SHORT_LABELS[categoryValue] || categoryValue
-  }
-
   const matched = props.categoryOptions.find(option => option.value === categoryValue)
   return matched?.label || categoryValue
 }
@@ -181,7 +176,7 @@ function handleReset() {
   emit('update:sortBy', 'newest')
   emit('update:formatFilter', 'all')
   emit('update:resolutionFilter', 'all')
-  emit('update:categoryFilter', 'all')
+  emit('update:categoryFilter', getDefaultCategoryFilter(props.currentSeries))
   emit('update:subcategoryFilter', 'all')
   emit('reset')
 }
@@ -228,12 +223,6 @@ function resetFilters() {
   tempSortBy.value = 'newest'
   tempFormatFilter.value = 'all'
 }
-
-const videoUsageTabs = computed(() => [
-  { value: 'desktop', label: '电脑' },
-  { value: 'mobile', label: '手机' },
-  { value: 'social-cover', label: '朋友圈' },
-])
 </script>
 
 <template>
@@ -289,39 +278,13 @@ const videoUsageTabs = computed(() => [
     </div>
 
     <div v-if="!isMobile" class="desktop-filter-slot">
-      <div v-if="showVideoUsageTabs" class="video-usage-tabs video-usage-tabs--inline">
-        <button
-          v-for="tab in videoUsageTabs"
-          :key="tab.value"
-          class="video-usage-tabs__item"
-          :class="{ 'is-active': categoryFilter === tab.value }"
-          @click="handleCategoryUpdate(tab.value)"
-        >
-          <span class="video-usage-tabs__icon" aria-hidden="true">
-            <svg v-if="tab.value === 'desktop'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="4" width="18" height="12" rx="2" />
-              <path d="M8 20h8M12 16v4" />
-            </svg>
-            <svg v-else-if="tab.value === 'mobile'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="7" y="2" width="10" height="20" rx="2" />
-              <path d="M11 18h2" />
-            </svg>
-            <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="5" y="3" width="14" height="18" rx="2" />
-              <path d="M9 7h6M9 11h6M9 15h4" />
-            </svg>
-          </span>
-          <span class="video-usage-tabs__label">{{ tab.label }}</span>
-        </button>
-      </div>
-
       <DesktopFilterControls
         :category-filter="categoryFilter"
         :category-options="categoryOptions"
         :current-series="currentSeries"
         :format-filter="formatFilter"
-        :hide-category-filter="showVideoUsageTabs"
-        :hide-format-filter="hideFormatFilter"
+        :hide-category-filter="isVideoSeries"
+        :hide-format-filter="hideFormatFilter || isVideoSeries"
         :resolution-filter="resolutionFilter"
         :sort-by="sortBy"
         :subcategory-filter="subcategoryFilter"
@@ -335,25 +298,14 @@ const videoUsageTabs = computed(() => [
     <MobileFilterBar
       v-else
       :current-category-label="currentCategoryLabel"
-      :hide-category-filter="showVideoUsageTabs"
+      :hide-category-filter="isVideoSeries"
       :is-category-active="isCategoryActive"
       @open-category="openCategoryDrawer"
       @open-filter="openFilterPopup"
     />
-    <div v-if="isMobile && showVideoUsageTabs" class="video-usage-tabs">
-      <button
-        v-for="tab in videoUsageTabs"
-        :key="tab.value"
-        class="video-usage-tabs__item"
-        :class="{ 'is-active': categoryFilter === tab.value }"
-        @click="handleCategoryUpdate(tab.value)"
-      >
-        <span class="video-usage-tabs__label">{{ tab.label }}</span>
-      </button>
-    </div>
     <!-- 移动端分类选择抽屉（左右分栏） -->
     <MobileCategoryDrawer
-      v-if="!showVideoUsageTabs"
+      v-if="!isVideoSeries"
       v-model:show="showCategoryDrawer"
       :category-options="categoryOptions"
       :category-filter="categoryFilter"
@@ -367,7 +319,7 @@ const videoUsageTabs = computed(() => [
       v-model:show="showFilterPopup"
       v-model:temp-format-filter="tempFormatFilter"
       v-model:temp-sort-by="tempSortBy"
-      :hide-format-filter="hideFormatFilter"
+      :hide-format-filter="hideFormatFilter || isVideoSeries"
       @close="closeFilterPopup"
       @reset="resetFilters"
       @apply="applyFilters"
@@ -513,60 +465,6 @@ const videoUsageTabs = computed(() => [
   .summary-chip__icon {
     color: #f59e0b;
     background: rgba(245, 158, 11, 0.14);
-  }
-}
-
-.video-usage-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  flex-shrink: 0;
-
-  &--inline {
-    align-items: center;
-  }
-
-  &__item {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 7px 12px;
-    border-radius: $radius-full;
-    border: 1px solid rgba(148, 163, 184, 0.18);
-    background: rgba(255, 255, 255, 0.5);
-    color: var(--color-text-secondary);
-    font-size: 13px;
-    font-weight: $font-weight-semibold;
-    transition: all 220ms ease;
-    backdrop-filter: blur(10px);
-
-    [data-theme='dark'] & {
-      background: rgba(15, 23, 42, 0.45);
-      border-color: rgba(255, 255, 255, 0.08);
-    }
-
-    &.is-active {
-      color: #fff;
-      background: var(--accent-gradient);
-      border-color: transparent;
-      box-shadow: 0 8px 20px var(--accent-shadow);
-    }
-  }
-
-  &__icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    svg {
-      width: 14px;
-      height: 14px;
-    }
-  }
-
-  &__label {
-    line-height: 1;
-    white-space: nowrap;
   }
 }
 

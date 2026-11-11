@@ -339,6 +339,7 @@ export async function downloadFile(url, filename, options = {}) {
     const pakeInvoke = getPakeInvoke()
     if (pakeInvoke) {
       try {
+        options.onProgress?.({ phase: 'native', loaded: 0, total: null })
         await pakeInvoke('download_file', {
           params: {
             url: finalUrl,
@@ -353,8 +354,9 @@ export async function downloadFile(url, filename, options = {}) {
       }
     }
 
-    const blob = await fetchWallpaperImage(finalUrl, { ...options, allowMedia: true })
+    const blob = await fetchWallpaperImage(finalUrl, { sourceTimeoutMs: 6000, ...options, allowMedia: true })
     options.signal?.throwIfAborted()
+    options.onProgress?.({ phase: 'saving', loaded: blob.size, total: blob.size })
     triggerBrowserBlobDownload(blob, filename)
     return { status: 'browser-started' }
   }

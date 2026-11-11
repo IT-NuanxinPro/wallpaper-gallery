@@ -2,6 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import ContentEmpty from '@/components/common/feedback/ContentEmpty.vue'
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import PageLoadingScene from '@/components/common/feedback/PageLoadingScene.vue'
 import RemoteAvatar from '@/components/common/ui/RemoteAvatar.vue'
@@ -17,6 +18,7 @@ import { SERIES_CONFIG } from '@/utils/config/constants'
 import { resolveWallpaperSeries } from '@/utils/wallpaper/identity'
 import { restoreWallpaperFromAssetKey } from '@/utils/wallpaper/transformers'
 
+const props = defineProps({ embedded: Boolean, contentTab: { type: String, default: 'collections' } })
 const route = useRoute()
 const router = useRouter()
 const { isMobile } = useDevice()
@@ -36,7 +38,7 @@ const {
 } = storeToRefs(authStore)
 
 const pageState = ref('loading')
-const activeTab = ref(resolveLibraryTab(route.query.tab))
+const activeTab = ref(resolveLibraryTab(props.embedded ? props.contentTab : route.query.tab))
 const activeSeries = ref(getDefaultActiveSeries())
 const libraryContentScrollRef = ref(null)
 
@@ -79,7 +81,7 @@ const allSeriesOptions = [
 
 // 系列选项列表
 const seriesOptions = computed(() =>
-  isMobile.value
+  isMobile.value && !props.embedded
     ? allSeriesOptions.filter(option => ['mobile', 'avatar'].includes(option.id))
     : allSeriesOptions,
 )
@@ -171,10 +173,14 @@ function resolveLibraryTab(value) {
 }
 
 function getDefaultActiveSeries() {
+  if (props.embedded)
+    return 'all'
   return isMobile.value ? 'mobile' : 'all'
 }
 
 function getLibraryRoute(tab = activeTab.value) {
+  if (props.embedded)
+    return `/account?tab=${resolveLibraryTab(tab)}`
   return `/library?tab=${resolveLibraryTab(tab)}`
 }
 
@@ -229,7 +235,7 @@ function handleLibraryContentScroll(event) {
 async function ensureScrollableContent() {
   await nextTick()
   const container = libraryContentScrollRef.value
-  if (!container || isMobile.value || isLoadingMore.value || !hasMoreWallpapers.value) {
+  if (props.embedded || !container || isMobile.value || isLoadingMore.value || !hasMoreWallpapers.value) {
     return
   }
 
@@ -239,6 +245,8 @@ async function ensureScrollableContent() {
 }
 
 function syncRouteTab(tab) {
+  if (props.embedded)
+    return
   const normalizedTab = resolveLibraryTab(tab)
   if (route.query.tab === normalizedTab)
     return
@@ -336,6 +344,11 @@ async function ensurePageReady() {
   pageState.value = 'ready'
 }
 
+watch(() => props.contentTab, (value) => {
+  if (props.embedded)
+    activeTab.value = resolveLibraryTab(value)
+})
+
 // 监听 asset_key 列表变化，解析壁纸对象
 watch(currentAssetKeys, (keys) => {
   resetLibraryScroll()
@@ -343,6 +356,8 @@ watch(currentAssetKeys, (keys) => {
 }, { immediate: false })
 
 watch(() => route.query.tab, (nextTab) => {
+  if (props.embedded)
+    return
   const normalizedTab = resolveLibraryTab(nextTab)
   if (activeTab.value !== normalizedTab) {
     activeTab.value = normalizedTab
@@ -393,10 +408,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="library-page">
+  <div class="library-page" :class="{ 'is-embedded': embedded }">
     <div class="container">
       <section class="library-shell">
         <WallpaperRotationPanel
+          v-if="!embedded"
           :wallpapers="isAuthenticated && activeTab === 'collections' && !resolving ? resolvedWallpapers : []"
           :total-count="isAuthenticated && activeTab === 'collections' ? currentAssetKeys.length : 0"
         />
@@ -429,7 +445,7 @@ onMounted(() => {
 
           <section v-else class="library-layout">
             <!-- 侧边栏 -->
-            <aside class="library-sidebar">
+            <aside v-if="!embedded" class="library-sidebar">
               <div class="library-profile-card">
                 <div class="library-profile-card__identity">
                   <div class="library-profile-card__avatar-wrap">
@@ -490,11 +506,11 @@ onMounted(() => {
             <section class="library-main">
               <div class="library-content-card">
                 <!-- 移动端保持紧凑 Tab，桌面/平板使用页面级双卡导航 -->
-                <el-tabs v-if="isMobile" v-model="activeTab" class="library-tabs" stretch>
+                <el-tabs v-if="isMobile && !embedded" v-model="activeTab" class="library-tabs" stretch>
                   <el-tab-pane label="收藏夹" name="collections" />
                   <el-tab-pane label="我的喜欢" name="likes" />
                 </el-tabs>
-                <div v-else class="library-view-switcher" role="tablist" aria-label="壁纸库内容切换">
+                <div v-else-if="!embedded" class="library-view-switcher" role="tablist" aria-label="壁纸库内容切换">
                   <button
                     v-for="tab in libraryTabOptions"
                     :key="tab.name"
@@ -578,31 +594,16 @@ onMounted(() => {
                   </div>
 
                   <!-- 空状态 -->
-                  <div v-else class="library-empty-state">
-                    <div class="library-empty-state__icon">
-                      <svg v-if="activeTab === 'collections'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                      </svg>
-                      <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                        <path d="m12 21-1.45-1.32C5.4 15.03 2 11.95 2 8.5 2 5.42 4.42 3 7.5 3A5.3 5.3 0 0 1 12 5.09 5.3 5.3 0 0 1 16.5 3C19.58 3 22 5.42 22 8.5c0 3.45-3.4 6.53-8.55 11.18z" />
-                      </svg>
-                    </div>
-                    <h3>
-                      {{ activeSeries === 'all'
-                        ? `还没有${activeTab === 'likes' ? '喜欢' : '收藏'}的壁纸`
-                        : `${seriesOptions.find(o => o.id === activeSeries)?.name || ''}分区暂无内容` }}
-                    </h3>
-                    <p>
-                      {{ activeTab === 'likes'
-                        ? '浏览主页壁纸时，打开弹窗后点击爱心即可添加到这里。'
-                        : '浏览主页壁纸时，打开弹窗后点击星标即可收藏到这里。' }}
-                    </p>
-                    <RouterLink class="library-empty-state__action" to="/">
+                  <ContentEmpty v-else :description="activeSeries === 'all' ? `还没有${activeTab === 'likes' ? '喜欢' : '收藏'}的壁纸` : `${seriesOptions.find(o => o.id === activeSeries)?.name || ''}分区暂无内容`">
+                    <RouterLink class="library-empty-state__action" to="/desktop">
                       去发现壁纸
                     </RouterLink>
-                  </div>
+                  </ContentEmpty>
 
-                  <div v-if="isLoadingMore" class="library-loading-more">
+                  <button v-if="embedded && hasMoreWallpapers" class="library-empty-state__action library-load-more" :disabled="isLoadingMore" @click="loadMoreWallpapers">
+                    {{ isLoadingMore ? '加载中…' : '加载更多壁纸' }}
+                  </button>
+                  <div v-if="isLoadingMore && !embedded" class="library-loading-more">
                     <LoadingSpinner size="sm" />
                     <span>正在加载更多壁纸...</span>
                   </div>
@@ -1652,5 +1653,82 @@ onMounted(() => {
   .library-empty-state {
     min-height: 260px;
   }
+}
+</style>
+
+<style scoped>
+.library-page.is-embedded {
+  height: auto;
+  overflow: visible;
+  padding: 0;
+  min-height: 0;
+  background: transparent;
+}
+.is-embedded > .container {
+  height: auto;
+  max-width: none;
+  width: 100%;
+  padding: 0;
+}
+.is-embedded .library-shell {
+  height: auto;
+  width: 100%;
+  max-width: none;
+  gap: 0;
+}
+.is-embedded .library-layout {
+  height: auto;
+  overflow: visible;
+  display: block;
+}
+.is-embedded .library-sidebar,
+.is-embedded .library-hero {
+  display: none;
+}
+.is-embedded .library-main {
+  min-width: 0;
+}
+.is-embedded .library-content-card {
+  height: auto;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+  padding: 0;
+}
+.is-embedded .library-content-scroll {
+  height: auto;
+  max-height: none;
+  overflow: visible;
+  padding: 0;
+}
+.is-embedded .library-empty-state {
+  min-height: 280px;
+  padding: 40px 20px;
+}
+.is-embedded .library-wallpaper-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.is-embedded .series-filter-pills {
+  margin-bottom: 24px;
+}
+@media (max-width: 900px) {
+  .is-embedded .library-wallpaper-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .is-embedded .library-wallpaper-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+</style>
+
+<style scoped>
+.is-embedded .library-load-more {
+  display: flex;
+  margin: 28px auto 0;
+  cursor: pointer;
 }
 </style>

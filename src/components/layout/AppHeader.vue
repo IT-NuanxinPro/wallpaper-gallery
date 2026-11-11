@@ -4,7 +4,7 @@ import { gsap } from 'gsap'
 import { storeToRefs } from 'pinia'
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
+import SoftLoading from '@/components/common/feedback/SoftLoading.vue'
 import EnvBadge from '@/components/common/ui/EnvBadge.vue'
 import RemoteAvatar from '@/components/common/ui/RemoteAvatar.vue'
 import WallpaperSeriesIcon from '@/components/common/ui/WallpaperSeriesIcon.vue'
@@ -108,19 +108,7 @@ const authEntryRoute = computed(() => ({
     ),
   },
 }))
-const accountRoute = computed(() => '/account')
-const libraryCollectionsRoute = computed(() => ({
-  path: '/library',
-  query: {
-    tab: 'collections',
-  },
-}))
-const libraryLikesRoute = computed(() => ({
-  path: '/library',
-  query: {
-    tab: 'likes',
-  },
-}))
+const settingsRoute = computed(() => ({ path: '/account', query: { tab: 'settings' } }))
 const authInitial = computed(() => getAvatarInitial(authDisplayName.value || primaryEmail.value))
 const authAvatarStyle = computed(() => getAvatarStyle(authDisplayName.value || primaryEmail.value))
 
@@ -294,19 +282,13 @@ async function handleSignOut() {
     return
   signingOut.value = true
   closeDrawer()
-
-  const shouldRedirectBeforeSignOut = ['/account', '/library'].includes(route.path)
-
   try {
-    if (shouldRedirectBeforeSignOut) {
+    if (['/account', '/library'].includes(route.path))
       await router.replace('/desktop')
-    }
-
     await authStore.signOut()
     ElMessage.success('已退出登录')
   }
-  catch (error) {
-    console.warn('[AppHeader] 退出登录失败:', error)
+  catch {
     ElMessage.error('退出登录失败，请稍后重试')
   }
   finally {
@@ -315,22 +297,12 @@ async function handleSignOut() {
 }
 
 function handleAccountCommand(command) {
-  switch (command) {
-    case 'account':
-      router.push(accountRoute.value)
-      break
-    case 'collections':
-      router.push(libraryCollectionsRoute.value)
-      break
-    case 'likes':
-      router.push(libraryLikesRoute.value)
-      break
-    case 'signout':
-      handleSignOut()
-      break
-    default:
-      break
-  }
+  if (signingOut.value)
+    return
+  if (command === 'settings')
+    router.push(settingsRoute.value)
+  else if (command === 'signout')
+    handleSignOut()
 }
 
 function handleGlobalPointerDown(event) {
@@ -473,28 +445,6 @@ watch(isMobile, () => {
           @select="handleThemeOptionSelect"
         />
 
-        <el-dropdown trigger="click" placement="bottom-end">
-          <button type="button" class="header-about-link" aria-label="更多导航">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M12 16v-4M12 8h.01" />
-            </svg>
-          </button>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item v-if="isNativeClient" @click="router.push('/local-wallpapers')">
-                本地壁纸
-              </el-dropdown-item>
-              <el-dropdown-item @click="router.push('/collections')">
-                精选专题
-              </el-dropdown-item>
-              <el-dropdown-item @click="router.push('/about')">
-                关于项目
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-
         <a
           href="https://github.com/IT-NuanxinPro/wallpaper-gallery"
           target="_blank"
@@ -546,17 +496,11 @@ watch(isMobile, () => {
 
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item command="account">
-                个人信息
-              </el-dropdown-item>
-              <el-dropdown-item command="collections">
-                收藏夹
-              </el-dropdown-item>
-              <el-dropdown-item command="likes">
-                我的喜欢
+              <el-dropdown-item command="settings" :disabled="signingOut">
+                个人设置
               </el-dropdown-item>
               <el-dropdown-item command="signout" :disabled="signingOut" divided>
-                {{ signingOut ? '正在退出登录' : '退出登录' }}
+                {{ signingOut ? '正在退出登录…' : '退出登录' }}
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>
@@ -630,7 +574,6 @@ watch(isMobile, () => {
       :auth-avatar-sources="avatarCandidates"
       :auth-avatar-style="authAvatarStyle"
       :auth-avatar-url="authAvatarUrl"
-      :account-route="accountRoute"
       :available-series-options="availableSeriesOptions"
       :auth-display-name="authDisplayName"
       :auth-secondary-label="accountSecondaryLabel"
@@ -639,16 +582,15 @@ watch(isMobile, () => {
       :is-auth-configured="isAuthConfigured"
       :is-authenticated="isAuthenticated"
       :is-series-active="isSeriesActive"
-      :library-collections-route="libraryCollectionsRoute"
-      :library-likes-route="libraryLikesRoute"
+      :settings-route="settingsRoute"
+      :signing-out="signingOut"
       @close="closeDrawer"
       @navigate="navigateTo"
       @signout="handleSignOut"
     />
     <Transition name="fade">
-      <div v-if="signingOut" class="header-action-status" role="status" aria-live="polite">
-        <LoadingSpinner size="sm" />
-        <span>正在退出登录</span>
+      <div v-if="signingOut" class="header-action-status">
+        <SoftLoading :size="32" label="正在退出登录" />
       </div>
     </Transition>
   </header>

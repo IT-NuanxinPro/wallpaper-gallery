@@ -1,180 +1,45 @@
-# Umami Analytics 统计系统
+# Umami 网站分析
 
-## 概述
+校对日期：2026-11-11。Umami 用于网站流量和行为分析；壁纸详情的四项数字来自 Supabase，不能把两套数据视为完全相同。
 
-本项目使用 [Umami](https://umami.is/) 作为网站流量统计工具，用于追踪整体访问趋势和用户行为。
+## 配置
 
-**Umami 优势：**
+[src/main.js](../src/main.js) 读取 `VITE_UMAMI_WEBSITE_ID`，配置存在时动态加载 `https://cloud.umami.is/script.js`。无需再向 `index.html` 重复插入同一脚本。
 
-- ✅ 开源免费
-- ✅ 注重隐私（不使用 Cookie，符合 GDPR）
-- ✅ 轻量级（脚本仅 2KB）
-- ✅ 国内访问友好
-- ✅ 支持自定义事件追踪
-
-**与 Supabase 的分工：**
-
-| 工具     | 用途                     | 数据粒度     |
-| -------- | ------------------------ | ------------ |
-| Umami    | 整体流量、趋势、用户行为 | 事件名称计数 |
-| Supabase | 具体壁纸的下载/预览统计  | 详细记录     |
-
----
-
-## 配置方法
-
-### 1. 注册 Umami Cloud
-
-访问 [Umami Cloud](https://cloud.umami.is) 注册账号并创建网站。
-
-### 2. 集成脚本
-
-在 `index.html` 中添加：
-
-```html
-<script defer src="https://cloud.umami.is/script.js" data-website-id="你的Website ID"></script>
+```dotenv
+VITE_UMAMI_WEBSITE_ID=你的网站ID
 ```
 
-### 3. 获取 API Key（可选）
+该值在构建时生效。Fork 时检查 `.env.production` 并换为自己的 ID，或移除以停用。网站 ID 是公开标识，管理 API Key 不应进入前端。
 
-如需通过 API 获取数据，在 Umami 后台生成 API Key。
+事件统一通过 [src/utils/common/analytics.js](../src/utils/common/analytics.js) 发送：生产环境且 `window.umami` 可用时调用，开发环境仅打印自定义事件日志。注意这不等于开发环境绝不加载 Umami 脚本：入口只检查 ID，有配置时仍会加载服务脚本。
 
----
+## 当前真实调用事件
 
-## 已追踪的事件
+| 事件 | 触发位置/含义 |
+| --- | --- |
+| `wallpaper_preview` | 图片就绪或视频播放后，Supabase 预览事件返回 `accepted`；携带完整资源键 |
+| `wallpaper_download` | 浏览器下载已发起或原生保存返回成功；不代表浏览器已最终落盘 |
+| `search` | 搜索组件提交；`results` 当前是建议条目数，不是数据库完整搜索命中数 |
+| `filter_apply` | 筛选组件应用排序、格式、分辨率、分类等条件 |
+| `theme_change` | 主题切换 |
+| `diy_avatar_click` | 打开外部 DIY 头像工具 |
+| `back_to_top` | 返回顶部操作 |
+| `image_crop` | 裁剪打开、完成或取消 |
 
-| 事件名称             | 说明            | 追踪数据                                 |
-| -------------------- | --------------- | ---------------------------------------- |
-| `wallpaper_download` | 壁纸下载        | filename, category, series, format, size |
-| `wallpaper_preview`  | 壁纸预览        | filename, category                       |
-| `search`             | 搜索            | query, results                           |
-| `series_switch`      | 系列切换        | from, to                                 |
-| `view_mode_change`   | 视图模式切换    | mode                                     |
-| `filter_apply`       | 筛选应用        | type, value                              |
-| `theme_change`       | 主题切换        | theme                                    |
-| `diy_avatar_click`   | DIY头像工具点击 | source, target_url                       |
-| `today_pick_click`   | 今日精选点击    | filename, category                       |
-| `back_to_top`        | 返回顶部        | scroll_position                          |
-| `image_crop`         | 图片裁剪        | action, ...                              |
-| `pagination`         | 分页            | page, series, category                   |
-| `fullscreen_toggle`  | 全屏切换        | action                                   |
+代码仍保留 `series_switch`、`pagination`、`fullscreen_toggle` 的辅助函数，但本次检查未找到实际调用点，不能写成当前正在统计的事件。旧 `view_mode_change` 和 `today_pick_click` 不属于当前事件列表。
 
-### 代码位置
+## 与 Supabase 的分工
 
-事件追踪函数定义在 `src/utils/analytics.js`，主要集成点：
+- Umami 服务脚本负责其网站分析数据，浏览器拦截和网络失败可能使事件缺失。
+- Supabase 维护资源目录、用户关系、预览/下载事件和累计/期间统计。
+- 详情展示读取 Supabase 公开汇总，不访问 Umami API。
+- 下载分析事件与数据库写入为不同请求，不能用两边数字是否完全相等判断计数正确性。
 
-| 组件/文件                    | 追踪事件                              |
-| ---------------------------- | ------------------------------------- |
-| `WallpaperModal.vue`         | wallpaper_download, wallpaper_preview |
-| `PortraitWallpaperModal.vue` | wallpaper_download, wallpaper_preview |
-| `SearchBar.vue`              | search                                |
-| `useWallpaperType.js`        | series_switch                         |
-| `useViewMode.js`             | view_mode_change                      |
+## 调试与扩展
 
----
+先检查构建时网站 ID、脚本是否加载、当前事件是否有实际调用，再去 Umami 控制台看结果。不要在生产批量制造浏览或下载来测试计数。
 
-## 开发与调试
+新增事件复用 `trackEvent`，在真实业务结果产生后触发；只提交必要的业务字段，避免个人资料、凭据和完整认证 URL。包装器捕获同步及异步错误；遇到包含 429 的错误时，本页后续分析调用会停用，不影响壁纸操作。
 
-### 开发环境
-
-开发环境不发送数据到 Umami，只在控制台打印日志：
-
-```
-📊 [Analytics] wallpaper_download { filename: 'image.jpg', category: 'anime', ... }
-```
-
-### 生产环境验证
-
-1. 部署后访问网站并操作
-2. 登录 Umami Cloud
-3. 选择对应网站
-4. 查看 Events 页面
-
----
-
-## 添加新事件
-
-### 步骤 1：定义追踪函数
-
-在 `src/utils/analytics.js` 中添加：
-
-```javascript
-export function trackNewEvent(data) {
-  trackEvent('new_event_name', {
-    field1: data.field1,
-    field2: data.field2,
-  })
-}
-```
-
-### 步骤 2：在组件中调用
-
-```vue
-<script setup>
-import { trackNewEvent } from '@/utils/analytics'
-
-function handleAction() {
-  // 业务逻辑
-  doSomething()
-  // 追踪事件
-  trackNewEvent({ field1: 'value1', field2: 'value2' })
-}
-</script>
-```
-
----
-
-## API 使用
-
-### 获取事件统计
-
-```bash
-curl -s "https://api.umami.is/v1/websites/{websiteId}/metrics?startAt={timestamp}&endAt={timestamp}&type=event" \
-  -H "x-umami-api-key: 你的API Key"
-```
-
-**返回示例：**
-
-```json
-[
-  { "x": "wallpaper_preview", "y": 1079 },
-  { "x": "wallpaper_download", "y": 284 },
-  { "x": "filter_apply", "y": 633 }
-]
-```
-
-### 注意事项
-
-⚠️ **Umami Cloud 免费版限制：**
-
-- 只返回事件名称的总次数
-- 无法获取事件携带的详细数据（如具体哪个壁纸被下载）
-- 这就是为什么我们额外使用 Supabase 来记录详细统计
-
----
-
-## 最佳实践
-
-### 事件命名
-
-- 使用小写字母和下划线：`wallpaper_download`
-- 动词+名词形式：`button_click`, `form_submit`
-
-### 事件数据
-
-- 只追踪必要数据
-- 不追踪隐私信息
-- 每个事件不超过 5 个字段
-
-### 追踪时机
-
-- 在操作**成功完成后**追踪
-- 例如下载事件应在下载成功后追踪
-
----
-
-## 相关链接
-
-- [Umami 官方文档](https://umami.is/docs)
-- [Umami Cloud Dashboard](https://cloud.umami.is)
-- [Umami API 文档](https://umami.is/docs/api)
+费用、套餐、API 能力及数据保留以 [Umami 官方文档](https://umami.is/docs) 为准，不在项目文档中固定第三方免费套餐限制或网络可达性承诺。

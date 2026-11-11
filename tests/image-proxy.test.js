@@ -28,10 +28,11 @@ afterEach(() => vi.useRealTimers())
 
 describe('图片入口', () => {
   it('原图仅使用同仓库版本路径，允许超过预览上限但限制32MiB', async () => {
-    const fetch = vi.fn(async () => imageResponse('original', { 'Content-Length': String(6 * 1024 * 1024) }))
+    const original = new Uint8Array(6 * 1024 * 1024)
+    const fetch = vi.fn(async () => imageResponse(original, { 'Content-Length': String(original.byteLength) }))
     const response = await handleImageRequest(request('/images/v1.2.63/wallpaper/desktop/a.png'), { fetch })
     expect(response.status).toBe(200)
-    expect(await response.text()).toBe('original')
+    expect((await response.arrayBuffer()).byteLength).toBe(original.byteLength)
     expect(fetch.mock.calls[0][0]).toBe('https://raw.githubusercontent.com/IT-NuanxinPro/nuanXinProPic/v1.2.63/wallpaper/desktop/a.png')
     const oversized = await handleImageRequest(request('/images/v1.2.63/wallpaper/mobile/a.png'), {
       fetch: async () => imageResponse('small', { 'Content-Length': String(32 * 1024 * 1024 + 1) }),
@@ -48,35 +49,122 @@ describe('图片入口', () => {
         pull(controller) { controller.enqueue(new Uint8Array(1024 * 1024)) }, cancel,
       })),
     })
-    expect(response.status).toBe(502)
+    expect(response.status).toBe(200)
+    await expect(response.arrayBuffer()).rejects.toThrow('Image too large')
     expect(cancel).toHaveBeenCalledOnce()
     expect(cache.put).not.toHaveBeenCalled()
   })
 
-  it('原图响应体使用30秒总超时并在请求取消时释放上游', async () => {
+  it('原图响应头立即返回，30秒总超时仍能中断后续停滞流', async () => {
     vi.useFakeTimers()
     const cancel = vi.fn()
-    const pending = handleImageRequest(request('/images/v1.2.63/wallpaper/desktop/a.png'), {
+    const response = await handleImageRequest(request('/images/v1.2.63/wallpaper/desktop/a.png'), {
       fetch: async () => imageResponse(new ReadableStream({ cancel })),
     })
+    expect(response.status).toBe(200)
+    const pending = response.arrayBuffer()
+    const outcome = expect(pending).rejects.toMatchObject({ name: 'TimeoutError' })
     await vi.advanceTimersByTimeAsync(10_001)
     expect(cancel).not.toHaveBeenCalled()
     await vi.advanceTimersByTimeAsync(20_000)
-    expect((await pending).status).toBe(504)
+    await outcome
     expect(cancel).toHaveBeenCalledOnce()
+    expect(vi.getTimerCount()).toBe(0)
   })
 
   it('客户端取消原图请求时立即取消响应流且不缓存', async () => {
     const controller = new AbortController()
     const cancel = vi.fn()
     const cache = memoryCache()
-    const fetch = vi.fn(async () => imageResponse(new ReadableStream({ cancel })))
-    const pending = handleImageRequest(request('/images/v1.2.63/wallpaper/desktop/a.png', { signal: controller.signal }), { fetch, cache })
-    await vi.waitFor(() => expect(fetch).toHaveBeenCalled())
+    const response = await handleImageRequest(request('/images/v1.2.63/wallpaper/desktop/a.png', { signal: controller.signal }), {
+      fetch: async () => imageResponse(new ReadableStream({ cancel })), cache,
+    })
+    const pending = response.arrayBuffer()
+    const outcome = expect(pending).rejects.toMatchObject({ name: 'AbortError' })
     controller.abort()
-    expect((await pending).status).toBe(499)
+    await outcome
     expect(cancel).toHaveBeenCalledOnce()
     expect(cache.put).not.toHaveBeenCalled()
+  })
+
+  it('原图首块先交给客户端，尾块未到达前不写缓存', async () => {
+    const cache = memoryCache()
+    const writes = []
+    let upstream
+    const response = await handleImageRequest(request('/images/v1.2.63/wallpaper/desktop/a.png'), {
+      fetch: async () => imageResponse(new ReadableStream({ start(controller) { upstream = controller } }), { 'Content-Length': '11' }),
+      cache, waitUntil: pending => writes.push(pending),
+    })
+    expect(response.status).toBe(200)
+    const reader = response.body.getReader()
+    upstream.enqueue(new TextEncoder().encode('first'))
+    expect(new TextDecoder().decode((await reader.read()).value)).toBe('first')
+    expect(cache.put).not.toHaveBeenCalled()
+    upstream.enqueue(new TextEncoder().encode('-final'))
+    upstream.close()
+    expect(new TextDecoder().decode((await reader.read()).value)).toBe('-final')
+    expect((await reader.read()).done).toBe(true)
+    await Promise.all(writes)
+    expect(cache.put).toHaveBeenCalledOnce()
+    expect(await (await cache.match(request('/images/v1.2.63/wallpaper/desktop/a.png'))).text()).toBe('first-final')
+  })
+
+  it.each(['truncated', 'error', 'cancel'])('原图%s不会把已发送的前半段写入缓存', async (failure) => {
+    const cache = memoryCache()
+    const writes = []
+    let upstream
+    const cancel = vi.fn()
+    const response = await handleImageRequest(request('/images/v1.2.63/wallpaper/desktop/a.png'), {
+      fetch: async () => imageResponse(new ReadableStream({ start(controller) { upstream = controller }, cancel }), { 'Content-Length': '11' }),
+      cache, waitUntil: pending => writes.push(pending),
+    })
+    const reader = response.body.getReader()
+    upstream.enqueue(new TextEncoder().encode('first'))
+    await reader.read()
+    if (failure === 'cancel') {
+      await reader.cancel()
+      expect(cancel).toHaveBeenCalledOnce()
+    }
+    else {
+      if (failure === 'truncated') upstream.close()
+      else upstream.error(new Error('upstream broken'))
+      await expect(reader.read()).rejects.toThrow()
+    }
+    await Promise.all(writes)
+    expect(cache.put).not.toHaveBeenCalled()
+  })
+
+  it('原图等待响应头超过30秒时仍返回504，迟到响应会取消', async () => {
+    vi.useFakeTimers()
+    let finish
+    const cancel = vi.fn()
+    const pending = handleImageRequest(request('/images/v1.2.63/wallpaper/desktop/a.png'), {
+      fetch: () => new Promise(resolve => { finish = resolve }),
+    })
+    await vi.advanceTimersByTimeAsync(30_001)
+    expect((await pending).status).toBe(504)
+    finish(imageResponse(new ReadableStream({ cancel })))
+    await vi.advanceTimersByTimeAsync(0)
+    expect(cancel).toHaveBeenCalledOnce()
+    expect(vi.getTimerCount()).toBe(0)
+  })
+
+  it('原图不会为了后台缓存主动拉取整个文件，压缩上游不透传错误实体长度', async () => {
+    let pulls = 0
+    const cancel = vi.fn()
+    const response = await handleImageRequest(request('/images/v1.2.63/wallpaper/desktop/a.png'), {
+      cache: memoryCache(),
+      fetch: async () => imageResponse(new ReadableStream({
+        pull(controller) { pulls++; controller.enqueue(new Uint8Array(1024)) }, cancel,
+      }, { highWaterMark: 0 }), { 'Content-Encoding': 'gzip', 'Content-Length': '1' }),
+    })
+    expect(pulls).toBe(0)
+    expect(response.headers.has('Content-Length')).toBe(false)
+    const reader = response.body.getReader()
+    expect((await reader.read()).value.byteLength).toBe(1024)
+    expect(pulls).toBe(1)
+    await reader.cancel()
+    expect(cancel).toHaveBeenCalledOnce()
   })
 
   it('返回固定 Raw 上游图片实体，并保留编码文件名及安全响应头', async () => {
@@ -322,6 +410,61 @@ describe('本地图片入口', () => {
       expect(other.status).toBe(404)
       expect(await other.text()).toBe('fallback')
       expect(fetch).toHaveBeenCalledTimes(1)
+    }
+    finally {
+      server.closeAllConnections()
+      await new Promise(resolve => server.close(resolve))
+    }
+  })
+
+  it('本地HTTP在上游尾块结束前收到原图首字节，客户端断连会取消上游', async () => {
+    let middleware
+    let upstream
+    const cancel = vi.fn()
+    const plugin = viteImageProxyPlugin({ fetch: async () => imageResponse(new ReadableStream({
+      start(controller) { upstream = controller }, cancel,
+    })) })
+    plugin.configureServer({ middlewares: { use(handler) { middleware = handler } } })
+    const server = createServer((req, res) => middleware(req, res, () => res.end('fallback')))
+    await new Promise(resolve => server.listen(0, '127.0.0.1', resolve))
+    try {
+      const base = `http://127.0.0.1:${server.address().port}`
+      const response = await globalThis.fetch(`${base}/images/v1.2.63/wallpaper/desktop/a.png`)
+      expect(response.status).toBe(200)
+      upstream.enqueue(new TextEncoder().encode('first'))
+      const reader = response.body.getReader()
+      expect(new TextDecoder().decode((await reader.read()).value)).toBe('first')
+      await reader.cancel()
+      await vi.waitFor(() => expect(cancel).toHaveBeenCalledOnce())
+    }
+    finally {
+      server.closeAllConnections()
+      await new Promise(resolve => server.close(resolve))
+    }
+  })
+
+  it('本地原图完整传输后才复用缓存，不等待后台缓存阻塞首块', async () => {
+    let middleware
+    let upstream
+    const fetch = vi.fn(async () => imageResponse(new ReadableStream({ start(controller) { upstream = controller } })))
+    const plugin = viteImageProxyPlugin({ fetch })
+    plugin.configureServer({ middlewares: { use(handler) { middleware = handler } } })
+    const server = createServer((req, res) => middleware(req, res, () => res.end('fallback')))
+    await new Promise(resolve => server.listen(0, '127.0.0.1', resolve))
+    try {
+      const url = `http://127.0.0.1:${server.address().port}/images/v1.2.63/wallpaper/desktop/a.png`
+      const response = await globalThis.fetch(url)
+      const reader = response.body.getReader()
+      upstream.enqueue(new TextEncoder().encode('first'))
+      expect(new TextDecoder().decode((await reader.read()).value)).toBe('first')
+      upstream.enqueue(new TextEncoder().encode('-final'))
+      upstream.close()
+      expect(new TextDecoder().decode((await reader.read()).value)).toBe('-final')
+      expect((await reader.read()).done).toBe(true)
+      const cached = await globalThis.fetch(url)
+      expect(cached.headers.get('X-Image-Cache')).toBe('HIT')
+      expect(await cached.text()).toBe('first-final')
+      expect(fetch).toHaveBeenCalledOnce()
     }
     finally {
       server.closeAllConnections()

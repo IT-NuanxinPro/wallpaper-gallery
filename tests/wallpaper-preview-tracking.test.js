@@ -14,6 +14,18 @@ beforeEach(() => {
 afterEach(() => scope.stop())
 
 describe('预览就绪与切图事件', () => {
+  it('仅真实accepted后通知原资源统计已记录，skipped不触发刷新', async () => {
+    const onRecorded = vi.fn()
+    const wallpaper = ref({ path: '/wallpaper/desktop/a.jpg' })
+    mocks.record.mockResolvedValueOnce({ status: 'accepted' }).mockResolvedValue({ status: 'skipped' })
+    scope.run(() => usePreviewTracking({ wallpaper, series: ref('desktop'), isOpen: ref(true), ready: ref(true), onRecorded }))
+    await Promise.resolve()
+    expect(onRecorded).toHaveBeenCalledExactlyOnceWith('desktop:path:/wallpaper/desktop/a.jpg')
+    wallpaper.value = { path: '/wallpaper/desktop/b.jpg' }
+    await nextTick()
+    await Promise.resolve()
+    expect(onRecorded).toHaveBeenCalledOnce()
+  })
   it('切视频后忽略上一资源排队中的canplay，中文路径与相对路径可正常识别', () => {
     expect(isCurrentMediaEvent({ target: { currentSrc: '/old.mp4', src: '/new.mp4' } }, '/new.mp4')).toBe(false)
     expect(isCurrentMediaEvent({ target: { currentSrc: 'http://localhost/%E9%A3%8E%E6%99%AF.mp4' } }, '/风景.mp4')).toBe(true)

@@ -11,11 +11,11 @@ it('游客操作提示并带原专题redirect登录，不将游客状态改为�
   const interaction = useInteraction(ref({ path: '/wallpaper/desktop/a.jpg' }), ref('desktop'))
   const router = { push: vi.fn() }
   const message = { info: vi.fn(), error: vi.fn() }
-  const wrap = createInteractionFeedback({ router, getRedirect: () => '/collections/quiet-night', message })
+  const wrap = createInteractionFeedback({ router, getRedirect: () => '/desktop', message })
   expect(await wrap(interaction.toggleLike)()).toEqual({ needsLogin: true })
   expect(await wrap(interaction.toggleCollect)()).toEqual({ needsLogin: true })
   expect(message.info).toHaveBeenCalledWith('请先登录后再喜欢或收藏')
-  expect(router.push).toHaveBeenCalledWith({ path: '/login', query: { redirect: '/collections/quiet-night' } })
+  expect(router.push).toHaveBeenCalledWith({ path: '/login', query: { redirect: '/desktop' } })
   expect(interaction.liked.value).toBe(false)
   expect(interaction.collected.value).toBe(false)
   expect(message.error).not.toHaveBeenCalled()

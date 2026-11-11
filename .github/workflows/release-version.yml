@@ -6,7 +6,6 @@ on:
       - main
     paths:
       - "package.json"
-      - "docs/releases/**"
       - ".github/workflows/release-version.yml"
   workflow_dispatch:
 
@@ -35,10 +34,9 @@ jobs:
           TAG="v${VERSION}"
           NOTES_FILE="docs/releases/${TAG}.md"
 
-          test -f "$NOTES_FILE" || {
-            echo "Missing release notes: $NOTES_FILE"
-            exit 1
-          }
+          if [[ ! -f "$NOTES_FILE" ]]; then
+            NOTES_FILE=""
+          fi
 
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
@@ -55,16 +53,25 @@ jobs:
           set -euo pipefail
 
           if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            gh release edit "$TAG" \
-              --repo "$GITHUB_REPOSITORY" \
-              --title "$TAG" \
-              --notes-file "$NOTES_FILE"
+            if [[ -n "$NOTES_FILE" ]]; then
+              gh release edit "$TAG" \
+                --repo "$GITHUB_REPOSITORY" \
+                --title "$TAG" \
+                --notes-file "$NOTES_FILE"
+            else
+              echo "Release ${TAG} already exists; keeping its published notes."
+            fi
           else
+            if [[ -n "$NOTES_FILE" ]]; then
+              NOTES_ARGS=(--notes-file "$NOTES_FILE")
+            else
+              NOTES_ARGS=(--generate-notes)
+            fi
             gh release create "$TAG" \
               --repo "$GITHUB_REPOSITORY" \
               --target "$GITHUB_SHA" \
               --title "$TAG" \
-              --notes-file "$NOTES_FILE"
+              "${NOTES_ARGS[@]}"
           fi
 
           echo "Published ${TAG}"

@@ -27,11 +27,7 @@ export function hasActiveSeriesFilters({
   sortBy = defaultSort,
   date = new Date(),
 } = {}) {
-  if (searchQuery || formatFilter !== 'all' || resolutionFilter !== 'all' || subcategoryFilter !== 'all') {
-    return true
-  }
-
-  if (sortBy !== defaultSort) {
+  if (searchQuery || sortBy !== defaultSort) {
     return true
   }
 
@@ -39,5 +35,6 @@ export function hasActiveSeriesFilters({
     return false
   }
 
-  return categoryFilter !== getDefaultCategoryFilter(currentSeries, date)
+  return formatFilter !== 'all' || resolutionFilter !== 'all' || subcategoryFilter !== 'all'
+    || categoryFilter !== getDefaultCategoryFilter(currentSeries, date)
 }

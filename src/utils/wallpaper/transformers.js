@@ -1,5 +1,6 @@
 import { buildBingPreviewUrl, buildBingThumbnailUrl, buildBingUHDUrl, buildImageUrl } from '@/utils/common/format'
 import { SERIES_CONFIG } from '@/utils/config/constants'
+import { BING_PREVIEW_RESOLUTION, BING_UHD_RESOLUTION } from '@/utils/wallpaper/bingResolution'
 import { buildWallpaperAssetKey, getWallpaperIdentity, resolveWallpaperSeries } from '@/utils/wallpaper/identity'
 
 export function formatWallpaperStatistics(items) {
@@ -96,12 +97,8 @@ export function transformBingWallpaper(bingItem) {
     size: 0,
     format: 'JPG',
     createdAt: `${bingItem.date}T00:00:00Z`,
-    resolution: {
-      width: 3840,
-      height: 2160,
-      label: '4K UHD',
-      type: 'success',
-    },
+    resolution: { ...BING_UHD_RESOLUTION },
+    previewResolution: { ...BING_PREVIEW_RESOLUTION },
     isBing: true,
     tags: [bingItem.title, bingItem.date.substring(0, 7)],
   }

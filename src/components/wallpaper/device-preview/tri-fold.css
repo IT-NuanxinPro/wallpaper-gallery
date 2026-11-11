@@ -1,0 +1,135 @@
+.tri-surface {
+  --tri-cover-radius: 2cqw;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  perspective: 1800px;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+.tri-surface__panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 33.333333%;
+  transform-style: preserve-3d;
+}
+.tri-surface__left {
+  left: 0;
+  transform-origin: right center;
+}
+.tri-surface__center {
+  left: 33.333333%;
+}
+.tri-surface__right {
+  left: 66.666667%;
+  transform-origin: left center;
+}
+.tri-surface__front,
+.tri-surface__back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  overflow: hidden;
+}
+.tri-surface__front::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #080c13;
+  opacity: var(--panel-shade, 0);
+}
+.tri-surface__left .tri-surface__front {
+  border-radius: 2.6cqw 0 0 2.6cqw;
+}
+.tri-surface__right .tri-surface__front {
+  border-radius: 0 2.6cqw 2.6cqw 0;
+}
+.tri-surface__center .tri-surface__front {
+  border-radius: calc(var(--tri-cover-radius) * var(--center-left-corner, 1))
+    calc(var(--tri-cover-radius) * var(--center-right-corner, 1))
+    calc(var(--tri-cover-radius) * var(--center-right-corner, 1))
+    calc(var(--tri-cover-radius) * var(--center-left-corner, 1));
+}
+.tri-surface__texture {
+  position: absolute;
+  top: 0;
+  width: 300%;
+  height: 100%;
+  border-radius: 2.6cqw;
+  background:
+    var(--fold-image) center / calc(100% - 14px) calc(100% - 14px) no-repeat,
+    #151617;
+  box-shadow:
+    inset 0 0 0 1px #9a9fa6,
+    inset 0 0 0 3px #555b63;
+}
+.tri-surface__texture::before {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border-radius: calc(2.6cqw - 7px);
+  background: var(--fold-image) center / cover;
+}
+.tri-surface__center .tri-surface__texture {
+  left: -100%;
+}
+.tri-surface__right .tri-surface__texture {
+  left: -200%;
+}
+.tri-surface__back {
+  transform: rotateY(180deg) translateZ(1px);
+  border-radius: var(--tri-cover-radius);
+  box-shadow:
+    inset 0 0 0 1px #aab2bc,
+    inset 0 0 0 3px #454c56;
+  background: #6b727a;
+}
+.tri-surface__cover {
+  background: var(--fold-image) center / cover;
+  border: 7px solid #171a20;
+  border-radius: 0 var(--tri-cover-radius) var(--tri-cover-radius) 0;
+  box-shadow: 0 0 0 2px #aab2bc;
+}
+.tri-surface__cover > i {
+  position: absolute;
+  width: 11%;
+  height: 4px;
+  left: 44.5%;
+  top: 3px;
+  border-radius: 8px;
+  background: #121820;
+}
+.tri-surface__brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  color: #d7dfe8;
+  background: radial-gradient(ellipse at 25% 15%, #8a929b, transparent 65%), #515c69;
+}
+.tri-surface__brand > img {
+  width: 24%;
+  height: auto;
+  opacity: 0.7;
+  filter: grayscale(1);
+}
+.tri-surface__brand > span {
+  position: absolute;
+  bottom: 13%;
+  font-size: clamp(8px, 1.8cqw, 15px);
+  letter-spacing: 0.08em;
+  text-align: center;
+  line-height: 1.6;
+}
+.tri-surface__mountains {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: #c7d6e9;
+  stroke-width: 1;
+  opacity: 0.16;
+}

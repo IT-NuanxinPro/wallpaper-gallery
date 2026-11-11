@@ -5,8 +5,9 @@ import { useAuthStore } from '@/stores/auth'
 import { signalAppReady } from '@/utils/platform/appReady'
 import { prepareDetailStyles } from '@/utils/platform/detailStyles'
 import App from './App.vue'
-
 import router from './router'
+
+import 'element-plus/es/components/message/style/css'
 
 // 自定义 flexible 适配方案（PC 端保持设计稿尺寸，移动端等比缩放）
 import '@/utils/platform/flexible'

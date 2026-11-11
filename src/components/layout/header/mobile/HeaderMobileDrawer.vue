@@ -23,10 +23,7 @@ defineProps({
     type: String,
     default: '',
   },
-  accountRoute: {
-    type: [String, Object],
-    default: '/account',
-  },
+  signingOut: { type: Boolean, default: false },
   authDisplayName: {
     type: String,
     default: '',
@@ -55,24 +52,7 @@ defineProps({
     type: Function,
     required: true,
   },
-  libraryCollectionsRoute: {
-    type: [String, Object],
-    default: () => ({
-      path: '/library',
-      query: {
-        tab: 'collections',
-      },
-    }),
-  },
-  libraryLikesRoute: {
-    type: [String, Object],
-    default: () => ({
-      path: '/library',
-      query: {
-        tab: 'likes',
-      },
-    }),
-  },
+  settingsRoute: { type: [String, Object], default: () => ({ path: '/account', query: { tab: 'settings' } }) },
   show: {
     type: Boolean,
     default: false,
@@ -131,67 +111,22 @@ defineEmits(['close', 'navigate', 'signout', 'update:show'])
           </div>
 
           <div class="drawer-account-actions">
-            <button class="drawer-account-action" @click="$emit('navigate', accountRoute)">
+            <button class="drawer-account-action" :disabled="signingOut" @click="$emit('navigate', settingsRoute)">
               <div class="drawer-account-action__icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M20 21a8 8 0 1 0-16 0" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v8M8 12h8" /><circle cx="12" cy="12" r="9" /></svg>
               </div>
               <div class="drawer-account-action__copy">
-                <strong>个人信息</strong>
-                <span>查看昵称、邮箱和绑定状态</span>
+                <strong>个人设置</strong><span>管理资料、公开设置与登录安全</span>
               </div>
-              <svg class="drawer-account-action__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="m9 6 6 6-6 6" />
-              </svg>
+              <svg class="drawer-account-action__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6" /></svg>
             </button>
-
-            <button class="drawer-account-action" @click="$emit('navigate', libraryCollectionsRoute)">
+            <button class="drawer-account-action drawer-account-action--danger" :disabled="signingOut" @click="$emit('signout')">
               <div class="drawer-account-action__icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" /></svg>
               </div>
               <div class="drawer-account-action__copy">
-                <strong>收藏夹</strong>
-                <span>进入统一壁纸库的收藏分区</span>
+                <strong>{{ signingOut ? '正在退出登录…' : '退出登录' }}</strong><span>结束当前会话</span>
               </div>
-              <svg class="drawer-account-action__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="m9 6 6 6-6 6" />
-              </svg>
-            </button>
-
-            <button class="drawer-account-action" @click="$emit('navigate', libraryLikesRoute)">
-              <div class="drawer-account-action__icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="m12 21-1.45-1.32C5.4 15.03 2 11.95 2 8.5 2 5.42 4.42 3 7.5 3A5.3 5.3 0 0 1 12 5.09 5.3 5.3 0 0 1 16.5 3C19.58 3 22 5.42 22 8.5c0 3.45-3.4 6.53-8.55 11.18z" />
-                </svg>
-              </div>
-              <div class="drawer-account-action__copy">
-                <strong>我的喜欢</strong>
-                <span>查看你点过爱心的内容入口</span>
-              </div>
-              <svg class="drawer-account-action__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="m9 6 6 6-6 6" />
-              </svg>
-            </button>
-
-            <button class="drawer-account-action drawer-account-action--danger" @click="$emit('signout')">
-              <div class="drawer-account-action__icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                  <path d="M16 17l5-5-5-5" />
-                  <path d="M21 12H9" />
-                </svg>
-              </div>
-              <div class="drawer-account-action__copy">
-                <strong>退出登录</strong>
-                <span>结束当前会话并返回访客状态</span>
-              </div>
-              <svg class="drawer-account-action__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="m9 6 6 6-6 6" />
-              </svg>
             </button>
           </div>
         </div>
@@ -210,21 +145,7 @@ defineEmits(['close', 'navigate', 'signout', 'update:show'])
               </div>
               <span>首页</span>
             </button>
-            <button class="nav-card" @click="$emit('navigate', '/collections')">
-              <div class="nav-card-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="18" height="7" rx="1" /></svg>
-              </div>
-              <span>精选专题</span>
-            </button>
-            <button class="nav-card" @click="$emit('navigate', '/about')">
-              <div class="nav-card-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 16v-4M12 8h.01" />
-                </svg>
-              </div>
-              <span>关于</span>
-            </button>
+
             <RouterLink
               v-if="!isAuthenticated"
               class="nav-card"

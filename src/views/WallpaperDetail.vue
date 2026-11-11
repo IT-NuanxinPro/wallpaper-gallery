@@ -3,15 +3,19 @@ import { ElButton, ElMessage } from 'element-plus'
 import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import SoftLoading from '@/components/common/feedback/SoftLoading.vue'
+import RelatedCollections from '@/components/community/RelatedCollections.vue'
 import WallpaperCardActions from '@/components/wallpaper/card/shared/WallpaperCardActions.vue'
 import WallpaperDesktopActions from '@/components/wallpaper/desktop/WallpaperDesktopActions.vue'
+import DevicePreviewStage from '@/components/wallpaper/device-preview/DevicePreviewStage.vue'
 import WallpaperImageStage from '@/components/wallpaper/shared/WallpaperImageStage.vue'
 import VideoWallpaperPlayer from '@/components/wallpaper/VideoWallpaperPlayer.vue'
+import WallpaperDetailStats from '@/components/wallpaper/WallpaperDetailStats.vue'
 import { useImageFallback } from '@/composables/useImageFallback'
 import { useInteraction } from '@/composables/useInteraction'
 import { useInteractionPrefetch } from '@/composables/useInteractionPrefetch'
 import { isCurrentMediaEvent, usePreviewTracking } from '@/composables/usePreviewTracking'
 import { useWallpaperDownload } from '@/composables/useWallpaperDownload'
+import { useWallpaperStats } from '@/composables/useWallpaperStats'
 import { createWallpaperDetailLoader, loadWallpaperCatalog, readInitialWallpaperDetail } from '@/services/wallpaperDetailService'
 import { copyText } from '@/utils/common/clipboard'
 import { formatFileSize } from '@/utils/common/format'
@@ -19,6 +23,10 @@ import { createInteractionFeedback } from '@/utils/interaction/feedback'
 import { applyWallpaperDetailSeo } from '@/utils/seo/wallpaperDetail'
 import { getBrowseReturn, isBrowseReturnPath } from '@/utils/wallpaper/browseReturn'
 import { getRelatedWallpapers, getWallpaperDetailSeo, isTrustedWallpaperDetailUrl } from '@/utils/wallpaper/detailRecords'
+import { getPreviewMode } from '@/utils/wallpaper/devicePreview'
+import { getWallpaperDisplayTitle } from '@/utils/wallpaper/displayTitle'
+import { getWallpaperCardAspectRatio } from '@/utils/wallpaper/mediaPresentation'
+import { advanceRelatedImageFallback } from '@/utils/wallpaper/relatedImageFallback'
 import { buildWallpaperShareUrl } from '@/utils/wallpaper/share'
 
 const ImageCropModal = defineAsyncComponent(() => import('@/components/wallpaper/crop/index.vue'))
@@ -43,16 +51,18 @@ const series = computed(() => record.value?._series || '')
 const seo = computed(() => record.value ? getWallpaperDetailSeo(record.value) : null)
 const listPath = computed(() => `/${series.value || 'desktop'}`)
 const fileFormat = computed(() => record.value?.format || record.value?.filename?.split('.').pop()?.toUpperCase() || '')
-const mediaStyle = computed(() => ({ aspectRatio: record.value?.resolution ? `${record.value.resolution.width} / ${record.value.resolution.height}` : '16 / 10' }))
+const previewMode = computed(() => getPreviewMode(series.value, record.value?.usage || record.value?.category))
 const primarySource = computed(() => record.value?.mediaType === 'video' ? record.value?.thumbnailUrl : record.value?.previewUrl || '')
+const imageResolution = computed(() => record.value?.previewResolution || record.value?.resolution)
 const { displayUrl, advance, reset } = useImageFallback(primarySource)
 const hasServerPreview = computed(() => Boolean(initialImageSource && record.value?.assetKey === initialDetail?.record.assetKey
   && new URL(displayUrl.value, globalThis.location?.href || 'https://wallpaper.061129.xyz').href === initialImageSource))
 const { liked, collected, isAuthenticated, toggleLike, toggleCollect } = useInteraction(record, series)
+const { stats, loading: statsLoading, failed: statsFailed, refresh: refreshStats, afterSuccessful } = useWallpaperStats(record)
 const withFeedback = createInteractionFeedback({ router, getRedirect: () => route.fullPath, message: ElMessage })
-const handleLike = withFeedback(toggleLike)
-const handleCollect = withFeedback(toggleCollect)
-const { downloading, handleDownload, cancelDownload } = useWallpaperDownload(record, series)
+const handleLike = withFeedback(afterSuccessful(toggleLike))
+const handleCollect = withFeedback(afterSuccessful(toggleCollect))
+const { downloading, downloadLabel, downloadPercent, canCancelDownload, handleDownload, cancelDownload } = useWallpaperDownload(record, series, { onRecorded: refreshStats })
 useInteractionPrefetch(() => record.value ? [record.value] : [])
 const related = computed(() => record.value ? getRelatedWallpapers(record.value, catalog.value).filter(item => isTrustedWallpaperDetailUrl(item.thumbnailUrl)) : [])
 const dimensionLabel = computed(() => record.value?.resolution ? `${record.value.resolution.width} × ${record.value.resolution.height}` : '尺寸信息未提供')
@@ -111,7 +121,7 @@ onBeforeUnmount(() => {
   catalogController?.abort()
   clearServerContent()
 })
-usePreviewTracking({ wallpaper: record, series, isOpen: () => Boolean(record.value), ready })
+usePreviewTracking({ wallpaper: record, series, isOpen: () => Boolean(record.value), ready, onRecorded: refreshStats })
 
 function clearServerContent() {
   serverArticle?.remove()
@@ -134,14 +144,22 @@ function imageError() {
 }
 
 function videoReady(event) {
-  if (isCurrentMediaEvent(event, record.value?.previewUrl || record.value?.url))
+  if (isCurrentMediaEvent(event, record.value?.previewUrl || record.value?.url)) {
     ready.value = true
+    mediaFailed.value = false
+  }
+}
+
+function videoError() {
+  ready.value = false
+  mediaFailed.value = true
 }
 
 async function copyLink() {
   try {
-    await copyText(buildWallpaperShareUrl(record.value))
-    ElMessage.success('站内分享链接已复制')
+    if (!await copyText(buildWallpaperShareUrl(record.value)))
+      throw new Error('Missing share link')
+    ElMessage.success({ message: '分享链接已复制', appendTo: document.body, zIndex: 11000, duration: 2500, grouping: true })
   }
   catch { ElMessage.error('复制失败，请复制浏览器地址') }
 }
@@ -199,26 +217,39 @@ function returnToList() {
     </div>
     <template v-else-if="record">
       <div class="detail-layout">
-        <section class="detail-media" :class="{ 'is-video': record.mediaType === 'video' }" :aria-label="seo.name">
-          <VideoWallpaperPlayer
-            v-if="record.mediaType === 'video'"
-            :key="record.assetKey"
-            class="detail-video-player"
-            :src="record.previewUrl || record.url"
-            :poster="record.thumbnailUrl"
-            :style="mediaStyle"
-            :autoplay="true"
-            :controls="false"
-            @canplay="videoReady"
-            @error="mediaFailed = true"
-          />
+        <section class="detail-media" :class="{ 'is-video': record.mediaType === 'video', 'is-phone': series === 'mobile', 'is-avatar': series === 'avatar', 'has-device-preview': series !== 'avatar' }" :aria-label="seo.name">
+          <DevicePreviewStage v-if="series !== 'avatar'" :key="record.assetKey" :mode="previewMode" :src="displayUrl" :alt="seo.name" :ready="ready">
+            <VideoWallpaperPlayer
+              v-if="record.mediaType === 'video'"
+              :key="record.assetKey"
+              class="detail-video-player"
+              :src="record.previewUrl || record.url"
+              :poster="record.thumbnailUrl"
+              :autoplay="true"
+              :controls="false"
+              @playing="videoReady"
+              @waiting="ready = false"
+              @error="videoError"
+            />
+            <WallpaperImageStage
+              v-else
+              :key="`${record.assetKey}:${displayUrl}:${mediaAttempt}`"
+              :src="displayUrl"
+              :class="{ 'has-server-preview': hasServerPreview }"
+              :alt="seo.name"
+              :resolution="imageResolution"
+              @load="imageReady"
+              @error="imageError"
+            />
+          </DevicePreviewStage>
           <WallpaperImageStage
             v-else
             :key="`${record.assetKey}:${displayUrl}:${mediaAttempt}`"
             :src="displayUrl"
             :class="{ 'has-server-preview': hasServerPreview }"
             :alt="seo.name"
-            :resolution="record.resolution"
+            :resolution="imageResolution"
+            :style="{ aspectRatio: '1 / 1' }"
             @load="imageReady"
             @error="imageError"
           />
@@ -226,7 +257,7 @@ function returnToList() {
             重新加载图片
           </ElButton>
           <p v-if="mediaFailed && record.mediaType === 'video'" role="status">
-            视频暂时无法播放，请稍后重试或下载原文件。
+            视频暂时无法播放，请稍后重试或下载文件。
           </p>
         </section>
         <section class="detail-info">
@@ -237,6 +268,7 @@ function returnToList() {
           <p class="detail-description">
             {{ record.description || seo.description }}
           </p>
+          <WallpaperDetailStats :stats="stats" :loading="statsLoading" :failed="statsFailed" />
           <dl class="detail-facts">
             <div><dt>原文件尺寸</dt><dd>{{ dimensionLabel }}</dd></div>
             <div v-if="fileFormat">
@@ -250,10 +282,14 @@ function returnToList() {
             <span v-for="tag in record.tags" :key="tag">{{ tag }}</span>
           </div>
           <div class="detail-actions">
-            <ElButton type="primary" round :loading="downloading" :disabled="downloading" @click="handleDownload">
+            <ElButton type="primary" round class="detail-download-button" :class="{ 'is-downloading': downloading }" :disabled="downloading" :aria-busy="downloading" :style="{ '--download-progress': downloadPercent === null ? '0%' : `${downloadPercent}%` }" @click="handleDownload">
               <svg v-if="!downloading" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 15v5h16v-5" /></svg>
-              {{ downloading ? '正在下载…' : '下载原文件' }}
+              <span v-if="downloading" class="detail-download-activity" aria-hidden="true"><i /><i /><i /></span>
+              <span class="detail-download-label">{{ downloading ? downloadLabel : '下载文件' }}</span>
             </ElButton>
+            <button v-if="canCancelDownload" type="button" class="detail-download-cancel" @click="cancelDownload">
+              取消
+            </button>
             <ElButton round @click="copyLink">
               复制分享链接
             </ElButton>
@@ -285,14 +321,14 @@ function returnToList() {
           </dl>
         </section>
       </div>
+      <RelatedCollections :record="record" />
       <section v-if="related.length" class="detail-related">
         <div class="detail-related-heading">
           <h2>继续发现</h2><p>更多同系列壁纸</p>
         </div>
         <div class="detail-related-grid">
           <RouterLink v-for="item in related" :key="item.assetKey" :to="item.sharePath">
-            <img :src="item.thumbnailUrl" :alt="item.title" :width="item.resolution?.width || 800" :height="item.resolution?.height || 500" loading="lazy" decoding="async">
-            <span>{{ item.title }}</span>
+            <img :key="item.thumbnailUrl" :src="item.thumbnailUrl" :alt="getWallpaperDisplayTitle(item)" :style="{ aspectRatio: getWallpaperCardAspectRatio(item).replace('/', ' / ') }" :width="item.resolution?.width || 800" :height="item.resolution?.height || 500" loading="lazy" decoding="async" @error="advanceRelatedImageFallback($event, item.thumbnailUrl)">
           </RouterLink>
         </div>
       </section>

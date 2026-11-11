@@ -1,3 +1,5 @@
+import { BING_PREVIEW_RESOLUTION, BING_UHD_RESOLUTION } from './bingResolution.js'
+import { getWallpaperDisplayTitle } from './displayTitle.js'
 import { buildWallpaperAssetKey } from './identity.js'
 import { encodeImagePath } from './imageDelivery.js'
 import { buildWallpaperSharePath, decodeWallpaperShareToken, WALLPAPER_SITE_ORIGIN } from './share.js'
@@ -62,7 +64,7 @@ export function buildWallpaperDetailRecord(wallpaper, defaultCdnTag) {
     if (!BING_PATH_PATTERN.test(wallpaper.urlbase || ''))
       return null
     const url = `https://www.bing.com${wallpaper.urlbase}_UHD.jpg`
-    return { ...base, isBing: true, urlbase: wallpaper.urlbase, url, downloadUrl: url, thumbnailUrl: `https://www.bing.com${wallpaper.urlbase}_400x240.jpg`, previewUrl: `https://www.bing.com${wallpaper.urlbase}_1920x1080.jpg`, format: 'JPG' }
+    return { ...base, resolution: base.resolution || { ...BING_UHD_RESOLUTION }, previewResolution: { ...BING_PREVIEW_RESOLUTION }, isBing: true, urlbase: wallpaper.urlbase, url, downloadUrl: url, thumbnailUrl: `https://www.bing.com${wallpaper.urlbase}_400x240.jpg`, previewUrl: `https://www.bing.com${wallpaper.urlbase}_1920x1080.jpg`, format: 'JPG' }
   }
   const tag = CDN_TAG_PATTERN.test(wallpaper.cdnTag || '') ? wallpaper.cdnTag : defaultCdnTag
   if (!CDN_TAG_PATTERN.test(tag || '') || tag.length > 100)
@@ -117,8 +119,7 @@ export function getWallpaperDetailSeo(record) {
   const seriesName = { desktop: '电脑壁纸', mobile: '手机壁纸', avatar: '头像图片', bing: '必应壁纸', video: '动态壁纸' }[series] || '壁纸'
   const dimensions = normalizeWallpaperDimensions(record.resolution)
   const is4k = Math.max(dimensions.width || 0, dimensions.height || 0) >= 3840 && Math.min(dimensions.width || 0, dimensions.height || 0) >= 2160
-  const clean = value => text(value, 300).replace(/\.(?:avif|bmp|gif|ico|jpe?g|png|webp|mp4|webm|mov)\s*$/i, '').replace(/_+/g, ' ').replace(/\s+/g, ' ').trim()
-  const name = clean(record.displayTitle || record.title || record.filename) || seriesName
+  const name = getWallpaperDisplayTitle(record).slice(0, 300) || seriesName
   // 文件名里的宣传词不能作为尺寸证据；只有元数据尺寸达到标准才标注 4K。
   const seoName = (is4k ? name : name.replace(/4k/gi, '').replace(/\s+/g, ' ').trim()) || seriesName
   const subject = [...new Set([record.category, record.subcategory].filter(Boolean))].join(' · ')

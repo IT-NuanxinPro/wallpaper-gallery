@@ -1,5 +1,11 @@
 {
   "version": 1,
-  "include": ["/images/*", "/wallpaper/*", "/api/desktop-release"],
+  "include": [
+    "/images/*",
+    "/wallpaper/*",
+    "/api/desktop-release",
+    "/api/download-permit",
+    "/api/download-file"
+  ],
   "exclude": []
 }

@@ -69,4 +69,21 @@ describe('同名壁纸喜欢与收藏隔离', () => {
     expect(useInteractionStore().allCollectionItems.map(item => item.asset_key).sort()).toEqual(expected)
     expect(remote.adjustments.map(item => item.key)).toEqual([expected[0], expected[0], expected[1], expected[1]])
   })
+
+  it('Bing喜欢与收藏按同一日期身份写入、回显及取消', async () => {
+    const key = 'bing:bing-2026-11-10.jpg'
+    const wallpaper = ref({ filename: 'bing-2026-11-10.jpg', _assetKey: key, _series: 'bing', isBing: true })
+    const interaction = useInteraction(wallpaper, ref('bing'))
+    expect(await interaction.toggleLike()).toMatchObject({ success: true, liked: true })
+    expect(await interaction.toggleCollect()).toMatchObject({ success: true, collected: true })
+    expect([...remote.likes]).toEqual([key])
+    expect([...remote.collections]).toEqual([key])
+    expect(interaction.liked.value).toBe(true)
+    expect(interaction.collected.value).toBe(true)
+    await interaction.toggleLike()
+    await interaction.toggleCollect()
+    expect(remote.likes.size).toBe(0)
+    expect(remote.collections.size).toBe(0)
+    expect(remote.adjustments.map(item => [item.key, item.delta])).toEqual([[key, 1], [key, 1], [key, -1], [key, -1]])
+  })
 })

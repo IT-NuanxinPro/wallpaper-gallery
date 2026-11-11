@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { BROWSE_ROUTE_NAMES } from '@/composables/home/browseShell'
 import { canonicalizePagePath, getRouteSeo, SITE_SEO } from '@/utils/seo/routes'
 
 const SITE_URL = 'https://wallpaper.061129.xyz'
@@ -9,24 +10,20 @@ const DEFAULT_DESCRIPTION = SITE_SEO['/'].description
 // 路由配置（使用标准懒加载，骨架屏由 App.vue Suspense 处理）
 // ========================================
 const routes = [
+  { path: '/people', redirect: '/desktop' },
+  {
+    path: '/people/:id',
+    name: 'PublicProfile',
+    component: () => import('@/views/PublicProfile.vue'),
+    meta: { compactMain: true, title: '公开主页 - Wallpaper Gallery', description: '浏览公开收藏、喜欢及关注关系。' },
+  },
   {
     path: '/local-wallpapers',
     name: 'LocalWallpapers',
     component: () => import('@/views/LocalWallpapers.vue'),
     meta: { compactMain: true, title: '本地壁纸 - Wallpaper Gallery', description: '管理这台设备上已缓存的壁纸，查看本地图片、切换壁纸和整理存储空间。', canonicalPath: '/local-wallpapers' },
   },
-  {
-    path: '/collections',
-    name: 'Collections',
-    component: () => import('@/views/Collections.vue'),
-    meta: { compactMain: true, title: '精选专题 - Wallpaper Gallery', description: '人工挑选的静夜、山间与海岸壁纸，以及电脑与手机主题搭配。', canonicalPath: '/collections' },
-  },
-  {
-    path: '/collections/:slug',
-    name: 'CollectionDetail',
-    component: () => import('@/views/CollectionDetail.vue'),
-    meta: { compactMain: true },
-  },
+  { path: '/collections/:pathMatch(.*)*', redirect: '/desktop' },
   // 首页 URL 固定，设备偏好不改变页面内容身份
   {
     path: '/',
@@ -193,10 +190,22 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes,
+  routes: [
+    {
+      path: '/',
+      component: () => import('@/views/BrowseLayout.vue'),
+      meta: { browseShell: true },
+      children: routes.filter(route => BROWSE_ROUTE_NAMES.includes(route.name)).map(route => ({
+        ...route,
+        path: route.path.slice(1),
+        meta: { ...route.meta, compactMain: false },
+      })),
+    },
+    ...routes.filter(route => !BROWSE_ROUTE_NAMES.includes(route.name)),
+  ],
   scrollBehavior(to, from, savedPosition) {
     // 首页列表需先补足分页后恢复位置；同页参数变化也不应重置滚动。
-    if (['Home', 'Desktop', 'Video', 'Bing', 'Mobile', 'Avatar'].includes(to.name)) {
+    if (to.meta.browseShell && (from.meta.browseShell || ['Home', 'Desktop', 'Video', 'Bing', 'Mobile', 'Avatar'].includes(to.name))) {
       return false
     }
     if (savedPosition) {

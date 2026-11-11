@@ -4,6 +4,10 @@ import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useDevice } from '@/composables/useDevice'
 
 const props = defineProps({
+  staticPreview: {
+    type: Boolean,
+    default: false,
+  },
   isDark: {
     type: Boolean,
     default: false,
@@ -48,10 +52,10 @@ const deviceSizeConfig = {
 
 // 从 localStorage 读取保存的设备尺寸，默认使用中屏
 const STORAGE_KEY = 'phone-frame-device-size'
-const deviceSize = ref(localStorage.getItem(STORAGE_KEY) || DEVICE_SIZES.SIZE_MEDIUM)
+const deviceSize = ref((!props.staticPreview && typeof localStorage !== 'undefined' && localStorage.getItem(STORAGE_KEY)) || DEVICE_SIZES.SIZE_MEDIUM)
 
 // 设备检测
-const { isMobile, isDesktop } = useDevice()
+const { isMobile, isDesktop } = props.staticPreview ? { isMobile: ref(false), isDesktop: ref(true) } : useDevice()
 
 // 选择器展开/收缩状态（PC端默认展开，移动端默认收缩）
 // 初始值根据设备类型设置，但需要等待 onMounted 时再确认
@@ -347,6 +351,8 @@ function setupVisibilityObserver(el) {
 const phoneFrameRef = ref(null)
 
 onMounted(() => {
+  if (props.staticPreview)
+    return
   // LocalStorage 兼容性：初始化时检查并迁移旧键值
   const storedSize = localStorage.getItem(STORAGE_KEY)
   if (storedSize && KEY_MIGRATION[storedSize]) {
@@ -420,14 +426,15 @@ onUnmounted(() => {
     expandAnimation.kill()
   }
   // 移除全局事件监听
-  document.removeEventListener('click', handleClickOutside)
+  if (!props.staticPreview)
+    document.removeEventListener('click', handleClickOutside)
 })
 </script>
 
 <template>
   <div ref="phoneFrameRef" class="phone-frame" :class="{ 'phone-frame--dark': isDark }">
     <!-- 移动端：悬浮球形式，使用 Teleport 移到 body 避免受祖先元素 transform 影响 -->
-    <Teleport v-if="!isDesktop && props.showSizeSelector" to="body">
+    <Teleport v-if="!staticPreview && !isDesktop && props.showSizeSelector" to="body">
       <div
         ref="selectorRef"
         class="phone-frame__size-selector phone-frame__size-selector--floating"
@@ -499,7 +506,7 @@ onUnmounted(() => {
     <!-- 手机外框 -->
     <div
       class="phone-frame__device"
-      :style="{
+      :style="staticPreview ? undefined : {
         width: `${currentSizeConfig.width}px`,
         height: `${currentSizeConfig.height}px`,
       }"
@@ -518,7 +525,7 @@ onUnmounted(() => {
         <div class="phone-frame__content">
           <slot />
           <!-- 时间显示在壁纸中间，大字体加粗 -->
-          <div class="phone-frame__wallpaper-time">
+          <div v-if="!staticPreview" class="phone-frame__wallpaper-time">
             {{ currentTime }}
           </div>
         </div>
@@ -529,6 +536,8 @@ onUnmounted(() => {
     </div>
   </div>
 </template>
+
+<style src="./phone-frame.css" scoped></style>
 
 <style lang="scss" scoped>
 .phone-frame {
@@ -721,35 +730,6 @@ onUnmounted(() => {
 
 // GSAP 动画已处理展开/收缩，无需 CSS transition
 
-.phone-frame__device {
-  position: relative;
-  // 尺寸通过内联样式动态设置
-  background: #000;
-  border-radius: 50px; // 苹果大R角设计
-  padding: 8px;
-  box-shadow:
-    0 0 0 2px rgba(255, 255, 255, 0.1),
-    inset 0 0 0 2px rgba(0, 0, 0, 0.2),
-    0 10px 40px rgba(0, 0, 0, 0.5);
-  transition:
-    width 0.3s ease,
-    height 0.3s ease;
-}
-
-// Dynamic Island (iPhone 16/14 样式) - 单独显示，不包含内容
-.phone-frame__dynamic-island {
-  position: absolute;
-  top: 0; // 和状态栏平齐
-  left: 50%;
-  transform: translateX(-50%);
-  width: 125px; // 增加宽度：110px -> 140px
-  height: 30px; // 降低高度：35px -> 28px
-  background: #000;
-  border-radius: 30px;
-  z-index: 10;
-  margin-top: 8px; // 稍微下移一点，和状态栏对齐
-}
-
 // 壁纸靠上显示的时间（大字体加粗）
 .phone-frame__wallpaper-time {
   position: absolute;
@@ -767,48 +747,11 @@ onUnmounted(() => {
   pointer-events: none; // 不阻挡点击
 }
 
-.phone-frame__screen {
-  width: 100%;
-  height: 100%;
-  background: #000;
-  border-radius: 42px; // 与外壳R角匹配
-  overflow: hidden;
-  position: relative;
-}
-
-.phone-frame__content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.phone-frame__home-indicator {
-  position: absolute;
-  bottom: 18px; // 距离底部更高
-  left: 50%;
-  transform: translateX(-50%);
-  width: 134px;
-  height: 6px; // 更粗一点
-  background: #ffffff; // 白色
-  border-radius: 3px;
-  z-index: 10;
-}
-
 // 响应式调整
 @media (max-width: 768px) {
   .phone-frame {
     padding: $spacing-md;
     background: rgba(255, 255, 255, 0.98); // 移动端也使用亮色背景
-  }
-
-  .phone-frame__device {
-    // 移动端尺寸通过内联样式动态设置
-    border-radius: 42px; // 移动端也使用大R角
   }
 
   .phone-frame__size-selector {
@@ -830,25 +773,9 @@ onUnmounted(() => {
     font-size: 10px;
   }
 
-  .phone-frame__screen {
-    border-radius: 36px; // 与外壳R角匹配
-  }
-
-  .phone-frame__dynamic-island {
-    top: 0;
-    width: 120px; // 增加宽度：110px -> 120px
-    height: 26px; // 降低高度：32px -> 26px
-    border-radius: 16px;
-    margin-top: 6px;
-  }
-
   .phone-frame__wallpaper-time {
     font-size: 65px; // 字体大小：80px -> 65px（改小）
     letter-spacing: 6px; // 增加数字间隔：-1.5px -> 6px
-  }
-
-  .phone-frame__home-indicator {
-    bottom: 16px; // 移动端也调整
   }
 
   // 移动端悬浮球优化

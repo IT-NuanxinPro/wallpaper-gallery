@@ -36,13 +36,12 @@ function revealCards(entries) {
     if (motionPreference?.matches)
       continue
 
-    // 入场只移动卡片，不把已显示的内容重新隐藏；图片自行完成一次解码淡入。
-    // 独立 translate 与悬停 transform 分离，避免两段动画抢占同一属性。
+    // 切系列不再整体上移，只做轻微淡入；图片解码保持独立。
     const animation = card.animate([
-      { translate: '0 12px' },
-      { translate: '0 0' },
+      { opacity: 0.92 },
+      { opacity: 1 },
     ], {
-      duration: 280,
+      duration: 160,
       easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
     })
     runningAnimations.set(card, animation)

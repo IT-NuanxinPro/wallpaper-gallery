@@ -119,7 +119,10 @@ export const useFilterStore = defineStore('filter', () => {
 
   function applyFilters(wallpapers, options = {}) {
     const { skipCategoryFilter = false } = options
-    let result = [...wallpapers]
+    const isVideoSeries = currentSeriesId.value === 'video'
+    let result = isVideoSeries
+      ? wallpapers.filter(wallpaper => wallpaper.category === 'desktop')
+      : [...wallpapers]
 
     if (exactSearchValue.value) {
       const exactValue = exactSearchValue.value
@@ -131,13 +134,13 @@ export const useFilterStore = defineStore('filter', () => {
       result = result.filter(wallpaper => matchesWallpaperQuery(wallpaper, debouncedQuery.value))
     }
 
-    if (formatFilter.value !== 'all') {
+    if (!isVideoSeries && formatFilter.value !== 'all') {
       result = result.filter(wallpaper =>
         (wallpaper.format || '').toLowerCase() === formatFilter.value.toLowerCase(),
       )
     }
 
-    if (resolutionFilter.value !== 'all') {
+    if (!isVideoSeries && resolutionFilter.value !== 'all') {
       result = result.filter((wallpaper) => {
         const maxSide = Math.max(wallpaper.resolution?.width || 0, wallpaper.resolution?.height || 0)
         const matchedThreshold = RESOLUTION_THRESHOLDS.find((threshold, index) => {
@@ -148,11 +151,11 @@ export const useFilterStore = defineStore('filter', () => {
       })
     }
 
-    if (!skipCategoryFilter && categoryFilter.value !== 'all') {
+    if (!isVideoSeries && !skipCategoryFilter && categoryFilter.value !== 'all') {
       result = result.filter(wallpaper => wallpaper.category === categoryFilter.value)
     }
 
-    if (subcategoryFilter.value !== 'all') {
+    if (!isVideoSeries && subcategoryFilter.value !== 'all') {
       result = result.filter(wallpaper => wallpaper.subcategory === subcategoryFilter.value)
     }
 
@@ -279,7 +282,9 @@ export const useFilterStore = defineStore('filter', () => {
   }
 
   function restoreSeriesFilter(seriesId) {
-    const cached = seriesFilterCache.value[seriesId]
+    const cached = seriesId === 'video'
+      ? { categoryFilter: 'desktop', subcategoryFilter: 'all', resolutionFilter: 'all', formatFilter: 'all' }
+      : seriesFilterCache.value[seriesId]
     if (!cached)
       return false
 

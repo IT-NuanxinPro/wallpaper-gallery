@@ -25,7 +25,7 @@ it('从有效详情动态生成单一sitemap，保留真实日期、同源预览
   expect(xml).not.toContain('<sitemapindex')
   expect(xml).toContain('<loc>https://wallpaper.061129.xyz/</loc>')
   expect(xml).toContain('<loc>https://wallpaper.061129.xyz/video</loc>')
-  expect(xml).toContain('/collections/quiet-night</loc>')
+  expect(xml).not.toContain('/collections')
   expect(xml.match(/<lastmod>/g)).toHaveLength(1)
   expect(xml).toContain('<lastmod>2026-09-01</lastmod>')
   expect(xml).toContain('https://wallpaper.061129.xyz/images/v1.2.3/preview/desktop/')

@@ -697,6 +697,7 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
     loadAllCategories,
     loadCategory,
     loadSeriesLatest,
+    loadSeriesIndex,
     loadBingYear,
     isBingYearLoaded,
     resolveWallpapersByAssetKeys,

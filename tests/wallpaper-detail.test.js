@@ -7,7 +7,6 @@ import { buildDetailHtmlFragments, handleWallpaperDetailRequest } from '../serve
 import { createWallpaperDetailLoader, loadWallpaperCatalog, loadWallpaperDetail } from '../src/services/wallpaperDetailService.js'
 import { buildWallpaperDetailRecord, getWallpaperDetailSeo } from '../src/utils/wallpaper/detailRecords.js'
 import { buildWallpaperSharePath, getWallpaperDetailBucketPath } from '../src/utils/wallpaper/share.js'
-import { WALLPAPER_COLLECTIONS } from '../src/content/collections.js'
 import { applyWallpaperDetailSeo } from '../src/utils/seo/wallpaperDetail.js'
 
 const wallpaper = { path: '/wallpaper/desktop/风景/a.jpg', filename: 'a.jpg', _series: 'desktop', cdnTag: 'v1.2.3', title: '<script>alert("x")</script>', description: '湖面 & 星空' }
@@ -34,22 +33,6 @@ it('生成固定64短文件桶，失效资源下一轮从全部桶与目录移�
     const data = JSON.parse(await fs.readFile(path.join(root, 'details', name), 'utf8'))
     expect(Object.keys(data.items)).toHaveLength(0)
   }
-  expect(JSON.parse(await fs.readFile(path.join(root, 'collections.json'), 'utf8')).items).toEqual({})
-})
-
-it('构建只将人工精选完整记录写入小清单，删除资源后清单同步移除', async () => {
-  const root = await fs.mkdtemp(path.join(os.tmpdir(), 'curated-manifest-'))
-  roots.push(root)
-  const assetKey = WALLPAPER_COLLECTIONS[0].coverKey
-  const selected = { ...wallpaper, path: assetKey.slice(assetKey.indexOf(':path:') + 6) }
-  await fs.writeFile(path.join(root, 'desktop.json'), JSON.stringify([wallpaper, selected]))
-  await generateWallpaperDetails({ dataDir: root, sitemapPath: path.join(root, 'sitemap.xml'), defaultCdnTag: 'v1.2.3' })
-  const manifest = JSON.parse(await fs.readFile(path.join(root, 'collections.json'), 'utf8'))
-  expect(Object.keys(manifest.items)).toEqual([assetKey])
-  expect(manifest.items[assetKey].downloadUrl).toBeTruthy()
-  await fs.writeFile(path.join(root, 'desktop.json'), '[]')
-  await generateWallpaperDetails({ dataDir: root, sitemapPath: path.join(root, 'sitemap.xml'), defaultCdnTag: 'v1.2.3' })
-  expect(JSON.parse(await fs.readFile(path.join(root, 'collections.json'), 'utf8')).items).toEqual({})
 })
 
 it('相关推荐只加载当前系列分片并复用成功缓存', async () => {

@@ -218,7 +218,7 @@ function closeBanner() {
   width: 44px;
   height: 44px;
   border: none;
-  background: var(--color-bg-hover);
+  // background: var(--color-bg-hover);
   border-radius: var(--radius-sm);
   color: var(--color-text-secondary);
   cursor: pointer;

@@ -6,6 +6,7 @@ import { buildImageUrl } from '@/utils/common/format'
 import { HOT_TAGS_WINDOW_DAYS } from '@/utils/config/hotTags'
 
 const props = defineProps({
+  persistent: { type: Boolean, default: false },
   isMobile: {
     type: Boolean,
     default: false,
@@ -369,7 +370,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <section v-if="loading || categoryTags.length > 0 || keywordTags.length > 0" class="hot-tags-panel">
+  <section v-if="persistent || loading || categoryTags.length > 0 || keywordTags.length > 0" class="hot-tags-panel">
     <div class="hot-tags-header">
       <div class="hot-tags-header__content">
         <h2 class="hot-tags-title">
@@ -584,6 +585,7 @@ onBeforeUnmount(() => {
   z-index: 90;
   margin-bottom: 12px;
   padding: 8px 16px;
+  min-height: 54px;
   border-radius: $radius-lg;
   border: 1px solid var(--accent-border);
   background:
