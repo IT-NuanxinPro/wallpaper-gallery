@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-11-10T22:31:43.482Z",
+  "generatedAt": "2026-11-11T23:39:55.607Z",
   "windowDays": 90,
   "halfLifeDays": 30,
-  "windowStart": "2026-08-12T22:31:43.482Z",
+  "windowStart": "2026-08-13T23:39:55.607Z",
   "series": "video",
   "total": 23,
   "tags": [
     {
       "tag": "desktop",
-      "score": 2.995539,
-      "views": 0,
+      "score": 3.595074,
+      "views": 6,
       "downloads": 0,
       "wallpaperCount": 3,
       "latestCreatedAt": "2026-11-10 20:58:59",
@@ -18,7 +18,7 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/video/desktop/动漫/蝶光流转_星眸少女.webp",
+          "thumbnail": "/thumbnail/video/desktop/动漫/雪之下雪乃_夜海回眸.webp",
           "cdnTag": "v1.5.1"
         },
         {
@@ -26,15 +26,15 @@
           "cdnTag": "v1.5.1"
         },
         {
-          "thumbnail": "/thumbnail/video/desktop/动漫/雪之下雪乃_夜海回眸.webp",
+          "thumbnail": "/thumbnail/video/desktop/动漫/蝶光流转_星眸少女.webp",
           "cdnTag": "v1.5.1"
         }
       ]
     },
     {
       "tag": "动漫",
-      "score": 1.997026,
-      "views": 0,
+      "score": 2.388425,
+      "views": 4,
       "downloads": 0,
       "wallpaperCount": 2,
       "latestCreatedAt": "2026-11-10 20:58:59",
@@ -43,26 +43,9 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/video/desktop/动漫/蝶光流转_星眸少女.webp",
-          "cdnTag": "v1.5.1"
-        },
-        {
           "thumbnail": "/thumbnail/video/desktop/动漫/雪之下雪乃_夜海回眸.webp",
           "cdnTag": "v1.5.1"
-        }
-      ]
-    },
-    {
-      "tag": "彩色蝴蝶",
-      "score": 0.998513,
-      "views": 0,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-11-10 20:58:59",
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
+        },
         {
           "thumbnail": "/thumbnail/video/desktop/动漫/蝶光流转_星眸少女.webp",
           "cdnTag": "v1.5.1"
@@ -71,8 +54,8 @@
     },
     {
       "tag": "城市灯光",
-      "score": 0.998513,
-      "views": 0,
+      "score": 1.267403,
+      "views": 3,
       "downloads": 0,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-10 20:58:59",
@@ -88,8 +71,8 @@
     },
     {
       "tag": "动漫人物",
-      "score": 0.998513,
-      "views": 0,
+      "score": 1.267403,
+      "views": 3,
       "downloads": 0,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-10 20:58:59",
@@ -99,116 +82,14 @@
       "topWallpapers": [
         {
           "thumbnail": "/thumbnail/video/desktop/动漫/雪之下雪乃_夜海回眸.webp",
-          "cdnTag": "v1.5.1"
-        }
-      ]
-    },
-    {
-      "tag": "动漫少女",
-      "score": 0.998513,
-      "views": 0,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-11-10 20:58:59",
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/desktop/动漫/蝶光流转_星眸少女.webp",
-          "cdnTag": "v1.5.1"
-        }
-      ]
-    },
-    {
-      "tag": "古风人物",
-      "score": 0.998513,
-      "views": 0,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-11-10 20:58:59",
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/desktop/国风/红绸掀纱_国风少女.webp",
-          "cdnTag": "v1.5.1"
-        }
-      ]
-    },
-    {
-      "tag": "国风",
-      "score": 0.998513,
-      "views": 0,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-11-10 20:58:59",
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/desktop/国风/红绸掀纱_国风少女.webp",
-          "cdnTag": "v1.5.1"
-        }
-      ]
-    },
-    {
-      "tag": "红绸",
-      "score": 0.998513,
-      "views": 0,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-11-10 20:58:59",
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/desktop/国风/红绸掀纱_国风少女.webp",
-          "cdnTag": "v1.5.1"
-        }
-      ]
-    },
-    {
-      "tag": "红衣少女",
-      "score": 0.998513,
-      "views": 0,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-11-10 20:58:59",
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/desktop/国风/红绸掀纱_国风少女.webp",
-          "cdnTag": "v1.5.1"
-        }
-      ]
-    },
-    {
-      "tag": "幻彩",
-      "score": 0.998513,
-      "views": 0,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-11-10 20:58:59",
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/desktop/动漫/蝶光流转_星眸少女.webp",
           "cdnTag": "v1.5.1"
         }
       ]
     },
     {
       "tag": "回眸",
-      "score": 0.998513,
-      "views": 0,
+      "score": 1.267403,
+      "views": 3,
       "downloads": 0,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-10 20:58:59",
@@ -223,26 +104,9 @@
       ]
     },
     {
-      "tag": "金色纹饰",
-      "score": 0.998513,
-      "views": 0,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-11-10 20:58:59",
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/desktop/国风/红绸掀纱_国风少女.webp",
-          "cdnTag": "v1.5.1"
-        }
-      ]
-    },
-    {
       "tag": "静谧",
-      "score": 0.998513,
-      "views": 0,
+      "score": 1.267403,
+      "views": 3,
       "downloads": 0,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-10 20:58:59",
@@ -258,8 +122,8 @@
     },
     {
       "tag": "蓝色海面",
-      "score": 0.998513,
-      "views": 0,
+      "score": 1.267403,
+      "views": 3,
       "downloads": 0,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-10 20:58:59",
@@ -274,9 +138,9 @@
       ]
     },
     {
-      "tag": "流光",
-      "score": 0.998513,
-      "views": 0,
+      "tag": "雪之下雪乃",
+      "score": 1.267403,
+      "views": 3,
       "downloads": 0,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-10 20:58:59",
@@ -285,15 +149,15 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/video/desktop/动漫/蝶光流转_星眸少女.webp",
+          "thumbnail": "/thumbnail/video/desktop/动漫/雪之下雪乃_夜海回眸.webp",
           "cdnTag": "v1.5.1"
         }
       ]
     },
     {
-      "tag": "梦幻",
-      "score": 0.998513,
-      "views": 0,
+      "tag": "夜海",
+      "score": 1.267403,
+      "views": 3,
       "downloads": 0,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-10 20:58:59",
@@ -302,15 +166,100 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/video/desktop/动漫/蝶光流转_星眸少女.webp",
+          "thumbnail": "/thumbnail/video/desktop/动漫/雪之下雪乃_夜海回眸.webp",
+          "cdnTag": "v1.5.1"
+        }
+      ]
+    },
+    {
+      "tag": "古风人物",
+      "score": 1.206649,
+      "views": 2,
+      "downloads": 0,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-11-10 20:58:59",
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/desktop/国风/红绸掀纱_国风少女.webp",
+          "cdnTag": "v1.5.1"
+        }
+      ]
+    },
+    {
+      "tag": "国风",
+      "score": 1.206649,
+      "views": 2,
+      "downloads": 0,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-11-10 20:58:59",
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/desktop/国风/红绸掀纱_国风少女.webp",
+          "cdnTag": "v1.5.1"
+        }
+      ]
+    },
+    {
+      "tag": "红绸",
+      "score": 1.206649,
+      "views": 2,
+      "downloads": 0,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-11-10 20:58:59",
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/desktop/国风/红绸掀纱_国风少女.webp",
+          "cdnTag": "v1.5.1"
+        }
+      ]
+    },
+    {
+      "tag": "红衣少女",
+      "score": 1.206649,
+      "views": 2,
+      "downloads": 0,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-11-10 20:58:59",
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/desktop/国风/红绸掀纱_国风少女.webp",
+          "cdnTag": "v1.5.1"
+        }
+      ]
+    },
+    {
+      "tag": "金色纹饰",
+      "score": 1.206649,
+      "views": 2,
+      "downloads": 0,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-11-10 20:58:59",
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/desktop/国风/红绸掀纱_国风少女.webp",
           "cdnTag": "v1.5.1"
         }
       ]
     },
     {
       "tag": "喜庆",
-      "score": 0.998513,
-      "views": 0,
+      "score": 1.206649,
+      "views": 2,
       "downloads": 0,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-10 20:58:59",
@@ -326,8 +275,8 @@
     },
     {
       "tag": "掀纱",
-      "score": 0.998513,
-      "views": 0,
+      "score": 1.206649,
+      "views": 2,
       "downloads": 0,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-10 20:58:59",
@@ -342,9 +291,9 @@
       ]
     },
     {
-      "tag": "星眸",
-      "score": 0.998513,
-      "views": 0,
+      "tag": "彩色蝴蝶",
+      "score": 1.121021,
+      "views": 1,
       "downloads": 0,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-10 20:58:59",
@@ -359,9 +308,9 @@
       ]
     },
     {
-      "tag": "雪之下雪乃",
-      "score": 0.998513,
-      "views": 0,
+      "tag": "动漫少女",
+      "score": 1.121021,
+      "views": 1,
       "downloads": 0,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-10 20:58:59",
@@ -370,15 +319,83 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/video/desktop/动漫/雪之下雪乃_夜海回眸.webp",
+          "thumbnail": "/thumbnail/video/desktop/动漫/蝶光流转_星眸少女.webp",
+          "cdnTag": "v1.5.1"
+        }
+      ]
+    },
+    {
+      "tag": "幻彩",
+      "score": 1.121021,
+      "views": 1,
+      "downloads": 0,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-11-10 20:58:59",
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/desktop/动漫/蝶光流转_星眸少女.webp",
+          "cdnTag": "v1.5.1"
+        }
+      ]
+    },
+    {
+      "tag": "流光",
+      "score": 1.121021,
+      "views": 1,
+      "downloads": 0,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-11-10 20:58:59",
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/desktop/动漫/蝶光流转_星眸少女.webp",
+          "cdnTag": "v1.5.1"
+        }
+      ]
+    },
+    {
+      "tag": "梦幻",
+      "score": 1.121021,
+      "views": 1,
+      "downloads": 0,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-11-10 20:58:59",
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/desktop/动漫/蝶光流转_星眸少女.webp",
+          "cdnTag": "v1.5.1"
+        }
+      ]
+    },
+    {
+      "tag": "星眸",
+      "score": 1.121021,
+      "views": 1,
+      "downloads": 0,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-11-10 20:58:59",
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/desktop/动漫/蝶光流转_星眸少女.webp",
           "cdnTag": "v1.5.1"
         }
       ]
     },
     {
       "tag": "眼睛特写",
-      "score": 0.998513,
-      "views": 0,
+      "score": 1.121021,
+      "views": 1,
       "downloads": 0,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-10 20:58:59",
@@ -388,23 +405,6 @@
       "topWallpapers": [
         {
           "thumbnail": "/thumbnail/video/desktop/动漫/蝶光流转_星眸少女.webp",
-          "cdnTag": "v1.5.1"
-        }
-      ]
-    },
-    {
-      "tag": "夜海",
-      "score": 0.998513,
-      "views": 0,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-11-10 20:58:59",
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/desktop/动漫/雪之下雪乃_夜海回眸.webp",
           "cdnTag": "v1.5.1"
         }
       ]

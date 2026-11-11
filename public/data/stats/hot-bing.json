@@ -1,10 +1,10 @@
 {
   "schema": 2,
-  "exportedAt": "2026-11-10T22:31:34.851Z",
+  "exportedAt": "2026-11-11T23:39:40.940Z",
   "periodStartedAt": "2026-11-09T04:45:31.225389+00:00",
   "weekStart": "2026-11-09",
   "monthStart": "2026-11-01",
-  "rowCount": 2725,
+  "rowCount": 2726,
   "items": [
     {
       "asset_key": "bing:2025-12-30.jpg",
@@ -35279,13 +35279,13 @@
       "asset_key": "bing:bing-2026-11-02.jpg",
       "image_id": "bing-2026-11-02.jpg",
       "legacy_ambiguous": false,
-      "views": 0,
+      "views": 1,
       "downloads": 0,
       "likes": 0,
       "collects": 0,
-      "week_views": 0,
+      "week_views": 1,
       "week_downloads": 0,
-      "month_views": 0,
+      "month_views": 1,
       "month_downloads": 0
     },
     {
@@ -35383,14 +35383,27 @@
       "asset_key": "bing:bing-2026-11-10.jpg",
       "image_id": "bing-2026-11-10.jpg",
       "legacy_ambiguous": false,
-      "views": 1,
+      "views": 4,
       "downloads": 0,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 4,
       "week_downloads": 0,
-      "month_views": 1,
+      "month_views": 4,
       "month_downloads": 0
+    },
+    {
+      "asset_key": "bing:bing-2026-11-11.jpg",
+      "image_id": "bing-2026-11-11.jpg",
+      "legacy_ambiguous": false,
+      "views": 3,
+      "downloads": 1,
+      "likes": 0,
+      "collects": 0,
+      "week_views": 3,
+      "week_downloads": 1,
+      "month_views": 3,
+      "month_downloads": 1
     },
     {
       "asset_key": "bing:微信图片_20260120161635_519_4.jpg",

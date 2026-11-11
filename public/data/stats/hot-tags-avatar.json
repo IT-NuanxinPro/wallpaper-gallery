@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-11-10T22:31:43.482Z",
+  "generatedAt": "2026-11-11T23:39:55.607Z",
   "windowDays": 90,
   "halfLifeDays": 30,
-  "windowStart": "2026-08-12T22:31:43.482Z",
+  "windowStart": "2026-08-13T23:39:55.607Z",
   "series": "avatar",
   "total": 259,
   "tags": [
     {
       "tag": "人像",
-      "score": 42.893228,
-      "views": 43,
-      "downloads": 27,
+      "score": 41.98844,
+      "views": 46,
+      "downloads": 29,
       "wallpaperCount": 79,
       "latestCreatedAt": "2026-10-11T03:12:56.455Z",
       "series": [
@@ -26,23 +26,23 @@
           "cdnTag": "v1.4.65"
         },
         {
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_2026-10-11_101647_731.webp",
+          "cdnTag": "v1.4.65"
+        },
+        {
           "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_2026-10-11_101811_134.webp",
           "cdnTag": "v1.4.65"
         },
         {
           "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-10-11_100754_714.webp",
           "cdnTag": "v1.4.65"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/人像/甜妹/微信图片_2026-10-11_100801_738.webp",
-          "cdnTag": "v1.4.65"
         }
       ]
     },
     {
       "tag": "甜妹",
-      "score": 25.344126,
-      "views": 24,
+      "score": 24.749116,
+      "views": 25,
       "downloads": 11,
       "wallpaperCount": 48,
       "latestCreatedAt": "2026-10-11T03:12:56.455Z",
@@ -74,8 +74,8 @@
     },
     {
       "tag": "IP形象",
-      "score": 10.033643,
-      "views": 2,
+      "score": 10.30083,
+      "views": 6,
       "downloads": 0,
       "wallpaperCount": 13,
       "latestCreatedAt": "2026-11-09T09:21:24.045Z",
@@ -84,11 +84,11 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162252_472.webp",
+          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162303_782.webp",
           "cdnTag": "v1.4.97"
         },
         {
-          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162303_782.webp",
+          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162252_472.webp",
           "cdnTag": "v1.4.97"
         },
         {
@@ -107,7 +107,7 @@
     },
     {
       "tag": "阳光",
-      "score": 8.911036,
+      "score": 8.697984,
       "views": 5,
       "downloads": 4,
       "wallpaperCount": 17,
@@ -140,9 +140,9 @@
     },
     {
       "tag": "氛围感",
-      "score": 8.426485,
-      "views": 11,
-      "downloads": 10,
+      "score": 8.334818,
+      "views": 13,
+      "downloads": 12,
       "wallpaperCount": 14,
       "latestCreatedAt": "2026-10-11T03:12:56.455Z",
       "series": [
@@ -150,11 +150,11 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_2026-10-11_101811_134.webp",
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_2026-10-11_101647_731.webp",
           "cdnTag": "v1.4.65"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_2026-10-11_101623_661.webp",
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_2026-10-11_101811_134.webp",
           "cdnTag": "v1.4.65"
         },
         {
@@ -162,18 +162,51 @@
           "cdnTag": "v1.4.65"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_2026-10-11_101635_364.webp",
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_2026-10-11_101623_661.webp",
           "cdnTag": "v1.4.65"
         },
         {
-          "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_2026-10-11_101647_731.webp",
+          "thumbnail": "/thumbnail/avatar/人像/氛围感/微信图片_2026-10-11_101635_364.webp",
           "cdnTag": "v1.4.65"
         }
       ]
     },
     {
+      "tag": "水豚噜噜",
+      "score": 8.041309,
+      "views": 4,
+      "downloads": 0,
+      "wallpaperCount": 8,
+      "latestCreatedAt": "2026-11-09T09:21:24.045Z",
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162303_782.webp",
+          "cdnTag": "v1.4.97"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162252_472.webp",
+          "cdnTag": "v1.4.97"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162308_442.webp",
+          "cdnTag": "v1.4.97"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162313_476.webp",
+          "cdnTag": "v1.4.97"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162318_784.webp",
+          "cdnTag": "v1.4.97"
+        }
+      ]
+    },
+    {
       "tag": "微笑",
-      "score": 8.143729,
+      "score": 7.949023,
       "views": 8,
       "downloads": 5,
       "wallpaperCount": 15,
@@ -205,41 +238,8 @@
       ]
     },
     {
-      "tag": "水豚噜噜",
-      "score": 7.718776,
-      "views": 0,
-      "downloads": 0,
-      "wallpaperCount": 8,
-      "latestCreatedAt": "2026-11-09T09:21:24.045Z",
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162252_472.webp",
-          "cdnTag": "v1.4.97"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162303_782.webp",
-          "cdnTag": "v1.4.97"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162308_442.webp",
-          "cdnTag": "v1.4.97"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162313_476.webp",
-          "cdnTag": "v1.4.97"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162318_784.webp",
-          "cdnTag": "v1.4.97"
-        }
-      ]
-    },
-    {
       "tag": "温柔",
-      "score": 7.497004,
+      "score": 7.31776,
       "views": 6,
       "downloads": 3,
       "wallpaperCount": 14,
@@ -272,7 +272,7 @@
     },
     {
       "tag": "可爱",
-      "score": 6.314987,
+      "score": 6.164003,
       "views": 4,
       "downloads": 3,
       "wallpaperCount": 14,
@@ -304,8 +304,41 @@
       ]
     },
     {
+      "tag": "微信图片",
+      "score": 6.157752,
+      "views": 4,
+      "downloads": 0,
+      "wallpaperCount": 6,
+      "latestCreatedAt": "2026-11-09T09:21:24.045Z",
+      "series": [
+        "avatar"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162303_782.webp",
+          "cdnTag": "v1.4.97"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162252_472.webp",
+          "cdnTag": "v1.4.97"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162308_442.webp",
+          "cdnTag": "v1.4.97"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162313_476.webp",
+          "cdnTag": "v1.4.97"
+        },
+        {
+          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162318_784.webp",
+          "cdnTag": "v1.4.97"
+        }
+      ]
+    },
+    {
       "tag": "背影",
-      "score": 5.973595,
+      "score": 5.830774,
       "views": 8,
       "downloads": 6,
       "wallpaperCount": 10,
@@ -337,41 +370,8 @@
       ]
     },
     {
-      "tag": "微信图片",
-      "score": 5.789082,
-      "views": 0,
-      "downloads": 0,
-      "wallpaperCount": 6,
-      "latestCreatedAt": "2026-11-09T09:21:24.045Z",
-      "series": [
-        "avatar"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162252_472.webp",
-          "cdnTag": "v1.4.97"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162303_782.webp",
-          "cdnTag": "v1.4.97"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162308_442.webp",
-          "cdnTag": "v1.4.97"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162313_476.webp",
-          "cdnTag": "v1.4.97"
-        },
-        {
-          "thumbnail": "/thumbnail/avatar/IP形象/水豚噜噜/微信图片_2026-11-09_162318_784.webp",
-          "cdnTag": "v1.4.97"
-        }
-      ]
-    },
-    {
       "tag": "动漫",
-      "score": 5.191129,
+      "score": 5.067016,
       "views": 16,
       "downloads": 9,
       "wallpaperCount": 17,
@@ -404,8 +404,8 @@
     },
     {
       "tag": "搞怪",
-      "score": 4.846399,
-      "views": 18,
+      "score": 4.741464,
+      "views": 19,
       "downloads": 9,
       "wallpaperCount": 13,
       "latestCreatedAt": "2026-10-11T03:12:56.455Z",
@@ -437,7 +437,7 @@
     },
     {
       "tag": "长发",
-      "score": 4.798191,
+      "score": 4.683472,
       "views": 4,
       "downloads": 2,
       "wallpaperCount": 9,
@@ -470,7 +470,7 @@
     },
     {
       "tag": "女孩",
-      "score": 4.607648,
+      "score": 4.497485,
       "views": 2,
       "downloads": 1,
       "wallpaperCount": 9,
@@ -503,7 +503,7 @@
     },
     {
       "tag": "温馨",
-      "score": 4.588259,
+      "score": 4.47856,
       "views": 1,
       "downloads": 1,
       "wallpaperCount": 9,
@@ -536,7 +536,7 @@
     },
     {
       "tag": "夏日",
-      "score": 4.588259,
+      "score": 4.47856,
       "views": 1,
       "downloads": 1,
       "wallpaperCount": 9,
@@ -569,7 +569,7 @@
     },
     {
       "tag": "萌宠",
-      "score": 4.48496,
+      "score": 4.37773,
       "views": 3,
       "downloads": 2,
       "wallpaperCount": 9,
@@ -602,7 +602,7 @@
     },
     {
       "tag": "甜美",
-      "score": 4.417106,
+      "score": 4.311498,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 9,
@@ -635,8 +635,8 @@
     },
     {
       "tag": "少女",
-      "score": 4.253341,
-      "views": 11,
+      "score": 4.162585,
+      "views": 12,
       "downloads": 5,
       "wallpaperCount": 7,
       "latestCreatedAt": "2026-10-11T03:12:56.455Z",
@@ -668,7 +668,7 @@
     },
     {
       "tag": "猫咪",
-      "score": 3.846747,
+      "score": 3.754776,
       "views": 3,
       "downloads": 1,
       "wallpaperCount": 8,
@@ -701,7 +701,7 @@
     },
     {
       "tag": "表情包",
-      "score": 3.838352,
+      "score": 3.746582,
       "views": 11,
       "downloads": 7,
       "wallpaperCount": 11,
@@ -734,7 +734,7 @@
     },
     {
       "tag": "喜羊羊与灰太狼",
-      "score": 3.038583,
+      "score": 2.965935,
       "views": 8,
       "downloads": 7,
       "wallpaperCount": 11,
@@ -767,7 +767,7 @@
     },
     {
       "tag": "萌娃",
-      "score": 2.944737,
+      "score": 2.874332,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 6,
@@ -800,7 +800,7 @@
     },
     {
       "tag": "插画",
-      "score": 2.367973,
+      "score": 2.311358,
       "views": 3,
       "downloads": 3,
       "wallpaperCount": 4,
@@ -829,7 +829,7 @@
     },
     {
       "tag": "清新",
-      "score": 2.235925,
+      "score": 2.182466,
       "views": 3,
       "downloads": 3,
       "wallpaperCount": 4,
@@ -858,7 +858,7 @@
     },
     {
       "tag": "海边",
-      "score": 2.134312,
+      "score": 2.083283,
       "views": 1,
       "downloads": 1,
       "wallpaperCount": 4,
@@ -887,7 +887,7 @@
     },
     {
       "tag": "冬日",
-      "score": 2.110582,
+      "score": 2.06012,
       "views": 2,
       "downloads": 0,
       "wallpaperCount": 4,
@@ -916,7 +916,7 @@
     },
     {
       "tag": "夜晚",
-      "score": 2.098319,
+      "score": 2.048151,
       "views": 5,
       "downloads": 5,
       "wallpaperCount": 3,
@@ -941,7 +941,7 @@
     },
     {
       "tag": "卡通",
-      "score": 2.03687,
+      "score": 1.988171,
       "views": 1,
       "downloads": 0,
       "wallpaperCount": 4,
@@ -970,7 +970,7 @@
     },
     {
       "tag": "玩偶",
-      "score": 2.03687,
+      "score": 1.988171,
       "views": 1,
       "downloads": 0,
       "wallpaperCount": 4,
@@ -999,7 +999,7 @@
     },
     {
       "tag": "秋日枫叶",
-      "score": 1.929694,
+      "score": 1.883557,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 2,
@@ -1020,8 +1020,8 @@
     },
     {
       "tag": "俏皮",
-      "score": 1.82286,
-      "views": 7,
+      "score": 1.790215,
+      "views": 8,
       "downloads": 1,
       "wallpaperCount": 3,
       "latestCreatedAt": "2026-10-11T03:12:56.455Z",
@@ -1045,7 +1045,7 @@
     },
     {
       "tag": "优雅",
-      "score": 1.736623,
+      "score": 1.695102,
       "views": 3,
       "downloads": 1,
       "wallpaperCount": 3,
@@ -1070,7 +1070,7 @@
     },
     {
       "tag": "笑容",
-      "score": 1.70603,
+      "score": 1.665241,
       "views": 2,
       "downloads": 2,
       "wallpaperCount": 3,
@@ -1095,7 +1095,7 @@
     },
     {
       "tag": "小狗",
-      "score": 1.693504,
+      "score": 1.653015,
       "views": 1,
       "downloads": 1,
       "wallpaperCount": 3,
@@ -1120,7 +1120,7 @@
     },
     {
       "tag": "创意",
-      "score": 1.643522,
+      "score": 1.604228,
       "views": 1,
       "downloads": 1,
       "wallpaperCount": 3,
@@ -1145,7 +1145,7 @@
     },
     {
       "tag": "静谧",
-      "score": 1.643522,
+      "score": 1.604228,
       "views": 1,
       "downloads": 1,
       "wallpaperCount": 3,
@@ -1170,7 +1170,7 @@
     },
     {
       "tag": "帽子",
-      "score": 1.619792,
+      "score": 1.581065,
       "views": 2,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -1195,7 +1195,7 @@
     },
     {
       "tag": "黑色连帽衫",
-      "score": 1.416987,
+      "score": 1.383109,
       "views": 3,
       "downloads": 4,
       "wallpaperCount": 2,
