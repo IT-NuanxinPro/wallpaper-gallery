@@ -1,65 +1,203 @@
 # Supabase 统计系统
 
-校对日期：2026-11-11，适用网站 v5.5.0 工作区。指标含义与历史数据边界见 [统计口径与迁移](统计口径与迁移.md)。
+## 当前状态
 
-## 当前链路
+当前项目已经完成统计链路重构，前端与导出脚本都基于 `image_stats` + RPC 工作。
 
-| 用途 | 当前实现 |
-| --- | --- |
-| 浏览、下载写入 | `record_wallpaper_event` RPC，事件 ID 幂等与会话预览去重 |
-| 资源目录 | `wallpaper_assets`，按规范完整 `asset_key` 关联 |
-| 累计统计 | `image_stats`，唯一维度为 `(series, image_id)` |
-| 事件与期间统计 | `wallpaper_stat_events`、`wallpaper_daily_stats`、`wallpaper_stats_config` |
-| 喜欢 | `user_wallpaper_likes`，账号与资源关系 |
-| 收藏 | `user_collections`、`user_collection_items`，账号的收藏夹及条目 |
-| 下载历史 | `user_download_history`，登录用户有效下载事件由服务端同事务写入 |
-| 详情实时读取 | `image_stats_with_asset_key` 公开聚合视图，按单个完整键等值查询 |
-| 列表与榜单 | `get_stats_page` 全量分页导出到 `public/data/stats/hot-*.json` |
+对外提供两份 SQL：
 
-`increment_view`、`increment_download`、`get_hot_stats` 属于历史接口，不是当前浏览器写入或导出入口。统计 v2 迁移已撤销普通客户端对旧递增函数的执行权限。
+- `scripts/supabase-init.sql`
+  给新项目 / fork 用户使用，整段复制执行即可
+- `scripts/supabase-migration.sql`
+  给已经存在旧统计结构的项目使用，用于迁移历史数据
 
-## 单张详情
+现行链路：
 
-[wallpaperStatsService.js](../src/services/wallpaperStatsService.js) 仅使用公开 anon 凭据读取当前资源，不读取用户个人记录，也不使用 service role。
+- 前端写入：调用 `increment_view` / `increment_download`
+- 数据落库：写入 `public.image_stats`
+- 前端展示：优先读取 `public/data/stats/hot-*.json`
+- 静态导出：调用 `get_hot_stats`
+- 定时任务：`.github/workflows/export-stats.yml` 执行 `scripts/export-stats.js`
 
-```text
-GET /rest/v1/image_stats_with_asset_key
-  ?select=asset_key,total_views,total_downloads,total_likes,total_collects,updated_at
-  &asset_key=eq.<完整资源键>
-  &limit=1
+旧结构 `wallpaper_views` / `wallpaper_downloads` / `popular_wallpapers*` 仅用于历史迁移参考，不再是当前代码依赖。
+
+## 当前数据库架构
+
+### 1. 主表：`public.image_stats`
+
+用途：存储每张图片的聚合统计结果，是当前线上唯一写入目标。
+
+核心字段：
+
+- `image_id`: 图片唯一标识
+  使用非空白约束，避免写入空字符串
+- `series`: 系列，如 `desktop` / `mobile` / `avatar` / `bing`
+  使用 `CHECK` 约束限制取值，避免写入脏数据
+- `category`: 分类
+- `total_views`: 累计浏览数
+- `total_downloads`: 累计下载数
+- `last_viewed_at`: 最近一次浏览时间
+- `last_downloaded_at`: 最近一次下载时间
+- `created_at`: 该聚合记录首次创建时间
+- `updated_at`: 最近一次被更新的时间
+
+字段保护：
+
+- `image_id` 不允许为空白字符串
+- `total_views >= 0`
+- `total_downloads >= 0`
+
+时间字段约定：
+
+- 所有时间字段继续使用 `TIMESTAMPTZ`
+- 查询时如需按北京时间展示，使用 `AT TIME ZONE 'Asia/Shanghai'`
+- 最终展示为固定格式时，使用 `to_char(..., 'YYYY-MM-DD HH24:MI:SS')`
+
+示例：
+
+```sql
+SELECT
+  image_id,
+  to_char(updated_at AT TIME ZONE 'Asia/Shanghai', 'YYYY-MM-DD HH24:MI:SS') AS updated_at_cn
+FROM public.image_stats
+ORDER BY updated_at DESC
+LIMIT 20;
 ```
 
-响应必须匹配当前键，计数必须是非负整数。空记录、读取失败和加载中显示 `—`；服务端明确返回的零显示 `0`。不能把“没有行”推测成已知零。
+### 2. RPC：`increment_view`
 
-[useWallpaperStats.js](../src/composables/useWallpaperStats.js) 在切图和卸载时取消旧请求并隔离迟到响应。喜欢、收藏操作返回成功，或预览、下载事件返回 `accepted` 后刷新对应图片；统计请求不阻塞媒体首屏。
+用途：浏览量原子加一。
 
-SSR 输出相同四列占位，客户端再读取数据库。列表使用快照，详情使用实时查询，两处短期数值不同可能是更新时间差异。
+输入参数：
 
-## 事件与用户关系
+- `img_id`
+- `series_name`
+- `cat`
 
-[wallpaperEventService.js](../src/services/wallpaperEventService.js) 发送 `p_event_id`、`p_asset_key`、`p_event_type`、`p_session_id`。网络错误、429 和 5xx 有限重试，重试复用事件 ID；同会话同资源的预览在 10 分钟内去重。
+行为：
 
-图片解码成功或视频实际播放后才记录预览。下载区分 `browser-started`、`native-completed`、`opened-fallback`，只有前两种记录下载事件。
+- 若 `image_id` 不存在，则新建聚合行
+- 若已存在，则 `total_views + 1`
+- 同步更新 `last_viewed_at` 和 `updated_at`
 
-[interactionService.js](../src/services/interactionService.js) 通过登录会话操作喜欢和收藏关系；`user_wallpaper_likes` 的账号/资源主键限制一人一图一条喜欢。收藏关联收藏夹，同一账号可能有多个收藏夹，所以 UI 使用“收藏数”，不能未经核验就称“收藏人数”。
+### 3. RPC：`increment_download`
 
-2026-11-11 已通过 Supabase MCP 只读对账：156 条喜欢和 55 条收藏与聚合计数差异均为 0，未发现同账号同图跨收藏夹重复。该结果是当次快照，不代表未来始终一致；没有执行清零或重算。
+用途：下载量原子加一。
 
-## 导出与缓存
+输入参数：
 
-[scripts/export-stats.js](../scripts/export-stats.js) 调用 `get_stats_page`，按 `asset_key` 游标读取到空页，校验总行数和周/月边界后统一替换快照。不能再以旧 Top 500 结果作为全部壁纸统计。
+- `img_id`
+- `series_name`
+- `cat`
 
-- [export-stats.yml](../.github/workflows/export-stats.yml)：计划每天北京时间 01:30 导出并提交统计目录；GitHub 调度可能延迟。
-- [deploy.yml](../.github/workflows/deploy.yml)：在部署前同步最新资源，再导出统计及热门标签。
-- 列表静态缓存与页面缓存有延迟；详情实时读取绕过这一层静态缓存。
-- 热门标签衡量近期内容与累计互动权重，规则见 [统计口径](统计口径与迁移.md)，不代表用户搜索次数。
+行为：
 
-## 配置与维护边界
+- 若 `image_id` 不存在，则新建聚合行
+- 若已存在，则 `total_downloads + 1`
+- 同步更新 `last_downloaded_at` 和 `updated_at`
 
-浏览器只配置 `VITE_SUPABASE_URL`、`VITE_SUPABASE_ANON_KEY`。服务端 `SUPABASE_SERVICE_ROLE_KEY` 仅用于经授权的资源同步，不得写入 `VITE_*` 或提交仓库。
+### 4. RPC：`get_hot_stats`
 
-[旧初始化脚本](../scripts/supabase-init.sql) 与 [旧用户系统脚本](../scripts/supabase-user-system.sql) 只是基础和历史结构，**不是当前 v5.x 数据库的一键完整安装程序**。已有站点应先检查实际表、权限、关系触发器与迁移历史，不能重复运行旧初始化来“修复”当前统计。
+用途：导出某个系列的热门统计，供静态 JSON 生成脚本使用。
 
-统计 v2 迁移主体依赖暂存映射与完整目录，必须由准备脚本配套生成；流程见 [统计口径与迁移](统计口径与迁移.md)。本次网页发布没有新增数据库结构迁移。
+输入参数：
 
-排查优先顺序：完整资源键 → 资源是否 active → 事件请求结果 → 聚合行与关系记录 → 快照时间。不要通过制造生产互动或重置计数来验证页面。
+- `series_filter`
+- `limit_count`
+
+返回字段：
+
+- `image_id`
+- `total_views`
+- `total_downloads`
+
+## 代码中的实际依赖
+
+当前代码里与统计相关的主要文件：
+
+- `scripts/supabase-init.sql`
+  面向新用户的简化初始化脚本
+- `src/services/statsService.js`
+  负责静态统计加载、RPC 写入、Supabase 兜底读取
+- `src/utils/supabase.js`
+  兼容层，实际转发到 `statsService`
+- `scripts/export-stats.js`
+  从 `get_hot_stats` 导出静态 JSON
+- `scripts/supabase-migration.sql`
+  新结构初始化与历史迁移脚本
+
+结论：
+
+- 代码中已经没有直接向 `wallpaper_views` / `wallpaper_downloads` 插入数据的逻辑
+- 代码中也没有继续读取 `popular_wallpapers` 等旧视图的逻辑
+- 当前统计以 `image_stats` 为唯一运行时真源
+
+## 保留与清理建议
+
+### 应保留
+
+- `public.image_stats`
+- `increment_view`
+- `increment_download`
+- `get_hot_stats`
+- `scripts/supabase-init.sql`
+
+### 可保留但仅作迁移参考
+
+- `scripts/supabase-migration.sql`
+
+说明：
+
+- 这个脚本仍然引用旧表，是因为它负责“从旧结构迁移到新结构”
+- 它不是运行时依赖，不代表项目仍在使用旧架构
+
+### 可下线
+
+以下对象如果你确认不再需要查看历史原始事件，可以下线：
+
+- `public.wallpaper_views`
+- `public.wallpaper_downloads`
+- `public.view_stats`
+- `public.download_stats`
+- `public.popular_wallpapers`
+- `public.popular_wallpapers_weekly`
+- `public.popular_wallpapers_monthly`
+- `public.wallpaper_stats_summary`
+
+## 推荐的下线流程
+
+建议分两步进行：
+
+### 第一步：标记旧结构
+
+执行 `scripts/supabase-retire-legacy.sql` 中的“标记阶段”SQL。
+
+目的：
+
+- 给旧对象增加注释
+- 明确这些对象不再被当前代码使用
+- 让后续维护时一眼看出哪些是遗留结构
+
+### 第二步：确认后再删除
+
+确认以下条件都满足后，再执行“删除阶段”SQL：
+
+- 最近一段时间只观察 `image_stats`
+- 不再依赖旧表里的逐条事件时间线
+- 已完成必要备份
+
+## 快速排查口径
+
+如果你想确认“最近是否有统计写入”，优先看：
+
+- `image_stats.updated_at`
+- `image_stats.last_viewed_at`
+- `image_stats.last_downloaded_at`
+
+不要再以 `wallpaper_views` / `wallpaper_downloads` 是否持续增长作为当前架构是否正常的判断标准，因为当前前端已不再写入它们。
+
+## 附：当前架构的一句话定义
+
+当前项目的 Supabase 统计架构是：
+
+`前端 RPC 写入 image_stats -> GitHub Actions 定时导出 hot-*.json -> 前端优先消费静态统计文件`
