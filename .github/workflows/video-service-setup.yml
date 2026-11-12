@@ -1,0 +1,94 @@
+name: Configure independent video service
+run-name: video-service-setup:${{ inputs.studio_ref }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      studio_ref:
+        description: Approved full 40-character Studio commit SHA
+        required: true
+        type: string
+      allowed_origins:
+        description: Comma-separated exact Studio origins (no paths or wildcard)
+        required: true
+        default: http://localhost:5174,http://127.0.0.1:5174
+        type: string
+      enable_consumers:
+        description: Enable consumers only after setup self-checks (does not certify full video publication)
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: video-service-setup
+  cancel-in-progress: false
+
+jobs:
+  configure:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Validate approved Studio reference
+        env:
+          STUDIO_REF: ${{ inputs.studio_ref }}
+          CONFIG_TOKEN_PRESENT: ${{ secrets.VIDEO_CONFIG_TOKEN != '' }}
+        run: |
+          set -euo pipefail
+          [[ "$STUDIO_REF" =~ ^[a-f0-9]{40}$ ]] || { echo 'studio_ref must be a full lowercase 40-character commit SHA'; exit 1; }
+          [[ "$CONFIG_TOKEN_PRESENT" == 'true' ]] || { echo 'Configure the separately approved VIDEO_CONFIG_TOKEN repository secret first'; exit 1; }
+
+      - name: Checkout exact approved Studio code
+        uses: actions/checkout@v4
+        with:
+          repository: IT-NuanxinPro/wallpaper-gallery-studio
+          ref: ${{ inputs.studio_ref }}
+          token: ${{ secrets.VIDEO_CONFIG_TOKEN }}
+          path: studio
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Verify resource and CORS safety fixtures
+        working-directory: studio
+        run: node --test scripts/video-service-setup.test.mjs
+
+      - name: Configure only independent video infrastructure
+        working-directory: studio
+        env:
+          STUDIO_REF: ${{ inputs.studio_ref }}
+          ALLOWED_ORIGINS: ${{ inputs.allowed_origins }}
+          ENABLE_CONSUMERS: ${{ inputs.enable_consumers && 'true' || 'false' }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_R2_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_ACCESS_KEY }}
+          CLOUDFLARE_R2_SECRET_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_KEY }}
+          VIDEO_CONFIG_TOKEN: ${{ secrets.VIDEO_CONFIG_TOKEN }}
+        run: |
+          set -euo pipefail
+          umask 077
+          VIDEO_SETUP_TEMP_DIR="$(mktemp -d "$RUNNER_TEMP/video-service-setup.XXXXXX")"
+          export VIDEO_SETUP_TEMP_DIR
+          trap 'rm -rf -- "$VIDEO_SETUP_TEMP_DIR"' EXIT
+          node scripts/video-service-setup.mjs
+
+      - name: Confirm consumers disabled after any setup failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.VIDEO_CONFIG_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh variable set VIDEO_INGEST_ENABLED --body false --repo IT-NuanxinPro/wallpaper-gallery-workflow >/dev/null 2>&1 || true
+          GATE_VALUE="$(gh api repos/IT-NuanxinPro/wallpaper-gallery-workflow/actions/variables/VIDEO_INGEST_ENABLED --jq '.value' 2>/dev/null)" || GATE_VALUE=unknown
+          if [[ "$GATE_VALUE" != 'false' ]]; then
+            echo '::error::无法确认消费者已关闭，必须人工确认执行器仓库 VIDEO_INGEST_ENABLED=false'
+            exit 1
+          fi
+          echo '消费者已关闭并读回确认；本次setup仍为失败，需检查后重试。'

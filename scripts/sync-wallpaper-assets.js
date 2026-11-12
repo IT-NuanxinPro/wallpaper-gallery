@@ -7,6 +7,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import { createClient } from '@supabase/supabase-js'
 import { decodeData } from '../src/utils/common/codec.js'
 import { buildWallpaperAssetKey, normalizeWallpaperFilename } from '../src/utils/wallpaper/identity.js'
+import { validateDeploymentSnapshot } from './lib/deploymentSnapshot.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -308,6 +309,23 @@ async function markRemovedAssets(supabase, assetKeys) {
   }
 }
 
+export async function syncWallpaperAssets({ supabase, dataDir = DATA_DIR, removalPolicy = 'mark-missing' } = {}) {
+  if (!['mark-missing', 'upsert-only'].includes(removalPolicy))
+    throw new Error('资产移除策略无效')
+  // 所有系列完整性校验必须先于任何远端查询/写入，避免残缺快照误删资产。
+  validateDeploymentSnapshot(dataDir)
+  const assets = collectWallpaperAssets(dataDir)
+  if (!assets.length)
+    throw new Error('没有从完整数据快照中解析出任何壁纸资产')
+  const existingKeys = removalPolicy === 'mark-missing' ? await fetchExistingAssetKeys(supabase) : []
+  const currentKeySet = new Set(assets.map(item => item.asset_key))
+  const removedKeys = existingKeys.filter(assetKey => !currentKeySet.has(assetKey))
+  await upsertWallpaperAssets(supabase, assets)
+  if (removalPolicy === 'mark-missing')
+    await markRemovedAssets(supabase, removedKeys)
+  return { active: assets.length, removed: removedKeys.length }
+}
+
 async function main() {
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     throw new Error('缺少 VITE_SUPABASE_URL 或 SUPABASE_SERVICE_ROLE_KEY，无法同步 wallpaper_assets。')
@@ -324,21 +342,8 @@ async function main() {
     },
   })
 
-  const assets = collectWallpaperAssets()
-  if (!assets.length) {
-    throw new Error('没有从 public/data 中解析出任何壁纸资产。')
-  }
-
-  console.log(`📦 解析完成，共 ${assets.length} 条壁纸资产，开始同步到 Supabase...`)
-
-  const existingKeys = await fetchExistingAssetKeys(supabase)
-  const currentKeySet = new Set(assets.map(item => item.asset_key))
-  const removedKeys = existingKeys.filter(assetKey => !currentKeySet.has(assetKey))
-
-  await upsertWallpaperAssets(supabase, assets)
-  await markRemovedAssets(supabase, removedKeys)
-
-  console.log(`✅ wallpaper_assets 同步完成：active=${assets.length} removed=${removedKeys.length}`)
+  const result = await syncWallpaperAssets({ supabase, removalPolicy: process.env.WALLPAPER_ASSET_REMOVAL_POLICY || 'mark-missing' })
+  console.log(`✅ wallpaper_assets 同步完成：active=${result.active} removed=${result.removed}`)
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

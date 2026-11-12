@@ -1,4 +1,5 @@
 name: Deploy to Cloudflare Pages
+run-name: ${{ inputs.publication_id && format('video:{0}:{1}', inputs.publication_id, inputs.minimum_data_ref) || format('deploy:{0}:{1}', github.event_name, github.run_number) }}
 
 on:
   push:
@@ -7,45 +8,40 @@ on:
     # 每天北京时间凌晨 02:00 自动运行一次 (UTC 18:00)
     - cron: '0 18 * * *'
   workflow_dispatch:
+    inputs:
+      publication_id:
+        description: Video publication identifier
+        required: false
+        type: string
+      minimum_data_ref:
+        description: Minimum image repository commit SHA to include
+        required: false
+        type: string
 
 permissions:
   contents: read
   deployments: write
 
 concurrency:
-  group: "pages"
-  cancel-in-progress: true
+  group: pages
+  queue: max
+  cancel-in-progress: false
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 90
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      # 1. 获取图床仓库最新的 CDN 版本号 (利用 GitHub 环境自带的 jq，速度极快)
-      - name: Get latest CDN version
-        id: cdn_version
-        run: |
-          LATEST_TAG=$(curl -s "https://api.github.com/repos/IT-NuanxinPro/nuanXinProPic/tags" | jq -r '.[0].name // "v1.2.18"')
-          echo "version=$LATEST_TAG" >> $GITHUB_OUTPUT
-          echo "✅ Got latest CDN version: $LATEST_TAG"
-
-      # 2. 修改 constants.js 中的版本号
-      - name: Update CDN version in constants.js
-        run: |
-          CDN_VERSION="${{ steps.cdn_version.outputs.version }}"
-          sed -i "s/export const CDN_VERSION = '[^']*'/export const CDN_VERSION = '$CDN_VERSION'/" src/utils/config/constants.js
-          echo "📦 Updated constants.js to: $CDN_VERSION"
-
-      # 3. 克隆图床仓库数据 (利用 GitHub 内部网络，比 Cloudflare 脚本快得多)
-      - name: Checkout nuanXinProPic (wallpaper source)
+      # concurrency执行权取得后才解析main，旧发布重试也使用此刻最新前端。
+      - name: Checkout latest frontend main
         uses: actions/checkout@v4
         with:
-          repository: IT-NuanxinPro/nuanXinProPic
-          path: nuanXinProPic
+          ref: main
           fetch-depth: 1
+
+      - name: Record exact frontend revision
+        run: echo "FRONTEND_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -61,40 +57,21 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Prepare and validate latest complete data snapshot
+        id: snapshot
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPO_TOKEN || github.token }}
+          PUBLICATION_ID: ${{ inputs.publication_id }}
+          MINIMUM_DATA_REF: ${{ inputs.minimum_data_ref }}
+        run: node scripts/prepare-deploy-data.js
+
+      - name: Update static CDN tag independently
+        env:
+          CDN_VERSION: ${{ steps.snapshot.outputs.cdn_version }}
+        run: sed -i "s/export const CDN_VERSION = '[^']*'/export const CDN_VERSION = '$CDN_VERSION'/" src/utils/config/constants.js
+
       - name: Test
         run: pnpm test
-
-      # 4. 同步数据到 public 目录 (确保打包时能包含这些 JSON 数据)
-      - name: Copy data from image repository
-        run: |
-          mkdir -p public/data
-          if [ -d "nuanXinProPic/data" ]; then
-            echo "📦 Copying data from nuanXinProPic/data..."
-            # 同步主系列
-            for series in desktop mobile avatar video; do
-              if [ -d "nuanXinProPic/data/$series" ]; then
-                cp -r "nuanXinProPic/data/$series" public/data/
-              fi
-              if [ -f "nuanXinProPic/data/$series.json" ]; then
-                cp "nuanXinProPic/data/$series.json" public/data/
-              fi
-            done
-            # 同步 Bing 数据
-            if [ -d "nuanXinProPic/bing/meta" ]; then
-              mkdir -p public/data/bing
-              cp -r nuanXinProPic/bing/meta/* public/data/bing/
-            fi
-            echo "✅ Data copied successfully"
-          else
-            echo "⚠️ Data directory not found, fallback to pnpm sync"
-            pnpm sync
-          fi
-
-      - name: Sync wallpaper assets to Supabase
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-        run: pnpm sync:assets
 
       - name: Refresh recent hot tags from deployed metadata
         env:
@@ -104,19 +81,42 @@ jobs:
           node scripts/export-stats.js
           pnpm export:hot-tags
 
-      # 5. 执行 Vite 打包构建并生成关键路由静态 HTML
       - name: Build
         env:
+          VITE_DATA_REVISION: ${{ steps.snapshot.outputs.data_sha }}
           VITE_DOWNLOAD_PROTECTION_ENABLED: ${{ vars.VITE_DOWNLOAD_PROTECTION_ENABLED || 'false' }}
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
         run: pnpm build:seo
 
-      # 6. 将构建产物推送到 Cloudflare Pages (核心步骤：解决 SEO 和 200 路由)
+      # 构建完成后才写资产；视频发布禁止removed，其余部署延续完整快照差集处理。
+      - name: Sync wallpaper assets to Supabase
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          WALLPAPER_ASSET_REMOVAL_POLICY: ${{ inputs.publication_id && 'upsert-only' || 'mark-missing' }}
+        run: pnpm sync:assets
+
       - name: Publish to Cloudflare Pages
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=wallpaper-gallery-prod --branch=main
+          command: pages deploy dist --project-name=wallpaper-gallery-prod --branch=main --commit-hash=${{ env.FRONTEND_SHA }} --commit-message="${{ steps.snapshot.outputs.deployment_marker }}"
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify exact successful Pages deployment
+        id: pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: node scripts/record-pages-deployment.js
+
+      - name: Record successful video publication
+        if: success() && inputs.publication_id != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: video-publication-result
+          path: .deployment/result/publication-result.json
+          if-no-files-found: error
+          retention-days: 30
