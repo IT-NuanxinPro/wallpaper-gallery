@@ -70,6 +70,8 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.VIDEO_CLOUDFLARE_API_TOKEN || secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_R2_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_ACCESS_KEY }}
           CLOUDFLARE_R2_SECRET_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_KEY }}
+          VIDEO_R2_ACCESS_KEY: ${{ secrets.VIDEO_R2_ACCESS_KEY }}
+          VIDEO_R2_SECRET_KEY: ${{ secrets.VIDEO_R2_SECRET_KEY }}
           VIDEO_CONFIG_TOKEN: ${{ secrets.VIDEO_CONFIG_TOKEN }}
         run: |
           set -euo pipefail
