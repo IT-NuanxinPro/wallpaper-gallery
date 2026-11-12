@@ -48,7 +48,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['click', 'imageLoad', 'navigate'])
+const emit = defineEmits(['imageLoad', 'navigate'])
 const { isMobile } = useDevice()
 const detailPath = computed(() => buildWallpaperSharePath(props.wallpaper, props.series))
 
@@ -152,10 +152,6 @@ function handleImageError() {
   }
 }
 
-function handleClick() {
-  emit('click', props.wallpaper)
-}
-
 function handleNavigate(event) {
   if (detailPath.value && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey && (!('button' in event) || event.button === 0)) {
     prepareDetail()
@@ -232,13 +228,6 @@ function handleMouseLeave() {
         :wallpaper-copyright="wallpaper.copyright || ''"
       />
     </component>
-    <button class="card-quick-preview" type="button" :aria-label="`快速预览${bingTitle || displayFilename}`" @click.stop="handleClick">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-        <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
-        <circle cx="12" cy="12" r="3" />
-      </svg>
-      <span>预览</span>
-    </button>
   </div>
 </template>
 
@@ -252,41 +241,6 @@ function handleMouseLeave() {
     outline: 3px solid var(--color-accent);
     outline-offset: -3px;
     border-radius: inherit;
-  }
-}
-
-.wallpaper-card > .card-quick-preview {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  z-index: 6;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  min-width: 44px;
-  min-height: 44px;
-  padding: 0 12px;
-  border: 1px solid rgba(191, 219, 254, 0.6);
-  border-radius: 999px;
-  background: rgba(15, 45, 85, 0.86);
-  box-shadow: 0 3px 10px rgba(2, 8, 23, 0.2);
-  color: #fff;
-  font-size: 12px;
-  cursor: pointer;
-
-  svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  &:hover {
-    background: #2563eb;
-  }
-
-  &:focus-visible {
-    outline: 3px solid #bfdbfe;
-    outline-offset: 2px;
   }
 }
 

@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { BROWSE_ROUTE_NAMES } from '@/composables/home/browseShell'
 import { canonicalizePagePath, getRouteSeo, SITE_SEO } from '@/utils/seo/routes'
+import { rememberBrowseReturn } from '@/utils/wallpaper/browseReturn'
+import { resolveLegacyPreviewRoute } from './legacyPreviewRoute'
 import { loadWallpaperDetailView } from './wallpaperDetailRoute'
 
 const SITE_URL = 'https://wallpaper.061129.xyz'
@@ -292,6 +294,14 @@ router.beforeEach((to, from, next) => {
   const canonicalPath = canonicalizePagePath(to.path)
   if (to.path !== canonicalPath) {
     next({ path: canonicalPath, query: to.query, hash: to.hash, replace: true })
+    return
+  }
+
+  const legacyPreview = resolveLegacyPreviewRoute(to)
+  if (legacyPreview) {
+    if (legacyPreview.returnTo)
+      rememberBrowseReturn(router.resolve(legacyPreview.returnTo).fullPath)
+    next(legacyPreview.location)
     return
   }
 

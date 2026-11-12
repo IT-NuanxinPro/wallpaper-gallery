@@ -45,7 +45,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['select', 'resetFilters', 'displayCountChange', 'navigate'])
+const emit = defineEmits(['resetFilters', 'displayCountChange', 'navigate'])
 
 const router = useRouter()
 const { currentSeries, currentSeriesConfig, availableSeriesOptions } = useWallpaperType()
@@ -158,10 +158,6 @@ watch(() => props.wallpapers, (newVal, oldVal) => {
   }
 })
 
-function handleSelect(wallpaper) {
-  emit('select', wallpaper)
-}
-
 // 与首批展示数量一致，避免加载完成时列表整体高度突变。
 const skeletonCount = PAGE_SIZE
 </script>
@@ -209,7 +205,6 @@ const skeletonCount = PAGE_SIZE
             :popular-rank="getPopularRank(wallpaper)"
             :download-count="getDownloadCount(wallpaper)"
             :view-count="getViewCount(wallpaper)"
-            @click="handleSelect"
             @navigate="(wallpaper, event) => emit('navigate', wallpaper, event)"
           />
         </div>

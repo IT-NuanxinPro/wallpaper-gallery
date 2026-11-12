@@ -5,14 +5,12 @@ import AvatarMakerBanner from '@/components/avatar/AvatarMakerBanner.vue'
 import DiyAvatarBanner from '@/components/avatar/DiyAvatarBanner.vue'
 import { defineAsyncModal } from '@/components/common/feedback/defineAsyncModal'
 import BackToTop from '@/components/common/navigation/BackToTop.vue'
-import HomeModalHost from '@/components/home/HomeModalHost.vue'
 import FilterPanel from '@/components/wallpaper/filter/index.vue'
 import WallpaperGrid from '@/components/wallpaper/WallpaperGrid/index.vue'
 import { handleBrowseRouteLeave } from '@/composables/home/browseRouteGuard'
 import { useBrowseState, validateBrowseQuery } from '@/composables/home/useBrowseState'
 import { useHomeDataLoader } from '@/composables/home/useHomeDataLoader'
 import { useHomeSeriesSync } from '@/composables/home/useHomeSeriesSync'
-import { useWallpaperNavigator } from '@/composables/home/useWallpaperNavigator'
 import { useDevice } from '@/composables/useDevice'
 import { useAuthStore } from '@/stores/auth'
 import { useFilterStore } from '@/stores/filter'
@@ -46,7 +44,6 @@ const visibleWallpapers = computed(() => !isSeriesContentReady.value ? [] : curr
 const seriesCategoryDefinitions = computed(() => wallpaperStore.getSeriesCategories(currentSeries.value))
 const displayTotal = computed(() => isVideoSeries.value ? (wallpaperStore.isDataComplete && isSeriesContentReady.value ? visibleWallpapers.value.length : seriesCategoryDefinitions.value.find(category => (category.id || category.name) === 'desktop')?.count || visibleWallpapers.value.length) : wallpaperStore.displayTotal)
 
-const usePortraitModal = computed(() => ['mobile', 'avatar'].includes(currentSeries.value))
 const hideFormatFilter = computed(() => SERIES_CONFIG[currentSeries.value]?.hideFormatFilter === true)
 const categoryOptions = computed(() => {
   if (wallpaperStore.isDataComplete || !seriesCategoryDefinitions.value.length)
@@ -162,15 +159,6 @@ const navigationReady = computed(() => isSeriesContentReady.value
   && (filterStore.searchQuery === filterStore.debouncedQuery || Boolean(filterStore.exactSearchValue))
   && (!['popular', 'downloads', 'views', 'weekly-hot', 'monthly-hot'].includes(filterStore.sortBy) || !popularityStore.loading))
 const gridRef = ref(null)
-const navigator = useWallpaperNavigator(() => filteredWallpapers.value, { resultsReady: navigationReady })
-const {
-  close,
-  currentWallpaper,
-  handleNextWallpaper,
-  handlePrevWallpaper,
-  handleSelectWallpaper,
-  isOpen,
-} = navigator
 const { minimumDisplayCount, onDisplayCountChange, restoreFromRoute, savePosition, leave } = useBrowseState({
   route,
   router,
@@ -181,7 +169,6 @@ const { minimumDisplayCount, onDisplayCountChange, restoreFromRoute, savePositio
   categories: categoryOptions,
   categoriesReady: computed(() => isSeriesContentReady.value && wallpaperStore.isDataComplete),
   gridReady: computed(() => Boolean(gridRef.value)),
-  navigator,
 })
 onBeforeRouteLeave((to) => {
   rememberBrowseReturn(route.fullPath)
@@ -277,7 +264,6 @@ function handleAvatarMakerClose() {
           :popularity-data="popularityStore.allTimeData"
           :minimum-display-count="minimumDisplayCount"
           @display-count-change="onDisplayCountChange"
-          @select="handleSelectWallpaper"
           @navigate="savePosition"
           @reset-filters="handleReset"
         />
@@ -298,16 +284,6 @@ function handleAvatarMakerClose() {
         </div>
       </div>
     </div>
-
-    <HomeModalHost
-      v-if="currentWallpaper"
-      :wallpaper="currentWallpaper"
-      :is-open="isOpen"
-      :use-portrait-modal="usePortraitModal"
-      @close="close"
-      @prev="handlePrevWallpaper"
-      @next="handleNextWallpaper"
-    />
 
     <BackToTop />
 

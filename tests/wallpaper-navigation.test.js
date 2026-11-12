@@ -5,19 +5,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useBrowseState, validateBrowseQuery } from '../src/composables/home/useBrowseState'
 import { useBrowseRoute } from '../src/composables/home/useBrowseRoute'
 import { handleBrowseRouteLeave } from '../src/composables/home/browseRouteGuard'
-import { useWallpaperNavigator } from '../src/composables/home/useWallpaperNavigator'
 import { useGridPagination } from '../src/components/wallpaper/WallpaperGrid/composables/useGridPagination'
 import { useFilterStore } from '../src/stores/filter'
 import { buildWallpaperAssetKey } from '../src/utils/wallpaper/identity'
 import { encodeWallpaperShareToken } from '../src/utils/wallpaper/share'
-
-vi.mock('@/composables/useModal', () => ({
-  useModal() {
-    const isOpen = ref(false)
-    const currentData = ref(null)
-    return { isOpen, currentData, open: item => { currentData.value = item; isOpen.value = true }, close: () => { isOpen.value = false }, updateData: item => { currentData.value = item } }
-  },
-}))
 
 const renderer = createRenderer({
   createElement: () => ({}), createText: () => ({}), createComment: () => ({}),
@@ -39,11 +30,8 @@ async function flush() {
 function item(folder, filename = 'same.jpg') {
   return { id: filename, filename, path: `/wallpaper/desktop/${folder}/${filename}`, previewUrl: `/preview/desktop/${folder}/${filename}`, url: `/wallpaper/desktop/${folder}/${filename}` }
 }
-let requests
 beforeEach(() => {
   vi.useFakeTimers()
-  requests = []
-  vi.stubGlobal('Image', class { set src(value) { this.url = value; if (value) requests.push(this) } get src() { return this.url } })
   vi.stubGlobal('window', { scrollY: 0, scrollTo: vi.fn(), addEventListener: vi.fn(), removeEventListener: vi.fn() })
   const storage = new Map()
   vi.stubGlobal('sessionStorage', { getItem: key => storage.get(key) ?? null, setItem: (key, value) => storage.set(key, value) })
@@ -51,67 +39,6 @@ beforeEach(() => {
   vi.stubGlobal('cancelAnimationFrame', clearTimeout)
 })
 afterEach(() => { cleanups.splice(0).forEach(fn => fn()); vi.useRealTimers(); vi.unstubAllGlobals() })
-
-describe('当前结果内导航', () => {
-  it('按筛选排序结果导航，区分同名资源并停在边界', async () => {
-    const a = item('a'), b = item('b'), c = item('c')
-    const results = ref([c, a, b])
-    const nav = mount(() => useWallpaperNavigator(() => results.value))
-    nav.handleSelectWallpaper(a)
-    nav.handleNextWallpaper()
-    expect(buildWallpaperAssetKey(nav.currentWallpaper.value)).toBe(buildWallpaperAssetKey(b))
-    nav.handleNextWallpaper()
-    expect(buildWallpaperAssetKey(nav.currentWallpaper.value)).toBe(buildWallpaperAssetKey(b))
-    nav.handlePrevWallpaper()
-    nav.handlePrevWallpaper()
-    expect(buildWallpaperAssetKey(nav.currentWallpaper.value)).toBe(buildWallpaperAssetKey(c))
-    nav.handlePrevWallpaper()
-    expect(buildWallpaperAssetKey(nav.currentWallpaper.value)).toBe(buildWallpaperAssetKey(c))
-    await flush()
-  })
-  it('未完整加载时保留所选图且禁止误跳；完整筛选排除后关闭', async () => {
-    const a = item('a'), b = item('b')
-    const results = ref([a, b]), ready = ref(true)
-    const nav = mount(() => useWallpaperNavigator(() => results.value, { resultsReady: () => ready.value }))
-    nav.handleSelectWallpaper(a)
-    ready.value = false
-    results.value = [b]
-    await flush()
-    nav.handleNextWallpaper()
-    expect(nav.isOpen.value).toBe(true)
-    expect(buildWallpaperAssetKey(nav.currentWallpaper.value)).toBe(buildWallpaperAssetKey(a))
-    ready.value = true
-    await flush()
-    expect(nav.isOpen.value).toBe(false)
-  })
-  it('最多预加载相邻两张预览，切换/关闭取消旧任务，缺预览不请求原图或视频', async () => {
-    const a = item('a'), b = item('b'), c = item('c'), d = item('d')
-    c.previewUrl = ''
-    const nav = mount(() => useWallpaperNavigator(() => [a, b, c, d]))
-    nav.handleSelectWallpaper(b)
-    await flush()
-    expect(requests.map(image => image.src)).toEqual([a.previewUrl])
-    const old = requests[0]
-    nav.handleSelectWallpaper(c)
-    await flush()
-    expect(old.src).toBe('')
-    expect(requests.filter(image => image.src)).toHaveLength(2)
-    expect(requests.filter(image => image.src).map(image => image.src)).toEqual([b.previewUrl, d.previewUrl])
-    nav.close()
-    await flush()
-    expect(requests.filter(image => image.src)).toHaveLength(0)
-  })
-  it('preview 错配原图或视频时跳过，不使用 url/downloadUrl 兜底', async () => {
-    const a = item('a'), b = item('b'), c = item('c')
-    a.previewUrl = a.url
-    c.mediaType = 'video'
-    c.previewUrl = '/preview/video/clip.mp4'
-    const nav = mount(() => useWallpaperNavigator(() => [a, b, c]))
-    nav.handleSelectWallpaper(b)
-    await flush()
-    expect(requests).toHaveLength(0)
-  })
-})
 
 describe('浏览参数校验与恢复', () => {
   it('详情往返保留列表实例和分页，后台冻结列表路由；激活后仍可筛选与切系列', async () => {
@@ -130,7 +57,6 @@ describe('浏览参数校验与恢复', () => {
       browse = useBrowseState({
         route, router, filterStore: filters, currentSeries: computed(() => route.meta.series), results: ref([item('a')]),
         resultsReady: dataReady, categories: ref([]), categoriesReady: ref(true), gridReady: ref(true),
-        navigator: useWallpaperNavigator(() => [item('a')]),
       })
       onBeforeRouteLeave(to => handleBrowseRouteLeave(to, browse))
       onBeforeUnmount(() => { unmounts++ })
@@ -196,10 +122,9 @@ describe('浏览参数校验与恢复', () => {
         setups++
         const route = useRoute()
         const currentSeries = computed(() => route.meta.series)
-        const navigator = useWallpaperNavigator(results)
         browse = useBrowseState({
           route, router, filterStore: filters, currentSeries, results, resultsReady: ref(true),
-          categories: ref([{ value: 'all' }]), categoriesReady: ref(true), gridReady: ref(true), navigator,
+          categories: ref([{ value: 'all' }]), categoriesReady: ref(true), gridReady: ref(true),
         })
         onBeforeRouteLeave(to => handleBrowseRouteLeave(to, browse))
         onBeforeUnmount(() => { unmounts++ })
@@ -281,28 +206,28 @@ describe('浏览参数校验与恢复', () => {
     const results = overrides.results || ref(initialResults), ready = overrides.ready || ref(false), gridReady = ref(true)
     const series = ref(overrides.series || 'desktop')
     return { route, router, filters, results, ready, gridReady, ...mount(() => {
-      const nav = useWallpaperNavigator(() => results.value, { resultsReady: () => ready.value })
-      const browse = useBrowseState({ route, router, filterStore: filters, currentSeries: series, results, resultsReady: ready, categories: ref([{ value: 'all' }, { value: '自然' }]), categoriesReady: ready, gridReady, navigator: nav })
-      return { nav, browse }
+      const browse = useBrowseState({ route, router, filterStore: filters, currentSeries: series, results, resultsReady: ready, categories: ref([{ value: 'all' }, { value: '自然' }]), categoriesReady: ready, gridReady })
+      return { browse }
     }) }
   }
-  it('刷新恢复筛选、完整身份和足够分页；数据未齐不清 image', async () => {
+  it('刷新恢复筛选和已保存分页，旧image参数不会触发弹窗或改变分页目标', async () => {
     const rows = Array.from({ length: 65 }, (_, i) => item(String(i)))
     const image = buildWallpaperAssetKey(rows[54])
+    sessionStorage.setItem('wallpaper_browse_v1:/desktop:[["category","自然"],["q","山"]]', JSON.stringify({ count: 60, top: 640 }))
     const h = harness({ q: '山', category: '自然', color: 'blue', image })
     await flush()
     expect(h.filters.searchQuery).toBe('山')
     expect(h.filters.debouncedQuery).toBe('山')
-    expect(h.nav.isOpen.value).toBe(false)
-    expect(h.route.query.image).toBe(encodeWallpaperShareToken(image))
+    expect(h.browse.minimumDisplayCount.value).toBe(60)
     h.results.value = rows
     h.ready.value = true
     await flush()
-    expect(buildWallpaperAssetKey(h.nav.currentWallpaper.value)).toBe(image)
-    expect(h.browse.minimumDisplayCount.value).toBeGreaterThanOrEqual(55)
+    expect(h.route.query.image).toBeUndefined()
+    expect(h.browse.minimumDisplayCount.value).toBe(60)
+    expect(window.scrollTo).toHaveBeenLastCalledWith({ top: 640, behavior: 'instant' })
     expect(h.router.push).not.toHaveBeenCalled()
   })
-  it('外部返回恢复图片和已展开数量/滚动；内部同步不循环导航', async () => {
+  it('外部返回恢复筛选和已展开数量/滚动；内部同步不循环导航', async () => {
     const rows = Array.from({ length: 65 }, (_, i) => item(String(i)))
     const h = harness({}, rows)
     h.ready.value = true
@@ -347,14 +272,13 @@ describe('浏览参数校验与恢复', () => {
     expect(restored.browse.minimumDisplayCount.value).toBe(60)
     expect(window.scrollTo).toHaveBeenLastCalledWith({ top: 960, behavior: 'instant' })
   })
-  it('无效图只在完整结果就绪后移除', async () => {
+  it('旧列表image参数在列表恢复完成时移除，不再保留弹窗状态', async () => {
     const h = harness({ image: buildWallpaperAssetKey(item('missing')) })
     await flush()
     expect(h.route.query.image).toBeTruthy()
     h.ready.value = true
     await flush()
     expect(h.route.query.image).toBeUndefined()
-    expect(h.nav.isOpen.value).toBe(false)
   })
   it('首批卡片可见但后台数据未齐时快速进入详情，也保存用户当前滚动位置', async () => {
     const h = harness({}, [item('a')])
@@ -368,19 +292,18 @@ describe('浏览参数校验与恢复', () => {
     await flush()
     expect(window.scrollTo).not.toHaveBeenCalled()
   })
-  it('等待数据期间改筛选/选图取消旧恢复，不覆盖用户后续操作', async () => {
+  it('等待数据期间改筛选取消旧恢复，不覆盖用户后续操作或留下image参数', async () => {
     const a = item('a'), b = item('b')
     const h = harness({ q: '旧', image: buildWallpaperAssetKey(a) })
     await flush()
     h.filters.searchQuery = '新'
     h.filters.debouncedQuery = '新'
-    h.nav.handleSelectWallpaper(b)
     await flush()
-    expect(h.route.query).toMatchObject({ q: '新', image: encodeWallpaperShareToken(buildWallpaperAssetKey(b)) })
+    expect(h.route.query).toMatchObject({ q: '新' })
+    expect(h.route.query.image).toBeUndefined()
     h.results.value = [a, b]
     h.ready.value = true
     await flush()
-    expect(buildWallpaperAssetKey(h.nav.currentWallpaper.value)).toBe(buildWallpaperAssetKey(b))
     expect(h.filters.searchQuery).toBe('新')
   })
   it('恢复布局两帧间改筛选不滚回旧位置且更新 URL', async () => {
@@ -402,7 +325,7 @@ describe('浏览参数校验与恢复', () => {
     await flush()
     expect(paging.displayedItems.value.length).toBeGreaterThanOrEqual(61)
   })
-  it('真实 memory router 的筛选/开图/返回恢复不产生 watch-router 回环', async () => {
+  it('真实 memory router 的筛选和返回恢复不产生 watch-router 回环', async () => {
     const router = createRouter({ history: createMemoryHistory(), routes: [{ path: '/desktop', component: {} }] })
     await router.push('/desktop')
     const route = reactive({ get path() { return router.currentRoute.value.path }, get query() { return router.currentRoute.value.query }, get fullPath() { return router.currentRoute.value.fullPath } })
@@ -415,14 +338,7 @@ describe('浏览参数校验与恢复', () => {
     h.filters.debouncedQuery = '星空'
     await flush()
     expect(router.currentRoute.value.query.q).toBe('星空')
-    h.nav.handleSelectWallpaper(b)
-    await flush()
-    expect(router.currentRoute.value.query.image).toBe(encodeWallpaperShareToken(buildWallpaperAssetKey(b)))
     const calls = push.mock.calls.length
-    router.back()
-    await flush()
-    expect(h.nav.isOpen.value).toBe(false)
-    expect(h.filters.searchQuery).toBe('星空')
     router.back()
     await flush()
     expect(h.filters.searchQuery).toBe('')
@@ -446,7 +362,7 @@ describe('浏览参数校验与恢复', () => {
     expect(h.filters.debouncedQuery).toBe('森林')
     expect(h.route.query.q).toBe('森林')
   })
-  it('Bing 历史月份保持月份语义，所需年份未就绪前不清选择', async () => {
+  it('Bing 历史月份保持月份语义，旧预览参数移除后仍保留月份筛选', async () => {
     const image = 'bing:bing-2024-02-10.jpg'
     const h = harness({ category: '2024-02', image }, [], { series: 'bing' })
     await flush()
@@ -454,11 +370,10 @@ describe('浏览参数校验与恢复', () => {
     expect(h.route.query.image).toBe(encodeWallpaperShareToken(image))
     h.results.value = [{ _assetKey: image, _series: 'bing', filename: 'bing-2024-02-10.jpg', category: '2024-02' }]
     await flush()
-    expect(h.nav.isOpen.value).toBe(false)
     h.ready.value = true
     await flush()
     expect(h.filters.categoryFilter).toBe('2024-02')
-    expect(buildWallpaperAssetKey(h.nav.currentWallpaper.value)).toBe(image)
+    expect(h.route.query.image).toBeUndefined()
   })
   it('sessionStorage 拒绝访问时 URL 恢复与同步仍可使用', async () => {
     vi.stubGlobal('sessionStorage', { getItem() { throw new Error('blocked') }, setItem() { throw new Error('blocked') } })
@@ -472,15 +387,14 @@ describe('浏览参数校验与恢复', () => {
     await flush()
     expect(h.route.query.q).toBe('河')
   })
-  it('旧 canonical asset key URL 可恢复且原地归一为分享 token', async () => {
+  it('旧canonical image参数不会再生成预览状态，恢复后从列表URL移除', async () => {
     const a = item('a')
     const image = buildWallpaperAssetKey(a)
     const route = reactive({ path: '/desktop', query: { image }, fullPath: `/desktop?image=${encodeURIComponent(image)}` })
     const h = harness({}, [a], { route })
     h.ready.value = true
     await flush()
-    expect(buildWallpaperAssetKey(h.nav.currentWallpaper.value)).toBe(image)
-    expect(h.route.query.image).toBe(encodeWallpaperShareToken(image))
+    expect(h.route.query.image).toBeUndefined()
     expect(h.router.replace).toHaveBeenCalledTimes(1)
     expect(h.router.push).not.toHaveBeenCalled()
   })
@@ -496,7 +410,6 @@ describe('浏览参数校验与恢复', () => {
     h.ready.value = true
     await flush()
     expect(h.route.query.exact).toBe(encodeWallpaperShareToken(key))
-    expect(h.nav.isOpen.value).toBe(false)
   })
   it('准确搜索 URL 返回恢复身份，改为普通文本搜索时移除 exact', async () => {
     const a = item('a'), key = buildWallpaperAssetKey(a)

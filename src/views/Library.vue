@@ -6,7 +6,6 @@ import ContentEmpty from '@/components/common/feedback/ContentEmpty.vue'
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import PageLoadingScene from '@/components/common/feedback/PageLoadingScene.vue'
 import RemoteAvatar from '@/components/common/ui/RemoteAvatar.vue'
-import HomeModalHost from '@/components/home/HomeModalHost.vue'
 import WallpaperCard from '@/components/wallpaper/card/index.vue'
 import WallpaperRotationPanel from '@/components/wallpaper/desktop/WallpaperRotationPanel.vue'
 import { useDevice } from '@/composables/useDevice'
@@ -41,10 +40,6 @@ const pageState = ref('loading')
 const activeTab = ref(resolveLibraryTab(props.embedded ? props.contentTab : route.query.tab))
 const activeSeries = ref(getDefaultActiveSeries())
 const libraryContentScrollRef = ref(null)
-
-// 壁纸详情弹窗
-const selectedWallpaper = ref(null)
-const isModalOpen = ref(false)
 
 const authEmail = computed(() => primaryEmail.value || '')
 const authInitial = computed(() => getAvatarInitial(displayName.value || authEmail.value, 'W'))
@@ -134,38 +129,10 @@ const seriesCounts = computed(() => {
   }
 })
 
-// 当前筛选选中的壁纸 aspect ratio（用于弹窗判断）
-const usePortraitModal = computed(() => {
-  if (activeSeries.value === 'mobile' || activeSeries.value === 'avatar')
-    return true
-  if (activeSeries.value === 'all' && selectedWallpaper.value) {
-    const series = resolveWallpaperSeries(selectedWallpaper.value)
-    return series === 'mobile' || series === 'avatar'
-  }
-  return false
-})
-
 // 当前系列的 aspectRatio
 function getAspectRatio(wallpaper) {
   const series = resolveWallpaperSeries(wallpaper, activeSeries.value === 'all' ? '' : activeSeries.value)
   return SERIES_CONFIG[series]?.aspectRatio || '16/10'
-}
-
-function normalizeSelectedWallpaper(wallpaper) {
-  if (!wallpaper || typeof wallpaper !== 'object') {
-    return null
-  }
-
-  const resolvedSeries = resolveWallpaperSeries(
-    wallpaper,
-    activeSeries.value === 'all' ? '' : activeSeries.value,
-  )
-
-  return {
-    ...wallpaper,
-    _assetKey: wallpaper._assetKey || '',
-    _series: resolvedSeries || wallpaper._series || '',
-  }
 }
 
 function resolveLibraryTab(value) {
@@ -286,38 +253,6 @@ async function resolveWallpapers(assetKeys) {
     if (resolveRequestVersion === resolveVersion) {
       resolving.value = false
     }
-  }
-}
-
-// 壁纸点击 → 打开弹窗
-function handleSelectWallpaper(wallpaper) {
-  selectedWallpaper.value = normalizeSelectedWallpaper(wallpaper)
-  isModalOpen.value = true
-}
-
-function handleCloseModal() {
-  isModalOpen.value = false
-  selectedWallpaper.value = null
-}
-
-// 弹窗内上/下切换
-function handlePrevWallpaper() {
-  if (!selectedWallpaper.value)
-    return
-  const currentKey = selectedWallpaper.value._assetKey || selectedWallpaper.value.id
-  const idx = resolvedWallpapers.value.findIndex(w => (w._assetKey || w.id) === currentKey)
-  if (idx > 0) {
-    selectedWallpaper.value = resolvedWallpapers.value[idx - 1]
-  }
-}
-
-function handleNextWallpaper() {
-  if (!selectedWallpaper.value)
-    return
-  const currentKey = selectedWallpaper.value._assetKey || selectedWallpaper.value.id
-  const idx = resolvedWallpapers.value.findIndex(w => (w._assetKey || w.id) === currentKey)
-  if (idx < resolvedWallpapers.value.length - 1) {
-    selectedWallpaper.value = resolvedWallpapers.value[idx + 1]
   }
 }
 
@@ -589,7 +524,6 @@ onMounted(() => {
                       :wallpaper="wallpaper"
                       :index="index"
                       :aspect-ratio="getAspectRatio(wallpaper)"
-                      @click="handleSelectWallpaper(wallpaper)"
                     />
                   </div>
 
@@ -614,17 +548,6 @@ onMounted(() => {
         </template>
       </section>
     </div>
-
-    <!-- 壁纸详情弹窗（复用主页弹窗） -->
-    <HomeModalHost
-      :wallpaper="selectedWallpaper"
-      :is-open="isModalOpen"
-      :use-portrait-modal="usePortraitModal"
-      :show-mobile-series-notice="false"
-      @close="handleCloseModal"
-      @prev="handlePrevWallpaper"
-      @next="handleNextWallpaper"
-    />
   </div>
 </template>
 

@@ -14,7 +14,6 @@ import { getAvatarInitial, getAvatarStyle } from '@/utils/auth/avatarAppearance'
 import { sanitizePublicAvatarUrl } from '@/utils/auth/providerProfile'
 import { loadCommunityWallpapers, publicProfileName } from '@/utils/community/profile'
 import { useCommunityRequest } from '@/utils/community/useCommunityRequest'
-import { buildWallpaperSharePath } from '@/utils/wallpaper/share'
 import '@/components/community/community-page.css'
 
 const route = useRoute()
@@ -160,7 +159,7 @@ onBeforeUnmount(() => {
           </div>
           <ContentEmpty v-else-if="!state.data.wallpapers.length" description="这些壁纸已移除或暂未同步到图库" />
           <div v-else class="community-page__grid public-profile__wallpapers">
-            <WallpaperCard v-for="(wallpaper, index) in state.data.wallpapers" :key="wallpaper.assetKey" :wallpaper="wallpaper" :index="index" :series="wallpaper.series" :aspect-ratio="wallpaper.resolution ? `${wallpaper.resolution.width}/${wallpaper.resolution.height}` : wallpaper.series === 'mobile' ? '9/16' : wallpaper.series === 'avatar' ? '1/1' : '16/10'" @click="router.push(buildWallpaperSharePath(wallpaper))" />
+            <WallpaperCard v-for="(wallpaper, index) in state.data.wallpapers" :key="wallpaper.assetKey" :wallpaper="wallpaper" :index="index" :series="wallpaper.series" :aspect-ratio="wallpaper.resolution ? `${wallpaper.resolution.width}/${wallpaper.resolution.height}` : wallpaper.series === 'mobile' ? '9/16' : wallpaper.series === 'avatar' ? '1/1' : '16/10'" />
           </div>
           <nav v-if="page > 0 || state.data.list.has_more" class="community-pagination" aria-label="公开内容分页">
             <button class="community-button" :disabled="page === 0" @click="changePage(page - 1)">
