@@ -11,6 +11,8 @@ import * as mediaPresentation from '../src/utils/wallpaper/mediaPresentation.js'
 import * as share from '../src/utils/wallpaper/share.js'
 import { vCardReveal } from '../src/components/wallpaper/WallpaperGrid/composables/cardReveal.js'
 import * as detailService from '../src/services/wallpaperDetailService.js'
+import * as detailTransition from '../src/utils/wallpaper/detailTransition.js'
+import * as identity from '../src/utils/wallpaper/identity.js'
 
 function compileComponent(filename, dependencies) {
   const { descriptor } = parse(readFileSync(new URL(filename, import.meta.url), 'utf8'))
@@ -31,6 +33,8 @@ const card = compileComponent('../src/components/wallpaper/card/index.vue', {
   '@/utils/common/format': format,
   '@/utils/config/constants': constants,
   '@/utils/wallpaper/displayTitle': displayTitle,
+  '@/utils/wallpaper/detailTransition': detailTransition,
+  '@/utils/wallpaper/identity': identity,
   '@/utils/wallpaper/mediaPresentation': mediaPresentation,
   '@/utils/wallpaper/share': share,
   '../WallpaperGrid/composables/cardReveal': { vCardReveal },
@@ -82,6 +86,17 @@ const wallpaper = { filename: 'lake.jpg', path: '/wallpaper/desktop/lake.jpg', d
 const detailPath = '/wallpaper/ZGVza3RvcDpwYXRoOi93YWxscGFwZXIvZGVza3RvcC9sYWtlLmpwZw'
 
 describe('卡片仅保留详情入口', () => {
+  it('卡片携带稳定资源身份供返回定位，整张链接获得焦点时响应', async () => {
+    const { elements } = await mountCard(wallpaper, { series: 'desktop' })
+    const link = elements.find(element => element.tag === 'a')
+    expect(link.props['data-wallpaper-asset-key']).toBe(identity.buildWallpaperAssetKey(wallpaper, 'desktop'))
+    link.props.onFocus()
+    await Vue.nextTick()
+    expect(elements.find(element => element.props.class?.includes?.('wallpaper-card'))?.props.class).toContain('is-media-hovered')
+    link.props.onBlur()
+    await Vue.nextTick()
+    expect(elements.find(element => element.props.class?.includes?.('wallpaper-card'))?.props.class).not.toContain('is-media-hovered')
+  })
   it.each(['desktop', 'mobile', 'avatar', 'video'])('%s 卡片的标题与替代文本不残留文件后缀', async (series) => {
     const item = { ...wallpaper, _series: series, displayTitle: '山间__晨光.custom123', mediaType: series === 'video' ? 'video' : 'image' }
     const { elements } = await mountCard(item)

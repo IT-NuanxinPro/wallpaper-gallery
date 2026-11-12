@@ -1,6 +1,10 @@
 // 所有交互共享轻量按压与键盘反馈；独立scale不覆盖组件已有transform。
 :root {
-  --feedback-duration: 140ms;
+  --motion-press: 100ms;
+  --motion-state: 160ms;
+  --motion-panel: 220ms;
+  --motion-travel: 300ms;
+  --feedback-duration: var(--motion-state);
   --feedback-ease: cubic-bezier(0.2, 0, 0, 1);
 }
 

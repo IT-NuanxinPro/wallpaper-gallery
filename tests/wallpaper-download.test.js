@@ -17,11 +17,15 @@ vi.mock('element-plus', () => ({ ElMessage: { info: mocks.info, success: mocks.s
 
 beforeEach(() => {
   vi.clearAllMocks()
+  mocks.download.mockReset()
   mocks.enabled.mockReturnValue(false)
   mocks.authorize.mockResolvedValue('https://wallpaper.061129.xyz/api/download-file?ticket=test.signature')
   mocks.record.mockResolvedValue({ status: 'accepted' })
 })
-afterEach(() => vi.restoreAllMocks())
+afterEach(() => {
+  vi.restoreAllMocks()
+  vi.useRealTimers()
+})
 
 describe('下载操作的资源快照', () => {
   it('下载统计accepted后按原资源通知刷新，skipped不通知', async () => {
@@ -69,7 +73,8 @@ describe('下载操作的资源快照', () => {
     expect(mocks.record).toHaveBeenCalledExactlyOnceWith(a, 'desktop')
     expect(mocks.analytics).toHaveBeenCalledExactlyOnceWith(a, 'desktop')
     expect(state.downloading.value).toBe(false)
-    expect(mocks.success).toHaveBeenCalledWith('下载已发起')
+    expect(mocks.success).not.toHaveBeenCalled()
+    expect(state.downloadStatus.value).toBe('idle')
   })
 
   it('备用打开链接不产生下载统计、成功提示或下载历史', async () => {
@@ -79,7 +84,7 @@ describe('下载操作的资源快照', () => {
     expect(mocks.record).not.toHaveBeenCalled()
     expect(mocks.analytics).not.toHaveBeenCalled()
     expect(mocks.success).not.toHaveBeenCalled()
-    expect(mocks.info).toHaveBeenCalledWith('已打开原始链接，请在新页面保存文件')
+    expect(state.downloadFeedback.value).toBe('已打开原始链接，请在新页面保存文件')
   })
 
   it('下载失败不计数，错误结束后可以重试', async () => {
@@ -91,7 +96,7 @@ describe('下载操作的资源快照', () => {
     expect(state.downloading.value).toBe(false)
     await state.handleDownload()
     expect(mocks.record).toHaveBeenCalledOnce()
-    expect(mocks.success).toHaveBeenCalledWith('文件已保存至下载目录')
+    expect(state.downloadLabel.value).toBe('文件已保存')
   })
 })
 
@@ -103,7 +108,7 @@ it('下载保护拒绝时不启动文件下载、直连回退或统计', async (
   expect(await state.handleDownload()).toEqual({status:'blocked'})
   expect(mocks.download).not.toHaveBeenCalled()
   expect(mocks.record).not.toHaveBeenCalled()
-  expect(mocks.error).toHaveBeenCalledWith('下载较频繁，请等待 60 秒后重试')
+  expect(state.downloadFeedback.value).toBe('下载较频繁，请等待 60 秒后重试')
   expect(state.downloading.value).toBe(false)
 })
 
@@ -118,6 +123,16 @@ it('验证期间取消后即使授权迟到通过也不触发下载', async () =
   expect(await pending).toEqual({status:'cancelled'})
   expect(mocks.download).not.toHaveBeenCalled()
   expect(mocks.record).not.toHaveBeenCalled()
+})
+
+it('验证弹窗主动取消也结束pending并展示取消状态', async () => {
+  mocks.enabled.mockReturnValue(true)
+  mocks.authorize.mockRejectedValue(new DOMException('用户取消验证', 'AbortError'))
+  const state = useWallpaperDownload(ref({ filename: 'a.jpg', url: '/a.jpg' }), ref('desktop'))
+  expect(await state.handleDownload()).toEqual({ status: 'cancelled' })
+  expect(state.downloading.value).toBe(false)
+  expect(state.downloadLabel.value).toBe('已取消')
+  expect(mocks.download).not.toHaveBeenCalled()
 })
 
 
@@ -153,4 +168,66 @@ it('下载过程报告真实进度和状态，迟到回调不能污染下一次�
  finish({status:'browser-started'})
  await second
  expect(state.downloading.value).toBe(false)
+})
+
+it.each([
+  ['browser-started', '下载已发起'],
+  ['native-completed', '文件已保存'],
+  ['opened-fallback', '已打开原链接'],
+  ['cancelled', '已取消'],
+])('准确保留 %s 终态1.5秒，期间按钮可立即再操作', async (status, label) => {
+  vi.useFakeTimers()
+  mocks.download.mockResolvedValue({ status })
+  const state = useWallpaperDownload(ref({ filename: 'a.jpg', url: '/a.jpg' }), ref('desktop'))
+  await state.handleDownload()
+  expect(state.downloading.value).toBe(false)
+  expect(state.downloadStatus.value).toBe(status)
+  expect(state.downloadLabel.value).toBe(label)
+  await vi.advanceTimersByTimeAsync(1499)
+  expect(state.downloadLabel.value).toBe(label)
+  await vi.advanceTimersByTimeAsync(1)
+  expect(state.downloadLabel.value).toBe('下载文件')
+  expect(state.downloadStatus.value).toBe('idle')
+})
+
+it('取消立即解除锁定，旧请求迟到完成不能结束正在进行的新下载', async () => {
+  let finishOld, finishNew, reportNew
+  mocks.download.mockImplementationOnce(() => new Promise(resolve => { finishOld = resolve }))
+    .mockImplementationOnce((_url, _filename, options) => {
+      reportNew = options.onProgress
+      return new Promise(resolve => { finishNew = resolve })
+    })
+  const state = useWallpaperDownload(ref({ filename: 'a.jpg', url: '/a.jpg' }), ref('desktop'))
+  const old = state.handleDownload()
+  state.cancelDownload()
+  expect(state.downloading.value).toBe(false)
+  expect(state.downloadLabel.value).toBe('已取消')
+  const next = state.handleDownload()
+  reportNew({ phase: 'receiving', loaded: 50, total: 100 })
+  finishOld({ status: 'browser-started' })
+  expect(await old).toEqual({ status: 'cancelled' })
+  expect(state.downloading.value).toBe(true)
+  expect(state.downloadLabel.value).toBe('下载 50%')
+  expect(mocks.record).not.toHaveBeenCalled()
+  finishNew({ status: 'browser-started' })
+  await next
+  expect(state.downloadLabel.value).toBe('下载已发起')
+})
+
+it('上次终态的计时器不清除新下载状态，导航复位也不遗留取消提示', async () => {
+  vi.useFakeTimers()
+  let finish
+  mocks.download.mockResolvedValueOnce({ status: 'native-completed' })
+    .mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
+  const state = useWallpaperDownload(ref({ filename: 'a.jpg', url: '/a.jpg' }), ref('desktop'))
+  await state.handleDownload()
+  const next = state.handleDownload()
+  await vi.advanceTimersByTimeAsync(1500)
+  expect(state.downloading.value).toBe(true)
+  expect(state.downloadLabel.value).toBe('连接文件')
+  state.resetDownload()
+  expect(state.downloadLabel.value).toBe('下载文件')
+  finish({ status: 'browser-started' })
+  await next
+  expect(state.downloadLabel.value).toBe('下载文件')
 })

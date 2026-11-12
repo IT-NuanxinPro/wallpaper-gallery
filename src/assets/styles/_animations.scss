@@ -110,7 +110,9 @@
 // 滑动淡入
 .slide-up-enter-active,
 .slide-up-leave-active {
-  transition: opacity var(--transition-normal), transform var(--transition-normal);
+  transition:
+    opacity var(--transition-normal),
+    transform var(--transition-normal);
 }
 
 .slide-up-enter-from,
@@ -122,7 +124,9 @@
 // 缩放淡入
 .scale-enter-active,
 .scale-leave-active {
-  transition: opacity var(--transition-normal), transform var(--transition-normal);
+  transition:
+    opacity var(--transition-normal),
+    transform var(--transition-normal);
 }
 
 .scale-enter-from,
@@ -134,14 +138,18 @@
 // 弹窗动画
 .modal-enter-active,
 .modal-leave-active {
-  transition: opacity var(--transition-slow), transform var(--transition-slow);
+  transition:
+    opacity var(--transition-slow),
+    transform var(--transition-slow);
 
   .modal-overlay {
     transition: opacity var(--transition-slow);
   }
 
   .modal-content {
-    transition: opacity var(--transition-slow), transform var(--transition-slow);
+    transition:
+      opacity var(--transition-slow),
+      transform var(--transition-slow);
   }
 }
 

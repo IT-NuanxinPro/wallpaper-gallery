@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import AnimatedNumber from '@/components/common/ui/AnimatedNumber.vue'
 
 const props = defineProps({
+  activeChips: { type: Array, default: () => [] },
   activeSearchQuery: {
     type: String,
     default: '',
@@ -41,7 +42,7 @@ const props = defineProps({
   },
 })
 
-defineEmits(['clearSearch', 'reset'])
+defineEmits(['clearSearch', 'reset', 'removeFilter'])
 
 const categoryLabel = computed(() => {
   if (props.currentSeries === 'video') {
@@ -78,31 +79,29 @@ const showFilteredHint = computed(() => {
 
 <template>
   <div class="filter-left">
-    <span class="result-count">
+    <span class="result-count" aria-hidden="true">
       <template v-if="loading">
         加载中...
       </template>
       <template v-else>
-        共 <AnimatedNumber :value="resultCount" class="count-value" /> 张{{ resultLabel }}
+        共 <AnimatedNumber :value="resultCount" :animate-on-mount="false" :duration="0.16" class="count-value" /> 张{{ resultLabel }}
         <span v-if="showFilteredHint" class="filtered-hint">
-          (筛选自 <AnimatedNumber :value="totalCount" :duration="0.4" /> 张)
+          (筛选自 <AnimatedNumber :value="totalCount" :animate-on-mount="false" :duration="0.16" /> 张)
         </span>
       </template>
     </span>
+    <span class="filter-status" role="status" aria-live="polite" aria-atomic="true">{{ loading ? '正在更新壁纸结果' : `找到 ${resultCount} 张${resultLabel}` }}</span>
 
-    <button
-      v-if="activeSearchQuery && isMobileOrTablet"
-      class="mobile-search-chip"
-      type="button"
-      @click="$emit('clearSearch')"
-    >
-      <span class="mobile-search-chip__label">“{{ activeSearchQuery }}”</span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M18 6L6 18M6 6l12 12" />
-      </svg>
-    </button>
+    <div v-if="activeChips.length || (activeSearchQuery && isMobileOrTablet)" class="filter-chips" aria-label="已应用筛选条件">
+      <button v-if="activeSearchQuery && isMobileOrTablet" type="button" class="filter-chip" :aria-label="`清除搜索：${activeSearchQuery}`" @click="$emit('clearSearch')">
+        <span>“{{ activeSearchQuery }}”</span><span aria-hidden="true">×</span>
+      </button>
+      <button v-for="chip in activeChips" :key="chip.field" type="button" class="filter-chip" :aria-label="`移除筛选：${chip.label}`" @click="$emit('removeFilter', chip.field)">
+        <span>{{ chip.label }}</span><span aria-hidden="true">×</span>
+      </button>
+    </div>
 
-    <div v-else-if="activeSearchQuery" class="search-context-wrap">
+    <div v-if="activeSearchQuery && !isMobileOrTablet" class="search-context-wrap">
       <span
         class="search-context"
         :class="{ 'search-context--stacked': categoryFilter !== 'all' || subcategoryFilter !== 'all' }"
@@ -128,7 +127,7 @@ const showFilteredHint = computed(() => {
 
     <Transition name="fade">
       <button
-        v-if="hasActiveFilters && !isMobileOrTablet"
+        v-if="hasActiveFilters"
         class="reset-btn"
         @click="$emit('reset')"
       >
@@ -323,6 +322,47 @@ const showFilteredHint = computed(() => {
     white-space: nowrap;
     font-size: 12px;
     font-weight: $font-weight-semibold;
+  }
+}
+</style>
+
+<style scoped>
+.filter-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 32px;
+  max-width: 180px;
+  padding: 5px 9px;
+  border: 1px solid var(--accent-border);
+  border-radius: 8px;
+  color: var(--color-accent);
+  background: var(--accent-surface);
+  font-size: 12px;
+}
+.filter-chip span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (max-width: 767px) {
+  .filter-chip {
+    min-height: 36px;
   }
 }
 </style>

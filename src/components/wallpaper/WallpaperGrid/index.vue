@@ -1,12 +1,14 @@
 <script setup>
-import { computed, watch } from 'vue'
+import { computed, onActivated, onBeforeUnmount, onBeforeUpdate, onDeactivated, onMounted, onUpdated, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import LoadingSpinner from '@/components/common/feedback/LoadingSpinner.vue'
 import { useDevice } from '@/composables/useDevice'
+import { useMotionPreference } from '@/composables/useMotionPreference'
 import { useWallpaperType } from '@/composables/useWallpaperType'
 import { usePopularityStore } from '@/stores/popularity'
 import { buildWallpaperAssetKey } from '@/utils/wallpaper/identity'
 import WallpaperCard from '../card/index.vue'
+import { animateGridChange, classifyGridChange, measureVisibleCards } from './composables/gridContinuity'
 import { PAGE_SIZE, useGridPagination } from './composables/useGridPagination'
 import GridEmptyState from './shared/GridEmptyState.vue'
 import GridLoadingState from './shared/GridLoadingState.vue'
@@ -43,14 +45,16 @@ const props = defineProps({
     type: Number,
     default: 20,
   },
+  recoveryActions: { type: Array, default: () => [] },
 })
 
-const emit = defineEmits(['resetFilters', 'displayCountChange', 'navigate'])
+const emit = defineEmits(['resetFilters', 'displayCountChange', 'navigate', 'recoverFilter'])
 
 const router = useRouter()
 const { currentSeries, currentSeriesConfig, availableSeriesOptions } = useWallpaperType()
 const { isMobile } = useDevice()
 const popularityStore = usePopularityStore()
+const reducedMotion = useMotionPreference()
 
 // 获取热门排名、下载次数和访问量（直接走 store O(1) 查询）
 function getPopularRank(filename) {
@@ -160,6 +164,98 @@ watch(() => props.wallpapers, (newVal, oldVal) => {
 
 // 与首批展示数量一致，避免加载完成时列表整体高度突变。
 const skeletonCount = PAGE_SIZE
+
+const gridElement = ref(null)
+let renderedKeys = []
+let renderedSeries = currentSeries.value
+let previousGeometry = new Map()
+let changeMode = 'none'
+let cancelMoves = () => {}
+const leavingAnimations = new Set()
+const restoreLeavingCards = new Map()
+function rememberRenderedCards() {
+  renderedKeys = displayedItems.value.map(item => buildWallpaperAssetKey(item))
+  renderedSeries = currentSeries.value
+}
+onMounted(rememberRenderedCards)
+onActivated(rememberRenderedCards)
+function stopMotion() {
+  cancelMoves()
+  for (const animation of leavingAnimations)
+    animation.cancel()
+  leavingAnimations.clear()
+  for (const finish of restoreLeavingCards.values())
+    finish()
+}
+onBeforeUpdate(() => {
+  const nextKeys = displayedItems.value.map(item => buildWallpaperAssetKey(item))
+  changeMode = classifyGridChange(renderedKeys, nextKeys, renderedSeries, currentSeries.value)
+  if (changeMode === 'none' || changeMode === 'append')
+    return
+  // 先测当前动画帧，再取消旧运动，新操作从当前可见位置接续。
+  previousGeometry = reducedMotion.value ? new Map() : measureVisibleCards(gridElement.value?.$el)
+  stopMotion()
+})
+onUpdated(() => {
+  if (!reducedMotion.value && changeMode !== 'none' && changeMode !== 'append') {
+    cancelMoves = animateGridChange(previousGeometry, measureVisibleCards(gridElement.value?.$el), {
+      mode: changeMode,
+      reduced: reducedMotion.value,
+    })
+  }
+  renderedKeys = displayedItems.value.map(item => buildWallpaperAssetKey(item))
+  if (displayedItems.value.length)
+    renderedSeries = currentSeries.value
+})
+function leaveCard(element, done) {
+  const previous = previousGeometry.get(element.dataset.gridKey)
+  if (!previous || reducedMotion.value || !element.animate || !['filter', 'reorder'].includes(changeMode)) {
+    done()
+    return
+  }
+  const { rect } = previous
+  const container = element.parentElement
+  const gridBounds = container.getBoundingClientRect()
+  const originalStyle = element.getAttribute('style')
+  let finished = false
+  element.dataset.leaving = 'true'
+  element.setAttribute('aria-hidden', 'true')
+  element.inert = true
+  Object.assign(element.style, {
+    position: 'absolute',
+    top: `${rect.top - gridBounds.top + container.scrollTop}px`,
+    left: `${rect.left - gridBounds.left + container.scrollLeft}px`,
+    width: `${rect.width}px`,
+    height: `${rect.height}px`,
+    zIndex: '2',
+    pointerEvents: 'none',
+  })
+  const animation = element.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 100, easing: 'ease-out' })
+  leavingAnimations.add(animation)
+  const finish = () => {
+    if (finished)
+      return
+    finished = true
+    leavingAnimations.delete(animation)
+    restoreLeavingCards.delete(element)
+    delete element.dataset.leaving
+    element.removeAttribute('aria-hidden')
+    element.inert = false
+    if (originalStyle === null)
+      element.removeAttribute('style')
+    else
+      element.setAttribute('style', originalStyle)
+    done()
+  }
+  restoreLeavingCards.set(element, finish)
+  animation.onfinish = animation.oncancel = finish
+}
+watch(reducedMotion, (value) => {
+  if (value)
+    stopMotion()
+})
+onDeactivated(stopMotion)
+onBeforeUnmount(stopMotion)
 </script>
 
 <template>
@@ -180,6 +276,9 @@ const skeletonCount = PAGE_SIZE
       :current-series="currentSeries"
       :current-series-name="currentSeriesName"
       :type="emptyStateType"
+      :search-query="searchQuery"
+      :recovery-actions="recoveryActions"
+      @recover-filter="emit('recoverFilter', $event)"
       @navigate="navigateToSeries"
       @reset-filters="handleResetFilters"
     />
@@ -187,13 +286,18 @@ const skeletonCount = PAGE_SIZE
     <!-- Grid -->
     <template v-else>
       <!-- 卡片布局 -->
-      <div
+      <TransitionGroup
+        ref="gridElement"
+        tag="div"
+        :css="false"
         class="wallpaper-grid"
         :class="[`aspect-${aspectType}`]"
+        @leave="leaveCard"
       >
         <div
           v-for="(wallpaper, index) in displayedItems"
           :key="buildWallpaperAssetKey(wallpaper)"
+          :data-grid-key="buildWallpaperAssetKey(wallpaper)"
           class="wallpaper-grid-item"
         >
           <WallpaperCard
@@ -208,7 +312,7 @@ const skeletonCount = PAGE_SIZE
             @navigate="(wallpaper, event) => emit('navigate', wallpaper, event)"
           />
         </div>
-      </div>
+      </TransitionGroup>
 
       <!-- 加载中提示（滚动加载） -->
       <div v-if="hasMoreData" ref="loadMoreSentinel" class="mobile-load-more" :aria-busy="isLoadingMore">
@@ -263,6 +367,7 @@ const skeletonCount = PAGE_SIZE
 }
 
 .wallpaper-grid {
+  position: relative;
   display: grid;
   gap: var(--grid-gap);
   transition: opacity 0.15s ease;

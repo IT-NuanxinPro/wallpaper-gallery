@@ -166,7 +166,6 @@ async function main() {
     const detailCss = (await Promise.all([
       'src/components/common/feedback/soft-loading.css',
       'src/components/wallpaper/device-preview/device-preview.css',
-      'src/components/wallpaper/PortraitWallpaperModal/shared/phone-frame.css',
       'src/assets/styles/wallpaper-detail.css',
     ].map(file => fs.readFile(path.join(ROOT_DIR, file), 'utf8')))).join('\n')
     const detailShell = buildDetailShell(await fs.readFile(path.join(DIST_DIR, 'index.html'), 'utf8'), detailCss)

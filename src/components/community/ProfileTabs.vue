@@ -1,8 +1,17 @@
 <script setup>
-import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, useId, watch } from 'vue'
+import { useMotionPreference } from '@/composables/useMotionPreference'
 
-const props = defineProps({ tabs: { type: Array, required: true }, modelValue: { type: String, required: true } })
+const props = defineProps({
+  tabs: { type: Array, required: true },
+  modelValue: { type: String, required: true },
+  idPrefix: { type: String, default: '' },
+  panelId: { type: String, default: '' },
+})
 const emit = defineEmits(['update:modelValue'])
+const generatedId = useId()
+const prefix = computed(() => props.idPrefix || `profile-tabs-${generatedId}`)
+const reducedMotion = useMotionPreference()
 const nav = ref(null)
 const marker = ref({ opacity: 0 })
 let observer
@@ -13,6 +22,8 @@ function align() {
 function keyboard(event) {
   if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key))
     return
+  if (!props.tabs.length)
+    return
   event.preventDefault()
   const index = props.tabs.findIndex(tab => tab.key === props.modelValue)
   const next = event.key === 'Home' ? 0 : event.key === 'End' ? props.tabs.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + props.tabs.length) % props.tabs.length
@@ -21,16 +32,18 @@ function keyboard(event) {
 }
 watch(() => [props.modelValue, props.tabs], () => nextTick(align))
 onMounted(() => {
-  observer = new ResizeObserver(align)
-  observer.observe(nav.value)
+  if (typeof ResizeObserver !== 'undefined') {
+    observer = new ResizeObserver(align)
+    observer.observe(nav.value)
+  }
   align()
 })
 onBeforeUnmount(() => observer?.disconnect())
 </script>
 
 <template>
-  <nav ref="nav" class="profile-tabs" role="tablist" aria-label="个人主页内容" @keydown="keyboard">
-    <button v-for="tab in tabs" :key="tab.key" role="tab" :aria-selected="modelValue === tab.key" :tabindex="modelValue === tab.key ? 0 : -1" @click="emit('update:modelValue', tab.key)">
+  <nav ref="nav" class="profile-tabs" :class="{ 'is-reduced-motion': reducedMotion }" role="tablist" aria-label="个人主页内容" @keydown="keyboard">
+    <button v-for="tab in tabs" :id="`${prefix}-${tab.key}`" :key="tab.key" type="button" role="tab" :aria-selected="modelValue === tab.key" :aria-controls="panelId || undefined" :tabindex="modelValue === tab.key ? 0 : -1" @click="emit('update:modelValue', tab.key)">
       {{ tab.label }}<span v-if="tab.count !== undefined">{{ tab.count }}</span>
     </button>
     <i class="profile-tabs__marker" :style="marker" aria-hidden="true" />
@@ -79,14 +92,17 @@ onBeforeUnmount(() => observer?.disconnect())
   border-radius: 3px 3px 0 0;
   background: var(--accent-gradient);
   transition:
-    width 320ms cubic-bezier(0.32, 0.72, 0, 1),
-    transform 320ms cubic-bezier(0.32, 0.72, 0, 1),
+    width 180ms cubic-bezier(0.2, 0, 0, 1),
+    transform 180ms cubic-bezier(0.2, 0, 0, 1),
     opacity 160ms;
 }
 .profile-tabs button:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: -4px;
   border-radius: 8px;
+}
+.profile-tabs.is-reduced-motion .profile-tabs__marker {
+  transition: none;
 }
 @media (max-width: 600px) {
   .profile-tabs {

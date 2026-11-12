@@ -1,12 +1,14 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRoute } from 'vue-router'
 import { useDevice } from '@/composables/useDevice'
 import { loadWallpaperDetailView } from '@/router/wallpaperDetailRoute'
 import { primeWallpaperDetail } from '@/services/wallpaperDetailService'
 import { buildWallpaperImageFallbackUrls, formatBingDate, formatFileSize, formatRelativeTime, highlightText } from '@/utils/common/format'
 import { CDN_VERSION, VIDEO_USAGE_SHORT_LABELS } from '@/utils/config/constants'
+import { captureWallpaperTransition } from '@/utils/wallpaper/detailTransition'
 import { getWallpaperDisplayTitle } from '@/utils/wallpaper/displayTitle'
+import { buildWallpaperAssetKey } from '@/utils/wallpaper/identity'
 import { getWallpaperCardAspectRatio } from '@/utils/wallpaper/mediaPresentation'
 import { buildWallpaperSharePath } from '@/utils/wallpaper/share'
 import { vCardReveal } from '../WallpaperGrid/composables/cardReveal'
@@ -50,6 +52,8 @@ const props = defineProps({
 
 const emit = defineEmits(['imageLoad', 'navigate'])
 const { isMobile } = useDevice()
+const route = useRoute()
+const assetKey = computed(() => buildWallpaperAssetKey(props.wallpaper, props.series))
 const detailPath = computed(() => buildWallpaperSharePath(props.wallpaper, props.series))
 
 const imageLoaded = ref(false)
@@ -155,6 +159,7 @@ function handleImageError() {
 function handleNavigate(event) {
   if (detailPath.value && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey && (!('button' in event) || event.button === 0)) {
     prepareDetail()
+    captureWallpaperTransition({ assetKey: assetKey.value, from: route.fullPath, to: detailPath.value, element: event.currentTarget, event })
     emit('navigate', props.wallpaper, event)
   }
 }
@@ -174,6 +179,11 @@ function handleMouseEnter() {
 function handleMouseLeave() {
   isMediaHovered.value = false
 }
+
+function handleFocus() {
+  prepareDetail()
+  isMediaHovered.value = true
+}
 </script>
 
 <template>
@@ -186,9 +196,13 @@ function handleMouseLeave() {
       :is="detailPath ? RouterLink : 'div'"
       :to="detailPath || undefined"
       class="card-detail-link"
+      :data-wallpaper-asset-key="assetKey"
       @pointerenter="prepareDetail"
       @pointerdown="prepareDetail"
-      @focus="prepareDetail"
+      @mouseenter="handleMouseEnter"
+      @mouseleave="handleMouseLeave"
+      @focus="handleFocus"
+      @blur="handleMouseLeave"
       @click="handleNavigate"
     >
       <WallpaperCardMedia
@@ -206,8 +220,6 @@ function handleMouseLeave() {
         :thumbnail-url="thumbnailUrl"
         @load="handleImageLoad"
         @error="handleImageError"
-        @hover-enter="handleMouseEnter"
-        @hover-leave="handleMouseLeave"
       />
 
       <WallpaperCardInfo
@@ -257,8 +269,9 @@ function handleMouseLeave() {
     0 4px 12px rgba(15, 23, 42, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.58);
   transition:
-    transform 180ms ease-out,
-    border-color 180ms ease-out;
+    transform var(--motion-state) ease-out,
+    border-color var(--motion-state) ease-out,
+    box-shadow var(--motion-state) ease-out;
 
   :deep(.card-info) {
     min-height: 164px;
@@ -324,33 +337,30 @@ function handleMouseLeave() {
 
   @media (hover: hover) and (pointer: fine) {
     &.is-media-hovered {
-      transform: translateY(-4px);
+      transform: translateY(-2px);
 
       :deep(.card-overlay) {
         opacity: 1;
       }
 
       :deep(.card-image img) {
-        transform: scale(1.035);
+        transform: scale(1.02);
       }
     }
   }
 
   &.is-media-hovered {
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(219, 234, 254, 0.9)),
-      radial-gradient(circle at top left, rgba(var(--color-accent-rgb), 0.24), transparent 52%),
-      radial-gradient(circle at bottom right, rgba(var(--color-accent-secondary-rgb), 0.16), transparent 52%);
     border-color: var(--accent-border-strong);
     box-shadow:
       0 8px 20px rgba(15, 23, 42, 0.12),
       inset 0 1px 0 rgba(255, 255, 255, 0.66);
-    transform: translateY(-4px);
+    transform: translateY(-2px);
+
+    :deep(.card-overlay) {
+      opacity: 1;
+    }
 
     [data-theme='dark'] & {
-      background:
-        linear-gradient(180deg, rgba(11, 20, 36, 0.99), rgba(8, 14, 27, 0.96)),
-        linear-gradient(145deg, rgba(96, 165, 250, 0.2), rgba(14, 165, 233, 0.1) 40%, rgba(2, 6, 23, 0) 66%);
       border-color: rgba(147, 197, 253, 0.26);
       box-shadow:
         0 8px 20px rgba(2, 8, 23, 0.36),
@@ -383,6 +393,16 @@ function handleMouseLeave() {
         transform: none;
       }
     }
+  }
+}
+
+@media (hover: none) {
+  .wallpaper-card.is-media-hovered {
+    transform: none;
+  }
+  .card-detail-link:active {
+    scale: 0.985;
+    opacity: 1;
   }
 }
 </style>

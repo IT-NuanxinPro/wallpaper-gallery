@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineAsyncComponent, ref } from 'vue'
+import { computed, defineAsyncComponent, onActivated, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import MobileCategoryDrawer from '@/components/common/navigation/MobileCategoryDrawer.vue'
 import AnimatedNumber from '@/components/common/ui/AnimatedNumber.vue'
 import MobileFilterBar from '@/components/wallpaper/filter/mobile/MobileFilterBar.vue'
@@ -7,9 +7,11 @@ import MobileFilterPopup from '@/components/wallpaper/filter/mobile/MobileFilter
 import FilterSummary from '@/components/wallpaper/filter/shared/FilterSummary.vue'
 import { useDevice } from '@/composables/useDevice'
 import { trackFilter } from '@/utils/common/analytics'
+import { FORMAT_OPTIONS, RESOLUTION_OPTIONS, SORT_OPTIONS } from '@/utils/config/constants'
 import { getDefaultCategoryFilter, hasActiveSeriesFilters } from '@/utils/filter/defaults'
 
 const props = defineProps({
+  previewResults: { type: Function, default: () => ({ status: 'loading', count: null }) },
   sortBy: {
     type: String,
     default: 'newest',
@@ -82,6 +84,26 @@ const props = defineProps({
 const emit = defineEmits(['clearSearch', 'update:sortBy', 'update:formatFilter', 'update:resolutionFilter', 'update:categoryFilter', 'update:subcategoryFilter', 'reset'])
 
 const { isMobile } = useDevice()
+const panelElement = ref(null)
+let panelResizeObserver
+function updatePanelHeight() {
+  const height = isMobile.value ? panelElement.value?.getBoundingClientRect().height : 60
+  if (height)
+    document.documentElement.style.setProperty('--browse-filter-height', `${Math.ceil(height)}px`)
+}
+onMounted(() => {
+  updatePanelHeight()
+  if (typeof ResizeObserver !== 'undefined') {
+    panelResizeObserver = new ResizeObserver(updatePanelHeight)
+    panelResizeObserver.observe(panelElement.value)
+  }
+})
+onActivated(updatePanelHeight)
+watch(isMobile, updatePanelHeight, { flush: 'post' })
+onBeforeUnmount(() => {
+  panelResizeObserver?.disconnect()
+  document.documentElement.style.removeProperty('--browse-filter-height')
+})
 const isVideoSeries = computed(() => props.currentSeries === 'video')
 
 const DesktopFilterControls = defineAsyncComponent({
@@ -96,6 +118,29 @@ const showCategoryDrawer = ref(false) // 分类选择抽屉
 // 临时筛选值（用于弹窗内）
 const tempSortBy = ref(props.sortBy)
 const tempFormatFilter = ref(props.formatFilter)
+const draftPreview = computed(() => props.previewResults({ sortBy: tempSortBy.value, formatFilter: tempFormatFilter.value }))
+const filterChips = computed(() => {
+  const chips = []
+  const add = (field, value, label) => chips.push({ field, label, value })
+  if (props.categoryFilter !== getDefaultCategoryFilter(props.currentSeries))
+    add('categoryFilter', props.categoryFilter, getCategoryLabel(props.categoryFilter))
+  if (props.subcategoryFilter !== 'all')
+    add('subcategoryFilter', props.subcategoryFilter, props.subcategoryFilter)
+  if (!isVideoSeries.value && !props.hideFormatFilter && props.formatFilter !== 'all')
+    add('formatFilter', props.formatFilter, FORMAT_OPTIONS.find(option => option.value === props.formatFilter)?.label || props.formatFilter)
+  if (props.resolutionFilter !== 'all')
+    add('resolutionFilter', props.resolutionFilter, RESOLUTION_OPTIONS.find(option => option.value === props.resolutionFilter)?.label || props.resolutionFilter)
+  if (props.sortBy !== 'newest')
+    add('sortBy', props.sortBy, SORT_OPTIONS.find(option => option.value === props.sortBy)?.label || props.sortBy)
+  return chips
+})
+
+function removeFilter(field) {
+  const defaults = { categoryFilter: getDefaultCategoryFilter(props.currentSeries), subcategoryFilter: 'all', formatFilter: 'all', resolutionFilter: 'all', sortBy: 'newest' }
+  emit(`update:${field}`, defaults[field])
+  if (field === 'categoryFilter')
+    emit('update:subcategoryFilter', 'all')
+}
 // 是否有激活的筛选条件
 const hasActiveFilters = computed(() => {
   return hasActiveSeriesFilters({
@@ -226,9 +271,10 @@ function resetFilters() {
 </script>
 
 <template>
-  <div class="filter-panel" :class="{ 'has-filters': hasActiveFilters }">
+  <div ref="panelElement" class="filter-panel" :class="{ 'has-filters': hasActiveFilters }">
     <FilterSummary
       :active-search-query="props.searchQuery"
+      :active-chips="filterChips"
       :category-filter="categoryFilter"
       :current-series="currentSeries"
       :has-active-filters="hasActiveFilters"
@@ -239,6 +285,7 @@ function resetFilters() {
       :total-count="totalCount"
       @clear-search="emit('clearSearch')"
       @reset="handleReset"
+      @remove-filter="removeFilter"
     />
 
     <div v-if="!isMobile && showInteractionSummary" class="desktop-interaction-summary">
@@ -300,6 +347,9 @@ function resetFilters() {
       :current-category-label="currentCategoryLabel"
       :hide-category-filter="isVideoSeries"
       :is-category-active="isCategoryActive"
+      :active-count="filterChips.length"
+      :category-open="showCategoryDrawer"
+      :filter-open="showFilterPopup"
       @open-category="openCategoryDrawer"
       @open-filter="openFilterPopup"
     />
@@ -310,6 +360,7 @@ function resetFilters() {
       :category-options="categoryOptions"
       :category-filter="categoryFilter"
       :subcategory-filter="subcategoryFilter"
+      :preview-results="previewResults"
       @update:category-filter="handleCategoryChange"
       @update:subcategory-filter="handleSubcategoryChange"
       @confirm="handleCategoryConfirm"
@@ -320,6 +371,7 @@ function resetFilters() {
       v-model:temp-format-filter="tempFormatFilter"
       v-model:temp-sort-by="tempSortBy"
       :hide-format-filter="hideFormatFilter || isVideoSeries"
+      :preview="draftPreview"
       @close="closeFilterPopup"
       @reset="resetFilters"
       @apply="applyFilters"
@@ -492,6 +544,7 @@ function resetFilters() {
   .filter-panel {
     // 移动端改为 fixed 定位，与导航栏融合
     position: fixed;
+    z-index: 95;
     left: 0;
     right: 0;
     top: $header-height;
@@ -506,13 +559,41 @@ function resetFilters() {
     // 移除 sticky 相关的 hack
     -webkit-transform: none;
     transform: none;
-    // 移动端强制不换行
-    flex-wrap: nowrap;
+    // 主操作保持首行，已应用条件独占下一行，避免挤压触摸入口。
+    flex-wrap: wrap;
     align-items: center;
 
     :deep(.filter-left) {
+      display: contents;
+    }
+    :deep(.result-count) {
       flex: 1;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    :deep(.filter-right-mobile) {
+      order: 2;
+    }
+    :deep(.filter-chips) {
+      order: 3;
+      flex: 1 1 calc(100% - 88px);
+      max-width: calc(100% - 88px);
       flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    :deep(.filter-chip) {
+      flex-shrink: 0;
+    }
+    :deep(.filtered-hint) {
+      display: none;
+    }
+    :deep(.reset-btn) {
+      order: 4;
+      margin-left: auto;
+      min-height: 32px;
     }
 
     [data-theme='dark'] & {

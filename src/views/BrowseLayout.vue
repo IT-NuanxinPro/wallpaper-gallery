@@ -107,7 +107,7 @@ async function handleTag(tag) {
 }
 @media (max-width: 767px) {
   .browse-layout {
-    padding-top: 68px;
+    padding-top: calc(var(--browse-filter-height, 60px) + 8px);
   }
   .browse-hot-tags {
     min-height: 94px;

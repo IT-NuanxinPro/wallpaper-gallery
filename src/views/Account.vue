@@ -35,8 +35,8 @@ const router = useRouter()
 const route = useRoute()
 const interaction = useInteractionStore()
 const accountTabs = computed(() => [
-  { key: 'collections', label: '收藏夹', count: interaction.stats.collections },
-  { key: 'likes', label: '喜欢', count: interaction.stats.likes },
+  { key: 'collections', label: '收藏夹', count: interaction.statsLoaded ? interaction.stats.collections : undefined },
+  { key: 'likes', label: '喜欢', count: interaction.statsLoaded ? interaction.stats.likes : undefined },
   { key: 'following', label: '关注' },
   { key: 'followers', label: '粉丝' },
   { key: 'settings', label: '账号设置' },
@@ -61,7 +61,22 @@ const {
   user,
 } = storeToRefs(authStore)
 
-const pageState = ref('loading')
+const pageState = computed(() => !isConfigured.value ? 'unavailable' : isAuthenticated.value && isInitialized.value ? 'ready' : 'loading')
+const visitedPanels = ref(new Set([activeTab.value]))
+const libraryTab = ref(activeTab.value === 'likes' ? 'likes' : 'collections')
+const connectionKind = ref(activeTab.value === 'followers' ? 'followers' : 'following')
+const connectionsRevision = ref(0)
+function handleVisibilityChanged(actor) {
+  if (actor === user.value?.id)
+    connectionsRevision.value++
+}
+watch(activeTab, (tab) => {
+  visitedPanels.value.add(tab)
+  if (tab === 'collections' || tab === 'likes')
+    libraryTab.value = tab
+  if (tab === 'following' || tab === 'followers')
+    connectionKind.value = tab
+})
 const activeProviderAction = ref('')
 const isEditingDisplayName = ref(false)
 const isSavingDisplayName = ref(false)
@@ -97,11 +112,6 @@ const emailPasswordEnabled = computed(() => Boolean(emailIdentity.value))
 const linkedProviderKeys = computed(() =>
   Array.from(new Set(linkedIdentities.value.map(getAuthProviderKeyFromIdentity).filter(Boolean))),
 )
-// const linkedProviderLabels = computed(() =>
-//   linkedProviderKeys.value
-//     .map(providerKey => getAuthProviderDefinition(providerKey)?.label || providerKey)
-//     .filter(Boolean),
-// )
 const currentProviderLabel = computed(() => {
   const definition = getAuthProviderDefinition(activeAuthProvider.value || user.value?.app_metadata?.provider)
   return definition?.label || (emailPasswordEnabled.value ? '邮箱密码' : '未识别')
@@ -246,7 +256,6 @@ function validateDisplayName() {
 
 async function ensurePageReady() {
   if (!isConfigured.value) {
-    pageState.value = 'unavailable'
     return
   }
 
@@ -259,8 +268,8 @@ async function ensurePageReady() {
     return
   }
 
-  await interaction.loadLibraryData()
-  pageState.value = 'ready'
+  // 身份与标签先呈现，统计和壁纸内容独立更新。
+  void interaction.loadLibraryData({ userId: user.value.id })
 }
 
 async function handleDisplayNameSave() {
@@ -373,12 +382,21 @@ watch(visibleDisplayName, (nextDisplayName) => {
   }
 }, { immediate: true })
 
-watch(isAuthenticated, (nextValue) => {
-  if (pageState.value === 'ready' && !nextValue) {
-    pageState.value = 'loading'
+watch(() => user.value?.id, (nextId, previousId) => {
+  if (nextId === previousId)
+    return
+  visitedPanels.value = new Set([activeTab.value])
+  isEditingDisplayName.value = false
+  showPasswordDialog.value = false
+  resetPasswordForm()
+  if (!nextId) {
+    interaction.$reset()
     router.replace(getLoginRoute())
   }
-})
+  else {
+    void ensurePageReady()
+  }
+}, { flush: 'sync' })
 
 onMounted(() => {
   ensurePageReady()
@@ -411,126 +429,115 @@ onMounted(() => {
             </RouterLink>
           </div>
 
-          <div v-else class="account-hub">
+          <div v-else :key="user?.id" class="account-hub">
             <header class="account-identity">
               <RemoteAvatar :sources="avatarCandidates" :src="avatarUrl" :alt="`${visibleDisplayName} 头像`" :initial="authInitial" :fallback-style="authAvatarStyle" image-class="account-identity__avatar" fallback-class="account-identity__avatar" />
               <div class="account-identity__copy">
                 <h1>{{ visibleDisplayName }}</h1>
                 <p>{{ visibleAccountHandle || '我的壁纸空间' }}</p>
                 <div class="account-identity__stats">
-                  <span>喜欢 <strong>{{ interaction.stats.likes }}</strong></span><span>收藏 <strong>{{ interaction.stats.collections }}</strong></span><span>下载 <strong>{{ interaction.stats.downloads }}</strong></span>
+                  <span>喜欢 <strong>{{ interaction.statsLoaded ? interaction.stats.likes : '—' }}</strong></span><span>收藏 <strong>{{ interaction.statsLoaded ? interaction.stats.collections : '—' }}</strong></span><span>下载 <strong>{{ interaction.statsLoaded ? interaction.stats.downloads : '—' }}</strong></span>
                 </div>
               </div>
             </header>
             <ProfileTabs :tabs="accountTabs" :model-value="activeTab" @update:model-value="changeTab" />
             <div class="account-hub__content">
-              <Library v-if="activeTab === 'collections' || activeTab === 'likes'" embedded :content-tab="activeTab" />
-              <AccountConnections v-else-if="activeTab === 'following' || activeTab === 'followers'" :kind="activeTab" />
-              <section v-else class="account-layout">
-                <article class="account-card account-card--profile">
-                  <div class="account-card__header">
-                    <h2>基本资料</h2>
-                  </div>
-                  <div class="account-overview">
-                    <div class="account-overview__item">
-                      <span>当前登录方式</span>
-                      <strong>{{ currentProviderLabel }}</strong>
+              <Library v-if="visitedPanels.has('collections') || visitedPanels.has('likes')" v-show="activeTab === 'collections' || activeTab === 'likes'" embedded :content-tab="libraryTab" />
+              <AccountConnections v-if="visitedPanels.has('following') || visitedPanels.has('followers')" v-show="activeTab === 'following' || activeTab === 'followers'" :key="connectionsRevision" :kind="connectionKind" />
+              <section v-if="visitedPanels.has('settings')" v-show="activeTab === 'settings'" class="account-layout">
+                <div class="account-settings-column">
+                  <article class="account-card account-card--profile">
+                    <div class="account-card__header">
+                      <h2>基本资料</h2>
                     </div>
-                    <div class="account-overview__item">
-                      <span>密码状态</span>
-                      <strong>{{ emailPasswordEnabled ? '已启用' : '未设置' }}</strong>
-                    </div>
-                    <div class="account-overview__item">
-                      <span>已绑定方式</span>
-                      <strong>{{ linkedProviderKeys.length }} 种</strong>
-                    </div>
-                  </div>
-
-                  <!-- <div class="account-provider-pills">
-                <span
-                  v-for="providerLabel in linkedProviderLabels"
-                  :key="providerLabel"
-                  class="account-provider-pill"
-                >
-                  {{ providerLabel }}
-                </span>
-              </div> -->
-
-                  <div class="account-inline-panel" :class="{ 'is-editing': isEditingDisplayName }">
-                    <div class="account-inline-panel__header">
-                      <div class="account-inline-panel__copy">
-                        <span class="account-inline-panel__label">昵称</span>
-                        <div class="account-inline-panel__value-row">
-                          <span>{{ visibleDisplayName }}</span>
-                        </div>
+                    <div class="account-overview">
+                      <div class="account-overview__item">
+                        <span>当前登录方式</span>
+                        <strong>{{ currentProviderLabel }}</strong>
                       </div>
-
-                      <button
-                        v-if="!isEditingDisplayName"
-                        type="button"
-                        class="account-action account-action--ghost account-action--compact"
-                        @click="startDisplayNameEdit"
-                      >
-                        编辑昵称
-                      </button>
+                      <div class="account-overview__item">
+                        <span>密码状态</span>
+                        <strong>{{ emailPasswordEnabled ? '已启用' : '未设置' }}</strong>
+                      </div>
+                      <div class="account-overview__item">
+                        <span>已绑定方式</span>
+                        <strong>{{ linkedProviderKeys.length }} 种</strong>
+                      </div>
                     </div>
 
-                    <div v-if="isEditingDisplayName" class="account-inline-editor">
-                      <input
-                        v-model="displayNameDraft"
-                        type="text"
-                        class="account-input"
-                        placeholder="输入新的昵称"
-                        :disabled="isSavingDisplayName"
-                        maxlength="32"
-                      >
+                    <div class="account-inline-panel" :class="{ 'is-editing': isEditingDisplayName }">
+                      <div class="account-inline-panel__header">
+                        <div class="account-inline-panel__copy">
+                          <span class="account-inline-panel__label">昵称</span>
+                          <div class="account-inline-panel__value-row">
+                            <span>{{ visibleDisplayName }}</span>
+                          </div>
+                        </div>
 
-                      <div class="account-inline-editor__actions">
                         <button
+                          v-if="!isEditingDisplayName"
                           type="button"
-                          class="account-action account-action--primary"
-                          :disabled="isSavingDisplayName"
-                          @click="handleDisplayNameSave"
+                          class="account-action account-action--ghost account-action--compact"
+                          @click="startDisplayNameEdit"
                         >
-                          {{ isSavingDisplayName ? '保存中...' : '保存昵称' }}
-                        </button>
-                        <button
-                          type="button"
-                          class="account-action account-action--ghost"
-                          :disabled="isSavingDisplayName"
-                          @click="cancelDisplayNameEdit"
-                        >
-                          取消
+                          编辑昵称
                         </button>
                       </div>
-                    </div>
-                  </div>
 
-                  <div class="account-inline-panel">
-                    <div class="account-inline-panel__header">
-                      <div class="account-inline-panel__copy">
-                        <span class="account-inline-panel__label">账号</span>
-                        <div class="account-inline-panel__value-row">
-                          <span>{{ visibleAccountHandle || '当前账号暂未生成账号标识' }}</span>
+                      <div v-if="isEditingDisplayName" class="account-inline-editor">
+                        <input
+                          v-model="displayNameDraft"
+                          type="text"
+                          class="account-input"
+                          placeholder="输入新的昵称"
+                          :disabled="isSavingDisplayName"
+                          maxlength="32"
+                        >
+
+                        <div class="account-inline-editor__actions">
+                          <button
+                            type="button"
+                            class="account-action account-action--primary"
+                            :disabled="isSavingDisplayName"
+                            @click="handleDisplayNameSave"
+                          >
+                            {{ isSavingDisplayName ? '保存中...' : '保存昵称' }}
+                          </button>
+                          <button
+                            type="button"
+                            class="account-action account-action--ghost"
+                            :disabled="isSavingDisplayName"
+                            @click="cancelDisplayNameEdit"
+                          >
+                            取消
+                          </button>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div class="account-inline-panel">
-                    <div class="account-inline-panel__header">
-                      <div class="account-inline-panel__copy">
-                        <span class="account-inline-panel__label">邮箱</span>
-                        <div class="account-inline-panel__value-row">
-                          <span>{{ authEmail || '当前第三方账号未返回邮箱地址' }}</span>
+                    <div class="account-inline-panel">
+                      <div class="account-inline-panel__header">
+                        <div class="account-inline-panel__copy">
+                          <span class="account-inline-panel__label">账号</span>
+                          <div class="account-inline-panel__value-row">
+                            <span>{{ visibleAccountHandle || '当前账号暂未生成账号标识' }}</span>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </article>
 
-                <PublicProfileSettings />
-                <section class="account-secondary-grid">
+                    <div class="account-inline-panel">
+                      <div class="account-inline-panel__header">
+                        <div class="account-inline-panel__copy">
+                          <span class="account-inline-panel__label">邮箱</span>
+                          <div class="account-inline-panel__value-row">
+                            <span>{{ authEmail || '当前第三方账号未返回邮箱地址' }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+
                   <article class="account-card account-card--security">
                     <div class="account-card__header">
                       <div>
@@ -565,7 +572,9 @@ onMounted(() => {
                       </div>
                     </div>
                   </article>
-
+                </div>
+                <div class="account-settings-column">
+                  <PublicProfileSettings @visibility-changed="handleVisibilityChanged" />
                   <article class="account-card account-card--providers">
                     <div class="account-card__header">
                       <div>
@@ -636,7 +645,7 @@ onMounted(() => {
                       </article>
                     </div>
                   </article>
-                </section>
+                </div>
               </section>
             </div>
           </div>
@@ -1088,14 +1097,6 @@ html[data-theme='dark'] .account-password-dialog {
   gap: 16px;
 }
 
-.account-secondary-grid {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: 1fr;
-  align-items: start;
-  gap: 18px;
-}
-
 .account-profile {
   display: flex;
   align-items: center;
@@ -1393,31 +1394,6 @@ html[data-theme='dark'] .account-password-dialog {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-}
-
-.account-provider-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.account-provider-pill {
-  display: inline-flex;
-  align-items: center;
-  min-height: 30px;
-  padding: 0 10px;
-  border-radius: 999px;
-  color: #0f172a;
-  font-size: 11px;
-  font-weight: 700;
-  background: rgba(14, 165, 233, 0.12);
-  border: 1px solid rgba(14, 165, 233, 0.18);
-
-  [data-theme='dark'] & {
-    color: #e2e8f0;
-    background: rgba(56, 189, 248, 0.12);
-    border-color: rgba(125, 211, 252, 0.16);
-  }
 }
 
 .account-card__header {
@@ -2035,11 +2011,6 @@ html[data-theme='dark'] .account-password-dialog {
   border-color: var(--color-border);
   border-radius: 22px;
 }
-@media (max-width: 800px) {
-  .account-secondary-grid {
-    grid-template-columns: 1fr;
-  }
-}
 @media (max-width: 600px) {
   .account-hub {
     border-radius: 22px;
@@ -2063,60 +2034,28 @@ html[data-theme='dark'] .account-password-dialog {
 </style>
 
 <style scoped>
-.account-secondary-grid .account-card--security {
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  gap: 24px;
-}
-.account-secondary-grid .account-security {
+.account-settings-column {
   display: flex;
-  align-items: center;
-  gap: 24px;
+  flex-direction: column;
+  min-width: 0;
+  gap: 18px;
 }
-.account-secondary-grid .account-card--providers .provider-list {
+.account-card--providers .provider-list {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 14px;
 }
 .account-card--providers .provider-card {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+}
+.account-card--providers .provider-card__copy {
+  flex: 1;
+  min-width: 160px;
 }
 .account-card--providers .provider-card__actions {
-  margin-top: auto;
-}
-@media (max-width: 900px) {
-  .account-secondary-grid .account-card--providers .provider-list {
-    grid-template-columns: 1fr;
-  }
-  .account-card--providers .provider-card {
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-}
-@media (max-width: 600px) {
-  .account-overview {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
-  }
-  .account-overview__item {
-    padding: 12px 9px;
-  }
-  .account-overview__item span {
-    font-size: 10px;
-  }
-  .account-overview__item strong {
-    font-size: 13px;
-  }
-  .account-secondary-grid .account-card--security,
-  .account-secondary-grid .account-security {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
+  margin-left: auto;
 }
 </style>

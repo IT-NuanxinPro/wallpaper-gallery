@@ -4,7 +4,8 @@
  * 左右分栏布局，支持一级和二级分类选择
  * 带丝滑动画效果
  */
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, useId, watch } from 'vue'
+import { useDialogFocus } from '@/composables/useDialogFocus'
 
 const props = defineProps({
   categoryOptions: {
@@ -26,6 +27,9 @@ const emit = defineEmits(['update:categoryFilter', 'update:subcategoryFilter'])
 // 下拉框状态
 const isOpen = ref(false)
 const dropdownRef = ref(null)
+const panelRef = ref(null)
+const panelId = `category-panel-${useId()}`
+useDialogFocus(isOpen, panelRef, closeDropdown)
 
 // 当前悬停/预览的一级分类（用于显示二级分类列表）
 const hoveredCategory = ref(props.categoryFilter)
@@ -137,6 +141,9 @@ onUnmounted(() => {
     <button
       class="dropdown-trigger"
       :class="{ 'is-open': isOpen, 'has-selection': hasSelection }"
+      aria-haspopup="dialog"
+      :aria-expanded="isOpen"
+      :aria-controls="panelId"
       @click="toggleDropdown"
     >
       <span class="trigger-text">{{ displayText }}</span>
@@ -147,7 +154,7 @@ onUnmounted(() => {
 
     <!-- 下拉面板 -->
     <Transition name="dropdown">
-      <div v-if="isOpen" class="dropdown-panel" :class="{ 'single-column': currentSubcategories.length === 0 }">
+      <div v-if="isOpen" :id="panelId" ref="panelRef" class="dropdown-panel" role="dialog" aria-label="选择壁纸分类" tabindex="-1" :class="{ 'single-column': currentSubcategories.length === 0 }">
         <div class="panel-content">
           <!-- 左侧：一级分类 -->
           <div class="category-list primary-list">
@@ -159,6 +166,7 @@ onUnmounted(() => {
                 v-for="option in categoryOptions"
                 :key="option.value"
                 class="category-item"
+                :aria-pressed="hoveredCategory === option.value"
                 :class="{
                   'is-active': hoveredCategory === option.value,
                   'has-children': option.subcategories?.length > 0,
@@ -191,6 +199,7 @@ onUnmounted(() => {
                 <button
                   class="category-item"
                   :class="{ 'is-active': categoryFilter === hoveredCategory && subcategoryFilter === 'all' }"
+                  :aria-pressed="categoryFilter === hoveredCategory && subcategoryFilter === 'all'"
                   @click="handleSubcategoryClick('all')"
                 >
                   <span class="item-label">全部</span>
@@ -201,6 +210,7 @@ onUnmounted(() => {
                   :key="sub.name"
                   class="category-item"
                   :class="{ 'is-active': categoryFilter === hoveredCategory && subcategoryFilter === sub.name }"
+                  :aria-pressed="categoryFilter === hoveredCategory && subcategoryFilter === sub.name"
                   @click="handleSubcategoryClick(sub.name)"
                 >
                   <span class="item-label">{{ sub.name }}</span>
@@ -550,5 +560,13 @@ onUnmounted(() => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dropdown-enter-active,
+  .dropdown-leave-active,
+  .slide-right-enter-active,
+  .slide-right-leave-active {
+    animation: none;
+  }
 }
 </style>

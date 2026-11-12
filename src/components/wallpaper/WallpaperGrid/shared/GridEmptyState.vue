@@ -16,9 +16,11 @@ defineProps({
     type: String,
     default: 'no-series-data',
   },
+  searchQuery: { type: String, default: '' },
+  recoveryActions: { type: Array, default: () => [] },
 })
 
-const emit = defineEmits(['navigate', 'resetFilters'])
+const emit = defineEmits(['navigate', 'resetFilters', 'recoverFilter'])
 </script>
 
 <template>
@@ -53,10 +55,13 @@ const emit = defineEmits(['navigate', 'resetFilters'])
       </svg>
     </div>
     <h3>没有找到匹配的壁纸</h3>
-    <p>尝试调整搜索条件或筛选器</p>
+    <p>{{ searchQuery ? `当前条件下没有找到“${searchQuery}”相关壁纸` : '当前筛选条件下暂无壁纸，可移除一项条件继续浏览' }}</p>
     <div class="empty-actions">
+      <button v-for="action in recoveryActions" :key="action.key" class="action-btn" @click="emit('recoverFilter', action.key)">
+        {{ action.label }}
+      </button>
       <button class="action-btn primary" @click="emit('resetFilters')">
-        清除筛选条件
+        清除全部筛选
       </button>
     </div>
   </div>
@@ -70,7 +75,7 @@ const emit = defineEmits(['navigate', 'resetFilters'])
   justify-content: center;
   padding: $spacing-2xl;
   text-align: center;
-  animation: fadeIn 0.5s ease;
+  animation: fadeIn 160ms ease;
 
   .empty-icon {
     position: relative;
@@ -146,7 +151,11 @@ const emit = defineEmits(['navigate', 'resetFilters'])
   border: 1px solid var(--color-border);
   border-radius: $radius-md;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    transform 100ms ease;
 
   &:hover {
     background: var(--color-bg-hover);
@@ -181,6 +190,15 @@ const emit = defineEmits(['navigate', 'resetFilters'])
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grid-empty {
+    animation: none;
+  }
+  .action-btn:active {
+    transform: none;
   }
 }
 </style>

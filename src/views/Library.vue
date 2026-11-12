@@ -34,9 +34,10 @@ const {
   isInitialized,
   isInitializing,
   primaryEmail,
+  user,
 } = storeToRefs(authStore)
 
-const pageState = ref('loading')
+const pageState = computed(() => !isConfigured.value ? 'unavailable' : isAuthenticated.value && isInitialized.value ? 'ready' : 'loading')
 const activeTab = ref(resolveLibraryTab(props.embedded ? props.contentTab : route.query.tab))
 const activeSeries = ref(getDefaultActiveSeries())
 const libraryContentScrollRef = ref(null)
@@ -87,7 +88,8 @@ const currentTabItems = computed(() =>
 const LIBRARY_PAGE_SIZE = 24
 const displayCount = ref(LIBRARY_PAGE_SIZE)
 const isLoadingMore = ref(false)
-let loadMoreTimer = null
+let loadMoreVersion = 0
+let mounted = true
 
 function getUniqueAssetKeys(items = []) {
   return [...new Set(items.map(item => item?.asset_key).filter(Boolean))]
@@ -95,6 +97,8 @@ function getUniqueAssetKeys(items = []) {
 
 // 根据当前 Tab 和系列筛选，获取 asset_key 列表
 const currentAssetKeys = computed(() => {
+  if (!isAuthenticated.value || (interactionStore.libraryOwner && interactionStore.libraryOwner !== user.value?.id))
+    return []
   const source = activeTab.value === 'likes'
     ? interactionStore.likesBySeries
     : interactionStore.collectionsBySeries
@@ -110,6 +114,10 @@ const currentAssetKeys = computed(() => {
 const resolvedWallpapers = ref([])
 const resolving = ref(false)
 let resolveRequestVersion = 0
+const resolvedCache = new Map()
+const resolveError = ref('')
+const contentLoading = computed(() => interactionStore.libraryLoading || resolving.value)
+const assetSignature = computed(() => JSON.stringify(currentAssetKeys.value))
 const visibleWallpapers = computed(() => resolvedWallpapers.value.slice(0, displayCount.value))
 const hasMoreWallpapers = computed(() => displayCount.value < resolvedWallpapers.value.length)
 
@@ -155,37 +163,32 @@ function setActiveTab(tab) {
   activeTab.value = resolveLibraryTab(tab)
 }
 
-function clearLoadMoreTimer() {
-  if (loadMoreTimer) {
-    clearTimeout(loadMoreTimer)
-    loadMoreTimer = null
-  }
+function cancelLoadMore() {
+  loadMoreVersion++
+  isLoadingMore.value = false
 }
 
 async function resetLibraryScroll() {
   displayCount.value = LIBRARY_PAGE_SIZE
   isLoadingMore.value = false
-  clearLoadMoreTimer()
+  cancelLoadMore()
   await nextTick()
   if (libraryContentScrollRef.value) {
     libraryContentScrollRef.value.scrollTop = 0
   }
 }
 
-function loadMoreWallpapers() {
-  if (isLoadingMore.value || !hasMoreWallpapers.value) {
+async function loadMoreWallpapers() {
+  if (!mounted || isLoadingMore.value || !hasMoreWallpapers.value)
     return
-  }
-
+  const revision = ++loadMoreVersion
   isLoadingMore.value = true
-  clearLoadMoreTimer()
-
-  loadMoreTimer = window.setTimeout(async () => {
-    displayCount.value = Math.min(displayCount.value + LIBRARY_PAGE_SIZE, resolvedWallpapers.value.length)
-    isLoadingMore.value = false
-    loadMoreTimer = null
-    await ensureScrollableContent()
-  }, 120)
+  displayCount.value = Math.min(displayCount.value + LIBRARY_PAGE_SIZE, resolvedWallpapers.value.length)
+  await nextTick()
+  if (!mounted || revision !== loadMoreVersion)
+    return
+  isLoadingMore.value = false
+  void ensureScrollableContent()
 }
 
 function handleLibraryContentScroll(event) {
@@ -202,7 +205,7 @@ function handleLibraryContentScroll(event) {
 async function ensureScrollableContent() {
   await nextTick()
   const container = libraryContentScrollRef.value
-  if (props.embedded || !container || isMobile.value || isLoadingMore.value || !hasMoreWallpapers.value) {
+  if (!mounted || props.embedded || !container || isMobile.value || isLoadingMore.value || !hasMoreWallpapers.value) {
     return
   }
 
@@ -226,39 +229,44 @@ function syncRouteTab(tab) {
 
 // 从 asset_key 还原完整壁纸对象
 async function resolveWallpapers(assetKeys) {
-  if (!assetKeys.length) {
-    resolvedWallpapers.value = []
+  const resolveVersion = ++resolveRequestVersion
+  resolveError.value = ''
+  const missing = assetKeys.filter(key => !resolvedCache.has(key))
+  if (!missing.length) {
+    resolvedWallpapers.value = assetKeys.map(key => resolvedCache.get(key))
     resolving.value = false
     return
   }
-
-  const resolveVersion = ++resolveRequestVersion
+  resolvedWallpapers.value = []
   resolving.value = true
-
   try {
-    const results = await wallpaperStore.resolveWallpapersByAssetKeys(assetKeys)
-    if (resolveRequestVersion !== resolveVersion) {
+    const results = await wallpaperStore.resolveWallpapersByAssetKeys(missing)
+    if (resolveRequestVersion !== resolveVersion)
       return
-    }
-
-    resolvedWallpapers.value = results.map((wallpaper, index) => {
-      if (wallpaper) {
-        return wallpaper
-      }
-
-      return restoreWallpaperFromAssetKey(assetKeys[index])
+    results.forEach((wallpaper, index) => {
+      resolvedCache.set(missing[index], wallpaper || restoreWallpaperFromAssetKey(missing[index]))
     })
+    resolvedWallpapers.value = assetKeys.map(key => resolvedCache.get(key)).filter(Boolean)
+  }
+  catch {
+    if (resolveRequestVersion === resolveVersion)
+      resolveError.value = '壁纸内容暂时无法加载，请重试'
   }
   finally {
-    if (resolveRequestVersion === resolveVersion) {
+    if (resolveRequestVersion === resolveVersion)
       resolving.value = false
-    }
   }
+}
+
+async function retryLibrary() {
+  if (interactionStore.libraryError)
+    await interactionStore.loadLibraryData({ userId: user.value?.id, force: true })
+  else
+    void resolveWallpapers(currentAssetKeys.value)
 }
 
 async function ensurePageReady() {
   if (!isConfigured.value) {
-    pageState.value = 'unavailable'
     return
   }
 
@@ -274,9 +282,7 @@ async function ensurePageReady() {
   syncRouteTab(activeTab.value)
 
   // 加载用户交互数据
-  await interactionStore.loadLibraryData()
-
-  pageState.value = 'ready'
+  void interactionStore.loadLibraryData({ userId: user.value.id })
 }
 
 watch(() => props.contentTab, (value) => {
@@ -285,10 +291,10 @@ watch(() => props.contentTab, (value) => {
 })
 
 // 监听 asset_key 列表变化，解析壁纸对象
-watch(currentAssetKeys, (keys) => {
-  resetLibraryScroll()
-  resolveWallpapers(keys)
-}, { immediate: false })
+watch(assetSignature, () => {
+  void resetLibraryScroll()
+  void resolveWallpapers(currentAssetKeys.value)
+}, { immediate: true })
 
 watch(() => route.query.tab, (nextTab) => {
   if (props.embedded)
@@ -315,26 +321,32 @@ watch(seriesOptions, (options) => {
   }
 }, { immediate: true })
 
-watch(isAuthenticated, (nextValue) => {
-  if (pageState.value === 'ready' && !nextValue) {
-    pageState.value = 'loading'
+watch(() => user.value?.id, (nextId, previousId) => {
+  if (nextId === previousId)
+    return
+  resolveRequestVersion++
+  resolvedCache.clear()
+  resolvedWallpapers.value = []
+  resolving.value = false
+  resolveError.value = ''
+  if (!nextId) {
+    interactionStore.$reset()
     router.replace(loginRoute.value)
   }
-})
-
-// pageState 变为 ready 后，立即解析壁纸
-watch(pageState, (state) => {
-  if (state === 'ready') {
-    resolveWallpapers(currentAssetKeys.value)
+  else {
+    void ensurePageReady()
   }
-})
+}, { flush: 'sync' })
 
 watch(resolvedWallpapers, () => {
   ensureScrollableContent()
 })
 
 onBeforeUnmount(() => {
-  clearLoadMoreTimer()
+  mounted = false
+  resolveRequestVersion++
+  resolvedCache.clear()
+  cancelLoadMore()
 })
 
 onMounted(() => {
@@ -500,17 +512,27 @@ onMounted(() => {
                 <div
                   ref="libraryContentScrollRef"
                   class="library-content-scroll"
+                  :aria-busy="contentLoading"
                   @scroll.passive="handleLibraryContentScroll"
                 >
                   <!-- 加载状态 -->
-                  <div v-if="interactionStore.libraryLoading || resolving" class="library-loading">
-                    <LoadingSpinner size="lg" />
-                    <span>加载中...</span>
+                  <div v-if="contentLoading && !visibleWallpapers.length" class="library-loading" role="status">
+                    <span>正在准备壁纸内容</span>
+                    <div class="library-loading__grid" aria-hidden="true">
+                      <i v-for="index in 8" :key="index" />
+                    </div>
                   </div>
+                  <p v-else-if="interactionStore.libraryError || resolveError" class="library-status" role="status">
+                    {{ interactionStore.libraryError || resolveError }}
+                    <button type="button" @click="retryLibrary">
+                      重试
+                    </button>
+                  </p>
 
                   <!-- 壁纸网格 -->
                   <div
-                    v-else-if="visibleWallpapers.length > 0"
+                    v-if="visibleWallpapers.length > 0"
+                    :key="`${activeTab}:${activeSeries}`"
                     class="library-wallpaper-grid"
                     :class="{
                       'library-wallpaper-grid--masonry': activeSeries === 'all',
@@ -528,12 +550,15 @@ onMounted(() => {
                   </div>
 
                   <!-- 空状态 -->
-                  <ContentEmpty v-else :description="activeSeries === 'all' ? `还没有${activeTab === 'likes' ? '喜欢' : '收藏'}的壁纸` : `${seriesOptions.find(o => o.id === activeSeries)?.name || ''}分区暂无内容`">
+                  <ContentEmpty v-else-if="!contentLoading && !interactionStore.libraryError && !resolveError" :description="activeSeries === 'all' ? `还没有${activeTab === 'likes' ? '喜欢' : '收藏'}的壁纸` : `${seriesOptions.find(o => o.id === activeSeries)?.name || ''}分区暂无内容`">
                     <RouterLink class="library-empty-state__action" to="/desktop">
                       去发现壁纸
                     </RouterLink>
                   </ContentEmpty>
 
+                  <p v-if="contentLoading && visibleWallpapers.length" class="library-status" role="status">
+                    正在更新壁纸库…
+                  </p>
                   <button v-if="embedded && hasMoreWallpapers" class="library-empty-state__action library-load-more" :disabled="isLoadingMore" @click="loadMoreWallpapers">
                     {{ isLoadingMore ? '加载中…' : '加载更多壁纸' }}
                   </button>
@@ -892,7 +917,7 @@ onMounted(() => {
 }
 
 .library-content-scroll {
-  min-height: 0;
+  min-height: 360px;
 
   @include desktop-up {
     flex: 1;
@@ -1377,8 +1402,8 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 200px;
-  gap: 12px;
+  min-height: 420px;
+  gap: 16px;
   color: #64748b;
   font-size: 14px;
 
@@ -1621,6 +1646,7 @@ onMounted(() => {
   padding: 0;
 }
 .is-embedded .library-content-scroll {
+  min-height: 420px;
   height: auto;
   max-height: none;
   overflow: visible;
@@ -1653,5 +1679,51 @@ onMounted(() => {
   display: flex;
   margin: 28px auto 0;
   cursor: pointer;
+}
+</style>
+
+<style scoped>
+.library-loading__grid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+.library-loading__grid i {
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
+  background: var(--color-bg-hover);
+}
+.library-status {
+  margin: 0;
+  min-height: 32px;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+.library-status button {
+  margin-left: 10px;
+  color: var(--color-accent);
+  cursor: pointer;
+}
+.library-wallpaper-grid {
+  animation: library-content-enter 140ms ease-out;
+}
+@keyframes library-content-enter {
+  from {
+    opacity: 0.65;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (max-width: 600px) {
+  .library-loading__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .library-wallpaper-grid {
+    animation: none;
+  }
 }
 </style>

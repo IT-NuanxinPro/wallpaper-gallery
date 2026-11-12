@@ -1,7 +1,12 @@
 <script setup>
+import { ref, useId } from 'vue'
+import { useDialogFocus } from '@/composables/useDialogFocus'
+import { useMotionPreference } from '@/composables/useMotionPreference'
 import { FORMAT_OPTIONS, SORT_OPTIONS } from '@/utils/config/constants'
+import FilterPreviewAction from '../shared/FilterPreviewAction.vue'
 
-defineProps({
+const props = defineProps({
+  preview: { type: Object, default: () => ({ status: 'loading', count: null }) },
   hideFormatFilter: {
     type: Boolean,
     default: false,
@@ -20,7 +25,11 @@ defineProps({
   },
 })
 
-defineEmits(['apply', 'close', 'reset', 'update:show', 'update:tempFormatFilter', 'update:tempSortBy'])
+const emit = defineEmits(['apply', 'close', 'reset', 'update:show', 'update:tempFormatFilter', 'update:tempSortBy'])
+const panelRef = ref(null)
+const titleId = `filter-title-${useId()}`
+const reducedMotion = useMotionPreference()
+useDialogFocus(() => props.show, panelRef, () => emit('close'))
 </script>
 
 <template>
@@ -30,20 +39,22 @@ defineEmits(['apply', 'close', 'reset', 'update:show', 'update:tempFormatFilter'
       position="bottom"
       round
       class="filter-popup-dark"
+      role="presentation"
+      :tabindex="-1"
       :close-on-click-overlay="true"
       :lock-scroll="true"
-      :duration="0.3"
+      :duration="reducedMotion ? 0 : 0.24"
       safe-area-inset-bottom
       :teleport="null"
       @update:show="$emit('update:show', $event)"
     >
-      <div class="popup-content">
+      <div ref="panelRef" class="popup-content" role="dialog" aria-modal="true" :aria-labelledby="titleId" tabindex="-1">
         <div class="popup-header">
           <button class="popup-reset" @click="$emit('reset')">
             重置
           </button>
-          <span class="popup-title">筛选</span>
-          <button class="popup-close" @click="$emit('close')">
+          <span :id="titleId" class="popup-title">筛选与排序</span>
+          <button class="popup-close" aria-label="取消筛选" @click="$emit('close')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M18 6L6 18M6 6l12 12" />
             </svg>
@@ -61,6 +72,7 @@ defineEmits(['apply', 'close', 'reset', 'update:show', 'update:tempFormatFilter'
                 :key="option.value"
                 class="option-btn"
                 :class="{ 'is-active': tempFormatFilter === option.value }"
+                :aria-pressed="tempFormatFilter === option.value"
                 @click="$emit('update:tempFormatFilter', option.value)"
               >
                 {{ option.label }}
@@ -78,6 +90,7 @@ defineEmits(['apply', 'close', 'reset', 'update:show', 'update:tempFormatFilter'
                 :key="option.value"
                 class="option-btn"
                 :class="{ 'is-active': tempSortBy === option.value }"
+                :aria-pressed="tempSortBy === option.value"
                 @click="$emit('update:tempSortBy', option.value)"
               >
                 {{ option.label }}
@@ -87,9 +100,7 @@ defineEmits(['apply', 'close', 'reset', 'update:show', 'update:tempFormatFilter'
         </div>
 
         <div class="popup-footer">
-          <button class="confirm-btn" @click="$emit('apply')">
-            确认筛选
-          </button>
+          <FilterPreviewAction :preview="preview" @confirm="$emit('apply')" />
         </div>
       </div>
     </van-popup>

@@ -1,5 +1,8 @@
 <script setup>
 defineProps({
+  activeCount: { type: Number, default: 0 },
+  categoryOpen: { type: Boolean, default: false },
+  filterOpen: { type: Boolean, default: false },
   currentCategoryLabel: {
     type: String,
     default: '分类',
@@ -23,6 +26,8 @@ defineEmits(['openCategory', 'openFilter'])
       v-if="!hideCategoryFilter"
       class="category-btn"
       :class="{ 'is-active': isCategoryActive }"
+      aria-haspopup="dialog"
+      :aria-expanded="categoryOpen"
       @click="$emit('openCategory')"
     >
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -34,10 +39,11 @@ defineEmits(['openCategory', 'openFilter'])
       </svg>
     </button>
 
-    <button class="filter-btn filter-btn-compact" @click="$emit('openFilter')">
+    <button class="filter-btn filter-btn-compact" :class="{ 'is-active': activeCount > 0 || filterOpen }" :aria-label="activeCount ? `筛选与排序，已应用 ${activeCount} 项条件` : '筛选与排序'" aria-haspopup="dialog" :aria-expanded="filterOpen" @click="$emit('openFilter')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
       </svg>
+      <span>筛选<span v-if="activeCount"> · {{ activeCount }}</span></span>
     </button>
   </div>
 </template>
@@ -164,5 +170,21 @@ defineEmits(['openCategory', 'openFilter'])
   .filter-right-mobile {
     flex-shrink: 0;
   }
+}
+</style>
+
+<style scoped>
+.filter-btn.filter-btn-compact {
+  width: auto;
+  min-width: 44px;
+  padding: 0 10px;
+  gap: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.filter-btn.is-active {
+  color: var(--color-accent);
+  border-color: var(--accent-border-strong);
+  background: var(--accent-surface);
 }
 </style>

@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onBeforeUnmount, ref } from 'vue'
+import { computed, onBeforeUnmount, ref, shallowRef, useId, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import ContentEmpty from '@/components/common/feedback/ContentEmpty.vue'
 import ContentLoading from '@/components/common/feedback/ContentLoading.vue'
@@ -26,28 +26,57 @@ const page = computed(() => Math.min(4166, Math.max(0, Math.floor(Number(route.q
 const followingBusy = ref(false)
 const followError = ref('')
 let mounted = true
-const { state: profileState, refresh: refreshProfile } = useCommunityRequest(() => [route.params.id, auth.user?.id], signal => communityService.getProfile(route.params.id, { signal }))
-const profile = computed(() => profileState.value.data)
-const { state, refresh: refreshContent } = useCommunityRequest(() => [profile.value?.id, profile.value?.show_likes, tab.value, collectionId.value, page.value, auth.user?.id], async (signal) => {
+const tabsId = `public-profile-tabs-${useId()}`
+const { state: profileState, refresh: refreshProfile } = useCommunityRequest(() => [route.params.id, auth.user?.id], signal => communityService.getProfile(route.params.id, { signal }), { retainDataOnRefresh: true })
+const identitySnapshot = shallowRef(null)
+const identityScope = computed(() => JSON.stringify([route.params.id, auth.user?.id]))
+// 页面重新可见时只保留同一用户的身份外观，公开内容仍须重新核对授权。
+watch(() => [profileState.value.status, profileState.value.data], ([status, data]) => {
+  if (status === 'ready' && data)
+    identitySnapshot.value = { scope: identityScope.value, data }
+  else if (status === 'empty')
+    identitySnapshot.value = null
+}, { immediate: true, flush: 'sync' })
+const profile = computed(() => profileState.value.data
+  || (identitySnapshot.value?.scope === identityScope.value ? identitySnapshot.value.data : null))
+const profileVerified = computed(() => profileState.value.status === 'ready' && Boolean(profileState.value.data))
+const contentPanel = ref(null)
+const contentMinHeight = ref(380)
+const isPeopleTab = computed(() => ['following', 'followers'].includes(tab.value))
+const isImageTab = computed(() => tab.value === 'likes' || Boolean(collectionId.value))
+const { state, refresh: refreshContent, invalidateCache: invalidateContent } = useCommunityRequest(() => [profileVerified.value, profile.value?.id, profile.value?.show_likes, tab.value, collectionId.value, page.value, auth.user?.id], async (signal) => {
   followError.value = ''
   const id = profile.value?.id
-  if (!id)
+  if (!id || !profileVerified.value)
     return null
-  const options = { signal, offset: page.value * 24, collectionId: collectionId.value }
-  const list = ['following', 'followers'].includes(tab.value)
-    ? await communityService.getConnections(id, tab.value, options)
-    : await communityService.getWallpapers(id, collectionId.value ? 'collection' : tab.value, options)
-  const wallpapers = (tab.value === 'likes' || collectionId.value)
+  // 异步后仍使用发起时的标签，切换标签不会把旧响应按新类型解析。
+  const kind = tab.value
+  const selectedCollection = collectionId.value
+  const options = { signal, offset: page.value * 24, collectionId: selectedCollection }
+  const list = ['following', 'followers'].includes(kind)
+    ? await communityService.getConnections(id, kind, options)
+    : await communityService.getWallpapers(id, selectedCollection ? 'collection' : kind, options)
+  if (signal.aborted)
+    return null
+  const wallpapers = (kind === 'likes' || selectedCollection)
     ? await loadCommunityWallpapers(list.items.map(item => item.asset_key), { signal })
     : []
   return { list, wallpapers }
-})
+}, { cache: true, cacheScope: () => [route.params.id, auth.user?.id, profile.value?.show_likes, profileVerified.value], retainDataOnRefresh: true })
+const contentPending = computed(() => Boolean(profile.value) && (!profileVerified.value || (state.value.status === 'loading' && !state.value.data)))
+watch(contentPending, (pending) => {
+  contentMinHeight.value = pending
+    ? Math.max(380, Math.ceil(contentPanel.value?.getBoundingClientRect?.().height || 0))
+    : 380
+}, { flush: 'sync' })
 async function refresh() {
   await refreshProfile()
 }
 const isOwnProfile = computed(() => auth.user?.id === profile.value?.id)
 
 function changeTab(key) {
+  if (key === tab.value && !collectionId.value && page.value === 0)
+    return
   router.push({ path: route.path, query: { tab: key } })
 }
 
@@ -60,7 +89,7 @@ async function follow() {
     await router.push({ path: '/login', query: { redirect: route.fullPath } })
     return
   }
-  if (followingBusy.value || !profile.value || isOwnProfile.value)
+  if (followingBusy.value || !profileVerified.value || !profile.value || isOwnProfile.value)
     return
   const actor = auth.user?.id
   const target = profile.value.id
@@ -77,6 +106,8 @@ async function follow() {
     else {
       profileState.value.data = { ...profile.value, is_following: result.following, followers_count: result.followers_count, following_count: result.following_count }
     }
+    invalidateContent()
+    await refreshContent()
   }
   catch {
     if (mounted && auth.user?.id === actor && profileState.value === current)
@@ -97,8 +128,8 @@ onBeforeUnmount(() => {
     <RouterLink class="public-profile__back" :to="auth.isAuthenticated ? '/account' : '/desktop'">
       {{ auth.isAuthenticated ? '← 个人信息' : '← 浏览壁纸' }}
     </RouterLink>
-    <ContentLoading v-if="profileState.status === 'loading'" label="正在加载公开主页" />
-    <div v-else-if="profileState.status === 'error'" class="profile-empty" role="status">
+    <ContentLoading v-if="profileState.status === 'loading' && !profile" label="正在加载公开主页" />
+    <div v-else-if="profileState.status === 'error' && !profile" class="profile-empty" role="status">
       <h1>主页暂时无法加载</h1><p>请检查网络后重试。</p><button class="community-button" @click="refresh">
         重新加载
       </button>
@@ -125,22 +156,54 @@ onBeforeUnmount(() => {
         <RouterLink v-if="isOwnProfile" class="community-button" to="/account?tab=settings">
           编辑公开设置
         </RouterLink>
-        <button v-else class="community-button" :disabled="followingBusy" :aria-pressed="profile.is_following" @click="follow">
+        <button v-else class="community-button" :disabled="followingBusy || !profileVerified" :aria-pressed="profile.is_following" @click="follow">
           {{ followingBusy ? '处理中…' : profile.is_following ? '已关注 · 取消' : '关注' }}
         </button>
       </header>
       <p v-if="followError" role="alert" class="community-page__notice">
         {{ followError }}
       </p>
-      <ProfileTabs :tabs="tabs" :model-value="tab" @update:model-value="changeTab" />
-      <div class="public-profile__content" role="tabpanel" :aria-busy="state.status === 'loading'">
-        <ContentLoading v-if="state.status === 'loading'" label="正在加载壁纸内容" />
-        <div v-else-if="state.status === 'error'" class="profile-empty">
+      <p v-if="profileState.status === 'error'" role="status" class="community-page__notice">
+        主页信息更新失败，已保留上次内容。<button class="community-button" @click="refresh">
+          重试
+        </button>
+      </p>
+      <ProfileTabs :id-prefix="tabsId" :panel-id="`${tabsId}-panel`" :tabs="tabs" :model-value="tab" @update:model-value="changeTab" />
+      <div :id="`${tabsId}-panel`" ref="contentPanel" class="public-profile__content" :style="{ minHeight: `${contentMinHeight}px` }" role="tabpanel" :aria-labelledby="`${tabsId}-${tab}`" :aria-busy="contentPending || state.status === 'loading'">
+        <div v-if="contentPending" class="public-profile__pending">
+          <span class="public-profile__status" role="status" aria-live="polite">{{ profileState.status === 'error' ? '公开权限暂未核对，请重试主页信息' : '正在加载壁纸内容' }}</span>
+          <div v-if="isPeopleTab" class="community-page__grid community-page__grid--people" aria-hidden="true">
+            <div v-for="index in 4" :key="index" class="profile-skeleton__person">
+              <i class="profile-skeleton__avatar" /><div><i class="profile-skeleton__line" /><i class="profile-skeleton__line profile-skeleton__line--short" /></div>
+            </div>
+          </div>
+          <div v-else-if="isImageTab" class="community-page__grid" aria-hidden="true">
+            <div v-for="index in 6" :key="index" class="profile-skeleton__image">
+              <div class="profile-skeleton__preview" /><i class="profile-skeleton__line" />
+            </div>
+          </div>
+          <div v-else class="community-page__grid" aria-hidden="true">
+            <div v-for="index in 3" :key="index" class="profile-skeleton__collection">
+              <div class="profile-skeleton__preview" /><div class="profile-skeleton__copy">
+                <i class="profile-skeleton__line" /><i class="profile-skeleton__line profile-skeleton__line--short" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-else-if="state.status === 'error' && !state.data" class="profile-empty">
           <p>内容暂时无法加载。</p><button class="community-button" @click="refreshContent">
             重试
           </button>
         </div>
         <template v-else-if="state.data">
+          <p v-if="state.status === 'loading'" class="public-profile__refresh-note" role="status">
+            正在更新内容…
+          </p>
+          <p v-else-if="state.status === 'error'" class="public-profile__refresh-note" role="status">
+            更新未完成，已保留上次内容。<button class="community-button" @click="refreshContent">
+              重试
+            </button>
+          </p>
           <div v-if="collectionId" class="public-profile__collection-back">
             <button class="community-button" @click="changeTab('collections')">
               ← 全部公开收藏夹
@@ -339,11 +402,77 @@ onBeforeUnmount(() => {
   border-radius: 0 0 24px 24px;
 }
 .public-profile__content {
+  position: relative;
   padding-top: 28px;
   min-height: 380px;
+  transition: min-height 180ms ease-out;
 }
-.public-profile__content > * {
-  animation: profile-content-enter 220ms ease-out;
+.public-profile__pending {
+  min-height: 352px;
+}
+.public-profile__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.profile-skeleton__collection,
+.profile-skeleton__image {
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 22px;
+  background: var(--color-bg-primary);
+}
+.profile-skeleton__preview {
+  aspect-ratio: 16 / 10;
+  background: var(--color-bg-secondary);
+}
+.profile-skeleton__copy {
+  padding: 18px;
+}
+.profile-skeleton__line {
+  display: block;
+  width: 68%;
+  height: 12px;
+  border-radius: 5px;
+  background: var(--color-bg-secondary);
+}
+.profile-skeleton__line--short {
+  width: 40%;
+  height: 10px;
+  margin-top: 12px;
+}
+.profile-skeleton__image > .profile-skeleton__line {
+  margin: 16px;
+}
+.profile-skeleton__person {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+  min-height: 106px;
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+}
+.profile-skeleton__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--color-bg-secondary);
+}
+.public-profile__refresh-note {
+  margin: 0 0 16px;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.public-profile__content > :not(.public-profile__pending) {
+  animation: profile-content-enter 160ms ease-out;
 }
 @keyframes profile-content-enter {
   from {
@@ -379,6 +508,9 @@ onBeforeUnmount(() => {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .public-profile__content {
+    transition: none;
+  }
   .public-profile__content > * {
     animation: none;
   }

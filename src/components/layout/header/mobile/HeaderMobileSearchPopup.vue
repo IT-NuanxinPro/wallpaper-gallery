@@ -1,9 +1,10 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import SearchBar from '@/components/search/index.vue'
+import { useMotionPreference } from '@/composables/useMotionPreference'
 import { useTheme } from '@/composables/useTheme'
 
-defineProps({
+const props = defineProps({
   searchQuery: {
     type: String,
     default: '',
@@ -18,10 +19,34 @@ defineProps({
   },
 })
 
-defineEmits(['close', 'search', 'update:searchQuery', 'update:show'])
+const emit = defineEmits(['close', 'search', 'update:searchQuery', 'update:show'])
 
 const { theme } = useTheme()
 const isDark = computed(() => theme.value === 'dark')
+const reducedMotion = useMotionPreference()
+const popupContent = ref(null)
+let trigger
+let generation = 0
+watch(() => props.show, async (open) => {
+  const current = ++generation
+  if (!open) {
+    trigger?.focus?.({ preventScroll: true })
+    return
+  }
+  trigger = document.activeElement
+  await nextTick()
+  if (current === generation && props.show)
+    popupContent.value?.querySelector('input')?.focus({ preventScroll: true })
+})
+function handleEscape(event) {
+  if (props.show && event.key === 'Escape') {
+    event.preventDefault()
+    emit('close')
+  }
+}
+onBeforeUnmount(() => {
+  generation++
+})
 </script>
 
 <template>
@@ -34,10 +59,13 @@ const isDark = computed(() => theme.value === 'dark')
       :class="{ 'is-dark': isDark }"
       :teleport="null"
       :close-on-click-overlay="true"
+      :duration="reducedMotion ? 0 : 0.22"
+      aria-label="搜索壁纸"
       @update:show="$emit('update:show', $event)"
     >
-      <div class="search-popup-content" :class="{ 'is-dark': isDark }">
+      <div ref="popupContent" class="search-popup-content" :class="{ 'is-dark': isDark }" @keydown="handleEscape">
         <SearchBar
+          v-if="show"
           :model-value="searchQuery"
           placeholder="搜索壁纸..."
           :wallpapers="wallpapers"

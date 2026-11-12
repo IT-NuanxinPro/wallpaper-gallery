@@ -1,4 +1,3 @@
-import { ElMessage } from 'element-plus'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import {
@@ -40,9 +39,16 @@ export const useInteractionStore = defineStore('interaction', () => {
   // 加载状态
   const loading = ref(false)
   const libraryLoading = ref(false)
+  const libraryLoaded = ref(false)
+  const libraryOwner = ref('')
+  const libraryError = ref('')
+  let libraryRequest
+  let libraryLoadedAt = 0
 
   // 正在进行中的操作（防止重复点击）
   const pendingOperations = ref(new Set())
+  const operationErrors = ref({})
+  let operationGeneration = 0
 
   // ========================================
   // Getters
@@ -97,7 +103,9 @@ export const useInteractionStore = defineStore('interaction', () => {
 
   function syncCollectionsSnapshot(assetKey, shouldInclude, collectionId = defaultCollectionId.value) {
     if (shouldInclude) {
-      const targetCollectionId = collectionId || defaultCollectionId.value || 'default'
+      const targetCollectionId = collectionId || defaultCollectionId.value
+      if (!targetCollectionId)
+        return
       const hasExisting = allCollectionItems.value.some(item =>
         item.asset_key === assetKey && item.collection_id === targetCollectionId,
       )
@@ -127,6 +135,7 @@ export const useInteractionStore = defineStore('interaction', () => {
   const isPending = computed(() => (assetKey) => {
     return pendingOperations.value.has(assetKey)
   })
+  const getOperationError = computed(() => key => operationErrors.value[key] || '')
 
   // Library 按系列分组的喜欢数据
   const likesBySeries = computed(() => {
@@ -178,7 +187,11 @@ export const useInteractionStore = defineStore('interaction', () => {
     const seriesSet = likedBySeriesMap.value[series] || new Set()
     const wasLiked = seriesSet.has(assetKey)
     const nextLiked = !wasLiked
+    const operationKey = `like:${assetKey}`
+    const generation = operationGeneration
+    const previousItems = allLikes.value.filter(item => item.asset_key === assetKey)
 
+    operationErrors.value[operationKey] = ''
     updateSeriesSet(likedBySeriesMap, series, assetKey, nextLiked)
     syncLikesSnapshot(assetKey, nextLiked)
 
@@ -186,27 +199,35 @@ export const useInteractionStore = defineStore('interaction', () => {
 
     try {
       const liked = await toggleLike(assetKey, series)
+      if (generation !== operationGeneration)
+        return { success: false, ignored: true }
+      updateSeriesSet(likedBySeriesMap, series, assetKey, liked)
+      syncLikesSnapshot(assetKey, liked)
+      const delta = Number(liked) - Number(wasLiked)
       stats.value = {
         ...stats.value,
-        likes: stats.value.likes + (liked ? 1 : -1),
+        likes: Math.max(0, stats.value.likes + delta),
       }
 
       const { usePopularityStore } = await import('@/stores/popularity')
+      if (generation !== operationGeneration)
+        return { success: false, ignored: true }
       const popularityStore = usePopularityStore()
-      popularityStore.adjustLikeCount(assetKey, liked ? 1 : -1)
-      ElMessage.success(liked ? '已加入我的喜欢' : '已取消喜欢')
+      popularityStore.adjustLikeCount(assetKey, delta)
       return { success: true, liked }
     }
     catch (err) {
+      if (generation !== operationGeneration)
+        return { success: false, ignored: true }
       updateSeriesSet(likedBySeriesMap, series, assetKey, wasLiked)
-      syncLikesSnapshot(assetKey, wasLiked)
+      allLikes.value = [...previousItems, ...allLikes.value.filter(item => item.asset_key !== assetKey)]
       console.warn('[interactionStore] toggleLike failed:', err)
-      const feedback = formatInteractionError(err)
-      ElMessage[feedback.type](feedback.message)
-      return { success: false, liked: wasLiked, error: err }
+      operationErrors.value[operationKey] = formatInteractionError(err).message
+      return { success: false, liked: wasLiked, error: err, feedbackHandled: true }
     }
     finally {
-      pendingOperations.value.delete(`like:${assetKey}`)
+      if (generation === operationGeneration)
+        pendingOperations.value.delete(operationKey)
     }
   }
 
@@ -221,96 +242,117 @@ export const useInteractionStore = defineStore('interaction', () => {
     const seriesSet = collectedBySeriesMap.value[series] || new Set()
     const wasCollected = seriesSet.has(assetKey)
     const nextCollected = !wasCollected
+    const operationKey = `collect:${assetKey}`
+    const generation = operationGeneration
+    const previousItems = allCollectionItems.value.filter(item => item.asset_key === assetKey)
 
-    pendingOperations.value.add(`collect:${assetKey}`)
+    pendingOperations.value.add(operationKey)
+    operationErrors.value[operationKey] = ''
+    // 首次收藏也立即回显；默认收藏夹的查询属于同一次待完成操作。
+    updateSeriesSet(collectedBySeriesMap, series, assetKey, nextCollected)
+    syncCollectionsSnapshot(assetKey, nextCollected)
 
     try {
       if (!defaultCollectionId.value) {
-        defaultCollectionId.value = await fetchDefaultCollectionId()
+        const collectionId = await fetchDefaultCollectionId()
+        if (generation !== operationGeneration)
+          return { success: false, ignored: true }
+        defaultCollectionId.value = collectionId
       }
 
       if (!defaultCollectionId.value) {
         throw new Error('未找到默认收藏夹')
       }
 
-      updateSeriesSet(collectedBySeriesMap, series, assetKey, nextCollected)
       syncCollectionsSnapshot(assetKey, nextCollected, defaultCollectionId.value)
 
       const collected = await toggleCollect(assetKey, series, defaultCollectionId.value)
+      if (generation !== operationGeneration)
+        return { success: false, ignored: true }
+      updateSeriesSet(collectedBySeriesMap, series, assetKey, collected)
+      syncCollectionsSnapshot(assetKey, collected, defaultCollectionId.value)
+      const delta = Number(collected) - Number(wasCollected)
       stats.value = {
         ...stats.value,
-        collections: stats.value.collections + (collected ? 1 : -1),
+        collections: Math.max(0, stats.value.collections + delta),
       }
 
       const { usePopularityStore } = await import('@/stores/popularity')
+      if (generation !== operationGeneration)
+        return { success: false, ignored: true }
       const popularityStore = usePopularityStore()
-      popularityStore.adjustCollectCount(assetKey, collected ? 1 : -1)
-      ElMessage.success(collected ? '已加入收藏' : '已取消收藏')
+      popularityStore.adjustCollectCount(assetKey, delta)
       return { success: true, collected }
     }
     catch (err) {
+      if (generation !== operationGeneration)
+        return { success: false, ignored: true }
       updateSeriesSet(collectedBySeriesMap, series, assetKey, wasCollected)
-      syncCollectionsSnapshot(assetKey, wasCollected, defaultCollectionId.value)
+      allCollectionItems.value = [...previousItems, ...allCollectionItems.value.filter(item => item.asset_key !== assetKey)]
       console.warn('[interactionStore] toggleCollect failed:', err)
-      const feedback = formatInteractionError(err)
-      ElMessage[feedback.type](feedback.message)
-      return { success: false, collected: wasCollected, error: err }
+      operationErrors.value[operationKey] = formatInteractionError(err).message
+      return { success: false, collected: wasCollected, error: err, feedbackHandled: true }
     }
     finally {
-      pendingOperations.value.delete(`collect:${assetKey}`)
+      if (generation === operationGeneration)
+        pendingOperations.value.delete(operationKey)
     }
   }
 
   /**
    * 加载 Library 全量数据
    */
-  async function loadLibraryData() {
+  async function loadLibraryData({ userId = '', force = false } = {}) {
+    if (userId && libraryOwner.value !== userId) {
+      if (libraryOwner.value)
+        $reset()
+      libraryOwner.value = userId
+    }
+    if (libraryRequest)
+      return libraryRequest
+    if (!force && userId && libraryLoaded.value && Date.now() - libraryLoadedAt < 60000)
+      return
+
+    const generation = operationGeneration
     libraryLoading.value = true
-    try {
-      const [likes, collections, statsData] = await Promise.all([
-        fetchAllUserLikes(),
-        fetchAllUserCollectionItems(),
-        fetchUserInteractionStats(),
-      ])
+    libraryError.value = ''
+    libraryRequest = (async () => {
+      try {
+        const [likes, collections, statsData] = await Promise.all([
+          fetchAllUserLikes(),
+          fetchAllUserCollectionItems(),
+          fetchUserInteractionStats(),
+        ])
+        if (generation !== operationGeneration)
+          return
+        allLikes.value = likes
+        allCollectionItems.value = collections
+        stats.value = statsData
+        statsLoaded.value = true
+        libraryLoaded.value = true
+        libraryLoadedAt = Date.now()
 
-      allLikes.value = likes
-      allCollectionItems.value = collections
-      stats.value = statsData
-      statsLoaded.value = true
-
-      const likeMap = {}
-      const collectMap = {}
-
-      likes.forEach(({ asset_key }) => {
-        const [series] = asset_key.split(':')
-        if (!likeMap[series])
-          likeMap[series] = new Set()
-        likeMap[series].add(asset_key)
-      })
-
-      collections.forEach(({ asset_key }) => {
-        const [series] = asset_key.split(':')
-        if (!collectMap[series])
-          collectMap[series] = new Set()
-        collectMap[series].add(asset_key)
-      })
-
-      Object.keys(likeMap).forEach((series) => {
-        likedBySeriesMap.value[series] = likeMap[series]
-        loadedSeries.value.add(series)
-      })
-
-      Object.keys(collectMap).forEach((series) => {
-        collectedBySeriesMap.value[series] = collectMap[series]
-        loadedSeries.value.add(series)
-      })
-    }
-    catch (err) {
-      console.warn('[interactionStore] loadLibraryData failed:', err)
-    }
-    finally {
-      libraryLoading.value = false
-    }
+        const likeGroups = groupInteractionsBySeries(likes)
+        const collectionGroups = groupInteractionsBySeries(collections)
+        Object.keys(likeGroups).forEach((series) => {
+          likedBySeriesMap.value[series] = new Set(likeGroups[series].map(item => item.asset_key))
+          collectedBySeriesMap.value[series] = new Set(collectionGroups[series].map(item => item.asset_key))
+          loadedSeries.value.add(series)
+        })
+      }
+      catch (err) {
+        if (generation === operationGeneration)
+          libraryError.value = '壁纸库暂时无法更新，请重试'
+        console.warn('[interactionStore] loadLibraryData failed:', err)
+      }
+      finally {
+        if (generation === operationGeneration) {
+          libraryLoading.value = false
+          libraryRequest = undefined
+        }
+      }
+    })()
+    return libraryRequest
   }
 
   async function loadStats(forceRefresh = false) {
@@ -334,6 +376,7 @@ export const useInteractionStore = defineStore('interaction', () => {
    * 重置所有状态（登出时调用）
    */
   function $reset() {
+    operationGeneration++
     likedBySeriesMap.value = {}
     collectedBySeriesMap.value = {}
     loadedSeries.value = new Set()
@@ -344,7 +387,13 @@ export const useInteractionStore = defineStore('interaction', () => {
     statsLoaded.value = false
     loading.value = false
     libraryLoading.value = false
+    libraryLoaded.value = false
+    libraryOwner.value = ''
+    libraryError.value = ''
+    libraryRequest = undefined
+    libraryLoadedAt = 0
     pendingOperations.value = new Set()
+    operationErrors.value = {}
   }
 
   return {
@@ -352,6 +401,9 @@ export const useInteractionStore = defineStore('interaction', () => {
     collectedBySeriesMap,
     loading,
     libraryLoading,
+    libraryLoaded,
+    libraryOwner,
+    libraryError,
     stats,
     statsLoaded,
     allLikes,
@@ -360,6 +412,7 @@ export const useInteractionStore = defineStore('interaction', () => {
     isLiked,
     isCollected,
     isPending,
+    getOperationError,
     likesBySeries,
     collectionsBySeries,
 

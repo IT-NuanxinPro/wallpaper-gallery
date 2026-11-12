@@ -19,6 +19,23 @@ describe('媒体预览几何', () => {
 })
 
 describe('图片解码展示', () => {
+  it('严格解码失败不会替换已成功缩略图，旧图片的失败也不能污染新图片', async () => {
+    const scope = effectScope()
+    const source = ref('/large.webp')
+    const state = scope.run(() => useDecodedImage(source, { strictDecode: true }))
+    expect(await state.handleLoad({ target: { naturalWidth: 400, decode: async () => { throw new Error('decode failed') } } })).toBe(false)
+    expect(state.ready.value).toBe(false)
+    expect(state.failed.value).toBe(true)
+    source.value = '/retry.webp'
+    let reject
+    const stale = state.handleLoad({ target: { naturalWidth: 400, decode: () => new Promise((_, fail) => { reject = fail }) } })
+    source.value = '/current.webp'
+    reject(new Error('stale decode'))
+    expect(await stale).toBe(false)
+    expect(state.failed.value).toBe(false)
+    expect(await state.handleLoad({ target: { naturalWidth: 400 } })).toBe(true)
+    scope.stop()
+  })
   it('解码完成后才展示，切换图片时旧解码不能解除新图片的loading', async () => {
     const scope = effectScope()
     const source = ref('/first.webp')
@@ -98,6 +115,27 @@ describe('共享图片舞台事件集成', () => {
     })
     return { elements, renderer }
   }
+
+  it('成功缩略图立即可见，大图解码前不盖loading，失败保留缩略图并通知重试', async () => {
+    const WallpaperImageStage = await createImageStage()
+    const { elements, renderer } = createTestRenderer()
+    let failed = false
+    const app = renderer.createApp({ render: () => h(WallpaperImageStage, {
+      src: '/large.webp', placeholderSrc: '/thumb.webp', onError: () => { failed = true },
+    }) })
+    app.mount({})
+    const thumbnail = elements.find(element => element.type === 'img' && element.props.src === '/thumb.webp')
+    expect(thumbnail).toBeTruthy()
+    const stage = elements.find(element => element.props.class?.includes('wallpaper-image-stage') && element.type === 'div')
+    expect(stage.props['aria-busy']).toBe(false)
+    const large = elements.find(element => element.type === 'img' && element.props.src === '/large.webp')
+    await large.props.onLoad({ target: { naturalWidth: 800, decode: async () => { throw new Error('broken') } } })
+    await nextTick()
+    expect(failed).toBe(true)
+    expect(thumbnail.parent.children).toContain(thumbnail)
+    expect(large.props.class).not.toContain('is-ready')
+    app.unmount()
+  })
 
   it('详情共享图片舞台跨LoadingSurface透传解码后的尺寸事件', async () => {
     const WallpaperImageStage = await createImageStage()

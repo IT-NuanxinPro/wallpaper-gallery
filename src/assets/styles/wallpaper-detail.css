@@ -296,28 +296,6 @@ html[data-theme='dark'] .detail-static-brand {
   box-shadow: none;
   background: transparent;
 }
-.wallpaper-detail .detail-phone-frame {
-  display: flex;
-  justify-content: center;
-  padding: 16px 24px 28px;
-  background: transparent;
-}
-.wallpaper-detail .detail-phone-frame .phone-frame__device {
-  width: min(100%, 350px, calc((var(--media-stage-max-height) - 44px) * 390 / 844));
-  height: auto;
-  aspect-ratio: 390 / 844;
-  flex: none;
-}
-.wallpaper-detail .detail-phone-frame .wallpaper-image-stage,
-.wallpaper-detail .detail-phone-frame .detail-static-stage {
-  height: 100%;
-  max-height: none;
-  border-radius: 0;
-}
-.wallpaper-detail .detail-phone-frame .wallpaper-image-stage__image,
-.wallpaper-detail .detail-phone-frame .detail-static-stage img {
-  object-fit: cover;
-}
 .wallpaper-detail .detail-media.is-avatar {
   width: min(100%, 480px, var(--media-stage-max-height));
   justify-self: center;
@@ -610,7 +588,8 @@ html[data-theme='dark'] .detail-static-brand {
 
 .wallpaper-detail .detail-download-button {
   position: relative;
-  min-width: 142px;
+  width: 176px;
+  flex: none;
   overflow: hidden;
 }
 .wallpaper-detail .detail-download-button > span {
@@ -642,7 +621,7 @@ html[data-theme='dark'] .detail-static-brand {
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  width: 21px;
+  width: 18px;
   height: 18px;
   flex: none;
 }

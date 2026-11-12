@@ -51,16 +51,16 @@
 - **每日 Bing 壁纸** - 从 2019年6月至今约 2400+ 张必应精选壁纸
   - 按年度分片加载，性能优异
   - 直连 Bing CDN，无需额外存储
-- **动态壁纸专区** - 提供视频壁纸独立路由与详情弹窗
+- **动态壁纸专区** - 提供视频壁纸独立路由与详情页面
   - 支持视频元数据展示、循环播放与下载
   - 视频资源优先走 `img.061129.xyz`，避免大文件依赖 GitHub CDN
   - 电脑动态壁纸、手机动态壁纸、朋友圈封面三类内容统一归档到 `video` 系列
   - 通过 `category=desktop / mobile / social-cover` 区分具体子系列
   - 三类动态壁纸统一复用现有筛选、路由与用户交互体系
-- **智能裁剪与真机预览** - 电脑壁纸支持智能裁剪；手机壁纸与头像支持真机显示模式
+- **智能裁剪与设备预览** - 电脑壁纸支持智能裁剪；详情页支持与系列匹配的设备预览
   - 自动适配屏幕分辨率，提供多种比例预设与自定义尺寸
   - 支持实时预览、沉浸式全屏预览与高质量导出
-  - 手机壁纸与头像系列统一支持 iPhone 外观预览
+  - 手机壁纸使用手机外观预览，头像使用方形图片舞台
 - **智能搜索** - 实时搜索建议、关键词高亮、回车确认搜索
 - **热门模块** - 首页按系列展示热门分类与热门关键词
   - 热门分类点击后直接切换筛选
@@ -111,8 +111,8 @@
   - 收藏夹仅保留手机壁纸 / 头像标签，更符合移动端使用场景
 - **用户偏好记忆** - 记住用户的系列选择、排序方式
 - **本地缩略图** - 预生成 WebP 缩略图，首页加载更快
-- **深色模式细节补齐** - 手机壁纸弹窗、头像弹窗、标签与操作状态统一适配深色主题
-- **认证反馈面板** - OAuth 跳转前后使用 Lottie Loading / Success 面板、注册后显示邮箱验证提示，PC 与移动端都能第一时间获知登录是否成功。
+- **深色模式细节补齐** - 壁纸详情、标签与操作状态统一适配深色主题
+- **认证反馈面板** - OAuth 跳转前后展示加载、成功与失败反馈，注册后显示邮箱验证提示，PC 与移动端都能及时获知登录状态。
 
 ### 📊 数据统计
 
@@ -219,7 +219,7 @@ pnpm test             # 运行测试
 
 ### 单图分享详情
 
-图片和视频弹窗的复制入口提供 `/wallpaper/{token}` 站内详情地址，token 保留完整资源身份，跨分类同名文件不会混淆。独立详情支持刷新、原文件下载、喜欢/收藏和电脑静态壁纸裁剪；来源与授权只展示已有信息，不推断可商用。
+图片和视频卡片直接打开 `/wallpaper/{token}` 站内详情地址，详情页提供复制分享链接入口。token 保留完整资源身份，跨分类同名文件不会混淆。独立详情支持刷新、原文件下载、喜欢/收藏和电脑静态壁纸裁剪；来源与授权只展示已有信息，不推断可商用。
 
 `pnpm build:metadata` 执行 `pnpm generate:details`；因此标准同步、本地构建和 CI 构建都会更新详情。生成的 `public/data/details/00.json` 到 `3f.json` 是 64 个短文件桶，桶内按完整 token 查找；`index.json` 保存相关推荐和专题可复用的简要目录。每轮重写全部桶（含空桶），已移除图片不从旧文件继续公开。生成文件应与现有 public 元数据一起保留。损坏的身份或来源会明确列入生成脚本的 `skippedItems`，不会构造任意来源下载代理。
 
@@ -353,7 +353,6 @@ wallpaper-gallery/
 │   ├── Fork部署指南.md       # Fork 用户部署指南
 │   ├── Supabase统计系统.md   # Supabase 统计架构说明
 │   └── ...
-├── WORKFLOW.md               # 开发工作流程说明
 ├── src/
 │   ├── assets/styles/        # 全局样式（Sass）
 │   ├── components/
@@ -368,16 +367,15 @@ wallpaper-gallery/
 │   │   │       └── source/              # 图片来源面板
 │   │   ├── common/
 │   │   │   ├── feedback/     # 反馈组件（Loading、通知、横幅）
-│   │   │   ├── form/         # 通用表单控件
-│   │   │   ├── navigation/   # 导航组件（返回顶部、分页）
+│   │   │   ├── navigation/   # 导航组件（返回顶部、移动分类抽屉）
 │   │   │   └── ui/           # 基础 UI 组件（WallpaperSeriesIcon 等）
 │   │   ├── login/            # 登录体验与认证场景
 │   │   │   ├── AuthExperience.vue       # 登录 / 注册统一体验页
 │   │   │   └── LoginCharacterScene.vue  # 登录动效场景
 │   │   ├── home/             # 首页组件
-│   │   │   ├── HomeModalHost.vue         # 弹窗宿主
-│   │   │   ├── MobileSeriesNotice.vue    # 移动端系列提示
-│   │   │   └── HotTagsPanel.vue          # 热门标签面板
+│   │   │   ├── BrowseIntroduction.vue   # 分类介绍
+│   │   │   ├── HotTagsPanel.vue         # 热门标签面板
+│   │   │   └── OnlineVisitorsBadge.vue  # 在线人数
 │   │   ├── layout/
 │   │   │   ├── AppHeader.vue             # 顶栏主组件
 │   │   │   └── header/
@@ -396,20 +394,16 @@ wallpaper-gallery/
 │   │       │   ├── mobile/              # 移动端筛选栏与弹窗
 │   │       │   ├── fields/              # 日期选择器、分类下拉框
 │   │       │   └── shared/              # FilterSummary
-│   │       ├── PortraitWallpaperModal/  # 竖屏壁纸弹窗
-│   │       │   ├── desktop/             # 桌面端弹窗
-│   │       │   ├── mobile/              # 移动端弹窗
-│   │       │   └── shared/              # 共享组件（PhoneFrame、ModalInfo 等）
+│   │       ├── device-preview/          # 设备预览与折叠屏展示
 │   │       ├── WallpaperGrid/           # 壁纸网格
 │   │       │   ├── index.vue            # 网格主组件
-│   │       │   ├── composables/         # 动画、分页、触摸模式
+│   │       │   ├── composables/         # 入场动效、分页与列表连续性
 │   │       │   └── shared/              # 空状态、加载状态
-│   │       └── WallpaperModal/          # 横屏壁纸弹窗
-│   │           ├── desktop/             # 桌面端弹窗
-│   │           └── shared/              # BingWallpaperInfo
+│   │       ├── WallpaperMediaTransition.vue # 列表与详情媒体交接
+│   │       └── shared/                  # 渐进图片舞台
 │   ├── composables/          # 组合式函数
 │   │   ├── header/           # useHeaderNavSlider
-│   │   ├── home/             # useHomeDataLoader、useHomeSeriesSync、useWallpaperNavigator
+│   │   ├── home/             # 数据加载、系列同步、浏览状态与返回恢复
 │   │   ├── useInteraction.js # 壁纸喜欢 / 收藏交互封装
 │   │   ├── useDevice.js      # 设备检测
 │   │   ├── useTheme.js       # 主题管理
@@ -426,6 +420,8 @@ wallpaper-gallery/
 │   ├── router/               # Vue Router 路由配置
 │   ├── views/                # 页面视图
 │   │   ├── Home.vue          # 首页
+│   │   ├── BrowseLayout.vue  # 保留列表状态的浏览布局
+│   │   ├── WallpaperDetail.vue # 独立壁纸详情
 │   │   ├── About.vue         # 关于页
 │   │   ├── Login.vue         # 登录页
 │   │   ├── Signup.vue        # 注册页

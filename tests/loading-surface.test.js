@@ -83,6 +83,31 @@ describe('加载遮罩生命周期', () => {
     vi.useRealTimers()
   })
 
+  it('快速完成的请求不会闪出延迟加载遮罩', () => {
+    const busy = ref(true)
+    const visible = scope.run(() => useLoadingSurface(busy, 0, 120))
+    expect(visible.value).toBe(false)
+    vi.advanceTimersByTime(80)
+    busy.value = false
+    vi.advanceTimersByTime(500)
+    expect(visible.value).toBe(false)
+    expect(vi.getTimerCount()).toBe(0)
+  })
+
+  it('真正等待时才展示，数据就绪立即交接，卸载取消延迟显示', () => {
+    const busy = ref(true)
+    const visible = scope.run(() => useLoadingSurface(busy, 0, 120))
+    vi.advanceTimersByTime(120)
+    expect(visible.value).toBe(true)
+    busy.value = false
+    expect(visible.value).toBe(false)
+    busy.value = true
+    scope.stop()
+    vi.advanceTimersByTime(500)
+    expect(visible.value).toBe(false)
+    expect(vi.getTimerCount()).toBe(0)
+  })
+
   it('初始空闲不产生遮罩或延迟任务，开始请求立即显示', () => {
     const busy = ref(false)
     const visible = scope.run(() => useLoadingSurface(busy))

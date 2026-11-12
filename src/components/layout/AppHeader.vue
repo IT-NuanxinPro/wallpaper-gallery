@@ -19,6 +19,7 @@ import { useFullscreen } from '@/composables/useFullscreen'
 import { useTheme } from '@/composables/useTheme'
 import { useVersionCheck } from '@/composables/useVersionCheck'
 import { useWallpaperType } from '@/composables/useWallpaperType'
+import { warmAccountViews } from '@/router/accountRoutes'
 import { useAuthStore } from '@/stores/auth'
 import { useFilterStore } from '@/stores/filter'
 import { useWallpaperStore } from '@/stores/wallpaper'
@@ -248,6 +249,9 @@ function handleSearch(payload) {
     filterStore.clearExactSearch()
     searchQuery.value = payload?.query ?? ''
   }
+
+  // 明确提交已结束输入阶段，立即更新结果，不再等待输入防抖。
+  filterStore.debouncedQuery = payload?.query ?? ''
 
   if (isMobile.value) {
     closeSearch()
@@ -482,6 +486,9 @@ watch(isMobile, () => {
             class="header-account-trigger"
             type="button"
             :aria-label="`${authDisplayName || '当前账号'} 菜单`"
+            @pointerenter="warmAccountViews"
+            @focus="warmAccountViews"
+            @pointerdown="warmAccountViews"
           >
             <RemoteAvatar
               :sources="avatarCandidates"
@@ -509,17 +516,6 @@ watch(isMobile, () => {
 
       <!-- 移动端操作栏 -->
       <div v-else class="header-actions-mobile">
-        <button
-          v-if="hasSearchQuery && !isSearchExpanded"
-          class="header-search-clear header-search-clear--mobile"
-          aria-label="清空当前搜索"
-          @click="handleClearSearch"
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M18 6L6 18M6 6l12 12" />
-          </svg>
-        </button>
-
         <!-- 搜索按钮 -->
         <button
           class="search-toggle"
@@ -1176,6 +1172,7 @@ html[data-theme='dark'] .header-account-dropdown-menu .el-dropdown-menu__item--d
 }
 
 .search-toggle.has-query:not(.is-active) {
+  position: relative;
   color: var(--color-accent);
   border-color: var(--accent-border);
   box-shadow: 0 0 0 3px var(--accent-ring);

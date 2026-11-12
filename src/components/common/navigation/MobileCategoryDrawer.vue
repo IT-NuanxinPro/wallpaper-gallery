@@ -1,9 +1,12 @@
 <script setup>
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, ref, useId, watch } from 'vue'
 
+import FilterPreviewAction from '@/components/wallpaper/filter/shared/FilterPreviewAction.vue'
+import { useDialogFocus } from '@/composables/useDialogFocus'
 import { useScrollLock } from '@/composables/useScrollLock'
 
 const props = defineProps({
+  previewResults: { type: Function, default: () => ({ status: 'loading', count: null }) },
   show: {
     type: Boolean,
     default: false,
@@ -27,6 +30,10 @@ const emit = defineEmits(['update:show', 'update:categoryFilter', 'update:subcat
 // 临时选中的分类（用于预览，确认后才真正应用）
 const tempCategory = ref(props.categoryFilter)
 const tempSubcategory = ref(props.subcategoryFilter)
+const panelRef = ref(null)
+const titleId = `category-title-${useId()}`
+const preview = computed(() => props.previewResults({ categoryFilter: tempCategory.value, subcategoryFilter: tempSubcategory.value }))
+useDialogFocus(() => props.show, panelRef, closeDrawer)
 
 // 使用滚动锁定 composable
 const scrollLock = useScrollLock()
@@ -34,20 +41,14 @@ const scrollLock = useScrollLock()
 // 同步外部值
 watch(() => props.show, async (val) => {
   if (val) {
+    tempCategory.value = props.categoryFilter
+    tempSubcategory.value = props.subcategoryFilter
     // 延迟锁定滚动，让动画先开始，避免 position: fixed 导致的重排卡顿
     await nextTick()
     requestAnimationFrame(() => {
-      scrollLock.lock()
+      if (props.show)
+        scrollLock.lock()
     })
-    // 如果当前是"全部"，默认选中第一个分类
-    if (props.categoryFilter === 'all') {
-      const firstCategory = props.categoryOptions.find(opt => opt.value !== 'all')
-      tempCategory.value = firstCategory ? firstCategory.value : ''
-    }
-    else {
-      tempCategory.value = props.categoryFilter
-    }
-    tempSubcategory.value = props.subcategoryFilter
   }
   else {
     // 解锁滚动
@@ -94,13 +95,14 @@ function handleConfirm() {
 
 // 重置（清除分类筛选）
 function handleReset() {
-  emit('update:categoryFilter', 'all')
-  emit('update:subcategoryFilter', 'all')
-  closeDrawer()
+  tempCategory.value = 'all'
+  tempSubcategory.value = 'all'
 }
 
 // 关闭抽屉
 function closeDrawer() {
+  tempCategory.value = props.categoryFilter
+  tempSubcategory.value = props.subcategoryFilter
   emit('update:show', false)
 }
 </script>
@@ -114,14 +116,14 @@ function closeDrawer() {
 
     <!-- 抽屉内容 -->
     <Transition name="slide-up">
-      <div v-if="show" class="category-drawer">
+      <div v-if="show" ref="panelRef" class="category-drawer" role="dialog" aria-modal="true" :aria-labelledby="titleId" tabindex="-1">
         <!-- 头部 -->
         <div class="drawer-header">
           <button class="header-btn reset-btn" @click="handleReset">
             重置
           </button>
-          <span class="header-title">选择分类</span>
-          <button class="header-btn close-btn" @click="closeDrawer">
+          <span :id="titleId" class="header-title">选择分类</span>
+          <button class="header-btn close-btn" aria-label="取消分类筛选" @click="closeDrawer">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M18 6L6 18M6 6l12 12" />
             </svg>
@@ -130,17 +132,19 @@ function closeDrawer() {
 
         <!-- 主体：左右分栏 -->
         <div class="drawer-body">
-          <!-- 左侧：一级分类列表（排除"全部"选项） -->
+          <!-- 左侧：一级分类保留全部选项，打开不会默认替用户选择。 -->
           <div class="category-list">
-            <div
-              v-for="option in categoryOptions.filter(opt => opt.value !== 'all')"
+            <button
+              v-for="option in categoryOptions"
               :key="option.value"
+              type="button"
+              :aria-pressed="tempCategory === option.value"
               class="category-item"
               :class="{ 'is-active': tempCategory === option.value }"
               @click="selectCategory(option.value)"
             >
               <span class="category-name">{{ option.label }}</span>
-            </div>
+            </button>
           </div>
 
           <!-- 右侧：二级分类 -->
@@ -154,6 +158,7 @@ function closeDrawer() {
                 <button
                   class="subcategory-btn"
                   :class="{ 'is-active': tempSubcategory === 'all' }"
+                  :aria-pressed="tempSubcategory === 'all'"
                   @click="selectSubcategory('all')"
                 >
                   全部
@@ -164,6 +169,7 @@ function closeDrawer() {
                   :key="sub.name"
                   class="subcategory-btn"
                   :class="{ 'is-active': tempSubcategory === sub.name }"
+                  :aria-pressed="tempSubcategory === sub.name"
                   @click="selectSubcategory(sub.name)"
                 >
                   {{ sub.name }}
@@ -175,7 +181,7 @@ function closeDrawer() {
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                   <path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                 </svg>
-                <p>该分类暂无子分类</p>
+                <p>{{ tempCategory === 'all' ? '浏览所有分类的壁纸' : '已选择整个分类' }}</p>
               </div>
             </template>
           </div>
@@ -183,9 +189,7 @@ function closeDrawer() {
 
         <!-- 底部确认按钮 -->
         <div class="drawer-footer">
-          <button class="confirm-btn" @click="handleConfirm">
-            确认选择
-          </button>
+          <FilterPreviewAction :preview="preview" @confirm="handleConfirm" />
         </div>
       </div>
     </Transition>
@@ -313,6 +317,9 @@ function closeDrawer() {
 
 .category-item {
   display: flex;
+  width: 100%;
+  background: transparent;
+  text-align: left;
   align-items: center;
   justify-content: space-between;
   padding: 16px 14px;

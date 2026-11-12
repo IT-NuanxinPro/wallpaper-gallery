@@ -1,6 +1,7 @@
 <script setup>
 import { gsap } from 'gsap'
-import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { nextTick, onMounted, onUnmounted, ref, useId, watch } from 'vue'
+import { useMotionPreference } from '@/composables/useMotionPreference'
 import { trackSearch } from '@/utils/common/analytics'
 import { useSearchSuggestions } from './composables/useSearchSuggestions'
 import SearchSuggestionsPanel from './shared/SearchSuggestionsPanel.vue'
@@ -26,6 +27,8 @@ const searchBarRef = ref(null)
 const inputRef = ref(null)
 const iconRef = ref(null)
 const clearBtnRef = ref(null)
+const listId = `search-suggestions-${useId()}`
+const reducedMotion = useMotionPreference()
 const {
   hideSuggestions,
   isFocused,
@@ -54,11 +57,11 @@ const {
 
 onMounted(() => {
   // 入场动画
-  if (searchBarRef.value) {
+  if (searchBarRef.value && !reducedMotion.value) {
     gsap.fromTo(
       searchBarRef.value,
-      { opacity: 0, y: 20, scale: 0.95 },
-      { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
+      { opacity: 0, y: 4 },
+      { opacity: 1, y: 0, duration: 0.16, ease: 'power2.out' },
     )
   }
 })
@@ -88,6 +91,8 @@ function confirmSearch() {
 
 // 键盘导航
 function handleKeydown(e) {
+  if (e.isComposing || e.keyCode === 229)
+    return
   switch (e.key) {
     case 'ArrowDown':
       if (shouldShowSuggestions.value) {
@@ -141,52 +146,49 @@ function handleClickOutside(e) {
 
 onMounted(() => {
   document.addEventListener('click', handleClickOutside)
+  window.addEventListener('resize', refreshSuggestionPosition)
+  window.addEventListener('scroll', refreshSuggestionPosition, true)
 })
 
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside)
+  window.removeEventListener('resize', refreshSuggestionPosition)
+  window.removeEventListener('scroll', refreshSuggestionPosition, true)
+  gsap.killTweensOf([searchBarRef.value, iconRef.value, clearBtnRef.value].filter(Boolean))
 })
 
+function refreshSuggestionPosition() {
+  if (shouldShowSuggestions.value)
+    updateSuggestionsPosition(searchBarRef.value)
+}
+
 function clearInput() {
-  // 清除按钮旋转动画
-  if (clearBtnRef.value) {
-    gsap.to(clearBtnRef.value, {
-      rotation: 90,
-      scale: 0,
-      duration: 0.3,
-      ease: 'power2.in',
-      onComplete: () => {
-        localValue.value = ''
-        emit('update:modelValue', '')
-        inputRef.value?.focus()
-        gsap.set(clearBtnRef.value, { rotation: 0, scale: 1 })
-      },
-    })
-  }
-  else {
-    localValue.value = ''
-    emit('update:modelValue', '')
-    inputRef.value?.focus()
-  }
+  // 业务状态立即生效，视觉过渡不能延迟用户操作。
+  localValue.value = ''
+  emit('update:modelValue', '')
+  hideSuggestions()
+  inputRef.value?.focus()
 }
 
 function handleFocus() {
   markFocused(true)
   updateSuggestionsPosition(searchBarRef.value)
+  if (reducedMotion.value)
+    return
   // 图标动画
   if (iconRef.value) {
     gsap.to(iconRef.value, {
-      scale: 1.2,
-      rotation: 15,
-      duration: 0.4,
-      ease: 'elastic.out(1, 0.5)',
+      scale: 1.08,
+      rotation: 0,
+      duration: 0.16,
+      ease: 'power2.out',
     })
   }
   // 搜索框扩展动画
   if (searchBarRef.value) {
     gsap.to(searchBarRef.value, {
-      scale: 1.02,
-      duration: 0.3,
+      scale: 1,
+      duration: 0.16,
       ease: 'power2.out',
     })
   }
@@ -194,12 +196,14 @@ function handleFocus() {
 
 function handleBlur() {
   markFocused(false)
+  if (reducedMotion.value)
+    return
   // 图标复位
   if (iconRef.value) {
     gsap.to(iconRef.value, {
       scale: 1,
       rotation: 0,
-      duration: 0.3,
+      duration: 0.16,
       ease: 'power2.out',
     })
   }
@@ -207,7 +211,7 @@ function handleBlur() {
   if (searchBarRef.value) {
     gsap.to(searchBarRef.value, {
       scale: 1,
-      duration: 0.3,
+      duration: 0.16,
       ease: 'power2.out',
     })
   }
@@ -215,17 +219,25 @@ function handleBlur() {
 
 // 清除按钮出现动画
 watch(localValue, (newVal, oldVal) => {
-  if (newVal && !oldVal && clearBtnRef.value) {
+  if (!reducedMotion.value && newVal && !oldVal && clearBtnRef.value) {
     gsap.fromTo(
       clearBtnRef.value,
-      { scale: 0, rotation: -90 },
-      { scale: 1, rotation: 0, duration: 0.4, ease: 'back.out(2)' },
+      { opacity: 0 },
+      { opacity: 1, duration: 0.16, ease: 'power2.out' },
     )
   }
 
   nextTick(() => {
     updateSuggestionsPosition(searchBarRef.value)
   })
+})
+
+watch(reducedMotion, (reduced) => {
+  if (!reduced)
+    return
+  const elements = [searchBarRef.value, iconRef.value, clearBtnRef.value].filter(Boolean)
+  gsap.killTweensOf(elements)
+  gsap.set(elements, { clearProps: 'opacity,transform' })
 })
 </script>
 
@@ -254,7 +266,13 @@ watch(localValue, (newVal, oldVal) => {
       <!-- 输入框 -->
       <input
         ref="inputRef"
-        type="text"
+        type="search"
+        role="combobox"
+        aria-label="搜索壁纸"
+        aria-autocomplete="list"
+        :aria-expanded="shouldShowSuggestions"
+        :aria-controls="listId"
+        :aria-activedescendant="shouldShowSuggestions && selectedIndex >= 0 ? `${listId}-${selectedIndex}` : undefined"
         class="search-bar__input"
         :placeholder="placeholder"
         :value="localValue"
@@ -280,18 +298,20 @@ watch(localValue, (newVal, oldVal) => {
 
       <!-- 快捷键提示 -->
       <div v-if="!localValue && !isFocused" class="search-bar__shortcut">
-        <kbd>/</kbd>
+        <kbd>Enter</kbd>
       </div>
     </div>
 
     <!-- 搜索建议下拉 - 使用 Teleport 避免层级问题 -->
     <SearchSuggestionsPanel
+      :list-id="listId"
       :position="suggestionsPosition"
       :query="localValue"
       :selected-index="selectedIndex"
       :suggestions="suggestions"
       :visible="shouldShowSuggestions"
       @select="selectSuggestion"
+      @search="confirmSearch"
       @hover="selectedIndex = $event"
     />
   </div>
@@ -489,7 +509,7 @@ watch(localValue, (newVal, oldVal) => {
     .search-bar__border {
       background: var(--accent-gradient);
       background-size: 200% 200%;
-      animation: gradient-shift 3s ease infinite;
+      animation: none;
     }
 
     .search-bar__content::before {
@@ -532,6 +552,14 @@ watch(localValue, (newVal, oldVal) => {
     &__shortcut {
       display: none;
     }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .search-bar,
+  .search-bar__icon,
+  .search-bar__clear {
+    transform: none !important;
+    transition-duration: 0.01ms;
   }
 }
 </style>

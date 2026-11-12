@@ -6,6 +6,7 @@
  */
 import { gsap } from 'gsap'
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useMotionPreference } from '@/composables/useMotionPreference'
 
 const props = defineProps({
   value: {
@@ -37,6 +38,7 @@ const props = defineProps({
 // 显示的数值（用于动画）
 const displayValue = ref(props.animateOnMount ? 0 : props.value)
 const numberRef = ref(null)
+const reducedMotion = useMotionPreference()
 
 // 格式化数字
 function formatNumber(num) {
@@ -49,7 +51,7 @@ function formatNumber(num) {
 // 动画到目标值
 function animateTo(targetValue, fromValue = null) {
   gsap.killTweensOf(displayValue)
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (reducedMotion.value || targetValue === 0) {
     displayValue.value = targetValue
     return
   }
@@ -66,10 +68,10 @@ function animateTo(targetValue, fromValue = null) {
 
   // 小幅变化（如加载更多 +20 张）使用更短的动画
   if (diff <= 30) {
-    duration = 0.3
+    duration = Math.min(duration, 0.3)
   }
   else if (diff <= 100) {
-    duration = 0.4
+    duration = Math.min(duration, 0.4)
   }
 
   gsap.to(displayValue, {
@@ -83,6 +85,13 @@ function animateTo(targetValue, fromValue = null) {
 watch(() => props.value, (newValue, oldValue) => {
   if (newValue !== oldValue) {
     animateTo(newValue)
+  }
+})
+
+watch(reducedMotion, (reduced) => {
+  if (reduced) {
+    gsap.killTweensOf(displayValue)
+    displayValue.value = props.value
   }
 })
 

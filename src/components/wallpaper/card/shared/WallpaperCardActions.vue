@@ -1,5 +1,6 @@
 <script setup>
-import { computed, defineAsyncComponent, onBeforeUnmount, ref } from 'vue'
+import { computed, ref, useId, watch } from 'vue'
+import { useMotionPreference } from '@/composables/useMotionPreference'
 import { formatNumber } from '@/utils/common/format'
 
 const props = defineProps({
@@ -35,130 +36,48 @@ const props = defineProps({
     type: String,
     default: 'all',
   },
+  likePending: { type: Boolean, default: false },
+  collectPending: { type: Boolean, default: false },
+  likeError: { type: String, default: '' },
+  collectError: { type: String, default: '' },
 })
 
 const emit = defineEmits(['toggleLike', 'toggleCollect'])
 
-const LottieScene = defineAsyncComponent(() => import('@/components/common/ui/LottieScene.vue'))
-
-const likeAnimating = ref(false)
-const collectAnimating = ref(false)
-const likeSettling = ref(false)
-const collectSettling = ref(false)
+const reducedMotion = useMotionPreference()
+const feedbackId = useId()
+const likeConfirmed = ref(false)
+const collectConfirmed = ref(false)
 const showCollectAction = computed(() => ['all', 'collect-only'].includes(props.actionMode))
 const showLikeAction = computed(() => ['all', 'like-only'].includes(props.actionMode))
 
-const likeAnimationSrc = `${import.meta.env.BASE_URL}lottie/like.lottie`
-const collectAnimationSrc = `${import.meta.env.BASE_URL}lottie/star.lottie`
-
-let likeAnimationTimer = null
-let collectAnimationTimer = null
-let likeRevealTimer = null
-let collectRevealTimer = null
-
-const LIKE_ANIMATION_DURATION = 1080
-const COLLECT_ANIMATION_DURATION = 1520
-const LIKE_REVEAL_DELAY = 680
-const COLLECT_REVEAL_DELAY = 980
-
-function clearLikeAnimationTimer() {
-  if (likeAnimationTimer) {
-    clearTimeout(likeAnimationTimer)
-    likeAnimationTimer = null
-  }
-}
-
-function clearCollectAnimationTimer() {
-  if (collectAnimationTimer) {
-    clearTimeout(collectAnimationTimer)
-    collectAnimationTimer = null
-  }
-}
-
-function clearLikeRevealTimer() {
-  if (likeRevealTimer) {
-    clearTimeout(likeRevealTimer)
-    likeRevealTimer = null
-  }
-}
-
-function clearCollectRevealTimer() {
-  if (collectRevealTimer) {
-    clearTimeout(collectRevealTimer)
-    collectRevealTimer = null
-  }
-}
-
-function triggerLikeAnimation() {
-  clearLikeAnimationTimer()
-  clearLikeRevealTimer()
-  likeAnimating.value = true
-  likeSettling.value = false
-  likeRevealTimer = setTimeout(() => {
-    likeSettling.value = true
-    likeRevealTimer = null
-  }, LIKE_REVEAL_DELAY)
-  likeAnimationTimer = setTimeout(() => {
-    likeAnimating.value = false
-    likeSettling.value = false
-    likeAnimationTimer = null
-  }, LIKE_ANIMATION_DURATION)
-}
-
-function triggerCollectAnimation() {
-  clearCollectAnimationTimer()
-  clearCollectRevealTimer()
-  collectAnimating.value = true
-  collectSettling.value = false
-  collectRevealTimer = setTimeout(() => {
-    collectSettling.value = true
-    collectRevealTimer = null
-  }, COLLECT_REVEAL_DELAY)
-  collectAnimationTimer = setTimeout(() => {
-    collectAnimating.value = false
-    collectSettling.value = false
-    collectAnimationTimer = null
-  }, COLLECT_ANIMATION_DURATION)
-}
+// 结果动效只跟随已完成的操作，不参与请求锁定，也不遮住状态和计数。
+watch(() => props.likePending, (pending, wasPending) => {
+  likeConfirmed.value = !pending && wasPending && !props.likeError && props.liked && !reducedMotion.value
+})
+watch(() => props.collectPending, (pending, wasPending) => {
+  collectConfirmed.value = !pending && wasPending && !props.collectError && props.collected && !reducedMotion.value
+})
+watch(reducedMotion, () => {
+  likeConfirmed.value = false
+  collectConfirmed.value = false
+})
 
 function handleLike(e) {
   e.stopPropagation()
-  if (likeAnimating.value)
+  if (props.likePending)
     return
-
-  if (!props.isAuthenticated) {
-    emit('toggleLike')
-    return
-  }
-
-  if (!props.liked) {
-    triggerLikeAnimation()
-  }
+  likeConfirmed.value = false
   emit('toggleLike')
 }
 
 function handleCollect(e) {
   e.stopPropagation()
-  if (collectAnimating.value)
+  if (props.collectPending)
     return
-
-  if (!props.isAuthenticated) {
-    emit('toggleCollect')
-    return
-  }
-
-  if (!props.collected) {
-    triggerCollectAnimation()
-  }
+  collectConfirmed.value = false
   emit('toggleCollect')
 }
-
-onBeforeUnmount(() => {
-  clearLikeAnimationTimer()
-  clearCollectAnimationTimer()
-  clearLikeRevealTimer()
-  clearCollectRevealTimer()
-})
 </script>
 
 <template>
@@ -177,6 +96,9 @@ onBeforeUnmount(() => {
       }"
       type="button"
       :aria-pressed="collected"
+      :aria-busy="collectPending"
+      :disabled="collectPending"
+      :aria-describedby="collectError ? `${feedbackId}-collect` : undefined"
       :aria-label="collected ? '取消收藏' : '收藏壁纸'"
       :title="collected ? '取消收藏' : '收藏'"
       @click="handleCollect"
@@ -184,10 +106,8 @@ onBeforeUnmount(() => {
       <span class="action-btn__content">
         <span
           class="action-btn__icon"
-          :class="{
-            'is-hidden': collectAnimating && !collectSettling,
-            'is-settling': collectAnimating && collectSettling,
-          }"
+          :class="{ 'is-confirmed': collectConfirmed }"
+          @animationend="collectConfirmed = false"
         >
           <svg
             viewBox="0 0 24 24"
@@ -200,18 +120,9 @@ onBeforeUnmount(() => {
             <polygon points="12 2.75 15.02 8.87 21.77 9.85 16.89 14.61 18.04 21.33 12 18.16 5.96 21.33 7.11 14.61 2.23 9.85 8.98 8.87 12 2.75" />
           </svg>
         </span>
-        <span v-if="!compact" class="action-btn__label">{{ collected ? '已收藏' : '收藏' }}</span>
+        <span v-if="!compact" class="action-btn__label">{{ collectPending ? (collected ? '正在收藏' : '正在取消') : collected ? '已收藏' : '收藏' }}</span>
       </span>
-      <span v-if="showCounts && collectCount > 0 && !collectAnimating" class="action-btn__count">{{ formatNumber(collectCount) }}</span>
-      <span v-if="collectAnimating" class="action-btn__lottie action-btn__lottie--collect">
-        <LottieScene
-          :src="collectAnimationSrc"
-          :loop="false"
-          :pause-when-hidden="false"
-          :speed="0.92"
-          fit="contain"
-        />
-      </span>
+      <span v-if="showCounts && collectCount > 0" class="action-btn__count">{{ formatNumber(collectCount) }}</span>
     </button>
 
     <button
@@ -224,6 +135,9 @@ onBeforeUnmount(() => {
       }"
       type="button"
       :aria-pressed="liked"
+      :aria-busy="likePending"
+      :disabled="likePending"
+      :aria-describedby="likeError ? `${feedbackId}-like` : undefined"
       :aria-label="liked ? '取消喜欢' : '喜欢壁纸'"
       :title="liked ? '取消喜欢' : '喜欢'"
       @click="handleLike"
@@ -231,10 +145,8 @@ onBeforeUnmount(() => {
       <span class="action-btn__content">
         <span
           class="action-btn__icon"
-          :class="{
-            'is-hidden': likeAnimating && !likeSettling,
-            'is-settling': likeAnimating && likeSettling,
-          }"
+          :class="{ 'is-confirmed': likeConfirmed }"
+          @animationend="likeConfirmed = false"
         >
           <svg
             viewBox="0 0 24 24"
@@ -247,19 +159,22 @@ onBeforeUnmount(() => {
             <path d="m12 20.4-1.29-1.17C5.73 14.72 2.5 11.79 2.5 8.5a5 5 0 0 1 5-5c1.74 0 3.41.82 4.5 2.12a5.95 5.95 0 0 1 4.5-2.12 5 5 0 0 1 5 5c0 3.29-3.23 6.22-8.21 10.73L12 20.4z" />
           </svg>
         </span>
-        <span v-if="!compact" class="action-btn__label">{{ liked ? '已喜欢' : '喜欢' }}</span>
+        <span v-if="!compact" class="action-btn__label">{{ likePending ? (liked ? '正在喜欢' : '正在取消') : liked ? '已喜欢' : '喜欢' }}</span>
       </span>
-      <span v-if="showCounts && likeCount > 0 && !likeAnimating" class="action-btn__count">{{ formatNumber(likeCount) }}</span>
-      <span v-if="likeAnimating" class="action-btn__lottie action-btn__lottie--like">
-        <LottieScene
-          :src="likeAnimationSrc"
-          :loop="false"
-          :pause-when-hidden="false"
-          :speed="0.94"
-          fit="contain"
-        />
-      </span>
+      <span v-if="showCounts && likeCount > 0" class="action-btn__count">{{ formatNumber(likeCount) }}</span>
     </button>
+    <p v-if="collectError && showCollectAction" :id="`${feedbackId}-collect`" class="action-feedback" role="status">
+      <span>{{ collectError }}</span>
+      <button type="button" :disabled="collectPending" aria-label="重试收藏" @click="handleCollect">
+        重试
+      </button>
+    </p>
+    <p v-if="likeError && showLikeAction" :id="`${feedbackId}-like`" class="action-feedback" role="status">
+      <span>{{ likeError }}</span>
+      <button type="button" :disabled="likePending" aria-label="重试喜欢" @click="handleLike">
+        重试
+      </button>
+    </p>
   </div>
 </template>
 
@@ -269,6 +184,27 @@ onBeforeUnmount(() => {
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
+}
+
+.action-feedback {
+  display: flex;
+  align-items: baseline;
+  flex-basis: 100%;
+  gap: 8px;
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  line-height: 1.5;
+
+  button {
+    flex: none;
+    min-height: 32px;
+    padding: 2px 8px;
+    color: var(--color-accent);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
 }
 
 .action-btn {
@@ -324,15 +260,8 @@ onBeforeUnmount(() => {
       filter 220ms ease;
   }
 
-  .action-btn__icon.is-hidden {
-    opacity: 0;
-    transform: scale(0.82);
-  }
-
-  .action-btn__icon.is-settling {
-    opacity: 0.92;
-    transform: scale(1.04);
-    filter: saturate(1.08);
+  .action-btn__icon.is-confirmed {
+    animation: action-confirmed 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
   .action-btn__label {
@@ -346,16 +275,6 @@ onBeforeUnmount(() => {
     width: 16px;
     height: 16px;
     transition: transform 200ms ease;
-  }
-
-  .action-btn__lottie {
-    position: absolute;
-    inset: -14px;
-    z-index: 2;
-    pointer-events: none;
-    transform: scale(1.34);
-    transform-origin: center;
-    filter: drop-shadow(0 10px 20px rgba(15, 23, 42, 0.18));
   }
 
   .action-btn__count {
@@ -377,7 +296,7 @@ onBeforeUnmount(() => {
     letter-spacing: -0.01em;
   }
 
-  &:hover {
+  &:hover:not(:disabled) {
     transform: translateY(-1px);
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.92));
     border-color: rgba(96, 165, 250, 0.24);
@@ -387,12 +306,12 @@ onBeforeUnmount(() => {
       0 14px 28px rgba(148, 163, 184, 0.16);
   }
 
-  &:active {
+  &:active:not(:disabled) {
     transform: scale(0.98);
   }
 
-  &.is-unauth:active {
-    animation: shake 400ms ease;
+  &:disabled {
+    cursor: progress;
   }
 
   &--collect.is-active {
@@ -492,11 +411,6 @@ onBeforeUnmount(() => {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
 
-  .action-btn__lottie {
-    inset: -28px;
-    transform: scale(1.82);
-  }
-
   &:hover {
     background: transparent;
     color: rgba(248, 250, 252, 0.96);
@@ -550,22 +464,22 @@ onBeforeUnmount(() => {
   }
 }
 
-@keyframes shake {
+@keyframes action-confirmed {
   0%,
   100% {
-    transform: translateX(0);
+    transform: scale(1);
   }
-  20% {
-    transform: translateX(-3px);
+  45% {
+    transform: scale(1.14);
   }
-  40% {
-    transform: translateX(3px);
-  }
-  60% {
-    transform: translateX(-2px);
-  }
-  80% {
-    transform: translateX(2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .action-btn,
+  .action-btn .action-btn__icon,
+  .action-btn svg {
+    animation: none;
+    transition: none;
   }
 }
 </style>

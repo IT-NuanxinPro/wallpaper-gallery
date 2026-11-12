@@ -1,16 +1,22 @@
 <script setup>
-import { computed, toRef } from 'vue'
+import { computed, ref, toRef, watch } from 'vue'
 import LoadingSurface from '@/components/common/feedback/LoadingSurface.vue'
 import { getMediaAspectRatio, useDecodedImage } from '@/composables/useDecodedImage'
 
 const props = defineProps({
   src: { type: String, default: '' },
+  placeholderSrc: { type: String, default: '' },
   alt: { type: String, default: '壁纸预览' },
   resolution: { type: Object, default: null },
   fallbackRatio: { type: String, default: '16 / 10' },
 })
 const emit = defineEmits(['load', 'error'])
-const { ready, failed, handleLoad, handleError } = useDecodedImage(toRef(props, 'src'))
+const { ready, failed, handleLoad, handleError } = useDecodedImage(toRef(props, 'src'), { strictDecode: true })
+const placeholderFailed = ref(false)
+const hasPlaceholder = computed(() => Boolean(props.placeholderSrc && !placeholderFailed.value))
+watch(() => props.placeholderSrc, () => {
+  placeholderFailed.value = false
+})
 const frameStyle = computed(() => ({ aspectRatio: getMediaAspectRatio(props.resolution, props.fallbackRatio) }))
 
 async function onLoad(event) {
@@ -21,6 +27,9 @@ async function onLoad(event) {
       target: image,
       dimensions: { width: image.naturalWidth, height: image.naturalHeight },
     })
+  }
+  else if (failed.value) {
+    emit('error')
   }
 }
 
@@ -34,10 +43,18 @@ function onError() {
   <LoadingSurface
     class="wallpaper-image-stage"
     :style="frameStyle"
-    :busy="!ready && !failed"
+    :busy="!ready && !failed && !hasPlaceholder"
     label="正在加载图片"
     :size="64"
   >
+    <img
+      v-if="hasPlaceholder"
+      :src="placeholderSrc"
+      alt=""
+      aria-hidden="true"
+      class="wallpaper-image-stage__image wallpaper-image-stage__placeholder"
+      @error="placeholderFailed = true"
+    >
     <img
       :key="src"
       :src="src"
@@ -48,7 +65,7 @@ function onError() {
       @load="onLoad"
       @error="onError"
     >
-    <div v-if="failed" class="wallpaper-image-stage__error" role="status">
+    <div v-if="failed && !hasPlaceholder" class="wallpaper-image-stage__error" role="status">
       图片暂时无法加载，可切换壁纸或重新打开
     </div>
   </LoadingSurface>
@@ -79,6 +96,10 @@ function onError() {
 }
 
 .wallpaper-image-stage__image.is-ready {
+  opacity: 1;
+}
+
+.wallpaper-image-stage__placeholder {
   opacity: 1;
 }
 

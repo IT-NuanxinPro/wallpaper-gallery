@@ -11,6 +11,7 @@ const context = vi.hoisted(() => ({ route: null, auth: null, push: vi.fn(), api:
   getProfile: vi.fn(), getWallpapers: vi.fn(), getConnections: vi.fn(), setFollowing: vi.fn(),
   getSettings: vi.fn(), getMyCollections: vi.fn(), saveSettings: vi.fn(), setCollectionVisibility: vi.fn(),
   getRelatedCollections: vi.fn(),
+  loadWallpapers: vi.fn(),
 } }))
 const RouterLink = { props: ['to'], setup: (props, { slots }) => () => h('a', { to: props.to }, slots.default?.()) }
 // 仅隔离Element Plus的浮层/DOM；保留modelValue、disabled和真实组件事件合同。
@@ -29,7 +30,7 @@ const dependencies = {
   ProfileTabs: { props: ['tabs', 'modelValue'], emits: ['update:modelValue'], setup: (props, { emit }) => () => h('nav', props.tabs.map(tab => h('button', { onClick: () => emit('update:modelValue', tab.key) }, tab.label))) },
   ElSwitch, ElSelect, ElOption,
   communityService: context.api, useAuthStore: () => context.auth, useRoute: () => context.route, useRouter: () => ({ push: context.push }),
-  publicProfileName, useCommunityRequest, getAvatarInitial: () => '甲', getAvatarStyle: () => ({}), sanitizePublicAvatarUrl: () => '',
+  publicProfileName, loadCommunityWallpapers: (...args) => context.api.loadWallpapers(...args), useCommunityRequest, getAvatarInitial: () => '甲', getAvatarStyle: () => ({}), sanitizePublicAvatarUrl: () => '',
   SoftLoading: { props: ['label'], setup: props => () => h('span', props.label) },
   RemoteAvatar: { setup: () => () => h('span') }, PublicCollectionCard: { setup: () => () => h('div') }, PublicProfileCard: { setup: () => () => h('div') }, WallpaperCard: { setup: () => () => h('div') },
 }
@@ -90,6 +91,7 @@ beforeEach(() => {
   context.api.getSettings.mockResolvedValue({ enabled: false, show_likes: false })
   context.api.getMyCollections.mockResolvedValue({ items: [], has_more: false })
   context.api.getRelatedCollections.mockResolvedValue([])
+  context.api.loadWallpapers.mockResolvedValue([])
 })
 afterEach(() => { apps.splice(0).forEach(app => app.unmount()); vi.unstubAllGlobals() })
 
@@ -196,6 +198,54 @@ it('写入或随后核对读取失败时不显示保存成功，核对失败仍�
   expect(textOf(root)).not.toContain('已重新读取最新设置')
 })
 
+it('设置保存后的核对只更新局部状态，已有表单不会被loading卸载', async () => {
+  context.auth.user = { id: profile.id }
+  context.api.saveSettings.mockResolvedValue({ enabled: false, show_likes: false })
+  const root = mount(PublicProfileSettings)
+  await settle()
+  const form = all(root).find(node => node.tag === 'form')
+  let finish
+  context.api.getSettings.mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
+  const pending = form.props.onSubmit({ preventDefault() {} })
+  await settle()
+  expect(all(root).find(node => node.tag === 'form')).toBe(form)
+  expect(textOf(root)).toContain('保存中')
+  finish({ enabled: false, show_likes: false })
+  await pending
+  await settle()
+  expect(textOf(root)).toContain('公开设置已保存')
+})
+
+it('设置保存仅在服务端核对成功后通知授权变更，核对失败不发送', async () => {
+  context.auth.user = { id: profile.id }
+  context.api.saveSettings.mockResolvedValue({ enabled: false, show_likes: false })
+  const changed = vi.fn()
+  const root = mount({ render: () => h(PublicProfileSettings, { onVisibilityChanged: changed }) })
+  await settle()
+  const submit = () => all(root).find(node => node.tag === 'form').props.onSubmit({ preventDefault() {} })
+  expect(changed).not.toHaveBeenCalled()
+  await submit()
+  await settle()
+  expect(changed).toHaveBeenCalledExactlyOnceWith(profile.id)
+  context.api.getSettings.mockRejectedValueOnce(new Error('核对失败'))
+  await submit()
+  await settle()
+  expect(changed).toHaveBeenCalledOnce()
+})
+
+it('关注与粉丝返回已打开标签复用当前账号缓存', async () => {
+  context.auth.user = { id: profile.id }
+  const props = reactive({ kind: 'following' })
+  const root = mount({ render: () => h(AccountConnections, props) })
+  await settle()
+  props.kind = 'followers'
+  await settle()
+  props.kind = 'following'
+  await settle()
+  expect(context.api.getConnections).toHaveBeenCalledTimes(2)
+  expect(textOf(root)).not.toContain('正在加载关注')
+})
+
 it('自定义开关保留喜欢的依赖禁用与两项设置真实保存值', async () => {
   context.auth.user = { id: profile.id }
   context.api.saveSettings.mockResolvedValue({ enabled: true, show_likes: true })
@@ -298,6 +348,8 @@ it('切换主页内容只加载列表，头像昵称与关注按钮不会被整�
   await settle()
   expect(textOf(root)).toContain('公开甲')
   expect(textOf(root)).toContain('正在加载壁纸内容')
+  expect(all(root).some(node => node.props.class === 'content-loading')).toBe(false)
+  expect(all(root).filter(node => node.props.class === 'profile-skeleton__person')).toHaveLength(4)
   expect(button(root, '关注')).toBeTruthy()
   expect(context.api.getProfile).toHaveBeenCalledTimes(1)
   finish({ items: [], has_more: false })
@@ -305,8 +357,156 @@ it('切换主页内容只加载列表，头像昵称与关注按钮不会被整�
   expect(textOf(root)).toContain('公开甲')
 })
 
+it('首次打开喜欢使用图片骨架并保留旧内容高度，返回缓存直接显示', async () => {
+  const root = mount(PublicProfile)
+  await settle()
+  const panel = all(root).find(node => node.props.role === 'tabpanel')
+  panel.getBoundingClientRect = () => ({ height: 640 })
+  let finish
+  context.api.getWallpapers.mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
+  context.route.query.tab = 'likes'
+  await settle()
+  expect(all(root).some(node => node.props.class === 'content-loading')).toBe(false)
+  expect(all(root).filter(node => node.props.class === 'profile-skeleton__image')).toHaveLength(6)
+  expect(panel.props.style.minHeight).toBe('640px')
+  finish({ items: [], has_more: false })
+  await settle()
+  expect(panel.props.style.minHeight).toBe('380px')
+  expect(all(root).filter(node => node.props.class === 'profile-skeleton__image')).toHaveLength(0)
+})
 
-it('公开设置完整响应前只显示模块loading，不提前渲染表单和标题', async () => {
+it('页面重新可见保留同一身份，公开内容须等待权限重新核对', async () => {
+  const root = mount(PublicProfile)
+  await settle()
+  const identity = all(root).find(node => node.tag === 'header')
+  document.visibilityState = 'hidden'
+  document.dispatchEvent(new Event('visibilitychange'))
+  await settle()
+  expect(all(root).find(node => node.tag === 'header') === identity).toBe(true)
+  expect(textOf(root)).not.toContain('还没有公开收藏夹')
+  let finishProfile
+  context.api.getProfile.mockImplementationOnce(() => new Promise(resolve => { finishProfile = resolve }))
+  const requests = context.api.getWallpapers.mock.calls.length
+  document.visibilityState = 'visible'
+  document.dispatchEvent(new Event('visibilitychange'))
+  await settle()
+  expect(textOf(root)).toContain('公开甲')
+  expect(textOf(root)).not.toContain('正在加载公开主页')
+  expect(context.api.getWallpapers).toHaveBeenCalledTimes(requests)
+  finishProfile(null)
+  await settle()
+  expect(textOf(root)).not.toContain('公开甲')
+  expect(textOf(root)).toContain('这个主页尚未公开')
+  expect(context.api.getWallpapers).toHaveBeenCalledTimes(requests)
+})
+
+it('返回已打开的公开主页标签立即恢复内容，不再次清空和请求', async () => {
+  context.api.getWallpapers.mockResolvedValueOnce({ items: [], has_more: false })
+  const root = mount(PublicProfile)
+  await settle()
+  const identity = all(root).find(node => node.tag === 'header')
+  context.route.query.tab = 'following'
+  await settle()
+  context.route.query.tab = 'collections'
+  await settle()
+  expect(context.api.getWallpapers).toHaveBeenCalledTimes(1)
+  expect(textOf(root)).not.toContain('正在加载壁纸内容')
+  expect(textOf(root)).toContain('还没有公开收藏夹')
+  expect(all(root).find(node => node.tag === 'header')).toBe(identity)
+})
+
+it('快速切换标签会取消旧请求，旧响应不会污染新标签缓存', async () => {
+  let finishFollowing
+  let followingSignal
+  context.api.getConnections.mockImplementation((id, kind, { signal }) => {
+    if (kind === 'following') {
+      followingSignal = signal
+      return new Promise(resolve => { finishFollowing = resolve })
+    }
+    return Promise.resolve({ items: [], has_more: false })
+  })
+  const root = mount(PublicProfile)
+  await settle()
+  context.route.query.tab = 'following'
+  await settle()
+  context.route.query.tab = 'followers'
+  await settle()
+  expect(followingSignal.aborted).toBe(true)
+  finishFollowing({ items: [{ id: 'late-person' }], has_more: true })
+  await settle()
+  expect(textOf(root)).toContain('还没有公开粉丝')
+  expect(textOf(root)).not.toContain('下一页')
+  context.route.query.tab = 'collections'
+  await settle()
+  expect(context.api.getWallpapers).toHaveBeenCalledTimes(1)
+})
+
+it('同一用户重新核对主页权限时保留头像标题，账号变化立即清空旧身份', async () => {
+  context.auth.user = { id: '22222222-2222-4222-8222-222222222222' }
+  context.auth.isAuthenticated = true
+  const root = mount(PublicProfile)
+  await settle()
+  const identity = all(root).find(node => node.tag === 'header')
+  let finishProfile
+  context.api.getProfile.mockImplementationOnce(() => new Promise(resolve => { finishProfile = resolve }))
+  context.api.setFollowing.mockResolvedValue({ following: true, followers_count: null })
+  const following = button(root, '关注').props.onClick()
+  await settle()
+  expect(all(root).find(node => node.tag === 'header')).toBe(identity)
+  expect(textOf(root)).not.toContain('正在加载公开主页')
+  finishProfile({ ...profile, is_following: true })
+  await following
+  await settle()
+  context.api.getProfile.mockImplementationOnce(() => new Promise(() => {}))
+  context.auth.user = { id: '33333333-3333-4333-8333-333333333333' }
+  await settle()
+  expect(textOf(root)).not.toContain('公开甲')
+})
+
+it('局部刷新失败保留已有内容并返回失败状态，授权范围变化不能读旧缓存', async () => {
+  const current = reactive({ actor: '甲', tab: 'collections' })
+  let request
+  const load = vi.fn().mockResolvedValue({ label: '甲的收藏夹' })
+  const root = mount({ setup() {
+    request = useCommunityRequest(() => current.tab, load, { cache: true, cacheScope: () => current.actor, retainDataOnRefresh: true })
+    return () => h('div', `${request.state.value.status}:${request.state.value.data?.label || ''}`)
+  } })
+  await settle()
+  let fail
+  load.mockImplementationOnce(() => new Promise((_, reject) => { fail = reject }))
+  const refreshing = request.refresh()
+  await settle()
+  expect(textOf(root)).toBe('loading:甲的收藏夹')
+  fail(new Error('offline'))
+  expect((await refreshing).status).toBe('error')
+  expect(textOf(root)).toBe('error:甲的收藏夹')
+  load.mockImplementationOnce(() => new Promise(() => {}))
+  current.actor = '乙'
+  await settle()
+  expect(textOf(root)).toBe('loading:')
+})
+
+it('页面隐藏清空标签缓存，重新可见后重新核对数据', async () => {
+  let request
+  const load = vi.fn().mockResolvedValue({ label: '已公开' })
+  const root = mount({ setup() {
+    request = useCommunityRequest(() => ['甲', 'collections'], load, { cache: true })
+    return () => h('div', `${request.state.value.status}:${request.state.value.data?.label || ''}`)
+  } })
+  await settle()
+  document.visibilityState = 'hidden'
+  document.dispatchEvent(new Event('visibilitychange'))
+  await settle()
+  expect(textOf(root)).toBe('idle:')
+  document.visibilityState = 'visible'
+  document.dispatchEvent(new Event('visibilitychange'))
+  await settle()
+  expect(load).toHaveBeenCalledTimes(2)
+  expect(textOf(root)).toBe('ready:已公开')
+})
+
+
+it('公开设置等待时显示静态控件骨架，不提前渲染可操作表单', async () => {
   context.auth.user = { id: profile.id }
   let finishSettings
   let finishCollections
@@ -316,6 +516,8 @@ it('公开设置完整响应前只显示模块loading，不提前渲染表单和
   await settle()
   expect(textOf(root)).toContain('正在读取公开设置')
   expect(all(root).some(node => node.tag === 'h2' || node.tag === 'form')).toBe(false)
+  expect(all(root).some(node => node.props.class === 'public-settings__skeleton')).toBe(true)
+  expect(all(root).some(node => node.props.class === 'content-loading')).toBe(false)
   finishSettings({ enabled: false, show_likes: false })
   await settle()
   expect(textOf(root)).toContain('正在读取公开设置')
@@ -326,17 +528,33 @@ it('公开设置完整响应前只显示模块loading，不提前渲染表单和
   expect(all(root).filter(node => node.props?.role === 'option').map(node => node.props.value)).toEqual(['private', 'public'])
 })
 
-it('关注和粉丝请求完成前使用同一居中loading容器', async () => {
+it('关注和粉丝等待时显示人卡骨架，真实内容到达移除骨架', async () => {
   context.auth.user = { id: profile.id }
   let finish
   context.api.getConnections.mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
   const root = mount({ setup: () => () => h(AccountConnections, {kind: 'followers'}) })
   await settle()
-  expect(all(root).some(node => node.props.class === 'content-loading')).toBe(true)
+  expect(all(root).some(node => node.props.class === 'content-loading')).toBe(false)
+  expect(all(root).some(node => node.props.class === 'account-connections__skeleton')).toBe(true)
   expect(textOf(root)).toContain('正在加载粉丝')
   finish({ items: [], has_more: false })
   await settle()
   expect(textOf(root)).toContain('还没有公开粉丝')
   expect(textOf(root)).not.toContain('正在加载粉丝')
   expect(textOf(root)).not.toContain('发现壁纸同好')
+})
+
+it('关注权限请求迟到后不会改用新标签发送关系请求', async () => {
+  context.auth.user = { id: profile.id }
+  let finishOld
+  context.api.getProfile.mockImplementationOnce(() => new Promise(resolve => { finishOld = resolve }))
+  const props = reactive({ kind: 'following' })
+  mount({ render: () => h(AccountConnections, props) })
+  await settle()
+  props.kind = 'followers'
+  await settle()
+  finishOld({ ...profile })
+  await settle()
+  expect(context.api.getConnections).toHaveBeenCalledTimes(1)
+  expect(context.api.getConnections.mock.calls[0][1]).toBe('followers')
 })

@@ -114,7 +114,7 @@ it('动态详情与预览一样静音循环播放，不输出原生控制条', a
   expect(video).toMatch(/\splaysinline(?:[\s=>])/)
   const mediaClass = html.match(/<section class="([^"]+)" aria-label=/)?.[1].split(' ')
   expect(mediaClass).toEqual(expect.arrayContaining(['detail-media', 'is-video']))
-  expect(html).toContain('正在加载视频')
+  expect(video).toContain('poster="https://img.061129.xyz/thumbnail/video/desktop/lake.png"')
   expect(html).toContain('aria-busy="true"')
 })
 

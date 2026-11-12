@@ -301,8 +301,9 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.5);
+  justify-content: flex-end;
+  padding-bottom: 12px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.52), transparent 55%);
   opacity: 0;
   transition: opacity 180ms ease-out;
 }
@@ -316,7 +317,7 @@ onMounted(() => {
 
 .overlay-content {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   gap: $spacing-sm;
   color: white;
@@ -326,15 +327,15 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 56px;
-  height: 56px;
-  background: rgba(255, 255, 255, 0.2);
+  width: 24px;
+  height: 24px;
+  background: transparent;
   border-radius: $radius-full;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: none;
 
   svg {
-    width: 28px;
-    height: 28px;
+    width: 18px;
+    height: 18px;
   }
 }
 
@@ -348,7 +349,7 @@ onMounted(() => {
   position: absolute;
   bottom: $spacing-xs;
   left: $spacing-xs;
-  right: $spacing-xs;
+  width: fit-content;
   z-index: 4;
   display: none;
   align-items: center;

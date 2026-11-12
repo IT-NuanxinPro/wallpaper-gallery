@@ -21,15 +21,17 @@ it('游客操作提示并带原专题redirect登录，不将游客状态改为�
   expect(message.error).not.toHaveBeenCalled()
 })
 
-it('未处理失败有反馈，store已反馈失败不重复，成功不误导航', async () => {
+it('未处理失败有反馈，按钮已就近反馈时不重复，成功不误导航', async () => {
   const router = { push: vi.fn() }
   const message = { info: vi.fn(), error: vi.fn() }
   const wrap = createInteractionFeedback({ router, getRedirect: () => '/wallpaper/token', message })
   expect(await wrap(async () => { throw new Error('private error') })()).toEqual({ success: false })
   await wrap(async () => ({ success: false }))()
-  await wrap(async () => ({ success: false, error: new Error('store-handled') }))()
+  await wrap(async () => ({ success: false, error: new Error('local-handled'), feedbackHandled: true }))()
+  await wrap(async () => ({ success: false, error: new Error('Failed to fetch') }))()
   await wrap(async () => ({ success: true, liked: true }))()
-  expect(message.error).toHaveBeenCalledTimes(2)
+  expect(message.error).toHaveBeenCalledTimes(3)
+  expect(message.error).toHaveBeenCalledWith('网络连接异常，请检查网络后重试')
   expect(router.push).not.toHaveBeenCalled()
 })
 

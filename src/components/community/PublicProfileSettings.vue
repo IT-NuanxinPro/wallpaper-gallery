@@ -1,7 +1,6 @@
 <script setup>
 import { ElOption, ElSelect, ElSwitch } from 'element-plus'
 import { onBeforeUnmount, reactive, ref, watch } from 'vue'
-import ContentLoading from '@/components/common/feedback/ContentLoading.vue'
 import { communityService } from '@/services/communityService'
 import { useAuthStore } from '@/stores/auth'
 import { useCommunityRequest } from '@/utils/community/useCommunityRequest'
@@ -10,6 +9,7 @@ import 'element-plus/es/components/select/style/css'
 import 'element-plus/es/components/option/style/css'
 import './community-page.css'
 
+const emit = defineEmits(['visibilityChanged'])
 const auth = useAuthStore()
 const page = ref(0)
 const draft = reactive({ enabled: false, show_likes: false })
@@ -17,18 +17,21 @@ const saving = ref(false)
 const needsVerification = ref(false)
 const feedback = ref('')
 let mounted = true
-const { state, refresh } = useCommunityRequest(() => [auth.user?.id, page.value], async (signal) => {
+const { state, refresh, invalidateCache } = useCommunityRequest(() => [auth.user?.id, page.value], async (signal) => {
   feedback.value = ''
   if (!auth.user?.id)
     return null
   const [settings, collections] = await Promise.all([communityService.getSettings({ signal }), communityService.getMyCollections({ signal, offset: page.value * 24 })])
   return { settings, collections }
-})
+}, { cache: true, cacheScope: () => auth.user?.id, retainDataOnRefresh: true })
 watch(() => state.value.data?.settings, (settings) => {
   Object.assign(draft, settings || { enabled: false, show_likes: false })
 }, { immediate: true })
 watch(() => auth.user?.id, () => {
   needsVerification.value = false
+  saving.value = false
+  feedback.value = ''
+  page.value = 0
 }, { flush: 'sync' })
 
 function markUnconfirmed() {
@@ -44,6 +47,7 @@ async function refreshSettings() {
   if (state.value.status === 'ready' && state.value.data) {
     needsVerification.value = false
     feedback.value = '已重新读取最新设置，请核对后再保存。'
+    emit('visibilityChanged', actor)
   }
   else if (needsVerification.value) {
     markUnconfirmed()
@@ -61,12 +65,16 @@ async function save(operation, success) {
     await operation(actor)
     if (!mounted || actor !== auth.user?.id || state.value !== current)
       return
+    invalidateCache()
     await refresh()
     if (mounted && actor === auth.user?.id) {
-      if (state.value.status === 'ready' && state.value.data)
+      if (state.value.status === 'ready' && state.value.data) {
         feedback.value = success
-      else
+        emit('visibilityChanged', actor)
+      }
+      else {
         markUnconfirmed()
+      }
     }
   }
   catch {
@@ -74,7 +82,8 @@ async function save(operation, success) {
       markUnconfirmed()
   }
   finally {
-    saving.value = false
+    if (mounted && actor === auth.user?.id)
+      saving.value = false
   }
 }
 
@@ -88,37 +97,51 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <article class="public-settings">
-    <ContentLoading v-if="state.status === 'loading'" label="正在读取公开设置" />
-    <div v-else-if="state.status === 'error'" role="status">
+  <article class="public-settings" :aria-busy="state.status === 'loading'">
+    <div v-if="state.status === 'loading' && !state.data" class="public-settings__skeleton" role="status" aria-label="正在读取公开设置">
+      <span class="public-settings__note">正在读取公开设置</span>
+      <div class="settings-placeholder" aria-hidden="true">
+        <i class="settings-placeholder__title" />
+        <i class="settings-placeholder__description" />
+        <div v-for="index in 2" :key="index" class="settings-placeholder__row">
+          <div><i /><i /></div><i class="settings-placeholder__toggle" />
+        </div>
+        <i class="settings-placeholder__button" />
+        <i class="settings-placeholder__section" />
+        <div class="settings-placeholder__row">
+          <div><i /><i /></div><i class="settings-placeholder__select" />
+        </div>
+      </div>
+    </div>
+    <div v-else-if="state.status === 'error' && !state.data" role="status">
       <p>公开设置暂时无法读取。</p><button v-if="!needsVerification" class="community-button" @click="refreshSettings">
         重试
       </button>
     </div>
     <template v-else-if="state.data">
-      <div class="public-settings__intro public-settings__reveal">
+      <div class="public-settings__intro">
         <h2>公开主页</h2>
         <p class="public-settings__note">
           默认关闭。发布后展示昵称、头像、签名和公开关注关系；邮箱与登录信息始终私密。
         </p>
       </div>
       <div class="public-settings__panels">
-        <form class="public-settings__reveal" style="--reveal-delay: 0.2s" @submit.prevent="save(actor => communityService.saveSettings({ ...draft }, actor), '公开设置已保存。')">
+        <form @submit.prevent="save(actor => communityService.saveSettings({ ...draft }, actor), '公开设置已保存。')">
           <div class="public-settings__switch">
-            <span><strong>发布我的主页</strong><small>关闭后隐藏主页、喜欢与收藏。</small></span><ElSwitch v-model="draft.enabled" aria-label="发布我的主页" :disabled="saving || needsVerification" />
+            <span><strong>发布我的主页</strong><small>关闭后隐藏主页、喜欢与收藏。</small></span><ElSwitch v-model="draft.enabled" aria-label="发布我的主页" :disabled="state.status !== 'ready' || saving || needsVerification" />
           </div>
           <div class="public-settings__switch">
-            <span><strong>展示我的喜欢</strong><small>单独授权，在公开主页展示。</small></span><ElSwitch v-model="draft.show_likes" aria-label="展示我的喜欢" :disabled="saving || needsVerification || !draft.enabled" />
+            <span><strong>展示我的喜欢</strong><small>单独授权，在公开主页展示。</small></span><ElSwitch v-model="draft.show_likes" aria-label="展示我的喜欢" :disabled="state.status !== 'ready' || saving || needsVerification || !draft.enabled" />
           </div>
           <div class="public-settings__actions">
-            <button class="community-button public-settings__save" type="submit" :disabled="saving || needsVerification">
+            <button class="community-button public-settings__save" type="submit" :disabled="state.status !== 'ready' || saving || needsVerification">
               {{ saving ? '保存中…' : '保存公开设置' }}
             </button><RouterLink v-if="state.data.settings.enabled" :to="`/people/${auth.user.id}`">
               查看我的主页 ↗
             </RouterLink>
           </div>
         </form>
-        <div class="public-settings__collections public-settings__reveal" style="--reveal-delay: 0.4s">
+        <div class="public-settings__collections">
           <h3>收藏夹可见性</h3><p class="public-settings__note">
             选择「公开」后会在已发布的主页展示；选择「私有」则仅自己可见。
           </p>
@@ -126,7 +149,7 @@ onBeforeUnmount(() => {
             还没有收藏夹，先去壁纸库收藏喜欢的画面。
           </p>
           <div v-for="collection in state.data.collections.items" :key="collection.id" class="public-settings__collection">
-            <label :for="`visibility-${collection.id}`">{{ collection.name }}</label><ElSelect :id="`visibility-${collection.id}`" :model-value="collection.visibility" :aria-label="`${collection.name}的可见性`" :disabled="saving || needsVerification" @change="saveVisibility(collection, $event)">
+            <label :for="`visibility-${collection.id}`">{{ collection.name }}</label><ElSelect :id="`visibility-${collection.id}`" :model-value="collection.visibility" :aria-label="`${collection.name}的可见性`" :disabled="state.status !== 'ready' || saving || needsVerification" @change="saveVisibility(collection, $event)">
               <ElOption value="private" label="私有" />
               <ElOption value="public" label="公开" />
             </ElSelect>
@@ -141,6 +164,14 @@ onBeforeUnmount(() => {
         </div>
       </div>
     </template>
+    <p v-if="state.data && state.status === 'loading' && !saving" class="public-settings__note" role="status">
+      正在更新公开设置…
+    </p>
+    <p v-if="state.data && state.status === 'error' && !needsVerification" class="public-settings__note" role="status">
+      暂时无法更新设置，已保留上次内容。<button class="community-button" @click="refreshSettings">
+        重试
+      </button>
+    </p>
     <p v-if="feedback" role="status" aria-live="polite" class="public-settings__note">
       {{ feedback }}
     </p>
@@ -153,8 +184,11 @@ onBeforeUnmount(() => {
 <style scoped>
 .public-settings {
   container-type: inline-size;
-  min-height: 430px;
-  align-self: start;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  min-height: 392px;
+  align-self: stretch;
   border: 1px solid rgba(255, 255, 255, 0.58);
   border-radius: 28px;
   padding: 18px;
@@ -166,25 +200,74 @@ onBeforeUnmount(() => {
     inset 0 1px 0 rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(18px);
 }
-.public-settings > .content-loading {
-  min-height: 392px;
+.public-settings__skeleton {
+  min-height: 354px;
 }
-.public-settings__reveal {
-  animation: public-settings-enter 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
-  animation-delay: var(--reveal-delay, 0s);
+.settings-placeholder i {
+  display: block;
+  height: 12px;
+  border-radius: 6px;
+  background: var(--color-bg-hover);
 }
-@keyframes public-settings-enter {
+.settings-placeholder .settings-placeholder__title {
+  width: 110px;
+  height: 20px;
+  margin: 18px 0;
+}
+.settings-placeholder__description {
+  width: 90%;
+  margin-bottom: 20px;
+}
+.settings-placeholder__row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 0;
+}
+.settings-placeholder__row > div {
+  flex: 1;
+}
+.settings-placeholder__row > div i {
+  width: 48%;
+}
+.settings-placeholder__row > div i + i {
+  width: 84%;
+  height: 10px;
+  margin-top: 10px;
+}
+.settings-placeholder .settings-placeholder__toggle {
+  width: 40px;
+  height: 20px;
+  border-radius: 12px;
+}
+.settings-placeholder .settings-placeholder__button {
+  width: 120px;
+  height: 40px;
+  margin: 18px 0 24px;
+}
+.settings-placeholder__section {
+  width: 120px;
+  margin: 18px 0;
+}
+.settings-placeholder .settings-placeholder__select {
+  width: 120px;
+  height: 40px;
+}
+.public-settings__intro,
+.public-settings__panels {
+  animation: settings-content-enter 140ms ease-out;
+}
+@keyframes settings-content-enter {
   from {
-    opacity: 0;
-    transform: translateY(12px);
+    opacity: 0.65;
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .public-settings__reveal {
+  .public-settings__intro,
+  .public-settings__panels {
     animation: none;
   }
 }

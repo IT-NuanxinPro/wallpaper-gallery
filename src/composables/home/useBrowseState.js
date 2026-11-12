@@ -76,7 +76,7 @@ function compactQuery(state, series) {
 }
 
 // URL 保存筛选/身份，sessionStorage 只保存同一结果列表的分页与滚动位置。
-export function useBrowseState({ route, router, filterStore, currentSeries, results, resultsReady, categories, categoriesReady, gridReady }) {
+export function useBrowseState({ route, router, filterStore, currentSeries, results, resultsReady, categories, categoriesReady, gridReady, onRestored }) {
   const minimumDisplayCount = ref(20)
   const restoring = ref(true)
   let displayCount = 20
@@ -204,7 +204,10 @@ export function useBrowseState({ route, router, filterStore, currentSeries, resu
     pending = null
     restoring.value = false
     await writeQuery({ ...request.state, image: '' }, true)
+    if (disposed || request.generation !== version)
+      return
     applying = false
+    onRestored?.()
   }
 
   watch(() => route.fullPath, () => {

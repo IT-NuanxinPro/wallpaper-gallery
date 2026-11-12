@@ -30,7 +30,7 @@ export function useSearchSuggestions({ modelValue, wallpapers }) {
   })
 
   const shouldShowSuggestions = computed(() => {
-    return showSuggestions.value && isFocused.value && suggestions.value.length > 0
+    return showSuggestions.value && isFocused.value && Boolean(normalizeWallpaperQuery(localValue.value))
   })
 
   watch(() => modelValue.value, (val) => {

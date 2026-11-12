@@ -41,6 +41,33 @@ beforeEach(() => {
 afterEach(() => { cleanups.splice(0).forEach(fn => fn()); vi.useRealTimers(); vi.unstubAllGlobals() })
 
 describe('浏览参数校验与恢复', () => {
+  it('只有分页和滚动恢复完成后才通知视觉交接，未就绪及离开期间不通知', async () => {
+    const filters = reactive({
+      searchQuery: '', debouncedQuery: '', exactSearchValue: '', sortBy: 'newest', categoryFilter: 'all',
+      subcategoryFilter: 'all', formatFilter: 'all', resolutionFilter: 'all',
+      clearExactSearch() { this.exactSearchValue = '' },
+      setExactSearch(label, key) { this.searchQuery = label; this.exactSearchValue = key },
+    })
+    const gridReady = ref(false)
+    const observations = []
+    const route = reactive({ path: '/desktop', fullPath: '/desktop', query: {}, hash: '' })
+    const browse = mount(() => useBrowseState({
+      route, router: { replace() {}, push() {} }, filterStore: filters, currentSeries: ref('desktop'),
+      results: ref([item('a')]), resultsReady: ref(true), categories: ref([]), categoriesReady: ref(true), gridReady,
+      onRestored: () => observations.push(window.scrollTo.mock.calls.at(-1)?.[0]),
+    }))
+    await flush()
+    expect(observations).toEqual([])
+    gridReady.value = true
+    await flush()
+    expect(observations).toEqual([{ top: 0, behavior: 'instant' }])
+    browse.leave()
+    gridReady.value = false
+    gridReady.value = true
+    await flush()
+    expect(observations).toHaveLength(1)
+  })
+
   it('详情往返保留列表实例和分页，后台冻结列表路由；激活后仍可筛选与切系列', async () => {
     let browse, listRoute, setups = 0, unmounts = 0
     const dataReady = ref(true)

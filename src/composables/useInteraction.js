@@ -2,7 +2,7 @@ import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useInteractionStore } from '@/stores/interaction'
-import { resolveWallpaperSeries } from '@/utils/wallpaper/identity'
+import { buildWallpaperAssetKey, resolveWallpaperSeries } from '@/utils/wallpaper/identity'
 
 /**
  * 为单个壁纸卡片提供交互逻辑（喜欢/收藏）
@@ -15,6 +15,11 @@ export function useInteraction(wallpaper, series) {
   const { isAuthenticated } = storeToRefs(authStore)
 
   const currentSeries = computed(() => resolveWallpaperSeries(wallpaper.value, series.value || ''))
+  const assetKey = computed(() => buildWallpaperAssetKey(wallpaper.value, currentSeries.value))
+  const likePending = computed(() => interactionStore.isPending(`like:${assetKey.value}`))
+  const collectPending = computed(() => interactionStore.isPending(`collect:${assetKey.value}`))
+  const likeError = computed(() => interactionStore.getOperationError(`like:${assetKey.value}`))
+  const collectError = computed(() => interactionStore.getOperationError(`collect:${assetKey.value}`))
 
   const liked = computed(() =>
     isAuthenticated.value && interactionStore.isLiked(wallpaper.value, currentSeries.value),
@@ -43,6 +48,10 @@ export function useInteraction(wallpaper, series) {
   return {
     liked,
     collected,
+    likePending,
+    collectPending,
+    likeError,
+    collectError,
     isAuthenticated,
     toggleLike,
     toggleCollect,

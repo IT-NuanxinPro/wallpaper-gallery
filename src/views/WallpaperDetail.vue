@@ -10,6 +10,7 @@ import DevicePreviewStage from '@/components/wallpaper/device-preview/DevicePrev
 import WallpaperImageStage from '@/components/wallpaper/shared/WallpaperImageStage.vue'
 import VideoWallpaperPlayer from '@/components/wallpaper/VideoWallpaperPlayer.vue'
 import WallpaperDetailStats from '@/components/wallpaper/WallpaperDetailStats.vue'
+import { useCopyFeedback } from '@/composables/useCopyFeedback'
 import { useImageFallback } from '@/composables/useImageFallback'
 import { useInteraction } from '@/composables/useInteraction'
 import { useInteractionPrefetch } from '@/composables/useInteractionPrefetch'
@@ -23,6 +24,7 @@ import { createInteractionFeedback } from '@/utils/interaction/feedback'
 import { applyWallpaperDetailSeo } from '@/utils/seo/wallpaperDetail'
 import { getBrowseReturn, isBrowseReturnPath } from '@/utils/wallpaper/browseReturn'
 import { getRelatedWallpapers, getWallpaperDetailSeo, isTrustedWallpaperDetailUrl } from '@/utils/wallpaper/detailRecords'
+import { getWallpaperTransitionPreview } from '@/utils/wallpaper/detailTransition'
 import { getPreviewMode } from '@/utils/wallpaper/devicePreview'
 import { getWallpaperDisplayTitle } from '@/utils/wallpaper/displayTitle'
 import { getWallpaperCardAspectRatio } from '@/utils/wallpaper/mediaPresentation'
@@ -40,6 +42,7 @@ const cropOpen = ref(false)
 const catalog = ref([])
 const mediaFailed = ref(false)
 const mediaAttempt = ref(0)
+const transitionPreview = ref('')
 const serverToken = String(route.params.token || '')
 const serverArticle = typeof document === 'undefined' ? null : document.querySelector('[data-wallpaper-detail]')
 const initialDetail = readInitialWallpaperDetail(serverToken)
@@ -57,12 +60,13 @@ const imageResolution = computed(() => record.value?.previewResolution || record
 const { displayUrl, advance, reset } = useImageFallback(primarySource)
 const hasServerPreview = computed(() => Boolean(initialImageSource && record.value?.assetKey === initialDetail?.record.assetKey
   && new URL(displayUrl.value, globalThis.location?.href || 'https://wallpaper.061129.xyz').href === initialImageSource))
-const { liked, collected, isAuthenticated, toggleLike, toggleCollect } = useInteraction(record, series)
+const { liked, collected, likePending, collectPending, likeError, collectError, isAuthenticated, toggleLike, toggleCollect } = useInteraction(record, series)
 const { stats, loading: statsLoading, failed: statsFailed, refresh: refreshStats, afterSuccessful } = useWallpaperStats(record)
 const withFeedback = createInteractionFeedback({ router, getRedirect: () => route.fullPath, message: ElMessage })
 const handleLike = withFeedback(afterSuccessful(toggleLike))
 const handleCollect = withFeedback(afterSuccessful(toggleCollect))
-const { downloading, downloadLabel, downloadPercent, canCancelDownload, handleDownload, cancelDownload } = useWallpaperDownload(record, series, { onRecorded: refreshStats })
+const { downloading, downloadStatus, downloadLabel, downloadFeedback, downloadPercent, canCancelDownload, handleDownload, cancelDownload, resetDownload } = useWallpaperDownload(record, series, { onRecorded: refreshStats })
+const { pending: copying, label: copyLabel, feedback: copyFeedback, run: copyLink, reset: resetCopy } = useCopyFeedback(() => copyText(buildWallpaperShareUrl(record.value)))
 useInteractionPrefetch(() => record.value ? [record.value] : [])
 const related = computed(() => record.value ? getRelatedWallpapers(record.value, catalog.value).filter(item => isTrustedWallpaperDetailUrl(item.thumbnailUrl)) : [])
 const dimensionLabel = computed(() => record.value?.resolution ? `${record.value.resolution.width} × ${record.value.resolution.height}` : '尺寸信息未提供')
@@ -77,6 +81,7 @@ const loader = createWallpaperDetailLoader({
     catalogController?.abort()
     catalog.value = []
     if (state.record) {
+      transitionPreview.value = getWallpaperTransitionPreview(state.record.assetKey, route.fullPath)
       applyWallpaperDetailSeo(state.record)
       const embedded = initialDetail?.record.assetKey === state.record.assetKey ? initialDetail : null
       if (embedded)
@@ -110,7 +115,12 @@ const loader = createWallpaperDetailLoader({
 })
 
 watch(() => route.params.token, (token) => {
-  cancelDownload()
+  if (resetDownload)
+    resetDownload()
+  else
+    cancelDownload()
+  resetCopy()
+  transitionPreview.value = ''
   if (String(token || '') !== serverToken) {
     clearServerContent()
   }
@@ -153,15 +163,6 @@ function videoReady(event) {
 function videoError() {
   ready.value = false
   mediaFailed.value = true
-}
-
-async function copyLink() {
-  try {
-    if (!await copyText(buildWallpaperShareUrl(record.value)))
-      throw new Error('Missing share link')
-    ElMessage.success({ message: '分享链接已复制', appendTo: document.body, zIndex: 11000, duration: 2500, grouping: true })
-  }
-  catch { ElMessage.error('复制失败，请复制浏览器地址') }
 }
 
 function retryMedia() {
@@ -223,6 +224,7 @@ function returnToList() {
               v-if="record.mediaType === 'video'"
               :key="record.assetKey"
               class="detail-video-player"
+              :data-wallpaper-detail-media="record.assetKey"
               :src="record.previewUrl || record.url"
               :poster="record.thumbnailUrl"
               :autoplay="true"
@@ -234,6 +236,8 @@ function returnToList() {
               v-else
               :key="`${record.assetKey}:${displayUrl}:${mediaAttempt}`"
               :src="displayUrl"
+              :placeholder-src="transitionPreview"
+              :data-wallpaper-detail-media="record.assetKey"
               :class="{ 'has-server-preview': hasServerPreview }"
               :alt="seo.name"
               :resolution="imageResolution"
@@ -245,6 +249,8 @@ function returnToList() {
             v-else
             :key="`${record.assetKey}:${displayUrl}:${mediaAttempt}`"
             :src="displayUrl"
+            :placeholder-src="transitionPreview"
+            :data-wallpaper-detail-media="record.assetKey"
             :class="{ 'has-server-preview': hasServerPreview }"
             :alt="seo.name"
             :resolution="imageResolution"
@@ -259,7 +265,7 @@ function returnToList() {
             视频暂时无法播放，请稍后重试或下载文件。
           </p>
         </section>
-        <section class="detail-info">
+        <section :key="record.assetKey" class="detail-info detail-info-enter" :class="{ 'detail-info-enter--after-media': transitionPreview }">
           <p class="detail-category">
             {{ seo.seriesName }}<span v-if="record.category"> · {{ record.category }}</span><span v-if="record.subcategory"> / {{ record.subcategory }}</span>
           </p>
@@ -284,21 +290,30 @@ function returnToList() {
             <ElButton type="primary" round class="detail-download-button" :class="{ 'is-downloading': downloading }" :disabled="downloading" :aria-busy="downloading" :style="{ '--download-progress': downloadPercent === null ? '0%' : `${downloadPercent}%` }" @click="handleDownload">
               <svg v-if="!downloading" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 15v5h16v-5" /></svg>
               <span v-if="downloading" class="detail-download-activity" aria-hidden="true"><i /><i /><i /></span>
-              <span class="detail-download-label">{{ downloading ? downloadLabel : '下载文件' }}</span>
+              <span class="detail-download-label">
+                <Transition name="action-label"><span :key="downloading ? 'pending' : downloadStatus">{{ downloadLabel || '下载文件' }}</span></Transition>
+              </span>
             </ElButton>
             <button v-if="canCancelDownload" type="button" class="detail-download-cancel" @click="cancelDownload">
               取消
             </button>
-            <ElButton round @click="copyLink">
-              复制分享链接
+            <ElButton round class="detail-copy-button" :disabled="copying" :aria-busy="copying" @click="copyLink">
+              <span class="detail-copy-label"><Transition name="action-label"><span :key="copyLabel">{{ copyLabel }}</span></Transition></span>
             </ElButton>
             <ElButton v-if="record._series === 'desktop' && record.mediaType === 'image'" round @click="cropOpen = true">
               裁剪壁纸
             </ElButton>
           </div>
+          <p v-if="downloadFeedback || copyFeedback" class="detail-action-feedback" role="status" aria-live="polite">
+            {{ downloadFeedback || copyFeedback }}
+          </p>
           <WallpaperCardActions
             :liked="liked"
             :collected="collected"
+            :like-pending="likePending"
+            :collect-pending="collectPending"
+            :like-error="likeError"
+            :collect-error="collectError"
             :is-authenticated="isAuthenticated"
             :show-counts="false"
             @toggle-like="handleLike"
@@ -344,3 +359,74 @@ function returnToList() {
 </template>
 
 <style src="../assets/styles/wallpaper-detail.css"></style>
+
+<style scoped>
+.detail-info-enter {
+  animation: detail-info-enter 160ms ease-out both;
+}
+
+.detail-info-enter--after-media {
+  animation-delay: 100ms;
+}
+.detail-copy-button {
+  min-width: 124px;
+}
+.detail-download-label,
+.detail-copy-label {
+  display: grid;
+}
+.detail-download-label > span,
+.detail-copy-label > span {
+  grid-area: 1 / 1;
+}
+.action-label-enter-active,
+.action-label-leave-active {
+  transition: opacity 160ms ease;
+}
+.action-label-enter-from,
+.action-label-leave-to {
+  opacity: 0;
+}
+
+.detail-media {
+  animation: detail-media-enter 160ms ease-out both;
+}
+
+.detail-action-feedback {
+  margin: 0 0 12px;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+@keyframes detail-info-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes detail-media-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .detail-info-enter,
+  .detail-media {
+    animation: none;
+  }
+  .action-label-enter-active,
+  .action-label-leave-active {
+    transition: none;
+  }
+}
+</style>

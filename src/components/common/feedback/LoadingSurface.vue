@@ -6,9 +6,10 @@ const props = defineProps({
   busy: { type: Boolean, default: false },
   label: { type: String, default: '正在加载' },
   size: { type: [Number, String], default: 64 },
-  minVisible: { type: Number, default: 240 },
+  minVisible: { type: Number, default: 0 },
+  showDelay: { type: Number, default: 120 },
 })
-const visible = useLoadingSurface(() => props.busy, () => props.minVisible)
+const visible = useLoadingSurface(() => props.busy, () => props.minVisible, () => props.showDelay)
 </script>
 
 <template>

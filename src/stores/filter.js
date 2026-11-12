@@ -2,10 +2,9 @@ import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
 import { debounce } from '@/utils/common/format'
 import { sortByDate, sortByDownloads, sortByName, sortByPopularity, sortBySize, sortByViews } from '@/utils/common/sorting'
-import { RESOLUTION_THRESHOLDS, STORAGE_KEYS, VIDEO_USAGE_SHORT_LABELS } from '@/utils/config/constants'
+import { STORAGE_KEYS, VIDEO_USAGE_SHORT_LABELS } from '@/utils/config/constants'
 import { getDefaultCategoryFilter, hasActiveSeriesFilters } from '@/utils/filter/defaults'
-import { buildWallpaperAssetKey } from '@/utils/wallpaper/identity'
-import { matchesWallpaperQuery } from '@/utils/wallpaper/search'
+import { filterWallpapers } from '@/utils/filter/match'
 import { usePopularityStore } from './popularity'
 
 export const useFilterStore = defineStore('filter', () => {
@@ -28,6 +27,8 @@ export const useFilterStore = defineStore('filter', () => {
 
   watch(searchQuery, (value) => {
     updateDebouncedQuery(value)
+    if (!value)
+      debouncedQuery.value = ''
 
     if (value !== exactSearchLabel.value) {
       exactSearchLabel.value = ''
@@ -118,48 +119,16 @@ export const useFilterStore = defineStore('filter', () => {
   }
 
   function applyFilters(wallpapers, options = {}) {
-    const { skipCategoryFilter = false } = options
-    const isVideoSeries = currentSeriesId.value === 'video'
-    let result = isVideoSeries
-      ? wallpapers.filter(wallpaper => wallpaper.category === 'desktop')
-      : [...wallpapers]
-
-    if (exactSearchValue.value) {
-      const exactValue = exactSearchValue.value
-      result = result.filter(wallpaper => /^(?:desktop|mobile|avatar|video|bing):/.test(exactValue)
-        ? buildWallpaperAssetKey(wallpaper) === exactValue
-        : wallpaper.filename === exactValue)
-    }
-    else if (debouncedQuery.value) {
-      result = result.filter(wallpaper => matchesWallpaperQuery(wallpaper, debouncedQuery.value))
-    }
-
-    if (!isVideoSeries && formatFilter.value !== 'all') {
-      result = result.filter(wallpaper =>
-        (wallpaper.format || '').toLowerCase() === formatFilter.value.toLowerCase(),
-      )
-    }
-
-    if (!isVideoSeries && resolutionFilter.value !== 'all') {
-      result = result.filter((wallpaper) => {
-        const maxSide = Math.max(wallpaper.resolution?.width || 0, wallpaper.resolution?.height || 0)
-        const matchedThreshold = RESOLUTION_THRESHOLDS.find((threshold, index) => {
-          const upperBound = index > 0 ? RESOLUTION_THRESHOLDS[index - 1].minWidth : Number.POSITIVE_INFINITY
-          return maxSide >= threshold.minWidth && maxSide < upperBound
-        })
-        return matchedThreshold?.label === resolutionFilter.value
-      })
-    }
-
-    if (!isVideoSeries && !skipCategoryFilter && categoryFilter.value !== 'all') {
-      result = result.filter(wallpaper => wallpaper.category === categoryFilter.value)
-    }
-
-    if (!isVideoSeries && subcategoryFilter.value !== 'all') {
-      result = result.filter(wallpaper => wallpaper.subcategory === subcategoryFilter.value)
-    }
-
-    return result
+    return filterWallpapers(wallpapers, {
+      currentSeries: currentSeriesId.value,
+      searchQuery: debouncedQuery.value,
+      exactSearchValue: exactSearchValue.value,
+      formatFilter: formatFilter.value,
+      resolutionFilter: resolutionFilter.value,
+      categoryFilter: categoryFilter.value,
+      subcategoryFilter: subcategoryFilter.value,
+      ...options.filters,
+    }, options)
   }
 
   function applySort(wallpapers) {

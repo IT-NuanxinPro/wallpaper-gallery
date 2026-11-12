@@ -46,30 +46,28 @@
 | 事件名称             | 说明            | 追踪数据                                 |
 | -------------------- | --------------- | ---------------------------------------- |
 | `wallpaper_download` | 壁纸下载        | filename, category, series, format, size |
-| `wallpaper_preview`  | 壁纸预览        | filename, category                       |
+| `wallpaper_preview`  | 壁纸预览        | asset_key, filename, category, series    |
 | `search`             | 搜索            | query, results                           |
-| `series_switch`      | 系列切换        | from, to                                 |
-| `view_mode_change`   | 视图模式切换    | mode                                     |
 | `filter_apply`       | 筛选应用        | type, value                              |
 | `theme_change`       | 主题切换        | theme                                    |
 | `diy_avatar_click`   | DIY头像工具点击 | source, target_url                       |
-| `today_pick_click`   | 今日精选点击    | filename, category                       |
 | `back_to_top`        | 返回顶部        | scroll_position                          |
 | `image_crop`         | 图片裁剪        | action, ...                              |
-| `pagination`         | 分页            | page, series, category                   |
-| `fullscreen_toggle`  | 全屏切换        | action                                   |
 
 ### 代码位置
 
-事件追踪函数定义在 `src/utils/analytics.js`，主要集成点：
+事件追踪函数定义在 `src/utils/common/analytics.js`。上表只列出当前页面实际调用的事件，主要集成点：
 
 | 组件/文件                    | 追踪事件                              |
 | ---------------------------- | ------------------------------------- |
-| `WallpaperModal.vue`         | wallpaper_download, wallpaper_preview |
-| `PortraitWallpaperModal.vue` | wallpaper_download, wallpaper_preview |
-| `SearchBar.vue`              | search                                |
-| `useWallpaperType.js`        | series_switch                         |
-| `useViewMode.js`             | view_mode_change                      |
+| `src/composables/useWallpaperDownload.js` | wallpaper_download |
+| `src/composables/usePreviewTracking.js` | wallpaper_preview |
+| `src/components/search/index.vue` | search |
+| `src/components/wallpaper/filter/index.vue` | filter_apply |
+| `src/composables/useTheme.js` | theme_change |
+| `src/components/avatar/DiyAvatarBanner.vue` | diy_avatar_click |
+| `src/components/common/navigation/BackToTop.vue` | back_to_top |
+| `src/components/wallpaper/crop/index.vue` | image_crop |
 
 ---
 
@@ -96,7 +94,7 @@
 
 ### 步骤 1：定义追踪函数
 
-在 `src/utils/analytics.js` 中添加：
+在 `src/utils/common/analytics.js` 中添加：
 
 ```javascript
 export function trackNewEvent(data) {
@@ -111,7 +109,7 @@ export function trackNewEvent(data) {
 
 ```vue
 <script setup>
-import { trackNewEvent } from '@/utils/analytics'
+import { trackNewEvent } from '@/utils/common/analytics'
 
 function handleAction() {
   // 业务逻辑

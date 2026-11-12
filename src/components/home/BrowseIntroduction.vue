@@ -57,7 +57,6 @@ const page = computed(() => SITE_SEO[canonicalizePagePath(props.path)] || SITE_S
 }
 @media (max-width: 767px) {
   .browse-introduction {
-    /* min-height: 200px; */
     align-content: start;
   }
   .browse-introduction-heading {

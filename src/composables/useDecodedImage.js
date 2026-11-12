@@ -8,7 +8,7 @@ export function getMediaAspectRatio(resolution, fallback = '16 / 10') {
     : fallback
 }
 
-export function useDecodedImage(source) {
+export function useDecodedImage(source, { strictDecode = false } = {}) {
   const ready = ref(false)
   const failed = ref(false)
   let version = 0
@@ -28,6 +28,11 @@ export function useDecodedImage(source) {
       await image.decode?.()
     }
     catch {
+      if (strictDecode) {
+        if (currentVersion === version)
+          failed.value = true
+        return false
+      }
       // 已完成加载的图片在部分浏览器中不支持 decode，保留原生 load 回退。
     }
     if (currentVersion !== version || !image.naturalWidth)
