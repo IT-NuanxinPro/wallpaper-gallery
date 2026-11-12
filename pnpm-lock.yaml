@@ -30,8 +30,8 @@ importers:
         specifier: ^1.5.4
         version: 1.5.4
       swiper:
-        specifier: ^12.0.3
-        version: 12.0.3
+        specifier: ^12.1.2
+        version: 12.1.2
       vant:
         specifier: ^4.9.22
         version: 4.9.22(vue@3.5.26(typescript@5.9.3))
@@ -2795,8 +2795,8 @@ packages:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
     engines: {node: '>=8'}
 
-  swiper@12.0.3:
-    resolution: {integrity: sha512-BHd6U1VPEIksrXlyXjMmRWO0onmdNPaTAFduzqR3pgjvi7KfmUCAm/0cj49u2D7B0zNjMw02TSeXfinC1hDCXg==}
+  swiper@12.1.2:
+    resolution: {integrity: sha512-4gILrI3vXZqoZh71I1PALqukCFgk+gpOwe1tOvz5uE9kHtl2gTDzmYflYCwWvR4LOvCrJi6UEEU+gnuW5BtkgQ==}
     engines: {node: '>= 4.7.0'}
 
   synckit@0.11.11:
@@ -6134,7 +6134,7 @@ snapshots:
     dependencies:
       has-flag: 4.0.0
 
-  swiper@12.0.3: {}
+  swiper@12.1.2: {}
 
   synckit@0.11.11:
     dependencies:
