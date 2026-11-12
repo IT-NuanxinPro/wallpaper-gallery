@@ -67,18 +67,16 @@
 .duo-surface__window {
   overflow: visible;
 }
+/* 滤镜纹理单独合成，角度变化仅更新外层遮罩，避免WebKit逐帧重复模糊整图。 */
+.duo-surface__blur canvas {
+  transform: translateZ(0);
+  will-change: filter;
+}
 .duo-surface__shade {
   background: #04060a;
   pointer-events: none;
 }
 .duo-surface__sheen {
-  background: linear-gradient(
-    125deg,
-    rgba(255, 255, 255, 0.2),
-    transparent 35%,
-    rgba(215, 225, 240, 0.12) 78%,
-    transparent
-  );
   pointer-events: none;
 }
 .duo-surface__camera {

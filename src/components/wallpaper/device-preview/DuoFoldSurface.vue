@@ -79,16 +79,8 @@ function createTexture(scale, blur = 0) {
     }
   }
   crop.width = crop.height = 0
-  let texture = extended
-  if (blur > 0) {
-    texture = document.createElement('canvas')
-    texture.width = extended.width
-    texture.height = extended.height
-    const blurred = texture.getContext('2d')
-    blurred.filter = `blur(${blur * scale}px) saturate(1.06)`
-    blurred.drawImage(extended, 0, 0)
-    extended.width = extended.height = 0
-  }
+  // CSS滤镜可用于WebKit/WKWebView；不依赖部分客户端缺失的Canvas 2D filter。
+  const texture = extended
   Object.assign(texture.style, {
     position: 'absolute',
     left: `${width * 0.3 + inset - px / scale}px`,
@@ -96,6 +88,7 @@ function createTexture(scale, blur = 0) {
     width: `${texture.width / scale}px`,
     height: `${texture.height / scale}px`,
     maxWidth: 'none',
+    filter: blur > 0 ? `blur(${blur}px) saturate(1.06)` : 'none',
   })
   canvases.push(texture)
   return texture
@@ -149,7 +142,7 @@ function draw(progress) {
   const padX = width * 0.3
   const padY = height * 0.3
   const project = (points, z = depth) => points.map(([a, b]) => projectDuoPoint(pose, a, b, z))
-  const shape = (inset, outer = pose.radius, inner = hingeRadius) => roundedPanelPoints(inset, inset, pose.front ? half + 1 - inset : half - inset * 2, pose.cross - inset * 2, Math.max(0, outer - inset), Math.max(0, inner - inset))
+  const shape = (inset, outer = pose.radius, inner = hingeRadius, overlap = 1) => roundedPanelPoints(inset, inset, pose.front ? half + overlap - inset : half - inset * 2, pose.cross - inset * 2, Math.max(0, outer - inset), Math.max(0, inner - inset))
   // 静止半屏与整个已裁切图像一起平移，合拢时的半屏仍处于舞台中心。
   fixed.value.style.transform = props.axis === 'y' ? `translateX(${pose.shift}px)` : `translateY(${pose.shift}px)`
   const brightness = pose.front ? 0.7 + 0.3 * pose.cosine : 0.7 + 0.1 * pose.cosine
@@ -166,7 +159,8 @@ function draw(progress) {
   outline.value.style.clipPath = polygonCss(projection, padX, padY)
   rim.value.style.clipPath = polygonCss(project(shape(1)), padX, padY)
   bezel.value.style.clipPath = polygonCss(project(shape(3)), padX, padY)
-  moving.value.style.clipPath = polygonCss(project(shape(margin)), padX, padY)
+  // 图片比金属层多覆盖1px，避免同一铰链边缘多次抗锯齿透出细线。
+  moving.value.style.clipPath = polygonCss(project(shape(margin, pose.radius, hingeRadius, 2)), padX, padY)
   rim.value.style.background = `color-mix(in srgb,#9a9fa6,#000 ${16 * pose.frost}%)`
   shade.value.style.opacity = String(pose.front ? 1 - brightness : 0.3 * pose.frost ** 2)
   const direction = props.axis === 'y' ? 'to right' : 'to bottom'
@@ -185,7 +179,15 @@ function draw(progress) {
     layer.style.webkitMaskImage = mask
     previous = next
   })
-  sheen.value.style.opacity = String(0.15 * pose.frost)
+  // 光影在转轴处归零，避免固定半屏与移动半屏接缝处出现白色亮线。
+  const hinge = position(0)
+  const edge = position(1)
+  const tint = `rgba(4, 6, 10, ${0.3 * pose.frost})`
+  sheen.value.style.background = pose.front && pose.frost > 0.001
+    ? hinge < edge
+      ? `linear-gradient(${direction}, transparent ${hinge}px, ${tint} ${edge}px)`
+      : `linear-gradient(${direction}, ${tint} ${edge}px, transparent ${hinge}px)`
+    : 'none'
   const hole = projectDuoPoint(pose, margin + 7, props.axis === 'y' ? margin + 7 : pose.cross - margin - 7, depth)
   camera.value.style.transform = `translate(${hole[0] - 2.5}px,${hole[1] - 2.5}px) scale(${props.axis === 'y' ? Math.max(0.08, Math.abs(pose.cosine)) : 1},${props.axis === 'x' ? Math.max(0.08, Math.abs(pose.cosine)) : 1})`
   camera.value.style.opacity = pose.front ? '0' : '1'

@@ -7,6 +7,7 @@ import PageLoadingScene from '@/components/common/feedback/PageLoadingScene.vue'
 import UpdateNotification from '@/components/common/feedback/UpdateNotification.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import GridLoadingState from '@/components/wallpaper/WallpaperGrid/shared/GridLoadingState.vue'
+import { useOnlinePresence } from '@/composables/useOnlinePresence'
 import { useVersionCheck } from '@/composables/useVersionCheck'
 import { downloadChallenge } from '@/services/downloadVerification'
 
@@ -14,6 +15,7 @@ const DownloadVerificationDialog = defineAsyncComponent(() => import('@/componen
 
 // Version check (启动版本检测)
 useVersionCheck()
+useOnlinePresence()
 
 // Route
 const route = useRoute()

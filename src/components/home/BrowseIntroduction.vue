@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue'
+import OnlineVisitorsBadge from '@/components/home/OnlineVisitorsBadge.vue'
 import { canonicalizePagePath, SITE_SEO } from '@/utils/seo/routes'
 
 const props = defineProps({ path: { type: String, required: true }, activePath: { type: String, default: '' }, headingTag: { type: String, default: 'h1' } })
@@ -9,9 +10,12 @@ const page = computed(() => SITE_SEO[canonicalizePagePath(props.path)] || SITE_S
 <template>
   <section class="browse-introduction" aria-label="壁纸分类介绍">
     <div class="browse-introduction-copy">
-      <component :is="headingTag" class="browse-introduction-title">
-        {{ page.label }}
-      </component>
+      <div class="browse-introduction-heading">
+        <component :is="headingTag" class="browse-introduction-title">
+          {{ page.label }}
+        </component>
+        <OnlineVisitorsBadge />
+      </div>
       <p>{{ page.description }}</p>
     </div>
   </section>
@@ -29,9 +33,17 @@ const page = computed(() => SITE_SEO[canonicalizePagePath(props.path)] || SITE_S
 }
 .browse-introduction-copy {
   flex: 1 1 420px;
+  min-width: 0;
+}
+.browse-introduction-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
 }
 .browse-introduction .browse-introduction-title {
-  margin: 0 0 8px;
+  margin: 0;
   color: var(--color-text-primary);
   font-size: 24px;
   font-weight: 700;
@@ -47,6 +59,14 @@ const page = computed(() => SITE_SEO[canonicalizePagePath(props.path)] || SITE_S
   .browse-introduction {
     /* min-height: 200px; */
     align-content: start;
+  }
+  .browse-introduction-heading {
+    gap: 8px;
+  }
+}
+@media (max-width: 360px) {
+  .browse-introduction .browse-introduction-title {
+    font-size: 22px;
   }
 }
 </style>

@@ -1,0 +1,21 @@
+{
+  "name": "wallpaper-online-presence",
+  "main": "index.js",
+  "compatibility_date": "2026-11-11",
+  "workers_dev": false,
+  "preview_urls": false,
+  "vars": {
+    "ONLINE_HOSTNAMES": "wallpaper.061129.xyz"
+  },
+  "durable_objects": {
+    "bindings": [
+      { "name": "ONLINE_VISITORS", "class_name": "OnlineVisitors" }
+    ]
+  },
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["OnlineVisitors"] }
+  ],
+  "ratelimits": [
+    { "name": "HEARTBEAT_RATE", "namespace_id": "1101", "simple": { "limit": 600, "period": 60 } }
+  ]
+}

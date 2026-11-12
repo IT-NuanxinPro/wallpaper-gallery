@@ -23,6 +23,7 @@ let nodes
 let images
 let frames
 let nextFrame
+let canvasFilterWrites
 
 function createNode(tag) {
   const classes = new Set()
@@ -67,7 +68,7 @@ function createNode(tag) {
       })
     },
     // 仅替换宿主 Canvas API；组件的资源分配、插入和释放均执行真实实现。
-    getContext: () => ({ drawImage() {}, save() {}, translate() {}, scale() {}, restore() {} }),
+    getContext: () => ({ drawImage() {}, save() {}, translate() {}, scale() {}, restore() {}, set filter(value) { canvasFilterWrites.push(value); throw new Error('Canvas filter unsupported') } }),
   })
   nodes.push(node)
   return node
@@ -111,6 +112,7 @@ beforeEach(() => {
   images = []
   frames = new Map()
   nextFrame = 0
+  canvasFilterWrites = []
   vi.stubGlobal('window', { devicePixelRatio: 1.5 })
   vi.stubGlobal('document', { createElement: createNode })
   vi.stubGlobal('getComputedStyle', () => ({ borderTopLeftRadius: '20px' }))
@@ -237,4 +239,38 @@ describe('双折叠 Duo 纹理与动画生命周期', () => {
     expect(images[0].src).toBe('')
     expect(nodes.filter(node => node.tag === 'canvas').every(canvas => canvas.width === 0 && canvas.height === 0)).toBe(true)
   })
+
+  it.each(['y', 'x'])('轴 %s 在无 Canvas 滤镜的客户端仍通过CSS分层磨砂，沿铰链开盖而变化', async (axis) => {
+    const { surface, container } = mountSurface(axis)
+    const playing = surface.play()
+    images[0].resolve()
+    await flush()
+    const layers = container.querySelectorAll('.duo-surface__blur')
+    expect(canvasFilterWrites).toEqual([])
+    expect(layers).toHaveLength(5)
+    const amounts = layers.map(layer => Number.parseFloat(layer.children[0].style.filter.match(/blur\(([^p]+)px/)[1]))
+    expect(amounts).toEqual([...amounts].sort((a, b) => a - b))
+    expect(amounts[4]).toBeGreaterThan(10)
+    const tick = (phase) => {
+      const scheduled = [...frames.values()]
+      frames.clear()
+      scheduled.forEach(callback => callback(preview.FOLD_TIMING.delay + preview.FOLD_TIMING.fold2 * phase))
+    }
+    expect(layers.every(layer => layer.style.visibility === 'hidden')).toBe(true)
+    tick(.3)
+    const backMask = layers[0].style.maskImage
+    expect(layers.filter(layer => layer.style.visibility === 'visible').length).toBeGreaterThan(0)
+    expect(backMask).toContain(axis === 'y' ? 'to right' : 'to bottom')
+    tick(.7)
+    expect(layers[0].style.maskImage).not.toBe(backMask)
+    const findClass = name => nodes.find(node => String(node.props.class).includes(name))
+    const imagePoints = [...findClass('duo-surface__window').style.clipPath.matchAll(/(-?[\d.]+)px (-?[\d.]+)px/g)].map(match => [Number(match[1]), Number(match[2])])
+    const metalPoints = [...findClass('duo-surface__bezel').style.clipPath.matchAll(/(-?[\d.]+)px (-?[\d.]+)px/g)].map(match => [Number(match[1]), Number(match[2])])
+    const dimension = axis === 'y' ? 0 : 1
+    expect(Math.max(...imagePoints.map(p => p[dimension]))).toBeGreaterThan(Math.max(...metalPoints.map(p => p[dimension])))
+    tick(1)
+    await expect(playing).resolves.toBe(true)
+    expect(layers.every(layer => layer.style.visibility === 'hidden')).toBe(true)
+  })
+
 })

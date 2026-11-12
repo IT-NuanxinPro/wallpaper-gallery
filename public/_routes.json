@@ -4,6 +4,7 @@
     "/images/*",
     "/wallpaper/*",
     "/api/desktop-release",
+    "/api/online-presence",
     "/api/download-permit",
     "/api/download-file"
   ],
