@@ -24,7 +24,7 @@ const visible = computed(() => state.value.status === 'ready' && Boolean(state.v
       </div>
       <div class="related-collections__body" :aria-busy="state.status === 'loading'">
         <div v-if="state.data?.length" class="related-collections__grid" aria-label="相关收藏列表，可横向浏览" tabindex="0">
-          <PublicCollectionCard v-for="collection in state.data" :key="collection.id" :collection="collection" />
+          <PublicCollectionCard v-for="collection in state.data" :key="collection.id" :collection="collection" show-owner />
         </div>
       </div>
     </div>

@@ -24,7 +24,8 @@ const navigationPending = ref(false)
 let pendingDestination
 const removeBeforeNavigation = router.beforeEach((to) => {
   pendingDestination = to
-  navigationPending.value = !(to.meta.browseShell && route.meta.browseShell)
+  navigationPending.value = to.name !== 'WallpaperDetail'
+    && !(to.meta.browseShell && (route.meta.browseShell || route.name === 'WallpaperDetail'))
 })
 const removeAfterNavigation = router.afterEach((to) => {
   if (pendingDestination === to)
@@ -67,7 +68,9 @@ const compactMain = computed(() => route.meta?.compactMain === true)
         <RouterView v-slot="{ Component }">
           <Suspense v-if="Component">
             <template #default>
-              <component :is="Component" />
+              <KeepAlive include="BrowseLayout" :max="1">
+                <component :is="Component" />
+              </KeepAlive>
             </template>
             <template #fallback>
               <div class="route-loading-fallback">

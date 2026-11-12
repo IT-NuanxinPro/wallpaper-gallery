@@ -10,6 +10,7 @@ import * as displayTitle from '../src/utils/wallpaper/displayTitle.js'
 import * as mediaPresentation from '../src/utils/wallpaper/mediaPresentation.js'
 import * as share from '../src/utils/wallpaper/share.js'
 import { vCardReveal } from '../src/components/wallpaper/WallpaperGrid/composables/cardReveal.js'
+import * as detailService from '../src/services/wallpaperDetailService.js'
 
 function compileComponent(filename, dependencies) {
   const { descriptor } = parse(readFileSync(new URL(filename, import.meta.url), 'utf8'))
@@ -25,6 +26,8 @@ const media = compileComponent('../src/components/wallpaper/card/shared/Wallpape
 const info = compileComponent('../src/components/wallpaper/card/shared/WallpaperCardInfo.vue', { '@/utils/common/format': format })
 const card = compileComponent('../src/components/wallpaper/card/index.vue', {
   '@/composables/useDevice': { useDevice },
+  '@/router/wallpaperDetailRoute': { loadWallpaperDetailView: async () => ({ default: { render: () => null } }) },
+  '@/services/wallpaperDetailService': detailService,
   '@/utils/common/format': format,
   '@/utils/config/constants': constants,
   '@/utils/wallpaper/displayTitle': displayTitle,
@@ -116,6 +119,7 @@ describe('卡片详情入口与快速预览', () => {
     expect(elements.some(element => element.props.class === 'card-info' && element.parent === link)).toBe(true)
     await click(link)
     expect(router.currentRoute.value.path).toBe(detailPath)
+    expect(detailService.readReadyWallpaperDetail(detailPath.split('/').at(-1))).toMatchObject({ displayTitle: '湖光', _series: 'desktop' })
     expect(preview).not.toHaveBeenCalled()
     expect(navigate).toHaveBeenCalledOnce()
   })

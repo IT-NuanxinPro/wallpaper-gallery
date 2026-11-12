@@ -1,8 +1,9 @@
 import { createPinia, setActivePinia } from 'pinia'
-import { computed, createRenderer, h, nextTick, onBeforeUnmount, reactive, ref } from 'vue'
+import { computed, createRenderer, h, KeepAlive, nextTick, onBeforeUnmount, reactive, ref } from 'vue'
 import { createMemoryHistory, createRouter, onBeforeRouteLeave, RouterView, useRoute } from 'vue-router'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useBrowseState, validateBrowseQuery } from '../src/composables/home/useBrowseState'
+import { useBrowseRoute } from '../src/composables/home/useBrowseRoute'
 import { handleBrowseRouteLeave } from '../src/composables/home/browseRouteGuard'
 import { useWallpaperNavigator } from '../src/composables/home/useWallpaperNavigator'
 import { useGridPagination } from '../src/components/wallpaper/WallpaperGrid/composables/useGridPagination'
@@ -113,6 +114,74 @@ describe('当前结果内导航', () => {
 })
 
 describe('浏览参数校验与恢复', () => {
+  it('详情往返保留列表实例和分页，后台冻结列表路由；激活后仍可筛选与切系列', async () => {
+    let browse, listRoute, setups = 0, unmounts = 0
+    const dataReady = ref(true)
+    const filters = reactive({
+      searchQuery: '', debouncedQuery: '', exactSearchValue: '', sortBy: 'newest', categoryFilter: 'all',
+      subcategoryFilter: 'all', formatFilter: 'all', resolutionFilter: 'all',
+      clearExactSearch() { this.exactSearchValue = '' },
+      setExactSearch(label, key) { this.searchQuery = label; this.exactSearchValue = key },
+    })
+    const Home = { setup() {
+      setups++
+      const route = useRoute()
+      listRoute = route
+      browse = useBrowseState({
+        route, router, filterStore: filters, currentSeries: computed(() => route.meta.series), results: ref([item('a')]),
+        resultsReady: dataReady, categories: ref([]), categoriesReady: ref(true), gridReady: ref(true),
+        navigator: useWallpaperNavigator(() => [item('a')]),
+      })
+      onBeforeRouteLeave(to => handleBrowseRouteLeave(to, browse))
+      onBeforeUnmount(() => { unmounts++ })
+      return () => h('section', { 'data-list': route.fullPath }, `${browse.minimumDisplayCount.value}`)
+    } }
+    const BrowseLayout = { name: 'BrowseLayout', setup() {
+      const route = useBrowseRoute()
+      return () => h(RouterView, { route })
+    } }
+    const router = createRouter({ history: createMemoryHistory(), routes: [
+      { path: '/', component: BrowseLayout, meta: { browseShell: true }, children: [
+        { path: 'mobile', name: 'Mobile', component: Home, meta: { series: 'mobile' } },
+        { path: 'avatar', name: 'Avatar', component: Home, meta: { series: 'avatar' } },
+      ] },
+      { path: '/wallpaper/:token', name: 'WallpaperDetail', component: { render: () => h('article') } },
+    ] })
+    await router.push('/mobile?q=moon')
+    const app = renderer.createApp({ render: () => h(RouterView, {}, { default: ({ Component }) => h(KeepAlive, { include: 'BrowseLayout' }, () => Component) }) })
+    app.use(router)
+    app.mount({})
+    cleanups.push(() => app.unmount())
+    await flush()
+    window.scrollY = 920
+    browse.onDisplayCountChange(60)
+    // 列表缓存仍有可见卡片，完整数据尚未齐全也应立即恢复原位置。
+    dataReady.value = false
+    await router.push('/wallpaper/detail-token')
+    await flush()
+    expect(listRoute.fullPath).toBe('/mobile?q=moon')
+    expect(setups).toBe(1)
+    expect(unmounts).toBe(0)
+    window.scrollY = 0
+    await router.push('/mobile?q=moon')
+    await flush()
+    expect(setups).toBe(1)
+    expect(unmounts).toBe(0)
+    expect(browse.minimumDisplayCount.value).toBe(60)
+    expect(window.scrollTo).toHaveBeenLastCalledWith({ top: 920, behavior: 'instant' })
+    dataReady.value = true
+    filters.searchQuery = filters.debouncedQuery = 'stars'
+    await flush()
+    expect(router.currentRoute.value.query.q).toBe('stars')
+    await router.push('/wallpaper/another-token')
+    await flush()
+    await router.push('/avatar')
+    await flush()
+    expect(listRoute.path).toBe('/avatar')
+    expect(filters.searchQuery).toBe('')
+    expect(setups).toBe(1)
+  })
+
   it('同一Home实例跨系列后仍同步筛选和保存位置，离开到详情时才停止旧列表监听', async () => {
     const filters = reactive({
       searchQuery: '', debouncedQuery: '', exactSearchValue: '', sortBy: 'newest', categoryFilter: 'all',
@@ -286,6 +355,18 @@ describe('浏览参数校验与恢复', () => {
     await flush()
     expect(h.route.query.image).toBeUndefined()
     expect(h.nav.isOpen.value).toBe(false)
+  })
+  it('首批卡片可见但后台数据未齐时快速进入详情，也保存用户当前滚动位置', async () => {
+    const h = harness({}, [item('a')])
+    await flush()
+    expect(h.ready.value).toBe(false)
+    h.browse.onDisplayCountChange(40)
+    window.scrollY = 720
+    h.browse.leave()
+    expect(JSON.parse(sessionStorage.getItem('wallpaper_browse_v1:/desktop:[]'))).toEqual({ count: 40, top: 720 })
+    h.ready.value = true
+    await flush()
+    expect(window.scrollTo).not.toHaveBeenCalled()
   })
   it('等待数据期间改筛选/选图取消旧恢复，不覆盖用户后续操作', async () => {
     const a = item('a'), b = item('b')

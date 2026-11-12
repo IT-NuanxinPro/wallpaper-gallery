@@ -5,35 +5,24 @@ import { onlinePresence } from '@/composables/useOnlinePresence'
 const count = onlinePresence.count
 const available = computed(() => Number.isSafeInteger(count.value) && count.value >= 0)
 const formattedCount = computed(() => available.value ? count.value.toLocaleString('zh-CN') : '')
-const description = '统计近 90 秒仍有心跳的前台浏览器。同一浏览器的多个标签页合并计数，跨设备可能重复计数。'
 </script>
 
 <template>
   <span class="online-visitors-slot" :class="{ 'is-available': available }" :aria-hidden="!available">
-    <ElTooltip
-      :content="description"
-      :disabled="!available"
-      :trigger="['hover', 'focus', 'click']"
-      :show-after="300"
-      :popper-style="{ maxWidth: '240px', lineHeight: '1.7' }"
-      placement="bottom-end"
+    <span
+      class="online-visitors"
+      :aria-label="available ? `${formattedCount} 人在线` : undefined"
     >
-      <span
-        class="online-visitors"
-        :tabindex="available ? 0 : -1"
-        :aria-label="available ? `${formattedCount} 人正在浏览。${description}` : undefined"
-      >
-        <span class="online-visitors-count" aria-hidden="true">
-          <Transition name="online-count">
-            <span :key="formattedCount" class="online-visitors-value">
-              <span class="online-visitors-dot" />
-              {{ formattedCount }}
-            </span>
-          </Transition>
-        </span>
-        <span aria-hidden="true">人正在浏览</span>
+      <span class="online-visitors-count" aria-hidden="true">
+        <Transition name="online-count">
+          <span :key="formattedCount" class="online-visitors-value">
+            <span class="online-visitors-dot" />
+            {{ formattedCount }}
+          </span>
+        </Transition>
       </span>
-    </ElTooltip>
+      <span aria-hidden="true">人在线</span>
+    </span>
   </span>
 </template>
 
@@ -63,11 +52,6 @@ const description = '统计近 90 秒仍有心跳的前台浏览器。同一浏�
   font-size: 12px;
   line-height: 1.5;
   white-space: nowrap;
-}
-
-.online-visitors:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 4px;
 }
 
 .online-visitors-dot {

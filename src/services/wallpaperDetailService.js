@@ -1,5 +1,40 @@
-import { isValidWallpaperCatalogItem, isValidWallpaperDetailRecord } from '../utils/wallpaper/detailRecords.js'
+import { buildWallpaperDetailRecord, isValidWallpaperCatalogItem, isValidWallpaperDetailRecord } from '../utils/wallpaper/detailRecords.js'
 import { decodeWallpaperShareToken, getWallpaperDetailBucketPath } from '../utils/wallpaper/share.js'
+
+const detailCache = new Map()
+const DETAIL_CACHE_TTL = 5 * 60 * 1000
+const DETAIL_CACHE_LIMIT = 32
+
+// 站内跳转直接交接已有元数据；公开链接仍走独立详情记录与服务端页面。
+export function primeWallpaperDetail(wallpaper, { series, cdnTag } = {}) {
+  if (!wallpaper)
+    return null
+  const record = wallpaper.sharePath
+    ? wallpaper
+    : buildWallpaperDetailRecord({ ...wallpaper, _series: wallpaper._series || series }, cdnTag)
+  const token = record?.sharePath?.split('/').at(-1)
+  if (!isValidWallpaperDetailRecord(record, token))
+    return null
+  detailCache.delete(token)
+  detailCache.set(token, { record, expires: Date.now() + DETAIL_CACHE_TTL })
+  if (detailCache.size > DETAIL_CACHE_LIMIT)
+    detailCache.delete(detailCache.keys().next().value)
+  return record
+}
+
+export function readReadyWallpaperDetail(token) {
+  const initial = readInitialWallpaperDetail(token)
+  if (initial)
+    return initial.record
+  const cached = detailCache.get(token)
+  if (!cached)
+    return null
+  if (cached.expires <= Date.now()) {
+    detailCache.delete(token)
+    return null
+  }
+  return cached.record
+}
 
 export function detailRequestError(status, message) {
   return Object.assign(new Error(message), { status })
@@ -26,9 +61,9 @@ export async function loadWallpaperDetail(token, { signal, fetchImpl = fetch } =
     throw detailRequestError(404, '分享链接无效')
   if (signal?.aborted)
     throw new DOMException('Aborted', 'AbortError')
-  const initial = readInitialWallpaperDetail(token)
-  if (initial)
-    return initial.record
+  const ready = readReadyWallpaperDetail(token)
+  if (ready)
+    return ready
   const response = await fetchImpl(getWallpaperDetailBucketPath(token), { signal })
   if (!response.ok)
     throw detailRequestError(response.status === 404 ? 404 : 503, '详情数据暂时无法加载')
@@ -72,11 +107,18 @@ export function createWallpaperDetailLoader({ load = loadWallpaperDetail, onStat
       controller?.abort()
       controller = new AbortController()
       const requestRevision = ++revision
+      const ready = readReadyWallpaperDetail(token)
+      if (ready) {
+        onState({ loading: false, record: ready, error: null })
+        return
+      }
       onState({ loading: true, record: null, error: null })
       try {
         const record = await load(token, { signal: controller.signal })
-        if (requestRevision === revision)
+        if (requestRevision === revision) {
+          primeWallpaperDetail(record)
           onState({ loading: false, record, error: null })
+        }
       }
       catch (error) {
         if (requestRevision === revision && error.name !== 'AbortError')

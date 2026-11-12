@@ -2,8 +2,10 @@
 import { computed, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useDevice } from '@/composables/useDevice'
+import { loadWallpaperDetailView } from '@/router/wallpaperDetailRoute'
+import { primeWallpaperDetail } from '@/services/wallpaperDetailService'
 import { buildWallpaperImageFallbackUrls, formatBingDate, formatFileSize, formatRelativeTime, highlightText } from '@/utils/common/format'
-import { VIDEO_USAGE_SHORT_LABELS } from '@/utils/config/constants'
+import { CDN_VERSION, VIDEO_USAGE_SHORT_LABELS } from '@/utils/config/constants'
 import { getWallpaperDisplayTitle } from '@/utils/wallpaper/displayTitle'
 import { getWallpaperCardAspectRatio } from '@/utils/wallpaper/mediaPresentation'
 import { buildWallpaperSharePath } from '@/utils/wallpaper/share'
@@ -155,8 +157,17 @@ function handleClick() {
 }
 
 function handleNavigate(event) {
-  if (detailPath.value && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey && (!('button' in event) || event.button === 0))
+  if (detailPath.value && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey && (!('button' in event) || event.button === 0)) {
+    prepareDetail()
     emit('navigate', props.wallpaper, event)
+  }
+}
+
+function prepareDetail() {
+  if (!detailPath.value)
+    return
+  primeWallpaperDetail(props.wallpaper, { series: props.series, cdnTag: CDN_VERSION })
+  void loadWallpaperDetailView().catch(() => {})
 }
 
 function handleMouseEnter() {
@@ -179,6 +190,9 @@ function handleMouseLeave() {
       :is="detailPath ? RouterLink : 'div'"
       :to="detailPath || undefined"
       class="card-detail-link"
+      @pointerenter="prepareDetail"
+      @pointerdown="prepareDetail"
+      @focus="prepareDetail"
       @click="handleNavigate"
     >
       <WallpaperCardMedia

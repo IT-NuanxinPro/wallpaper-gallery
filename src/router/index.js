@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { BROWSE_ROUTE_NAMES } from '@/composables/home/browseShell'
 import { canonicalizePagePath, getRouteSeo, SITE_SEO } from '@/utils/seo/routes'
+import { loadWallpaperDetailView } from './wallpaperDetailRoute'
 
 const SITE_URL = 'https://wallpaper.061129.xyz'
 const DEFAULT_TITLE = SITE_SEO['/'].title
@@ -99,7 +100,7 @@ const routes = [
   {
     path: '/wallpaper/:token',
     name: 'WallpaperDetail',
-    component: () => import('@/views/WallpaperDetail.vue'),
+    component: loadWallpaperDetailView,
     meta: { compactMain: true, dynamicSeo: true },
   },
   // 关于页面
@@ -211,6 +212,8 @@ const router = createRouter({
     if (savedPosition) {
       return savedPosition
     }
+    if (to.name === 'WallpaperDetail')
+      return { top: 0, behavior: 'instant' }
     return { top: 0 }
   },
 })

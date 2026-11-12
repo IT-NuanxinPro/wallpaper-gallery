@@ -1,18 +1,30 @@
 <script setup>
-import { computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { computed, onBeforeUnmount, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import AnnouncementBanner from '@/components/common/feedback/AnnouncementBanner.vue'
 import LoadingSurface from '@/components/common/feedback/LoadingSurface.vue'
 import BrowseIntroduction from '@/components/home/BrowseIntroduction.vue'
 import HotTagsPanel from '@/components/home/HotTagsPanel.vue'
+import { useBrowseRoute } from '@/composables/home/useBrowseRoute'
 import { useDevice } from '@/composables/useDevice'
+import { loadWallpaperDetailView } from '@/router/wallpaperDetailRoute'
 import { useFilterStore } from '@/stores/filter'
 import { useHotTagsStore } from '@/stores/hotTags'
 import { useWallpaperStore } from '@/stores/wallpaper'
 import { buildHotTagQuery } from '@/utils/filter/hotTagQuery'
 
-const route = useRoute()
+const route = useBrowseRoute()
 const router = useRouter()
+let detailWarmup
+onMounted(() => {
+  // 首屏之后仅预热一份详情代码，不逐卡片请求详情或原图。
+  detailWarmup = setTimeout(() => {
+    const connection = navigator.connection
+    if (!connection?.saveData && !['slow-2g', '2g'].includes(connection?.effectiveType))
+      void loadWallpaperDetailView().catch(() => {})
+  }, 2500)
+})
+onBeforeUnmount(() => clearTimeout(detailWarmup))
 const { isMobile } = useDevice()
 const filterStore = useFilterStore()
 const hotTagsStore = useHotTagsStore()
@@ -68,7 +80,7 @@ async function handleTag(tag) {
         </div>
       </div>
       <div class="browse-route-region">
-        <RouterView v-slot="{ Component }">
+        <RouterView v-slot="{ Component }" :route="route">
           <Suspense v-if="Component">
             <component :is="Component" />
             <template #fallback>

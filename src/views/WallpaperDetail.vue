@@ -16,7 +16,7 @@ import { useInteractionPrefetch } from '@/composables/useInteractionPrefetch'
 import { isCurrentMediaEvent, usePreviewTracking } from '@/composables/usePreviewTracking'
 import { useWallpaperDownload } from '@/composables/useWallpaperDownload'
 import { useWallpaperStats } from '@/composables/useWallpaperStats'
-import { createWallpaperDetailLoader, loadWallpaperCatalog, readInitialWallpaperDetail } from '@/services/wallpaperDetailService'
+import { createWallpaperDetailLoader, loadWallpaperCatalog, primeWallpaperDetail, readInitialWallpaperDetail } from '@/services/wallpaperDetailService'
 import { copyText } from '@/utils/common/clipboard'
 import { formatFileSize } from '@/utils/common/format'
 import { createInteractionFeedback } from '@/utils/interaction/feedback'
@@ -327,7 +327,7 @@ function returnToList() {
           <h2>继续发现</h2><p>更多同系列壁纸</p>
         </div>
         <div class="detail-related-grid">
-          <RouterLink v-for="item in related" :key="item.assetKey" :to="item.sharePath">
+          <RouterLink v-for="item in related" :key="item.assetKey" :to="item.sharePath" @pointerenter="primeWallpaperDetail(item)" @pointerdown="primeWallpaperDetail(item)" @focus="primeWallpaperDetail(item)" @click="primeWallpaperDetail(item)">
             <img :key="item.thumbnailUrl" :src="item.thumbnailUrl" :alt="getWallpaperDisplayTitle(item)" :style="{ aspectRatio: getWallpaperCardAspectRatio(item).replace('/', ' / ') }" :width="item.resolution?.width || 800" :height="item.resolution?.height || 500" loading="lazy" decoding="async" @error="advanceRelatedImageFallback($event, item.thumbnailUrl)">
           </RouterLink>
         </div>
