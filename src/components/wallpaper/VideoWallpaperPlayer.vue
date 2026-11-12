@@ -31,15 +31,18 @@ const playerRef = ref(null)
 const muted = ref(true)
 const duration = ref(0)
 const status = ref(props.autoplay ? 'loading' : 'paused')
-const busy = computed(() => status.value === 'loading')
+const hasPlayed = ref(false)
+const busy = computed(() => status.value === 'loading' && !hasPlayed.value)
+const showFeedback = computed(() => ['paused', 'blocked', 'error', 'slow'].includes(status.value))
 let playAttempt = 0
 let loadingTimer
 
-const playerKey = computed(() => `${props.src}-${props.poster}`)
+const playerKey = computed(() => props.src)
 
 watch(playerKey, async () => {
   playAttempt++
   clearTimeout(loadingTimer)
+  hasPlayed.value = false
   status.value = props.autoplay ? 'loading' : 'paused'
   duration.value = 0
   await nextTick()
@@ -101,7 +104,8 @@ function handleCanPlay(event) {
 
 function beginLoading() {
   clearTimeout(loadingTimer)
-  status.value = 'loading'
+  // 循环回到起点或短暂缓冲时保留当前画面，只对新视频首次播放显示加载遮罩。
+  status.value = hasPlayed.value ? 'buffering' : 'loading'
   // 慢网或永久挂起也必须提供可操作出口，收到 playing 后仍会自动恢复。
   loadingTimer = setTimeout(() => {
     status.value = 'slow'
@@ -133,6 +137,7 @@ function handlePlaying(event) {
   if (event.target !== playerRef.value)
     return
   clearTimeout(loadingTimer)
+  hasPlayed.value = true
   status.value = 'playing'
   emit('playing', event)
 }
@@ -145,7 +150,7 @@ function handleWaiting(event) {
 }
 
 function handlePause(event) {
-  if (event.target === playerRef.value && status.value === 'playing') {
+  if (event.target === playerRef.value && ['playing', 'buffering'].includes(status.value)) {
     clearTimeout(loadingTimer)
     status.value = 'paused'
   }
@@ -181,7 +186,7 @@ defineExpose({
         @pause="handlePause"
         @error="handleError"
       />
-      <div v-if="!busy && status !== 'playing'" class="video-wallpaper-player__feedback" role="status">
+      <div v-if="showFeedback" class="video-wallpaper-player__feedback" role="status">
         <p>{{ status === 'blocked' ? '浏览器已暂停自动播放' : status === 'error' ? '视频暂时无法播放' : status === 'slow' ? '视频加载较慢，可重新尝试' : '视频已暂停' }}</p>
         <button type="button" @click="startPlayback">
           {{ status === 'error' || status === 'slow' ? '重新播放' : '点击播放' }}

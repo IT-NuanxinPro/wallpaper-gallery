@@ -34,16 +34,17 @@ async function mountPlayer(play = () => Promise.resolve()) {
     parentNode: element => element.parent, nextSibling: () => null,
   })
   const src = Vue.ref('/first.mp4')
-  const app = renderer.createApp({ render: () => Vue.h(Player, { src: src.value, controls: false }) })
+  const poster = Vue.ref('/first.webp')
+  const app = renderer.createApp({ render: () => Vue.h(Player, { src: src.value, poster: poster.value, controls: false }) })
   app.mount({ children: [] })
   apps.push(app)
   await Vue.nextTick()
   await Promise.resolve()
   await Vue.nextTick()
-  return { elements, src, video: () => elements.findLast(element => element.tag === 'video' && !element.removed), busy: () => elements.find(element => element.tag === 'section')?.props['aria-busy'] }
+  return { elements, src, poster, video: () => elements.findLast(element => element.tag === 'video' && !element.removed), busy: () => elements.find(element => element.tag === 'section')?.props['aria-busy'], feedback: () => elements.filter(element => element.props?.role === 'status' && !element.removed) }
 }
 
-it('canplay 不代表已播放；playing 才隐藏加载，缓冲后恢复加载', async () => {
+it('首次playing隐藏加载，循环waiting与stalled不再遮挡视频', async () => {
   const player = await mountPlayer()
   expect(player.busy()).toBe(true)
   player.video().props.onCanplay({ target: player.video() })
@@ -53,9 +54,59 @@ it('canplay 不代表已播放；playing 才隐藏加载，缓冲后恢复加载
   player.video().props.onPlaying({ target: player.video() })
   await Vue.nextTick()
   expect(player.busy()).toBe(false)
-  player.video().props.onWaiting({ target: player.video() })
+  for (let loop = 0; loop < 3; loop++) {
+    player.video().props.onWaiting({ target: player.video() })
+    player.video().props.onStalled({ target: player.video() })
+    await Vue.nextTick()
+    expect(player.busy()).toBe(false)
+    expect(player.feedback()).toHaveLength(0)
+    player.video().props.onPlaying({ target: player.video() })
+    await Vue.nextTick()
+    expect(player.busy()).toBe(false)
+  }
+})
+
+it('已经播放的源仅更新海报时不会重建视频或恢复首次加载', async () => {
+  const player = await mountPlayer()
+  const video = player.video()
+  video.props.onPlaying({ target: video })
+  await Vue.nextTick()
+  player.poster.value = '/updated.webp'
+  await Vue.nextTick()
+  await Vue.nextTick()
+  expect(player.video()).toBe(video)
+  expect(player.busy()).toBe(false)
+})
+
+it('切换到新视频后重新显示首次加载，播放后再次缓冲也不显示', async () => {
+  const player = await mountPlayer()
+  player.video().props.onPlaying({ target: player.video() })
+  await Vue.nextTick()
+  player.src.value = '/second.mp4'
+  await Vue.nextTick()
   await Vue.nextTick()
   expect(player.busy()).toBe(true)
+  player.video().props.onPlaying({ target: player.video() })
+  player.video().props.onWaiting({ target: player.video() })
+  await Vue.nextTick()
+  expect(player.busy()).toBe(false)
+  expect(player.feedback()).toHaveLength(0)
+})
+
+it('播放后的持续断流仍可重试，但重试不重复显示首次加载遮罩', async () => {
+  vi.useFakeTimers()
+  const player = await mountPlayer()
+  player.video().props.onPlaying({ target: player.video() })
+  player.video().props.onWaiting({ target: player.video() })
+  await vi.advanceTimersByTimeAsync(21000)
+  await Vue.nextTick()
+  expect(player.busy()).toBe(false)
+  const retry = player.elements.find(element => element.tag === 'button' && !element.removed)
+  expect(retry?.text).toContain('重新播放')
+  await retry.props.onClick()
+  await Vue.nextTick()
+  expect(player.busy()).toBe(false)
+  expect(player.feedback()).toHaveLength(0)
 })
 
 it('自动播放被拒绝时结束加载并显示可手动播放的按钮', async () => {

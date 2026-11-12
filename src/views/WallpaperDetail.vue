@@ -228,7 +228,6 @@ function returnToList() {
               :autoplay="true"
               :controls="false"
               @playing="videoReady"
-              @waiting="ready = false"
               @error="videoError"
             />
             <WallpaperImageStage
