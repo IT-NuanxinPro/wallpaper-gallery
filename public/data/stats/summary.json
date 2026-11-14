@@ -1,11 +1,11 @@
 {
   "schema": 2,
-  "exportedAt": "2026-11-13T22:49:38.961Z",
+  "exportedAt": "2026-11-14T21:40:39.941Z",
   "series": {
     "desktop": {
       "count": 1007,
-      "totalViews": 38119,
-      "totalDownloads": 13000,
+      "totalViews": 38230,
+      "totalDownloads": 13029,
       "periodStartedAt": "2026-11-09T04:45:31.225389+00:00",
       "weekStart": "2026-11-09",
       "monthStart": "2026-11-01",
@@ -16,8 +16,8 @@
     },
     "mobile": {
       "count": 954,
-      "totalViews": 19199,
-      "totalDownloads": 6470,
+      "totalViews": 19245,
+      "totalDownloads": 6473,
       "periodStartedAt": "2026-11-09T04:45:31.225389+00:00",
       "weekStart": "2026-11-09",
       "monthStart": "2026-11-01",
@@ -28,7 +28,7 @@
     },
     "avatar": {
       "count": 685,
-      "totalViews": 1901,
+      "totalViews": 1906,
       "totalDownloads": 998,
       "periodStartedAt": "2026-11-09T04:45:31.225389+00:00",
       "weekStart": "2026-11-09",
@@ -40,8 +40,8 @@
     },
     "video": {
       "count": 77,
-      "totalViews": 1952,
-      "totalDownloads": 273,
+      "totalViews": 1964,
+      "totalDownloads": 276,
       "periodStartedAt": "2026-11-09T04:45:31.225389+00:00",
       "weekStart": "2026-11-09",
       "monthStart": "2026-11-01",
@@ -51,9 +51,9 @@
       "legacyDownloads": 1
     },
     "bing": {
-      "count": 2728,
-      "totalViews": 4400,
-      "totalDownloads": 3265,
+      "count": 2729,
+      "totalViews": 4431,
+      "totalDownloads": 3290,
       "periodStartedAt": "2026-11-09T04:45:31.225389+00:00",
       "weekStart": "2026-11-09",
       "monthStart": "2026-11-01",
