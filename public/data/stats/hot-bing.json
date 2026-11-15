@@ -1,10 +1,10 @@
 {
   "schema": 2,
-  "exportedAt": "2026-11-14T21:40:39.941Z",
+  "exportedAt": "2026-11-15T22:01:18.093Z",
   "periodStartedAt": "2026-11-09T04:45:31.225389+00:00",
-  "weekStart": "2026-11-09",
+  "weekStart": "2026-11-16",
   "monthStart": "2026-11-01",
-  "rowCount": 2729,
+  "rowCount": 2730,
   "items": [
     {
       "asset_key": "bing:2025-12-30.jpg",
@@ -21928,14 +21928,14 @@
       "asset_key": "bing:bing-2024-01-09.jpg",
       "image_id": "bing-2024-01-09.jpg",
       "legacy_ambiguous": false,
-      "views": 2,
-      "downloads": 2,
+      "views": 3,
+      "downloads": 3,
       "likes": 0,
       "collects": 0,
       "week_views": 0,
       "week_downloads": 0,
-      "month_views": 0,
-      "month_downloads": 0
+      "month_views": 1,
+      "month_downloads": 1
     },
     {
       "asset_key": "bing:bing-2024-01-10.jpg",
@@ -22357,14 +22357,14 @@
       "asset_key": "bing:bing-2024-02-11.jpg",
       "image_id": "bing-2024-02-11.jpg",
       "legacy_ambiguous": false,
-      "views": 1,
-      "downloads": 1,
+      "views": 2,
+      "downloads": 3,
       "likes": 0,
       "collects": 0,
       "week_views": 0,
       "week_downloads": 0,
-      "month_views": 0,
-      "month_downloads": 0
+      "month_views": 1,
+      "month_downloads": 2
     },
     {
       "asset_key": "bing:bing-2024-02-12.jpg",
@@ -22539,14 +22539,14 @@
       "asset_key": "bing:bing-2024-02-25.jpg",
       "image_id": "bing-2024-02-25.jpg",
       "legacy_ambiguous": false,
-      "views": 1,
-      "downloads": 1,
+      "views": 2,
+      "downloads": 2,
       "likes": 0,
       "collects": 0,
       "week_views": 0,
       "week_downloads": 0,
-      "month_views": 0,
-      "month_downloads": 0
+      "month_views": 1,
+      "month_downloads": 1
     },
     {
       "asset_key": "bing:bing-2024-02-26.jpg",
@@ -22578,14 +22578,14 @@
       "asset_key": "bing:bing-2024-02-28.jpg",
       "image_id": "bing-2024-02-28.jpg",
       "legacy_ambiguous": false,
-      "views": 1,
-      "downloads": 1,
+      "views": 2,
+      "downloads": 3,
       "likes": 0,
       "collects": 0,
       "week_views": 0,
       "week_downloads": 0,
-      "month_views": 0,
-      "month_downloads": 0
+      "month_views": 1,
+      "month_downloads": 2
     },
     {
       "asset_key": "bing:bing-2024-02-29.jpg",
@@ -26976,7 +26976,7 @@
       "downloads": 1,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -27938,8 +27938,8 @@
       "downloads": 4,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -29017,8 +29017,8 @@
       "downloads": 2,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -29030,8 +29030,8 @@
       "downloads": 2,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -29056,8 +29056,8 @@
       "downloads": 3,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -29290,7 +29290,7 @@
       "downloads": 2,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -29641,8 +29641,8 @@
       "downloads": 2,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -29901,8 +29901,8 @@
       "downloads": 2,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -30031,8 +30031,8 @@
       "downloads": 2,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -30096,8 +30096,8 @@
       "downloads": 3,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -30538,8 +30538,8 @@
       "downloads": 2,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -30577,8 +30577,8 @@
       "downloads": 2,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -30629,8 +30629,8 @@
       "downloads": 2,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -30798,7 +30798,7 @@
       "downloads": 1,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -31357,7 +31357,7 @@
       "downloads": 13,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -31370,8 +31370,8 @@
       "downloads": 9,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -31435,7 +31435,7 @@
       "downloads": 7,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -31513,7 +31513,7 @@
       "downloads": 10,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -31656,8 +31656,8 @@
       "downloads": 7,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -32111,7 +32111,7 @@
       "downloads": 10,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -32267,7 +32267,7 @@
       "downloads": 6,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -32293,7 +32293,7 @@
       "downloads": 1,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -32319,7 +32319,7 @@
       "downloads": 6,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -32397,7 +32397,7 @@
       "downloads": 4,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -32917,8 +32917,8 @@
       "downloads": 2,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -32943,8 +32943,8 @@
       "downloads": 3,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -33047,8 +33047,8 @@
       "downloads": 3,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -33164,7 +33164,7 @@
       "downloads": 2,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -33190,8 +33190,8 @@
       "downloads": 7,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -33372,7 +33372,7 @@
       "downloads": 2,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -33580,7 +33580,7 @@
       "downloads": 4,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -33658,7 +33658,7 @@
       "downloads": 4,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -33736,8 +33736,8 @@
       "downloads": 3,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -34373,8 +34373,8 @@
       "downloads": 3,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -34399,8 +34399,8 @@
       "downloads": 4,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -34438,7 +34438,7 @@
       "downloads": 2,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -34620,7 +34620,7 @@
       "downloads": 3,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -34633,8 +34633,8 @@
       "downloads": 3,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -34724,8 +34724,8 @@
       "downloads": 1,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -35062,8 +35062,8 @@
       "downloads": 3,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -35270,8 +35270,8 @@
       "downloads": 3,
       "likes": 0,
       "collects": 0,
-      "week_views": 2,
-      "week_downloads": 2,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 2,
       "month_downloads": 2
     },
@@ -35283,7 +35283,7 @@
       "downloads": 0,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -35296,8 +35296,8 @@
       "downloads": 1,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -35309,8 +35309,8 @@
       "downloads": 2,
       "likes": 0,
       "collects": 0,
-      "week_views": 2,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 2,
       "month_downloads": 1
     },
@@ -35322,8 +35322,8 @@
       "downloads": 1,
       "likes": 0,
       "collects": 0,
-      "week_views": 2,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 2,
       "month_downloads": 1
     },
@@ -35335,8 +35335,8 @@
       "downloads": 2,
       "likes": 0,
       "collects": 0,
-      "week_views": 2,
-      "week_downloads": 2,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 2,
       "month_downloads": 2
     },
@@ -35374,8 +35374,8 @@
       "downloads": 1,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 1
     },
@@ -35387,8 +35387,8 @@
       "downloads": 1,
       "likes": 0,
       "collects": 0,
-      "week_views": 6,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 6,
       "month_downloads": 1
     },
@@ -35400,8 +35400,8 @@
       "downloads": 2,
       "likes": 0,
       "collects": 0,
-      "week_views": 5,
-      "week_downloads": 2,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 5,
       "month_downloads": 2
     },
@@ -35413,8 +35413,8 @@
       "downloads": 1,
       "likes": 0,
       "collects": 0,
-      "week_views": 2,
-      "week_downloads": 1,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 2,
       "month_downloads": 1
     },
@@ -35434,6 +35434,19 @@
     {
       "asset_key": "bing:bing-2026-11-14.jpg",
       "image_id": "bing-2026-11-14.jpg",
+      "legacy_ambiguous": false,
+      "views": 0,
+      "downloads": 0,
+      "likes": 0,
+      "collects": 0,
+      "week_views": 0,
+      "week_downloads": 0,
+      "month_views": 0,
+      "month_downloads": 0
+    },
+    {
+      "asset_key": "bing:bing-2026-11-15.jpg",
+      "image_id": "bing-2026-11-15.jpg",
       "legacy_ambiguous": false,
       "views": 0,
       "downloads": 0,

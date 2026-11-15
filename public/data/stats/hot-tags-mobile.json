@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-11-14T21:40:54.218Z",
+  "generatedAt": "2026-11-15T22:01:27.793Z",
   "windowDays": 90,
   "halfLifeDays": 30,
-  "windowStart": "2026-08-16T21:40:54.218Z",
+  "windowStart": "2026-08-17T22:01:27.793Z",
   "series": "mobile",
   "total": 289,
   "tags": [
     {
       "tag": "人像",
-      "score": 67.291277,
-      "views": 1158,
-      "downloads": 175,
+      "score": 66.384617,
+      "views": 1184,
+      "downloads": 176,
       "wallpaperCount": 96,
       "latestCreatedAt": "2026-11-12T09:14:02.192Z",
       "series": [
@@ -18,16 +18,16 @@
       ],
       "topWallpapers": [
         {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/写真-居家室内-性感.webp",
+          "cdnTag": "v1.5.6"
+        },
+        {
           "thumbnail": "/thumbnail/mobile/人像/魅力/丝袜-女性人像.webp",
           "cdnTag": "v1.5.6"
         },
         {
           "thumbnail": "/thumbnail/mobile/人像/魅力/吊带裙-好看-手机.webp",
           "cdnTag": "v1.4.96"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/写真-居家室内-性感.webp",
-          "cdnTag": "v1.5.6"
         },
         {
           "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._0.webp",
@@ -41,8 +41,8 @@
     },
     {
       "tag": "清新",
-      "score": 31.708996,
-      "views": 486,
+      "score": 31.126495,
+      "views": 490,
       "downloads": 76,
       "wallpaperCount": 50,
       "latestCreatedAt": "2026-11-09T06:12:23.160Z",
@@ -63,20 +63,20 @@
           "cdnTag": "v1.4.96"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/吊带-手机-柔光.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/丸子头-好身材-户外.webp",
           "cdnTag": "v1.4.96"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/丸子头-好身材-户外.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/吊带-手机-柔光.webp",
           "cdnTag": "v1.4.96"
         }
       ]
     },
     {
       "tag": "魅力",
-      "score": 24.0828,
-      "views": 482,
-      "downloads": 79,
+      "score": 23.874235,
+      "views": 501,
+      "downloads": 80,
       "wallpaperCount": 34,
       "latestCreatedAt": "2026-11-12T09:14:02.192Z",
       "series": [
@@ -84,16 +84,16 @@
       ],
       "topWallpapers": [
         {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/写真-居家室内-性感.webp",
+          "cdnTag": "v1.5.6"
+        },
+        {
           "thumbnail": "/thumbnail/mobile/人像/魅力/丝袜-女性人像.webp",
           "cdnTag": "v1.5.6"
         },
         {
           "thumbnail": "/thumbnail/mobile/人像/魅力/吊带裙-好看-手机.webp",
           "cdnTag": "v1.4.96"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/写真-居家室内-性感.webp",
-          "cdnTag": "v1.5.6"
         },
         {
           "thumbnail": "/thumbnail/mobile/人像/魅力/好身材-室内-性感.webp",
@@ -107,8 +107,8 @@
     },
     {
       "tag": "长发",
-      "score": 19.517131,
-      "views": 256,
+      "score": 19.266304,
+      "views": 267,
       "downloads": 43,
       "wallpaperCount": 25,
       "latestCreatedAt": "2026-11-12T09:14:02.192Z",
@@ -140,7 +140,7 @@
     },
     {
       "tag": "阳光",
-      "score": 14.321048,
+      "score": 13.989339,
       "views": 135,
       "downloads": 20,
       "wallpaperCount": 24,
@@ -173,8 +173,8 @@
     },
     {
       "tag": "优雅",
-      "score": 12.110892,
-      "views": 163,
+      "score": 11.868517,
+      "views": 165,
       "downloads": 25,
       "wallpaperCount": 20,
       "latestCreatedAt": "2026-11-12T09:14:02.192Z",
@@ -206,8 +206,8 @@
     },
     {
       "tag": "插画",
-      "score": 10.057785,
-      "views": 199,
+      "score": 9.920577,
+      "views": 201,
       "downloads": 22,
       "wallpaperCount": 15,
       "latestCreatedAt": "2026-11-10T12:07:56.755Z",
@@ -224,11 +224,11 @@
           "cdnTag": "v1.5.0"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._4.webp",
+          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._6.webp",
           "cdnTag": "v1.5.0"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._6.webp",
+          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._4.webp",
           "cdnTag": "v1.5.0"
         },
         {
@@ -239,7 +239,7 @@
     },
     {
       "tag": "动漫",
-      "score": 9.962492,
+      "score": 9.731737,
       "views": 73,
       "downloads": 11,
       "wallpaperCount": 17,
@@ -271,42 +271,9 @@
       ]
     },
     {
-      "tag": "夏日",
-      "score": 7.731378,
-      "views": 47,
-      "downloads": 3,
-      "wallpaperCount": 14,
-      "latestCreatedAt": "2026-10-11T01:53:44.862Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091608_286.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092951_829.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_090440_128.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091818_244.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_085433_645.webp",
-          "cdnTag": "v1.4.64"
-        }
-      ]
-    },
-    {
       "tag": "夜晚",
-      "score": 7.72112,
-      "views": 60,
+      "score": 7.580665,
+      "views": 61,
       "downloads": 5,
       "wallpaperCount": 13,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -337,9 +304,42 @@
       ]
     },
     {
+      "tag": "夏日",
+      "score": 7.559317,
+      "views": 48,
+      "downloads": 3,
+      "wallpaperCount": 14,
+      "latestCreatedAt": "2026-10-11T01:53:44.862Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091608_286.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092951_829.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_090440_128.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091818_244.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_085433_645.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
       "tag": "氛围感",
-      "score": 6.683683,
-      "views": 16,
+      "score": 6.583881,
+      "views": 17,
       "downloads": 3,
       "wallpaperCount": 7,
       "latestCreatedAt": "2026-11-10T12:07:56.755Z",
@@ -371,8 +371,8 @@
     },
     {
       "tag": "黑色蕾丝",
-      "score": 6.51613,
-      "views": 11,
+      "score": 6.497737,
+      "views": 13,
       "downloads": 0,
       "wallpaperCount": 6,
       "latestCreatedAt": "2026-11-10T12:07:56.755Z",
@@ -404,8 +404,8 @@
     },
     {
       "tag": "清新人像",
-      "score": 5.96411,
-      "views": 21,
+      "score": 5.970905,
+      "views": 24,
       "downloads": 2,
       "wallpaperCount": 5,
       "latestCreatedAt": "2026-11-09T06:12:23.160Z",
@@ -426,19 +426,19 @@
           "cdnTag": "v1.4.96"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/吊带-手机-柔光.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/丸子头-好身材-户外.webp",
           "cdnTag": "v1.4.96"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/丸子头-好身材-户外.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/吊带-手机-柔光.webp",
           "cdnTag": "v1.4.96"
         }
       ]
     },
     {
       "tag": "可爱",
-      "score": 5.552434,
-      "views": 20,
+      "score": 5.438419,
+      "views": 21,
       "downloads": 3,
       "wallpaperCount": 10,
       "latestCreatedAt": "2026-10-11T01:53:44.861Z",
@@ -451,15 +451,15 @@
           "cdnTag": "v1.4.64"
         },
         {
+          "thumbnail": "/thumbnail/mobile/萌宠/猫咪/微信图片_2026-10-11_091341_642.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
           "thumbnail": "/thumbnail/mobile/插画/通用/微信图片_2026-10-11_091748_679.webp",
           "cdnTag": "v1.4.64"
         },
         {
           "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/微信图片_2026-10-11_092611_282.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/萌宠/猫咪/微信图片_2026-10-11_091341_642.webp",
           "cdnTag": "v1.4.64"
         },
         {
@@ -470,7 +470,7 @@
     },
     {
       "tag": "少女",
-      "score": 5.257032,
+      "score": 5.135267,
       "views": 105,
       "downloads": 27,
       "wallpaperCount": 8,
@@ -503,7 +503,7 @@
     },
     {
       "tag": "风景",
-      "score": 4.991,
+      "score": 4.875397,
       "views": 45,
       "downloads": 7,
       "wallpaperCount": 8,
@@ -536,8 +536,8 @@
     },
     {
       "tag": "微笑",
-      "score": 4.741036,
-      "views": 57,
+      "score": 4.638238,
+      "views": 58,
       "downloads": 6,
       "wallpaperCount": 7,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -554,11 +554,11 @@
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091735_332.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092951_829.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092951_829.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091735_332.webp",
           "cdnTag": "v1.4.64"
         },
         {
@@ -569,7 +569,7 @@
     },
     {
       "tag": "花朵",
-      "score": 4.064995,
+      "score": 3.97084,
       "views": 8,
       "downloads": 3,
       "wallpaperCount": 8,
@@ -602,7 +602,7 @@
     },
     {
       "tag": "二次元",
-      "score": 3.872959,
+      "score": 3.783253,
       "views": 40,
       "downloads": 8,
       "wallpaperCount": 6,
@@ -635,7 +635,7 @@
     },
     {
       "tag": "海绵宝宝",
-      "score": 3.858152,
+      "score": 3.768788,
       "views": 16,
       "downloads": 2,
       "wallpaperCount": 7,
@@ -668,7 +668,7 @@
     },
     {
       "tag": "海滩",
-      "score": 3.755329,
+      "score": 3.668347,
       "views": 34,
       "downloads": 3,
       "wallpaperCount": 6,
@@ -701,7 +701,7 @@
     },
     {
       "tag": "创意",
-      "score": 3.621937,
+      "score": 3.538044,
       "views": 10,
       "downloads": 1,
       "wallpaperCount": 7,
@@ -734,8 +734,8 @@
     },
     {
       "tag": "长发少女",
-      "score": 3.511579,
-      "views": 12,
+      "score": 3.503474,
+      "views": 14,
       "downloads": 0,
       "wallpaperCount": 3,
       "latestCreatedAt": "2026-11-10T12:07:56.755Z",
@@ -758,9 +758,84 @@
       ]
     },
     {
+      "tag": "彩色玻璃",
+      "score": 3.448467,
+      "views": 13,
+      "downloads": 0,
+      "wallpaperCount": 3,
+      "latestCreatedAt": "2026-11-10T12:07:56.755Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._0.webp",
+          "cdnTag": "v1.5.0"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._6.webp",
+          "cdnTag": "v1.5.0"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._4.webp",
+          "cdnTag": "v1.5.0"
+        }
+      ]
+    },
+    {
+      "tag": "柔光人像",
+      "score": 3.423595,
+      "views": 15,
+      "downloads": 0,
+      "wallpaperCount": 3,
+      "latestCreatedAt": "2026-11-12T09:14:02.192Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/丝袜-女性人像.webp",
+          "cdnTag": "v1.5.6"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_蒂法这张脸配婚纱也是降维打击||..._3.webp",
+          "cdnTag": "v1.5.0"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_蒂法这张脸配婚纱也是降维打击||..._7.webp",
+          "cdnTag": "v1.5.0"
+        }
+      ]
+    },
+    {
+      "tag": "哥特风",
+      "score": 3.375235,
+      "views": 8,
+      "downloads": 0,
+      "wallpaperCount": 3,
+      "latestCreatedAt": "2026-11-10T12:07:56.755Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_蒂法这张脸配婚纱也是降维打击||..._1.webp",
+          "cdnTag": "v1.5.0"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._5.webp",
+          "cdnTag": "v1.5.0"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._6.webp",
+          "cdnTag": "v1.5.0"
+        }
+      ]
+    },
+    {
       "tag": "黑丝",
-      "score": 3.43914,
-      "views": 125,
+      "score": 3.361495,
+      "views": 126,
       "downloads": 12,
       "wallpaperCount": 6,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -791,83 +866,8 @@
       ]
     },
     {
-      "tag": "柔光人像",
-      "score": 3.435989,
-      "views": 11,
-      "downloads": 0,
-      "wallpaperCount": 3,
-      "latestCreatedAt": "2026-11-12T09:14:02.192Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/丝袜-女性人像.webp",
-          "cdnTag": "v1.5.6"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_蒂法这张脸配婚纱也是降维打击||..._3.webp",
-          "cdnTag": "v1.5.0"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_蒂法这张脸配婚纱也是降维打击||..._7.webp",
-          "cdnTag": "v1.5.0"
-        }
-      ]
-    },
-    {
-      "tag": "彩色玻璃",
-      "score": 3.432212,
-      "views": 11,
-      "downloads": 0,
-      "wallpaperCount": 3,
-      "latestCreatedAt": "2026-11-10T12:07:56.755Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._0.webp",
-          "cdnTag": "v1.5.0"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._4.webp",
-          "cdnTag": "v1.5.0"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._6.webp",
-          "cdnTag": "v1.5.0"
-        }
-      ]
-    },
-    {
-      "tag": "哥特风",
-      "score": 3.3759,
-      "views": 7,
-      "downloads": 0,
-      "wallpaperCount": 3,
-      "latestCreatedAt": "2026-11-10T12:07:56.755Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_蒂法这张脸配婚纱也是降维打击||..._1.webp",
-          "cdnTag": "v1.5.0"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._5.webp",
-          "cdnTag": "v1.5.0"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._6.webp",
-          "cdnTag": "v1.5.0"
-        }
-      ]
-    },
-    {
       "tag": "宁静",
-      "score": 3.194071,
+      "score": 3.120089,
       "views": 100,
       "downloads": 5,
       "wallpaperCount": 5,
@@ -900,8 +900,8 @@
     },
     {
       "tag": "月光",
-      "score": 3.126197,
-      "views": 47,
+      "score": 3.055521,
+      "views": 48,
       "downloads": 7,
       "wallpaperCount": 5,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -932,9 +932,34 @@
       ]
     },
     {
+      "tag": "自然光",
+      "score": 2.941009,
+      "views": 14,
+      "downloads": 0,
+      "wallpaperCount": 3,
+      "latestCreatedAt": "2026-11-09T06:12:23.160Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/吊带-好身材-少女.webp",
+          "cdnTag": "v1.4.96"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/丸子头-好身材-户外.webp",
+          "cdnTag": "v1.4.96"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_090310_466.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
       "tag": "萌宠",
-      "score": 2.990233,
-      "views": 4,
+      "score": 2.935565,
+      "views": 5,
       "downloads": 1,
       "wallpaperCount": 6,
       "latestCreatedAt": "2026-10-11T01:53:44.861Z",
@@ -965,37 +990,33 @@
       ]
     },
     {
-      "tag": "自然光",
-      "score": 2.878919,
-      "views": 12,
-      "downloads": 0,
-      "wallpaperCount": 3,
-      "latestCreatedAt": "2026-11-09T06:12:23.160Z",
+      "tag": "魅力人像",
+      "score": 2.846144,
+      "views": 21,
+      "downloads": 3,
+      "wallpaperCount": 2,
+      "latestCreatedAt": "2026-11-12T09:14:02.192Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/吊带-好身材-少女.webp",
-          "cdnTag": "v1.4.96"
+          "thumbnail": "/thumbnail/mobile/人像/魅力/写真-居家室内-性感.webp",
+          "cdnTag": "v1.5.6"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/丸子头-好身材-户外.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/吊带裙-好看-手机.webp",
           "cdnTag": "v1.4.96"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_090310_466.webp",
-          "cdnTag": "v1.4.64"
         }
       ]
     },
     {
-      "tag": "魅力人像",
-      "score": 2.748199,
-      "views": 14,
-      "downloads": 2,
-      "wallpaperCount": 2,
-      "latestCreatedAt": "2026-11-12T09:14:02.192Z",
+      "tag": "柔光",
+      "score": 2.648825,
+      "views": 49,
+      "downloads": 14,
+      "wallpaperCount": 3,
+      "latestCreatedAt": "2026-11-10T12:07:56.755Z",
       "series": [
         "mobile"
       ],
@@ -1005,14 +1026,18 @@
           "cdnTag": "v1.4.96"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/写真-居家室内-性感.webp",
-          "cdnTag": "v1.5.6"
+          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._4.webp",
+          "cdnTag": "v1.5.0"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/【恋风】20260819160529.webp",
+          "cdnTag": "v1.3.97"
         }
       ]
     },
     {
       "tag": "樱花",
-      "score": 2.678641,
+      "score": 2.616597,
       "views": 10,
       "downloads": 0,
       "wallpaperCount": 5,
@@ -1044,34 +1069,9 @@
       ]
     },
     {
-      "tag": "柔光",
-      "score": 2.674707,
-      "views": 46,
-      "downloads": 14,
-      "wallpaperCount": 3,
-      "latestCreatedAt": "2026-11-10T12:07:56.755Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/吊带裙-好看-手机.webp",
-          "cdnTag": "v1.4.96"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._4.webp",
-          "cdnTag": "v1.5.0"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/【恋风】20260819160529.webp",
-          "cdnTag": "v1.3.97"
-        }
-      ]
-    },
-    {
       "tag": "室内人像",
-      "score": 2.568087,
-      "views": 9,
+      "score": 2.582293,
+      "views": 12,
       "downloads": 1,
       "wallpaperCount": 2,
       "latestCreatedAt": "2026-11-12T09:14:02.192Z",
@@ -1090,9 +1090,30 @@
       ]
     },
     {
+      "tag": "窗边柔光",
+      "score": 2.523891,
+      "views": 13,
+      "downloads": 1,
+      "wallpaperCount": 2,
+      "latestCreatedAt": "2026-11-12T09:14:02.192Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/写真-居家室内-性感.webp",
+          "cdnTag": "v1.5.6"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/吊带-手机-柔光.webp",
+          "cdnTag": "v1.4.96"
+        }
+      ]
+    },
+    {
       "tag": "暖色调",
-      "score": 2.490974,
-      "views": 6,
+      "score": 2.469685,
+      "views": 7,
       "downloads": 1,
       "wallpaperCount": 2,
       "latestCreatedAt": "2026-11-12T09:14:02.192Z",
@@ -1111,30 +1132,9 @@
       ]
     },
     {
-      "tag": "窗边柔光",
-      "score": 2.45523,
-      "views": 9,
-      "downloads": 0,
-      "wallpaperCount": 2,
-      "latestCreatedAt": "2026-11-12T09:14:02.192Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/写真-居家室内-性感.webp",
-          "cdnTag": "v1.5.6"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/吊带-手机-柔光.webp",
-          "cdnTag": "v1.4.96"
-        }
-      ]
-    },
-    {
       "tag": "蓝天",
-      "score": 2.451435,
-      "views": 13,
+      "score": 2.410819,
+      "views": 14,
       "downloads": 2,
       "wallpaperCount": 3,
       "latestCreatedAt": "2026-11-09T06:12:23.160Z",
@@ -1158,7 +1158,7 @@
     },
     {
       "tag": "友谊",
-      "score": 2.397303,
+      "score": 2.341776,
       "views": 14,
       "downloads": 2,
       "wallpaperCount": 4,
@@ -1187,7 +1187,7 @@
     },
     {
       "tag": "浪漫",
-      "score": 2.392082,
+      "score": 2.336676,
       "views": 13,
       "downloads": 1,
       "wallpaperCount": 4,

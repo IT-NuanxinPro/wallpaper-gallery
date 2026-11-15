@@ -1,8 +1,8 @@
 {
   "schema": 2,
-  "exportedAt": "2026-11-14T21:40:39.941Z",
+  "exportedAt": "2026-11-15T22:01:18.093Z",
   "periodStartedAt": "2026-11-09T04:45:31.225389+00:00",
-  "weekStart": "2026-11-09",
+  "weekStart": "2026-11-16",
   "monthStart": "2026-11-01",
   "rowCount": 685,
   "items": [
@@ -404,7 +404,7 @@
       "downloads": 1,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -443,8 +443,8 @@
       "downloads": 3,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
-      "week_downloads": 2,
+      "week_views": 0,
+      "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 2
     },
@@ -1548,7 +1548,7 @@
       "downloads": 3,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -1574,7 +1574,7 @@
       "downloads": 0,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -1626,7 +1626,7 @@
       "downloads": 0,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -1795,7 +1795,7 @@
       "downloads": 2,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -1808,7 +1808,7 @@
       "downloads": 1,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -1947,13 +1947,13 @@
       "asset_key": "avatar:path:/wallpaper/avatar/%E4%BA%BA%E5%83%8F/%E7%94%9C%E5%A6%B9/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_102753_573.jpg",
       "image_id": "path:/wallpaper/avatar/%E4%BA%BA%E5%83%8F/%E7%94%9C%E5%A6%B9/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_102753_573.jpg",
       "legacy_ambiguous": false,
-      "views": 0,
+      "views": 1,
       "downloads": 0,
       "likes": 0,
       "collects": 0,
       "week_views": 0,
       "week_downloads": 0,
-      "month_views": 0,
+      "month_views": 1,
       "month_downloads": 0
     },
     {
@@ -1964,7 +1964,7 @@
       "downloads": 0,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -3355,7 +3355,7 @@
       "downloads": 0,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -3733,7 +3733,7 @@
       "likes": 0,
       "collects": 0,
       "week_views": 0,
-      "week_downloads": 1,
+      "week_downloads": 0,
       "month_views": 0,
       "month_downloads": 1
     },
@@ -4005,7 +4005,7 @@
       "downloads": 0,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -6047,7 +6047,7 @@
       "likes": 0,
       "collects": 0,
       "week_views": 0,
-      "week_downloads": 1,
+      "week_downloads": 0,
       "month_views": 0,
       "month_downloads": 1
     },
@@ -6904,7 +6904,7 @@
       "downloads": 0,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -7671,7 +7671,7 @@
       "downloads": 0,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -8100,7 +8100,7 @@
       "downloads": 0,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -8113,7 +8113,7 @@
       "downloads": 0,
       "likes": 0,
       "collects": 0,
-      "week_views": 2,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 2,
       "month_downloads": 0
@@ -8126,7 +8126,7 @@
       "downloads": 0,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -8386,7 +8386,7 @@
       "downloads": 0,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
@@ -8607,7 +8607,7 @@
       "downloads": 0,
       "likes": 0,
       "collects": 0,
-      "week_views": 1,
+      "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
       "month_downloads": 0
