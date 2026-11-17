@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "exportedAt": "2026-11-15T22:01:18.093Z",
+  "exportedAt": "2026-11-17T01:02:03.016Z",
   "periodStartedAt": "2026-11-09T04:45:31.225389+00:00",
   "weekStart": "2026-11-16",
   "monthStart": "2026-11-01",
@@ -6042,14 +6042,14 @@
       "asset_key": "avatar:path:/wallpaper/avatar/%E8%90%8C%E5%AE%A0/%E7%8B%97%E7%8B%97/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_101358_531.jpg",
       "image_id": "path:/wallpaper/avatar/%E8%90%8C%E5%AE%A0/%E7%8B%97%E7%8B%97/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_101358_531.jpg",
       "legacy_ambiguous": false,
-      "views": 0,
-      "downloads": 1,
+      "views": 1,
+      "downloads": 2,
       "likes": 0,
       "collects": 0,
-      "week_views": 0,
-      "week_downloads": 0,
-      "month_views": 0,
-      "month_downloads": 1
+      "week_views": 1,
+      "week_downloads": 1,
+      "month_views": 1,
+      "month_downloads": 2
     },
     {
       "asset_key": "avatar:path:/wallpaper/avatar/%E8%90%8C%E5%AE%A0/%E7%8B%97%E7%8B%97/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20260126155445_539_4.jpg",
@@ -6900,14 +6900,14 @@
       "asset_key": "avatar:path:/wallpaper/avatar/%E8%A1%A8%E6%83%85%E5%8C%85/%E6%90%9E%E6%80%AA/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_101936_901.png",
       "image_id": "path:/wallpaper/avatar/%E8%A1%A8%E6%83%85%E5%8C%85/%E6%90%9E%E6%80%AA/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_101936_901.png",
       "legacy_ambiguous": false,
-      "views": 2,
-      "downloads": 0,
+      "views": 3,
+      "downloads": 1,
       "likes": 0,
       "collects": 0,
-      "week_views": 0,
-      "week_downloads": 0,
-      "month_views": 1,
-      "month_downloads": 0
+      "week_views": 1,
+      "week_downloads": 1,
+      "month_views": 2,
+      "month_downloads": 1
     },
     {
       "asset_key": "avatar:path:/wallpaper/avatar/%E8%A1%A8%E6%83%85%E5%8C%85/%E6%90%9E%E6%80%AA/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_102737_780.jpg",

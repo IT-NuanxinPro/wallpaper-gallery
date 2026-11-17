@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-11-15T22:01:27.793Z",
+  "generatedAt": "2026-11-17T01:02:14.110Z",
   "windowDays": 90,
   "halfLifeDays": 30,
-  "windowStart": "2026-08-17T22:01:27.793Z",
+  "windowStart": "2026-08-19T01:02:14.110Z",
   "series": "video",
-  "total": 115,
+  "total": 123,
   "tags": [
     {
       "tag": "desktop",
-      "score": 27.16289,
-      "views": 82,
+      "score": 29.417026,
+      "views": 101,
       "downloads": 20,
-      "wallpaperCount": 21,
-      "latestCreatedAt": "2026-11-13T07:08:23.452Z",
+      "wallpaperCount": 23,
+      "latestCreatedAt": "2026-11-16T02:12:51.034Z",
       "series": [
         "video"
       ],
@@ -41,11 +41,11 @@
     },
     {
       "tag": "动漫",
-      "score": 16.641724,
-      "views": 51,
+      "score": 19.021818,
+      "views": 65,
       "downloads": 13,
-      "wallpaperCount": 13,
-      "latestCreatedAt": "2026-11-13T07:08:23.452Z",
+      "wallpaperCount": 15,
+      "latestCreatedAt": "2026-11-16T02:12:51.034Z",
       "series": [
         "video"
       ],
@@ -74,11 +74,11 @@
     },
     {
       "tag": "二次元",
-      "score": 7.690152,
-      "views": 22,
+      "score": 8.703885,
+      "views": 24,
       "downloads": 6,
-      "wallpaperCount": 6,
-      "latestCreatedAt": "2026-11-13T07:08:23.452Z",
+      "wallpaperCount": 7,
+      "latestCreatedAt": "2026-11-16T02:12:51.034Z",
       "series": [
         "video"
       ],
@@ -92,23 +92,23 @@
           "cdnTag": ""
         },
         {
+          "thumbnail": "/thumbnail/video/desktop/动漫/%E8%93%9D%E5%8F%91%E9%B2%B8%E5%B0%BE%E5%B0%91%E5%A5%B3%E5%80%9A%E7%AA%97%E6%B2%90%E6%B5%B4%E6%99%B4%E5%85%89-90892efc.webp",
+          "cdnTag": ""
+        },
+        {
           "thumbnail": "/thumbnail/video/desktop/动漫/%E5%86%B7%E8%89%B3%E9%BB%91%E5%8F%91%E5%BC%82%E7%9E%B3%E5%B0%91%E5%A5%B3%E9%9D%A2%E9%83%A8%E7%89%B9%E5%86%99-035a7208.webp",
           "cdnTag": ""
         },
         {
           "thumbnail": "/thumbnail/video/desktop/动漫/白发蓝瞳_光影轻拂.webp",
           "cdnTag": "v1.5.7"
-        },
-        {
-          "thumbnail": "/thumbnail/video/desktop/动漫/%E5%B9%BD%E8%93%9D%E6%98%9F%E5%85%89%E4%B8%8B%E9%97%AD%E7%9C%BC%E7%9A%84%E5%B0%96%E8%80%B3%E5%B0%91%E5%A5%B3-b41edce9.webp",
-          "cdnTag": ""
         }
       ]
     },
     {
       "tag": "国风",
-      "score": 6.549199,
-      "views": 18,
+      "score": 6.468778,
+      "views": 21,
       "downloads": 5,
       "wallpaperCount": 5,
       "latestCreatedAt": "2026-11-12T13:52:17.119Z",
@@ -140,8 +140,8 @@
     },
     {
       "tag": "三维国风",
-      "score": 5.391852,
-      "views": 15,
+      "score": 5.299212,
+      "views": 17,
       "downloads": 5,
       "wallpaperCount": 4,
       "latestCreatedAt": "2026-11-12T13:52:17.119Z",
@@ -169,8 +169,8 @@
     },
     {
       "tag": "蓝发少女",
-      "score": 5.171609,
-      "views": 15,
+      "score": 5.047571,
+      "views": 16,
       "downloads": 5,
       "wallpaperCount": 4,
       "latestCreatedAt": "2026-11-13T07:08:23.452Z",
@@ -198,8 +198,8 @@
     },
     {
       "tag": "眼部特写",
-      "score": 3.984959,
-      "views": 11,
+      "score": 3.926431,
+      "views": 12,
       "downloads": 6,
       "wallpaperCount": 3,
       "latestCreatedAt": "2026-11-12 17:33:27",
@@ -212,19 +212,19 @@
           "cdnTag": "v1.5.7"
         },
         {
-          "thumbnail": "/thumbnail/video/desktop/动漫/白发蓝瞳_光影轻拂.webp",
+          "thumbnail": "/thumbnail/video/desktop/动漫/黑发少女_星瞳流光.webp",
           "cdnTag": "v1.5.7"
         },
         {
-          "thumbnail": "/thumbnail/video/desktop/动漫/黑发少女_星瞳流光.webp",
+          "thumbnail": "/thumbnail/video/desktop/动漫/白发蓝瞳_光影轻拂.webp",
           "cdnTag": "v1.5.7"
         }
       ]
     },
     {
       "tag": "暗色背景",
-      "score": 2.992946,
-      "views": 10,
+      "score": 2.93176,
+      "views": 11,
       "downloads": 8,
       "wallpaperCount": 2,
       "latestCreatedAt": "2026-11-12 17:33:27",
@@ -244,8 +244,8 @@
     },
     {
       "tag": "黑发少女",
-      "score": 2.776867,
-      "views": 8,
+      "score": 2.749351,
+      "views": 9,
       "downloads": 6,
       "wallpaperCount": 2,
       "latestCreatedAt": "2026-11-12 17:33:27",
@@ -264,30 +264,9 @@
       ]
     },
     {
-      "tag": "古风少女",
-      "score": 2.740244,
-      "views": 8,
-      "downloads": 3,
-      "wallpaperCount": 2,
-      "latestCreatedAt": "2026-11-12T13:52:17.119Z",
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/desktop/国风/%E9%BB%91%E5%8F%91%E9%93%B6%E9%A5%B0%E5%B0%91%E5%A5%B3%E5%86%B7%E5%85%89%E5%9B%9E%E7%9C%B8-b1a4b9d1.webp",
-          "cdnTag": ""
-        },
-        {
-          "thumbnail": "/thumbnail/video/desktop/国风/%E9%93%B6%E7%81%B0%E9%95%BF%E5%8F%91%E5%B0%91%E5%A5%B3%E7%AB%B9%E5%BD%B1%E6%B5%AE%E5%85%89-820f37ee.webp",
-          "cdnTag": ""
-        }
-      ]
-    },
-    {
       "tag": "回眸",
-      "score": 2.715199,
-      "views": 12,
+      "score": 2.70307,
+      "views": 15,
       "downloads": 2,
       "wallpaperCount": 2,
       "latestCreatedAt": "2026-11-12T13:52:17.119Z",
@@ -306,8 +285,50 @@
       ]
     },
     {
+      "tag": "幻想",
+      "score": 2.697237,
+      "views": 10,
+      "downloads": 5,
+      "wallpaperCount": 2,
+      "latestCreatedAt": "2026-11-12 17:33:27",
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/desktop/动漫/蓝发少女_剑光花瓣.webp",
+          "cdnTag": "v1.5.7"
+        },
+        {
+          "thumbnail": "/thumbnail/video/desktop/动漫/银发少女_赤蓝霜刃.webp",
+          "cdnTag": "v1.5.7"
+        }
+      ]
+    },
+    {
+      "tag": "古风少女",
+      "score": 2.685545,
+      "views": 9,
+      "downloads": 3,
+      "wallpaperCount": 2,
+      "latestCreatedAt": "2026-11-12T13:52:17.119Z",
+      "series": [
+        "video"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/video/desktop/国风/%E9%BB%91%E5%8F%91%E9%93%B6%E9%A5%B0%E5%B0%91%E5%A5%B3%E5%86%B7%E5%85%89%E5%9B%9E%E7%9C%B8-b1a4b9d1.webp",
+          "cdnTag": ""
+        },
+        {
+          "thumbnail": "/thumbnail/video/desktop/国风/%E9%93%B6%E7%81%B0%E9%95%BF%E5%8F%91%E5%B0%91%E5%A5%B3%E7%AB%B9%E5%BD%B1%E6%B5%AE%E5%85%89-820f37ee.webp",
+          "cdnTag": ""
+        }
+      ]
+    },
+    {
       "tag": "IP形象",
-      "score": 2.682255,
+      "score": 2.613401,
       "views": 8,
       "downloads": 2,
       "wallpaperCount": 2,
@@ -328,7 +349,7 @@
     },
     {
       "tag": "花饰",
-      "score": 2.656178,
+      "score": 2.587994,
       "views": 10,
       "downloads": 1,
       "wallpaperCount": 2,
@@ -348,30 +369,30 @@
       ]
     },
     {
-      "tag": "幻想",
-      "score": 2.61982,
-      "views": 7,
-      "downloads": 5,
+      "tag": "大肥鱼",
+      "score": 2.483262,
+      "views": 5,
+      "downloads": 0,
       "wallpaperCount": 2,
-      "latestCreatedAt": "2026-11-12 17:33:27",
+      "latestCreatedAt": "2026-11-16T02:12:51.034Z",
       "series": [
         "video"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/video/desktop/动漫/蓝发少女_剑光花瓣.webp",
-          "cdnTag": "v1.5.7"
+          "thumbnail": "/thumbnail/video/desktop/动漫/%E8%93%9D%E5%8F%91%E5%A5%B3%E4%BB%86%E8%A7%92%E8%89%B2%E6%8C%82%E9%A5%B0%E6%82%AC%E4%BA%8E%E8%BD%A6%E5%8E%A2-3aa0e451.webp",
+          "cdnTag": ""
         },
         {
-          "thumbnail": "/thumbnail/video/desktop/动漫/银发少女_赤蓝霜刃.webp",
-          "cdnTag": "v1.5.7"
+          "thumbnail": "/thumbnail/video/desktop/动漫/%E8%93%9D%E5%8F%91%E9%B2%B8%E5%B0%BE%E5%B0%91%E5%A5%B3%E5%80%9A%E7%AA%97%E6%B2%90%E6%B5%B4%E6%99%B4%E5%85%89-90892efc.webp",
+          "cdnTag": ""
         }
       ]
     },
     {
       "tag": "梦幻",
-      "score": 2.408471,
-      "views": 7,
+      "score": 2.424669,
+      "views": 9,
       "downloads": 0,
       "wallpaperCount": 2,
       "latestCreatedAt": "2026-11-12 17:33:27",
@@ -391,7 +412,7 @@
     },
     {
       "tag": "粉紫侧光",
-      "score": 1.568775,
+      "score": 1.528505,
       "views": 5,
       "downloads": 6,
       "wallpaperCount": 1,
@@ -408,7 +429,7 @@
     },
     {
       "tag": "红色眼睛",
-      "score": 1.568775,
+      "score": 1.528505,
       "views": 5,
       "downloads": 6,
       "wallpaperCount": 1,
@@ -425,7 +446,7 @@
     },
     {
       "tag": "心形瞳孔",
-      "score": 1.568775,
+      "score": 1.528505,
       "views": 5,
       "downloads": 6,
       "wallpaperCount": 1,
@@ -442,8 +463,8 @@
     },
     {
       "tag": "粉色花瓣",
-      "score": 1.55126,
-      "views": 6,
+      "score": 1.520157,
+      "views": 7,
       "downloads": 5,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-12 17:33:27",
@@ -459,8 +480,8 @@
     },
     {
       "tag": "剑刃",
-      "score": 1.55126,
-      "views": 6,
+      "score": 1.520157,
+      "views": 7,
       "downloads": 5,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-12 17:33:27",
@@ -476,8 +497,8 @@
     },
     {
       "tag": "近景",
-      "score": 1.55126,
-      "views": 6,
+      "score": 1.520157,
+      "views": 7,
       "downloads": 5,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-12 17:33:27",
@@ -493,8 +514,8 @@
     },
     {
       "tag": "蓝色光效",
-      "score": 1.55126,
-      "views": 6,
+      "score": 1.520157,
+      "views": 7,
       "downloads": 5,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-12 17:33:27",
@@ -510,8 +531,8 @@
     },
     {
       "tag": "蓝色眼眸",
-      "score": 1.55126,
-      "views": 6,
+      "score": 1.520157,
+      "views": 7,
       "downloads": 5,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-12 17:33:27",
@@ -527,8 +548,8 @@
     },
     {
       "tag": "黑发",
-      "score": 1.424181,
-      "views": 5,
+      "score": 1.403266,
+      "views": 6,
       "downloads": 2,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-12T13:52:17.119Z",
@@ -544,8 +565,8 @@
     },
     {
       "tag": "蓝色光斑",
-      "score": 1.424181,
-      "views": 5,
+      "score": 1.403266,
+      "views": 6,
       "downloads": 2,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-12T13:52:17.119Z",
@@ -561,8 +582,8 @@
     },
     {
       "tag": "银饰",
-      "score": 1.424181,
-      "views": 5,
+      "score": 1.403266,
+      "views": 6,
       "downloads": 2,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-12T13:52:17.119Z",
@@ -578,8 +599,8 @@
     },
     {
       "tag": "烈焰长刀",
-      "score": 1.424171,
-      "views": 5,
+      "score": 1.403256,
+      "views": 6,
       "downloads": 2,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-12T13:51:50.535Z",
@@ -595,8 +616,8 @@
     },
     {
       "tag": "皮卡丘",
-      "score": 1.424171,
-      "views": 5,
+      "score": 1.403256,
+      "views": 6,
       "downloads": 2,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-12T13:51:50.535Z",
@@ -612,8 +633,8 @@
     },
     {
       "tag": "神奇宝贝",
-      "score": 1.424171,
-      "views": 5,
+      "score": 1.403256,
+      "views": 6,
       "downloads": 2,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-12T13:51:50.535Z",
@@ -629,8 +650,8 @@
     },
     {
       "tag": "同人插画",
-      "score": 1.424171,
-      "views": 5,
+      "score": 1.403256,
+      "views": 6,
       "downloads": 2,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-12T13:51:50.535Z",
@@ -646,7 +667,7 @@
     },
     {
       "tag": "草坡",
-      "score": 1.392542,
+      "score": 1.356796,
       "views": 3,
       "downloads": 2,
       "wallpaperCount": 1,
@@ -663,7 +684,7 @@
     },
     {
       "tag": "角色群像",
-      "score": 1.392542,
+      "score": 1.356796,
       "views": 3,
       "downloads": 2,
       "wallpaperCount": 1,
@@ -680,7 +701,7 @@
     },
     {
       "tag": "可爱",
-      "score": 1.392542,
+      "score": 1.356796,
       "views": 3,
       "downloads": 2,
       "wallpaperCount": 1,
@@ -697,7 +718,7 @@
     },
     {
       "tag": "蓝天白云",
-      "score": 1.392542,
+      "score": 1.356796,
       "views": 3,
       "downloads": 2,
       "wallpaperCount": 1,
@@ -714,7 +735,7 @@
     },
     {
       "tag": "紫瞳",
-      "score": 1.392542,
+      "score": 1.356796,
       "views": 3,
       "downloads": 2,
       "wallpaperCount": 1,
@@ -731,7 +752,7 @@
     },
     {
       "tag": "OS娘",
-      "score": 1.392542,
+      "score": 1.356796,
       "views": 3,
       "downloads": 2,
       "wallpaperCount": 1,
@@ -748,7 +769,7 @@
     },
     {
       "tag": "Q版",
-      "score": 1.392542,
+      "score": 1.356796,
       "views": 3,
       "downloads": 2,
       "wallpaperCount": 1,
@@ -765,7 +786,7 @@
     },
     {
       "tag": "蓝紫光影",
-      "score": 1.366466,
+      "score": 1.331388,
       "views": 5,
       "downloads": 1,
       "wallpaperCount": 1,
@@ -782,24 +803,7 @@
     },
     {
       "tag": "人物特写",
-      "score": 1.366466,
-      "views": 5,
-      "downloads": 1,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-11-12T13:51:50.643Z",
-      "series": [
-        "video"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/video/desktop/国风/%E7%B4%AB%E5%8F%91%E8%8A%B1%E9%A5%B0%E5%B0%91%E5%A5%B3%E6%98%9F%E5%85%89%E5%87%9D%E6%9C%9B-37299518.webp",
-          "cdnTag": ""
-        }
-      ]
-    },
-    {
-      "tag": "仙侠少女",
-      "score": 1.366466,
+      "score": 1.331388,
       "views": 5,
       "downloads": 1,
       "wallpaperCount": 1,

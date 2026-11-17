@@ -1,148 +1,148 @@
 {
-  "generatedAt": "2026-11-15T22:01:27.793Z",
+  "generatedAt": "2026-11-17T01:02:14.110Z",
   "windowDays": 90,
   "halfLifeDays": 30,
-  "windowStart": "2026-08-17T22:01:27.793Z",
+  "windowStart": "2026-08-19T01:02:14.110Z",
   "series": "mobile",
-  "total": 289,
+  "total": 375,
   "tags": [
     {
       "tag": "人像",
-      "score": 66.384617,
-      "views": 1184,
-      "downloads": 176,
-      "wallpaperCount": 96,
-      "latestCreatedAt": "2026-11-12T09:14:02.192Z",
+      "score": 84.016969,
+      "views": 1202,
+      "downloads": 179,
+      "wallpaperCount": 115,
+      "latestCreatedAt": "2026-11-17 00:45:20",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/写真-居家室内-性感.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E4%B8%9D%E8%A2%9C-%E5%A5%B3%E6%80%A7%E4%BA%BA%E5%83%8F.webp",
           "cdnTag": "v1.5.6"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/丝袜-女性人像.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%86%99%E7%9C%9F-%E5%B1%85%E5%AE%B6%E5%AE%A4%E5%86%85-%E6%80%A7%E6%84%9F.webp",
           "cdnTag": "v1.5.6"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/吊带裙-好看-手机.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%90%8A%E5%B8%A6%E8%A3%99-%E5%A5%BD%E7%9C%8B-%E6%89%8B%E6%9C%BA.webp",
           "cdnTag": "v1.4.96"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._0.webp",
+          "thumbnail": "/thumbnail/mobile/人像/插画/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._0.webp",
           "cdnTag": "v1.5.0"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/壁纸-好身材-户外.webp",
-          "cdnTag": "v1.4.96"
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E4%BC%98%E9%9B%85%E5%9D%90%E5%A7%BF-%E5%8D%A7%E5%AE%A4%E8%83%8C%E6%99%AF.webp",
+          "cdnTag": "v1.5.6"
         }
       ]
     },
     {
       "tag": "清新",
-      "score": 31.126495,
-      "views": 490,
-      "downloads": 76,
-      "wallpaperCount": 50,
-      "latestCreatedAt": "2026-11-09T06:12:23.160Z",
+      "score": 34.480986,
+      "views": 498,
+      "downloads": 78,
+      "wallpaperCount": 54,
+      "latestCreatedAt": "2026-11-17T00:41:03.974Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/壁纸-好身材-户外.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%A3%81%E7%BA%B8-%E5%A5%BD%E8%BA%AB%E6%9D%90-%E6%88%B7%E5%A4%96.webp",
           "cdnTag": "v1.4.96"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/吊带-好身材-少女.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%90%8A%E5%B8%A6-%E5%A5%BD%E8%BA%AB%E6%9D%90-%E5%B0%91%E5%A5%B3.webp",
           "cdnTag": "v1.4.96"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/丸子头-咖啡杯-室内.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E4%B8%B8%E5%AD%90%E5%A4%B4-%E5%92%96%E5%95%A1%E6%9D%AF-%E5%AE%A4%E5%86%85.webp",
           "cdnTag": "v1.4.96"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/丸子头-好身材-户外.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%90%8A%E5%B8%A6-%E6%89%8B%E6%9C%BA-%E6%9F%94%E5%85%89.webp",
           "cdnTag": "v1.4.96"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/吊带-手机-柔光.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E4%B8%B8%E5%AD%90%E5%A4%B4-%E5%A5%BD%E8%BA%AB%E6%9D%90-%E6%88%B7%E5%A4%96.webp",
           "cdnTag": "v1.4.96"
         }
       ]
     },
     {
       "tag": "魅力",
-      "score": 23.874235,
-      "views": 501,
-      "downloads": 80,
-      "wallpaperCount": 34,
-      "latestCreatedAt": "2026-11-12T09:14:02.192Z",
+      "score": 25.435668,
+      "views": 510,
+      "downloads": 81,
+      "wallpaperCount": 36,
+      "latestCreatedAt": "2026-11-17T00:41:03.974Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/写真-居家室内-性感.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E4%B8%9D%E8%A2%9C-%E5%A5%B3%E6%80%A7%E4%BA%BA%E5%83%8F.webp",
           "cdnTag": "v1.5.6"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/丝袜-女性人像.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%86%99%E7%9C%9F-%E5%B1%85%E5%AE%B6%E5%AE%A4%E5%86%85-%E6%80%A7%E6%84%9F.webp",
           "cdnTag": "v1.5.6"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/吊带裙-好看-手机.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%90%8A%E5%B8%A6%E8%A3%99-%E5%A5%BD%E7%9C%8B-%E6%89%8B%E6%9C%BA.webp",
           "cdnTag": "v1.4.96"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/好身材-室内-性感.webp",
-          "cdnTag": "v1.4.96"
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E4%BC%98%E9%9B%85%E5%9D%90%E5%A7%BF-%E5%8D%A7%E5%AE%A4%E8%83%8C%E6%99%AF.webp",
+          "cdnTag": "v1.5.6"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/优雅坐姿-卧室背景.webp",
-          "cdnTag": "v1.5.6"
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%A5%BD%E8%BA%AB%E6%9D%90-%E5%AE%A4%E5%86%85-%E6%80%A7%E6%84%9F.webp",
+          "cdnTag": "v1.4.96"
         }
       ]
     },
     {
       "tag": "长发",
-      "score": 19.266304,
-      "views": 267,
-      "downloads": 43,
-      "wallpaperCount": 25,
-      "latestCreatedAt": "2026-11-12T09:14:02.192Z",
+      "score": 19.966067,
+      "views": 277,
+      "downloads": 44,
+      "wallpaperCount": 26,
+      "latestCreatedAt": "2026-11-17T00:41:03.974Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/丝袜-女性人像.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E4%B8%9D%E8%A2%9C-%E5%A5%B3%E6%80%A7%E4%BA%BA%E5%83%8F.webp",
           "cdnTag": "v1.5.6"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/吊带裙-好看-手机.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%90%8A%E5%B8%A6%E8%A3%99-%E5%A5%BD%E7%9C%8B-%E6%89%8B%E6%9C%BA.webp",
           "cdnTag": "v1.4.96"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/壁纸-好身材-户外.webp",
-          "cdnTag": "v1.4.96"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/吊带-好身材-少女.webp",
-          "cdnTag": "v1.4.96"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/优雅坐姿-卧室背景.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E4%BC%98%E9%9B%85%E5%9D%90%E5%A7%BF-%E5%8D%A7%E5%AE%A4%E8%83%8C%E6%99%AF.webp",
           "cdnTag": "v1.5.6"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%A3%81%E7%BA%B8-%E5%A5%BD%E8%BA%AB%E6%9D%90-%E6%88%B7%E5%A4%96.webp",
+          "cdnTag": "v1.4.96"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%90%8A%E5%B8%A6-%E5%A5%BD%E8%BA%AB%E6%9D%90-%E5%B0%91%E5%A5%B3.webp",
+          "cdnTag": "v1.4.96"
         }
       ]
     },
     {
       "tag": "阳光",
-      "score": 13.989339,
-      "views": 135,
-      "downloads": 20,
+      "score": 13.681921,
+      "views": 138,
+      "downloads": 22,
       "wallpaperCount": 24,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
       "series": [
@@ -150,31 +150,97 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/侧颜-列车车窗-卷发.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E4%BE%A7%E9%A2%9C-%E5%88%97%E8%BD%A6%E8%BD%A6%E7%AA%97-%E5%8D%B7%E5%8F%91.webp",
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/Ios-优雅-写真.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%86%AC%E5%AD%A3%E7%A9%BF%E6%90%AD-%E5%86%AC%E6%97%A5%E5%B0%91%E5%A5%B3.webp",
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/人像-侧脸-公交车内.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/Ios-%E4%BC%98%E9%9B%85-%E5%86%99%E7%9C%9F.webp",
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/人像-夏日-大海.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E4%BA%BA%E5%83%8F-%E4%BE%A7%E8%84%B8-%E5%85%AC%E4%BA%A4%E8%BD%A6%E5%86%85.webp",
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/冬季穿搭-冬日少女.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E4%BA%BA%E5%83%8F-%E5%A4%8F%E6%97%A5-%E5%A4%A7%E6%B5%B7.webp",
           "cdnTag": "v1.4.67"
         }
       ]
     },
     {
+      "tag": "风景",
+      "score": 12.920902,
+      "views": 48,
+      "downloads": 9,
+      "wallpaperCount": 16,
+      "latestCreatedAt": "2026-11-17 00:45:20",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/风景/花卉/1.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/风景/日落/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193718_310.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/风景/海滨/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193935_867.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/插画/风景/0.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/风景/花卉/1.webp",
+          "cdnTag": "v1.5.19"
+        }
+      ]
+    },
+    {
+      "tag": "插画",
+      "score": 12.825884,
+      "views": 203,
+      "downloads": 24,
+      "wallpaperCount": 18,
+      "latestCreatedAt": "2026-11-17T00:41:03.974Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/插画/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._0.webp",
+          "cdnTag": "v1.5.0"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/插画/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._5.webp",
+          "cdnTag": "v1.5.0"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/插画/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._6.webp",
+          "cdnTag": "v1.5.0"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/插画/萌宠/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193714_272.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/插画/风景/0.webp",
+          "cdnTag": "v1.5.19"
+        }
+      ]
+    },
+    {
       "tag": "优雅",
-      "score": 11.868517,
-      "views": 165,
+      "score": 11.619824,
+      "views": 167,
       "downloads": 25,
       "wallpaperCount": 20,
       "latestCreatedAt": "2026-11-12T09:14:02.192Z",
@@ -183,63 +249,96 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/优雅坐姿-卧室背景.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E4%BC%98%E9%9B%85%E5%9D%90%E5%A7%BF-%E5%8D%A7%E5%AE%A4%E8%83%8C%E6%99%AF.webp",
           "cdnTag": "v1.5.6"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/好身材-对镜自拍.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%A5%BD%E8%BA%AB%E6%9D%90-%E5%AF%B9%E9%95%9C%E8%87%AA%E6%8B%8D.webp",
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/仰角-女生-灰色短裤.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E4%BB%B0%E8%A7%92-%E5%A5%B3%E7%94%9F-%E7%81%B0%E8%89%B2%E7%9F%AD%E8%A3%A4.webp",
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092729_942.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_092729_942.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_091331_580.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091331_580.webp",
           "cdnTag": "v1.4.64"
         }
       ]
     },
     {
-      "tag": "插画",
-      "score": 9.920577,
-      "views": 201,
-      "downloads": 22,
-      "wallpaperCount": 15,
-      "latestCreatedAt": "2026-11-10T12:07:56.755Z",
+      "tag": "氛围感",
+      "score": 10.425898,
+      "views": 18,
+      "downloads": 3,
+      "wallpaperCount": 11,
+      "latestCreatedAt": "2026-11-17 00:45:20",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._0.webp",
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._1.webp",
           "cdnTag": "v1.5.0"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._5.webp",
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._2.webp",
           "cdnTag": "v1.5.0"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._6.webp",
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._3.webp",
           "cdnTag": "v1.5.0"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._4.webp",
-          "cdnTag": "v1.5.0"
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/0.webp",
+          "cdnTag": "v1.5.19"
         },
         {
-          "thumbnail": "/thumbnail/mobile/插画/风景/微信图片_2026-10-11_091959_798.webp",
-          "cdnTag": "v1.4.64"
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193926_692.webp",
+          "cdnTag": "v1.5.19"
+        }
+      ]
+    },
+    {
+      "tag": "微信图片",
+      "score": 9.997288,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 10,
+      "latestCreatedAt": "2026-11-17 00:45:20",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/明星/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194721_087.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/明星/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194732_338.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/明星/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194740_683.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/明星/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194749_825.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/易烊千玺/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194858_234.webp",
+          "cdnTag": "v1.5.19"
         }
       ]
     },
     {
       "tag": "动漫",
-      "score": 9.731737,
+      "score": 9.481922,
       "views": 73,
       "downloads": 11,
       "wallpaperCount": 17,
@@ -249,30 +348,96 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_090634_004.webp",
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_090634_004.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_091654_921.webp",
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091654_921.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/动漫/IP形象/微信图片_2026-10-11_091705_806.webp",
+          "thumbnail": "/thumbnail/mobile/动漫/IP形象/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091705_806.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/微信图片_2026-10-11_092422_650.webp",
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_092422_650.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_092333_289.webp",
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_092333_289.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
+      "tag": "明星",
+      "score": 8.423516,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 9,
+      "latestCreatedAt": "2026-11-17 00:45:20",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/明星/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194721_087.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/明星/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194732_338.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/明星/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194740_683.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/明星/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194749_825.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/明星/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194921_919.webp",
+          "cdnTag": "v1.5.19"
+        }
+      ]
+    },
+    {
+      "tag": "夏日",
+      "score": 7.517132,
+      "views": 50,
+      "downloads": 4,
+      "wallpaperCount": 14,
+      "latestCreatedAt": "2026-10-11T01:53:44.862Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091608_286.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_092951_829.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_090440_128.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/插画/风景/0%20(11).webp",
+          "cdnTag": "v1.4.63"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091818_244.webp",
           "cdnTag": "v1.4.64"
         }
       ]
     },
     {
       "tag": "夜晚",
-      "score": 7.580665,
+      "score": 7.386068,
       "views": 61,
       "downloads": 5,
       "wallpaperCount": 13,
@@ -282,96 +447,63 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/仰角-女生-灰色短裤.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E4%BB%B0%E8%A7%92-%E5%A5%B3%E7%94%9F-%E7%81%B0%E8%89%B2%E7%9F%AD%E8%A3%A4.webp",
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/动漫/IP形象/微信图片_2026-10-11_091705_806.webp",
+          "thumbnail": "/thumbnail/mobile/动漫/IP形象/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091705_806.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/风景/星空/微信图片_2026-10-11_091928_356.webp",
+          "thumbnail": "/thumbnail/mobile/风景/星空/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091928_356.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092737_007.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_092737_007.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_085530_928.webp",
-          "cdnTag": "v1.4.64"
-        }
-      ]
-    },
-    {
-      "tag": "夏日",
-      "score": 7.559317,
-      "views": 48,
-      "downloads": 3,
-      "wallpaperCount": 14,
-      "latestCreatedAt": "2026-10-11T01:53:44.862Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091608_286.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092951_829.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_090440_128.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091818_244.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_085433_645.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_085530_928.webp",
           "cdnTag": "v1.4.64"
         }
       ]
     },
     {
-      "tag": "氛围感",
-      "score": 6.583881,
-      "views": 17,
-      "downloads": 3,
-      "wallpaperCount": 7,
-      "latestCreatedAt": "2026-11-10T12:07:56.755Z",
+      "tag": "治愈系",
+      "score": 7.24129,
+      "views": 38,
+      "downloads": 12,
+      "wallpaperCount": 8,
+      "latestCreatedAt": "2026-11-17T00:41:03.974Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_蒂法这张脸配婚纱也是降维打击||..._1.webp",
-          "cdnTag": "v1.5.0"
+          "thumbnail": "/thumbnail/mobile/IP形象/卡通角色/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193650_536.webp",
+          "cdnTag": "v1.5.19"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_蒂法这张脸配婚纱也是降维打击||..._2.webp",
-          "cdnTag": "v1.5.0"
+          "thumbnail": "/thumbnail/mobile/IP形象/Hello Kitty/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193656_587.webp",
+          "cdnTag": "v1.5.19"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_蒂法这张脸配婚纱也是降维打击||..._3.webp",
-          "cdnTag": "v1.5.0"
+          "thumbnail": "/thumbnail/mobile/IP形象/多啦A梦/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193702_076.webp",
+          "cdnTag": "v1.5.19"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/氛围感/Ios-性感.webp",
-          "cdnTag": "v1.4.96"
+          "thumbnail": "/thumbnail/mobile/插画/萌宠/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193714_272.webp",
+          "cdnTag": "v1.5.19"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_蒂法这张脸配婚纱也是降维打击||..._7.webp",
-          "cdnTag": "v1.5.0"
+          "thumbnail": "/thumbnail/mobile/插画/风景/0.webp",
+          "cdnTag": "v1.5.19"
         }
       ]
     },
     {
       "tag": "黑色蕾丝",
-      "score": 6.497737,
+      "score": 6.330939,
       "views": 13,
       "downloads": 0,
       "wallpaperCount": 6,
@@ -381,31 +513,64 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_蒂法这张脸配婚纱也是降维打击||..._1.webp",
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._1.webp",
           "cdnTag": "v1.5.0"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_蒂法这张脸配婚纱也是降维打击||..._2.webp",
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._2.webp",
           "cdnTag": "v1.5.0"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_蒂法这张脸配婚纱也是降维打击||..._3.webp",
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._3.webp",
           "cdnTag": "v1.5.0"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._5.webp",
+          "thumbnail": "/thumbnail/mobile/人像/插画/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._5.webp",
           "cdnTag": "v1.5.0"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._6.webp",
+          "thumbnail": "/thumbnail/mobile/人像/插画/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._6.webp",
           "cdnTag": "v1.5.0"
         }
       ]
     },
     {
+      "tag": "花卉",
+      "score": 6.078218,
+      "views": 5,
+      "downloads": 0,
+      "wallpaperCount": 7,
+      "latestCreatedAt": "2026-11-17 00:45:20",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/风景/花卉/1.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/风景/花卉/1.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/风景/花卉/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193005_178.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/风景/花卉/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193029_894.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/风景/花卉/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193458_931.webp",
+          "cdnTag": "v1.5.19"
+        }
+      ]
+    },
+    {
       "tag": "清新人像",
-      "score": 5.970905,
-      "views": 24,
+      "score": 5.917195,
+      "views": 28,
       "downloads": 2,
       "wallpaperCount": 5,
       "latestCreatedAt": "2026-11-09T06:12:23.160Z",
@@ -414,30 +579,63 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/壁纸-好身材-户外.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%A3%81%E7%BA%B8-%E5%A5%BD%E8%BA%AB%E6%9D%90-%E6%88%B7%E5%A4%96.webp",
           "cdnTag": "v1.4.96"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/吊带-好身材-少女.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%90%8A%E5%B8%A6-%E5%A5%BD%E8%BA%AB%E6%9D%90-%E5%B0%91%E5%A5%B3.webp",
           "cdnTag": "v1.4.96"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/丸子头-咖啡杯-室内.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E4%B8%B8%E5%AD%90%E5%A4%B4-%E5%92%96%E5%95%A1%E6%9D%AF-%E5%AE%A4%E5%86%85.webp",
           "cdnTag": "v1.4.96"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/丸子头-好身材-户外.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%90%8A%E5%B8%A6-%E6%89%8B%E6%9C%BA-%E6%9F%94%E5%85%89.webp",
           "cdnTag": "v1.4.96"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/吊带-手机-柔光.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E4%B8%B8%E5%AD%90%E5%A4%B4-%E5%A5%BD%E8%BA%AB%E6%9D%90-%E6%88%B7%E5%A4%96.webp",
           "cdnTag": "v1.4.96"
         }
       ]
     },
     {
+      "tag": "萌宠",
+      "score": 5.85919,
+      "views": 5,
+      "downloads": 1,
+      "wallpaperCount": 9,
+      "latestCreatedAt": "2026-11-17T00:41:03.974Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/插画/萌宠/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193714_272.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/插画/萌宠/2.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/萌宠/狗狗/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193014_243.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/萌宠/猫咪/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091341_642.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/萌宠/猫咪/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_092921_734.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
       "tag": "可爱",
-      "score": 5.438419,
+      "score": 5.298814,
       "views": 21,
       "downloads": 3,
       "wallpaperCount": 10,
@@ -447,32 +645,32 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/插画/创意/微信图片_2026-10-11_091728_983.webp",
+          "thumbnail": "/thumbnail/mobile/插画/创意/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091728_983.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/萌宠/猫咪/微信图片_2026-10-11_091341_642.webp",
+          "thumbnail": "/thumbnail/mobile/萌宠/猫咪/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091341_642.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/插画/通用/微信图片_2026-10-11_091748_679.webp",
+          "thumbnail": "/thumbnail/mobile/插画/通用/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091748_679.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/微信图片_2026-10-11_092611_282.webp",
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_092611_282.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/创意/文字/微信图片_2026-10-11_091845_758.webp",
+          "thumbnail": "/thumbnail/mobile/创意/文字/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091845_758.webp",
           "cdnTag": "v1.4.64"
         }
       ]
     },
     {
       "tag": "少女",
-      "score": 5.135267,
-      "views": 105,
-      "downloads": 27,
+      "score": 5.046436,
+      "views": 108,
+      "downloads": 29,
       "wallpaperCount": 8,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
       "series": [
@@ -480,63 +678,63 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/人像-夏日-大海.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%86%AC%E5%AD%A3%E7%A9%BF%E6%90%AD-%E5%86%AC%E6%97%A5%E5%B0%91%E5%A5%B3.webp",
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_090634_004.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091608_286.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/冬季穿搭-冬日少女.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E4%BA%BA%E5%83%8F-%E5%A4%8F%E6%97%A5-%E5%A4%A7%E6%B5%B7.webp",
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092729_942.webp",
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_090634_004.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091608_286.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_092729_942.webp",
           "cdnTag": "v1.4.64"
         }
       ]
     },
     {
-      "tag": "风景",
-      "score": 4.875397,
-      "views": 45,
-      "downloads": 7,
-      "wallpaperCount": 8,
-      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
+      "tag": "樱花",
+      "score": 4.548749,
+      "views": 10,
+      "downloads": 0,
+      "wallpaperCount": 7,
+      "latestCreatedAt": "2026-11-17T00:41:03.974Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/插画/风景/微信图片_2026-10-11_091959_798.webp",
+          "thumbnail": "/thumbnail/mobile/IP形象/Hello Kitty/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193656_587.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/插画/萌宠/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193714_272.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091512_796.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/风景/海滨/微信图片_2026-10-11_091901_947.webp",
+          "thumbnail": "/thumbnail/mobile/风景/花卉/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_092349_780.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/风景/星空/微信图片_2026-10-11_091928_356.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/风景/冬日雪景/微信图片_2026-10-11_092534_448.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/风景/海滨/微信图片_2026-10-11_092403_936.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091830_480.webp",
           "cdnTag": "v1.4.64"
         }
       ]
     },
     {
       "tag": "微笑",
-      "score": 4.638238,
+      "score": 4.519174,
       "views": 58,
       "downloads": 6,
       "wallpaperCount": 7,
@@ -546,30 +744,154 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/Ios-优雅-写真.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/Ios-%E4%BC%98%E9%9B%85-%E5%86%99%E7%9C%9F.webp",
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/人像-侧脸-公交车内.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E4%BA%BA%E5%83%8F-%E4%BE%A7%E8%84%B8-%E5%85%AC%E4%BA%A4%E8%BD%A6%E5%86%85.webp",
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092951_829.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_092951_829.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091735_332.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091735_332.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091512_796.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091512_796.webp",
+          "cdnTag": "v1.4.64"
+        }
+      ]
+    },
+    {
+      "tag": "暖色调",
+      "score": 4.461583,
+      "views": 9,
+      "downloads": 1,
+      "wallpaperCount": 4,
+      "latestCreatedAt": "2026-11-17T00:41:03.974Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E4%BC%98%E9%9B%85%E5%9D%90%E5%A7%BF-%E5%8D%A7%E5%AE%A4%E8%83%8C%E6%99%AF.webp",
+          "cdnTag": "v1.5.6"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E4%B8%B8%E5%AD%90%E5%A4%B4-%E5%92%96%E5%95%A1%E6%9D%AF-%E5%AE%A4%E5%86%85.webp",
+          "cdnTag": "v1.4.96"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194011_647.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/风景/花卉/1.webp",
+          "cdnTag": "v1.5.19"
+        }
+      ]
+    },
+    {
+      "tag": "创意",
+      "score": 4.446882,
+      "views": 10,
+      "downloads": 1,
+      "wallpaperCount": 8,
+      "latestCreatedAt": "2026-11-17T00:41:03.974Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/创意/文字/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193710_304.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/插画/创意/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091728_983.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/创意/文字/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091740_236.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/创意/文字/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091845_758.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/创意/通用/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-07-21_190403_422.webp",
+          "cdnTag": "v1.4.63"
+        }
+      ]
+    },
+    {
+      "tag": "IP形象",
+      "score": 4.105503,
+      "views": 12,
+      "downloads": 1,
+      "wallpaperCount": 5,
+      "latestCreatedAt": "2026-11-17T00:41:03.974Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/IP形象/卡通角色/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193650_536.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/IP形象/Hello Kitty/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193656_587.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/IP形象/多啦A梦/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193702_076.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/动漫/IP形象/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091705_806.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/萌宠/IP形象/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-07-21_190928_664.webp",
+          "cdnTag": "v1.4.63"
+        }
+      ]
+    },
+    {
+      "tag": "自然光",
+      "score": 3.898176,
+      "views": 16,
+      "downloads": 0,
+      "wallpaperCount": 4,
+      "latestCreatedAt": "2026-11-17T00:41:03.974Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%90%8A%E5%B8%A6-%E5%A5%BD%E8%BA%AB%E6%9D%90-%E5%B0%91%E5%A5%B3.webp",
+          "cdnTag": "v1.4.96"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E4%B8%B8%E5%AD%90%E5%A4%B4-%E5%A5%BD%E8%BA%AB%E6%9D%90-%E6%88%B7%E5%A4%96.webp",
+          "cdnTag": "v1.4.96"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193926_692.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_090310_466.webp",
           "cdnTag": "v1.4.64"
         }
       ]
     },
     {
       "tag": "花朵",
-      "score": 3.97084,
+      "score": 3.868908,
       "views": 8,
       "downloads": 3,
       "wallpaperCount": 8,
@@ -579,30 +901,30 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_090704_384.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_090704_384.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_085701_138.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_085701_138.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091602_333.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091602_333.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092103_596.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_092103_596.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_085728_467.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_085728_467.webp",
           "cdnTag": "v1.4.64"
         }
       ]
     },
     {
       "tag": "二次元",
-      "score": 3.783253,
+      "score": 3.686136,
       "views": 40,
       "downloads": 8,
       "wallpaperCount": 6,
@@ -612,30 +934,30 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_090634_004.webp",
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_090634_004.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_091654_921.webp",
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091654_921.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_092333_289.webp",
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_092333_289.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_091812_486.webp",
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091812_486.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_090737_062.webp",
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_090737_062.webp",
           "cdnTag": "v1.4.64"
         }
       ]
     },
     {
       "tag": "海绵宝宝",
-      "score": 3.768788,
+      "score": 3.672043,
       "views": 16,
       "downloads": 2,
       "wallpaperCount": 7,
@@ -645,31 +967,31 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/微信图片_2026-10-11_092422_650.webp",
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_092422_650.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/微信图片_2026-10-11_092611_282.webp",
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_092611_282.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/640 (1).webp",
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/640%20(1).webp",
           "cdnTag": "v1.4.63"
         },
         {
-          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/640 (2).webp",
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/640%20(2).webp",
           "cdnTag": "v1.4.63"
         },
         {
-          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/640 (3).webp",
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/640%20(3).webp",
           "cdnTag": "v1.4.63"
         }
       ]
     },
     {
       "tag": "海滩",
-      "score": 3.668347,
-      "views": 34,
+      "score": 3.586497,
+      "views": 35,
       "downloads": 3,
       "wallpaperCount": 6,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
@@ -678,63 +1000,55 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/人像-夏日-大海.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E4%BA%BA%E5%83%8F-%E5%A4%8F%E6%97%A5-%E5%A4%A7%E6%B5%B7.webp",
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092625_478.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_092625_478.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092505_926.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_092505_926.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_085530_928.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_085530_928.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/640 (2).webp",
+          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/640%20(2).webp",
           "cdnTag": "v1.4.63"
         }
       ]
     },
     {
-      "tag": "创意",
-      "score": 3.538044,
-      "views": 10,
+      "tag": "柔光人像",
+      "score": 3.414601,
+      "views": 19,
       "downloads": 1,
-      "wallpaperCount": 7,
-      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
+      "wallpaperCount": 3,
+      "latestCreatedAt": "2026-11-12T09:14:02.192Z",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/插画/创意/微信图片_2026-10-11_091728_983.webp",
-          "cdnTag": "v1.4.64"
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E4%B8%9D%E8%A2%9C-%E5%A5%B3%E6%80%A7%E4%BA%BA%E5%83%8F.webp",
+          "cdnTag": "v1.5.6"
         },
         {
-          "thumbnail": "/thumbnail/mobile/创意/文字/微信图片_2026-10-11_091740_236.webp",
-          "cdnTag": "v1.4.64"
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._3.webp",
+          "cdnTag": "v1.5.0"
         },
         {
-          "thumbnail": "/thumbnail/mobile/创意/文字/微信图片_2026-10-11_091845_758.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/创意/通用/微信图片_2026-07-21_190403_422.webp",
-          "cdnTag": "v1.4.63"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/创意/抽象/微信图片_2026-10-11_092041_686.webp",
-          "cdnTag": "v1.4.64"
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._7.webp",
+          "cdnTag": "v1.5.0"
         }
       ]
     },
     {
       "tag": "长发少女",
-      "score": 3.503474,
+      "score": 3.413539,
       "views": 14,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -744,22 +1058,22 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._0.webp",
+          "thumbnail": "/thumbnail/mobile/人像/插画/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._0.webp",
           "cdnTag": "v1.5.0"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_蒂法这张脸配婚纱也是降维打击||..._2.webp",
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._2.webp",
           "cdnTag": "v1.5.0"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._4.webp",
+          "thumbnail": "/thumbnail/mobile/人像/插画/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._4.webp",
           "cdnTag": "v1.5.0"
         }
       ]
     },
     {
       "tag": "彩色玻璃",
-      "score": 3.448467,
+      "score": 3.359944,
       "views": 13,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -769,47 +1083,22 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._0.webp",
+          "thumbnail": "/thumbnail/mobile/人像/插画/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._0.webp",
           "cdnTag": "v1.5.0"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._6.webp",
+          "thumbnail": "/thumbnail/mobile/人像/插画/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._6.webp",
           "cdnTag": "v1.5.0"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._4.webp",
-          "cdnTag": "v1.5.0"
-        }
-      ]
-    },
-    {
-      "tag": "柔光人像",
-      "score": 3.423595,
-      "views": 15,
-      "downloads": 0,
-      "wallpaperCount": 3,
-      "latestCreatedAt": "2026-11-12T09:14:02.192Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/丝袜-女性人像.webp",
-          "cdnTag": "v1.5.6"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_蒂法这张脸配婚纱也是降维打击||..._3.webp",
-          "cdnTag": "v1.5.0"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_蒂法这张脸配婚纱也是降维打击||..._7.webp",
+          "thumbnail": "/thumbnail/mobile/人像/插画/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._4.webp",
           "cdnTag": "v1.5.0"
         }
       ]
     },
     {
       "tag": "哥特风",
-      "score": 3.375235,
+      "score": 3.288592,
       "views": 8,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -819,22 +1108,22 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_蒂法这张脸配婚纱也是降维打击||..._1.webp",
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._1.webp",
           "cdnTag": "v1.5.0"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._5.webp",
+          "thumbnail": "/thumbnail/mobile/人像/插画/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._5.webp",
           "cdnTag": "v1.5.0"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._6.webp",
+          "thumbnail": "/thumbnail/mobile/人像/插画/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._6.webp",
           "cdnTag": "v1.5.0"
         }
       ]
     },
     {
       "tag": "黑丝",
-      "score": 3.361495,
+      "score": 3.275205,
       "views": 126,
       "downloads": 12,
       "wallpaperCount": 6,
@@ -844,30 +1133,30 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/人像-冷艳-御姐.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E4%BA%BA%E5%83%8F-%E5%86%B7%E8%89%B3-%E5%BE%A1%E5%A7%90.webp",
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/仰角-女生-灰色短裤.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E4%BB%B0%E8%A7%92-%E5%A5%B3%E7%94%9F-%E7%81%B0%E8%89%B2%E7%9F%AD%E8%A3%A4.webp",
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092754_366.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_092754_366.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_092814_436.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_092814_436.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_085610_803.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_085610_803.webp",
           "cdnTag": "v1.4.64"
         }
       ]
     },
     {
       "tag": "宁静",
-      "score": 3.120089,
+      "score": 3.039996,
       "views": 100,
       "downloads": 5,
       "wallpaperCount": 5,
@@ -877,30 +1166,55 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/侧颜-壁纸-女性.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E4%BE%A7%E9%A2%9C-%E5%A3%81%E7%BA%B8-%E5%A5%B3%E6%80%A7.webp",
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/风景/星空/微信图片_2026-10-11_091928_356.webp",
+          "thumbnail": "/thumbnail/mobile/风景/星空/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091928_356.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091453_101.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091453_101.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_090542_911.webp",
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_090542_911.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/创意/通用/微信图片_2026-07-21_190403_422.webp",
+          "thumbnail": "/thumbnail/mobile/创意/通用/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-07-21_190403_422.webp",
           "cdnTag": "v1.4.63"
         }
       ]
     },
     {
+      "tag": "留白构图",
+      "score": 2.998981,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 3,
+      "latestCreatedAt": "2026-11-17T00:41:03.974Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193926_692.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194006_601.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/风景/花卉/1.webp",
+          "cdnTag": "v1.5.19"
+        }
+      ]
+    },
+    {
       "tag": "月光",
-      "score": 3.055521,
+      "score": 2.977085,
       "views": 48,
       "downloads": 7,
       "wallpaperCount": 5,
@@ -910,89 +1224,31 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/好身材-对镜自拍.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%A5%BD%E8%BA%AB%E6%9D%90-%E5%AF%B9%E9%95%9C%E8%87%AA%E6%8B%8D.webp",
           "cdnTag": "v1.4.67"
         },
         {
-          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_091812_486.webp",
+          "thumbnail": "/thumbnail/mobile/动漫/二次元/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091812_486.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091222_090.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091222_090.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092706_925.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_092706_925.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_091310_304.webp",
-          "cdnTag": "v1.4.64"
-        }
-      ]
-    },
-    {
-      "tag": "自然光",
-      "score": 2.941009,
-      "views": 14,
-      "downloads": 0,
-      "wallpaperCount": 3,
-      "latestCreatedAt": "2026-11-09T06:12:23.160Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/吊带-好身材-少女.webp",
-          "cdnTag": "v1.4.96"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/丸子头-好身材-户外.webp",
-          "cdnTag": "v1.4.96"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_090310_466.webp",
-          "cdnTag": "v1.4.64"
-        }
-      ]
-    },
-    {
-      "tag": "萌宠",
-      "score": 2.935565,
-      "views": 5,
-      "downloads": 1,
-      "wallpaperCount": 6,
-      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/萌宠/猫咪/微信图片_2026-10-11_091341_642.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/萌宠/猫咪/微信图片_2026-10-11_092921_734.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/插画/萌宠/微信图片_2026-07-21_190942_775.webp",
-          "cdnTag": "v1.4.63"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/萌宠/猫咪/微信图片_2026-10-11_092429_867.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/插画/萌宠/微信图片_2026-10-11_091404_874.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091310_304.webp",
           "cdnTag": "v1.4.64"
         }
       ]
     },
     {
       "tag": "魅力人像",
-      "score": 2.846144,
-      "views": 21,
+      "score": 2.797436,
+      "views": 23,
       "downloads": 3,
       "wallpaperCount": 2,
       "latestCreatedAt": "2026-11-12T09:14:02.192Z",
@@ -1001,216 +1257,12 @@
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/写真-居家室内-性感.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%86%99%E7%9C%9F-%E5%B1%85%E5%AE%B6%E5%AE%A4%E5%86%85-%E6%80%A7%E6%84%9F.webp",
           "cdnTag": "v1.5.6"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/吊带裙-好看-手机.webp",
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%90%8A%E5%B8%A6%E8%A3%99-%E5%A5%BD%E7%9C%8B-%E6%89%8B%E6%9C%BA.webp",
           "cdnTag": "v1.4.96"
-        }
-      ]
-    },
-    {
-      "tag": "柔光",
-      "score": 2.648825,
-      "views": 49,
-      "downloads": 14,
-      "wallpaperCount": 3,
-      "latestCreatedAt": "2026-11-10T12:07:56.755Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/吊带裙-好看-手机.webp",
-          "cdnTag": "v1.4.96"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/插画/image_蒂法这张脸配婚纱也是降维打击||..._4.webp",
-          "cdnTag": "v1.5.0"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/【恋风】20260819160529.webp",
-          "cdnTag": "v1.3.97"
-        }
-      ]
-    },
-    {
-      "tag": "樱花",
-      "score": 2.616597,
-      "views": 10,
-      "downloads": 0,
-      "wallpaperCount": 5,
-      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091512_796.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/风景/花卉/微信图片_2026-10-11_092349_780.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_091830_480.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_090542_911.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092103_596.webp",
-          "cdnTag": "v1.4.64"
-        }
-      ]
-    },
-    {
-      "tag": "室内人像",
-      "score": 2.582293,
-      "views": 12,
-      "downloads": 1,
-      "wallpaperCount": 2,
-      "latestCreatedAt": "2026-11-12T09:14:02.192Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/好身材-室内-性感.webp",
-          "cdnTag": "v1.4.96"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/优雅坐姿-卧室背景.webp",
-          "cdnTag": "v1.5.6"
-        }
-      ]
-    },
-    {
-      "tag": "窗边柔光",
-      "score": 2.523891,
-      "views": 13,
-      "downloads": 1,
-      "wallpaperCount": 2,
-      "latestCreatedAt": "2026-11-12T09:14:02.192Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/写真-居家室内-性感.webp",
-          "cdnTag": "v1.5.6"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/吊带-手机-柔光.webp",
-          "cdnTag": "v1.4.96"
-        }
-      ]
-    },
-    {
-      "tag": "暖色调",
-      "score": 2.469685,
-      "views": 7,
-      "downloads": 1,
-      "wallpaperCount": 2,
-      "latestCreatedAt": "2026-11-12T09:14:02.192Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/优雅坐姿-卧室背景.webp",
-          "cdnTag": "v1.5.6"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/丸子头-咖啡杯-室内.webp",
-          "cdnTag": "v1.4.96"
-        }
-      ]
-    },
-    {
-      "tag": "蓝天",
-      "score": 2.410819,
-      "views": 14,
-      "downloads": 2,
-      "wallpaperCount": 3,
-      "latestCreatedAt": "2026-11-09T06:12:23.160Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/壁纸-好身材-户外.webp",
-          "cdnTag": "v1.4.96"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_092333_289.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/插画/萌宠/微信图片_2026-10-11_091404_874.webp",
-          "cdnTag": "v1.4.64"
-        }
-      ]
-    },
-    {
-      "tag": "友谊",
-      "score": 2.341776,
-      "views": 14,
-      "downloads": 2,
-      "wallpaperCount": 4,
-      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_092333_289.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/插画/创意/微信图片_2026-10-11_091728_983.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/640 (1).webp",
-          "cdnTag": "v1.4.63"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/动漫/海绵宝宝/640 (2).webp",
-          "cdnTag": "v1.4.63"
-        }
-      ]
-    },
-    {
-      "tag": "浪漫",
-      "score": 2.336676,
-      "views": 13,
-      "downloads": 1,
-      "wallpaperCount": 4,
-      "latestCreatedAt": "2026-10-11T01:53:44.861Z",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/微信图片_2026-10-11_085530_928.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/动漫/二次元/微信图片_2026-10-11_091812_486.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/风景/花卉/微信图片_2026-10-11_092349_780.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/清新/微信图片_2026-10-11_092706_925.webp",
-          "cdnTag": "v1.4.64"
         }
       ]
     }
