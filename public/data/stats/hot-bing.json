@@ -1,10 +1,10 @@
 {
   "schema": 2,
-  "exportedAt": "2026-11-17T01:02:03.016Z",
+  "exportedAt": "2026-11-17T23:57:27.473Z",
   "periodStartedAt": "2026-11-09T04:45:31.225389+00:00",
   "weekStart": "2026-11-16",
   "monthStart": "2026-11-01",
-  "rowCount": 2731,
+  "rowCount": 2732,
   "items": [
     {
       "asset_key": "bing:2025-12-30.jpg",
@@ -35396,13 +35396,13 @@
       "asset_key": "bing:bing-2026-11-11.jpg",
       "image_id": "bing-2026-11-11.jpg",
       "legacy_ambiguous": false,
-      "views": 5,
+      "views": 6,
       "downloads": 2,
       "likes": 0,
       "collects": 0,
-      "week_views": 0,
+      "week_views": 1,
       "week_downloads": 0,
-      "month_views": 5,
+      "month_views": 6,
       "month_downloads": 2
     },
     {
@@ -35422,13 +35422,13 @@
       "asset_key": "bing:bing-2026-11-13.jpg",
       "image_id": "bing-2026-11-13.jpg",
       "legacy_ambiguous": false,
-      "views": 0,
+      "views": 1,
       "downloads": 0,
       "likes": 0,
       "collects": 0,
-      "week_views": 0,
+      "week_views": 1,
       "week_downloads": 0,
-      "month_views": 0,
+      "month_views": 1,
       "month_downloads": 0
     },
     {
@@ -35460,6 +35460,19 @@
     {
       "asset_key": "bing:bing-2026-11-16.jpg",
       "image_id": "bing-2026-11-16.jpg",
+      "legacy_ambiguous": false,
+      "views": 0,
+      "downloads": 0,
+      "likes": 0,
+      "collects": 0,
+      "week_views": 0,
+      "week_downloads": 0,
+      "month_views": 0,
+      "month_downloads": 0
+    },
+    {
+      "asset_key": "bing:bing-2026-11-17.jpg",
+      "image_id": "bing-2026-11-17.jpg",
       "legacy_ambiguous": false,
       "views": 0,
       "downloads": 0,
