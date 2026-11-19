@@ -1,10 +1,10 @@
 {
   "schema": 2,
-  "exportedAt": "2026-11-18T23:33:17.413Z",
+  "exportedAt": "2026-11-19T23:46:14.925Z",
   "periodStartedAt": "2026-11-09T04:45:31.225389+00:00",
   "weekStart": "2026-11-16",
   "monthStart": "2026-11-01",
-  "rowCount": 2733,
+  "rowCount": 2734,
   "items": [
     {
       "asset_key": "bing:2025-12-30.jpg",
@@ -35266,13 +35266,13 @@
       "asset_key": "bing:bing-2026-11-01.jpg",
       "image_id": "bing-2026-11-01.jpg",
       "legacy_ambiguous": false,
-      "views": 4,
+      "views": 5,
       "downloads": 3,
       "likes": 0,
       "collects": 0,
-      "week_views": 0,
+      "week_views": 1,
       "week_downloads": 0,
-      "month_views": 2,
+      "month_views": 3,
       "month_downloads": 2
     },
     {
@@ -35486,6 +35486,19 @@
     {
       "asset_key": "bing:bing-2026-11-18.jpg",
       "image_id": "bing-2026-11-18.jpg",
+      "legacy_ambiguous": false,
+      "views": 0,
+      "downloads": 0,
+      "likes": 0,
+      "collects": 0,
+      "week_views": 0,
+      "week_downloads": 0,
+      "month_views": 0,
+      "month_downloads": 0
+    },
+    {
+      "asset_key": "bing:bing-2026-11-19.jpg",
+      "image_id": "bing-2026-11-19.jpg",
       "legacy_ambiguous": false,
       "views": 0,
       "downloads": 0,

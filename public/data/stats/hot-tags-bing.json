@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-18T23:33:25.639Z",
+  "generatedAt": "2026-11-19T23:46:23.177Z",
   "windowDays": 90,
   "halfLifeDays": 30,
-  "windowStart": "2026-08-20T23:33:25.639Z",
+  "windowStart": "2026-08-21T23:46:23.177Z",
   "series": "bing",
   "total": 90,
   "tags": [
     {
       "tag": "奇妙纷呈的森林",
-      "score": 1.293767,
+      "score": 1.263955,
       "views": 6,
       "downloads": 2,
       "wallpaperCount": 1,
@@ -22,7 +22,7 @@
     },
     {
       "tag": "惬意放松，尽享海岛时光",
-      "score": 1.218022,
+      "score": 1.189955,
       "views": 6,
       "downloads": 1,
       "wallpaperCount": 1,
@@ -36,7 +36,7 @@
     },
     {
       "tag": "没有建筑师的建筑杰作",
-      "score": 1.181431,
+      "score": 1.154207,
       "views": 2,
       "downloads": 1,
       "wallpaperCount": 1,
@@ -50,7 +50,7 @@
     },
     {
       "tag": "穿越毛伊岛的绿色隧道",
-      "score": 1.093585,
+      "score": 1.068385,
       "views": 2,
       "downloads": 2,
       "wallpaperCount": 1,
@@ -64,7 +64,7 @@
     },
     {
       "tag": "泛舟如画秋林",
-      "score": 1.074959,
+      "score": 1.050189,
       "views": 4,
       "downloads": 2,
       "wallpaperCount": 1,
@@ -78,7 +78,7 @@
     },
     {
       "tag": "艺术与韵律交汇之地",
-      "score": 1.070945,
+      "score": 1.046267,
       "views": 1,
       "downloads": 1,
       "wallpaperCount": 1,
@@ -92,8 +92,8 @@
     },
     {
       "tag": "林间迷雾",
-      "score": 1.037462,
-      "views": 4,
+      "score": 1.023196,
+      "views": 5,
       "downloads": 3,
       "wallpaperCount": 1,
       "latestCreatedAt": "2026-11-01T00:00:00Z",
@@ -106,7 +106,7 @@
     },
     {
       "tag": "向山巅再迈一步",
-      "score": 1.005005,
+      "score": 0.981846,
       "views": 2,
       "downloads": 1,
       "wallpaperCount": 1,
@@ -120,7 +120,7 @@
     },
     {
       "tag": "冰下秘境",
-      "score": 1.001726,
+      "score": 0.978643,
       "views": 1,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -133,8 +133,22 @@
       ]
     },
     {
+      "tag": "思想在此成形",
+      "score": 0.977373,
+      "views": 0,
+      "downloads": 0,
+      "wallpaperCount": 1,
+      "latestCreatedAt": "2026-11-19T00:00:00Z",
+      "series": [
+        "bing"
+      ],
+      "topWallpapers": [
+        "bing-2026-11-19.jpg"
+      ]
+    },
+    {
       "tag": "群峰间的宁静",
-      "score": 0.982709,
+      "score": 0.960064,
       "views": 3,
       "downloads": 1,
       "wallpaperCount": 1,
@@ -148,7 +162,7 @@
     },
     {
       "tag": "从黄昏狩猎到黎明",
-      "score": 0.977577,
+      "score": 0.95505,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -162,7 +176,7 @@
     },
     {
       "tag": "走进广阔的大自然",
-      "score": 0.955249,
+      "score": 0.933237,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -176,7 +190,7 @@
     },
     {
       "tag": "历经岁月，屹立不倒",
-      "score": 0.933431,
+      "score": 0.911922,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -190,7 +204,7 @@
     },
     {
       "tag": "霜染枝叶",
-      "score": 0.912111,
+      "score": 0.891093,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -204,7 +218,7 @@
     },
     {
       "tag": "唯有向上发展",
-      "score": 0.891279,
+      "score": 0.870741,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -218,7 +232,7 @@
     },
     {
       "tag": "展翅高飞的时节",
-      "score": 0.874907,
+      "score": 0.854747,
       "views": 2,
       "downloads": 1,
       "wallpaperCount": 1,
@@ -232,7 +246,7 @@
     },
     {
       "tag": "往昔帝国的幽影",
-      "score": 0.869878,
+      "score": 0.849833,
       "views": 1,
       "downloads": 1,
       "wallpaperCount": 1,
@@ -246,7 +260,7 @@
     },
     {
       "tag": "书香里的极致华美",
-      "score": 0.833709,
+      "score": 0.814497,
       "views": 4,
       "downloads": 2,
       "wallpaperCount": 1,
@@ -260,7 +274,7 @@
     },
     {
       "tag": "静水映斑斓",
-      "score": 0.831266,
+      "score": 0.812111,
       "views": 5,
       "downloads": 3,
       "wallpaperCount": 1,
@@ -274,7 +288,7 @@
     },
     {
       "tag": "历史守望之地",
-      "score": 0.811625,
+      "score": 0.792922,
       "views": 1,
       "downloads": 1,
       "wallpaperCount": 1,
@@ -288,7 +302,7 @@
     },
     {
       "tag": "群峰与宁静相遇之地",
-      "score": 0.779454,
+      "score": 0.761493,
       "views": 2,
       "downloads": 1,
       "wallpaperCount": 1,
@@ -302,7 +316,7 @@
     },
     {
       "tag": "写在冰上的未来",
-      "score": 0.776911,
+      "score": 0.759008,
       "views": 1,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -316,7 +330,7 @@
     },
     {
       "tag": "光芒四射的节日",
-      "score": 0.775903,
+      "score": 0.758024,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -330,7 +344,7 @@
     },
     {
       "tag": "薄雾邂逅千年时光",
-      "score": 0.762432,
+      "score": 0.744863,
       "views": 2,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -344,7 +358,7 @@
     },
     {
       "tag": "归来的草原巨兽",
-      "score": 0.758181,
+      "score": 0.740711,
       "views": 0,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -358,7 +372,7 @@
     },
     {
       "tag": "大自然的金色明镜",
-      "score": 0.728002,
+      "score": 0.711226,
       "views": 2,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -372,7 +386,7 @@
     },
     {
       "tag": "一窥科罗拉多群峰",
-      "score": 0.716841,
+      "score": 0.700323,
       "views": 4,
       "downloads": 3,
       "wallpaperCount": 1,
@@ -386,7 +400,7 @@
     },
     {
       "tag": "大自然的秋日乐章",
-      "score": 0.711374,
+      "score": 0.694982,
       "views": 2,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -400,7 +414,7 @@
     },
     {
       "tag": "飞掠河面",
-      "score": 0.633762,
+      "score": 0.619158,
       "views": 2,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -414,7 +428,7 @@
     },
     {
       "tag": "桥梁、屋顶与暮色",
-      "score": 0.633538,
+      "score": 0.618939,
       "views": 3,
       "downloads": 1,
       "wallpaperCount": 1,
@@ -428,7 +442,7 @@
     },
     {
       "tag": "75载，风华正茂",
-      "score": 0.621094,
+      "score": 0.606782,
       "views": 3,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -442,7 +456,7 @@
     },
     {
       "tag": "荒野伙伴",
-      "score": 0.616635,
+      "score": 0.602425,
       "views": 1,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -456,7 +470,7 @@
     },
     {
       "tag": "秋色中转动的水轮",
-      "score": 0.589366,
+      "score": 0.575785,
       "views": 4,
       "downloads": 1,
       "wallpaperCount": 1,
@@ -470,7 +484,7 @@
     },
     {
       "tag": "从铁轨到潮汐",
-      "score": 0.577224,
+      "score": 0.563922,
       "views": 5,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -484,7 +498,7 @@
     },
     {
       "tag": "慢节奏生活",
-      "score": 0.57534,
+      "score": 0.562083,
       "views": 1,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -498,7 +512,7 @@
     },
     {
       "tag": "蓝与绿的交响曲",
-      "score": 0.573905,
+      "score": 0.560681,
       "views": 1,
       "downloads": 1,
       "wallpaperCount": 1,
@@ -512,7 +526,7 @@
     },
     {
       "tag": "现在你“海”能看见我……",
-      "score": 0.568227,
+      "score": 0.555134,
       "views": 3,
       "downloads": 2,
       "wallpaperCount": 1,
@@ -526,7 +540,7 @@
     },
     {
       "tag": "迁飞路线上的生命",
-      "score": 0.564418,
+      "score": 0.551412,
       "views": 6,
       "downloads": 0,
       "wallpaperCount": 1,
@@ -540,7 +554,7 @@
     },
     {
       "tag": "科西嘉岛的岩石前哨",
-      "score": 0.551527,
+      "score": 0.538818,
       "views": 3,
       "downloads": 1,
       "wallpaperCount": 1,
@@ -550,20 +564,6 @@
       ],
       "topWallpapers": [
         "bing-2026-10-09.jpg"
-      ]
-    },
-    {
-      "tag": "发掘尘封的过去",
-      "score": 0.536812,
-      "views": 1,
-      "downloads": 0,
-      "wallpaperCount": 1,
-      "latestCreatedAt": "2026-10-17T00:00:00Z",
-      "series": [
-        "bing"
-      ],
-      "topWallpapers": [
-        "bing-2026-10-17.jpg"
       ]
     }
   ]
