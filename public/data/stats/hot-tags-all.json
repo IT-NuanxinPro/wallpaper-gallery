@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-11-22T22:49:12.153Z",
+  "generatedAt": "2026-11-24T03:29:01.596Z",
   "windowDays": 90,
   "halfLifeDays": 30,
-  "windowStart": "2026-08-24T22:49:12.153Z",
+  "windowStart": "2026-08-26T03:29:01.596Z",
   "series": "all",
   "total": 1908,
   "tags": [
     {
       "tag": "人像",
-      "score": 205.986985,
-      "views": 1838,
-      "downloads": 346,
+      "score": 202.245316,
+      "views": 1875,
+      "downloads": 352,
       "wallpaperCount": 300,
       "series": [
         "desktop",
@@ -18,18 +18,18 @@
         "avatar"
       ],
       "topWallpapers": [
-        "2026-05-12_42676.jpg",
-        "微信图片_20261113171223_3637_71.png",
+        "2025-11-18_40140.jpg",
         "微信图片_2026-11-16_193844_377.jpg",
-        "丝袜-女性人像.jpg",
-        "微信图片_20261113171232_3640_71.png"
+        "微信图片_20261113171223_3637_71.png",
+        "2026-05-12_42676.jpg",
+        "2026-02-26_41700.jpg"
       ]
     },
     {
       "tag": "插画",
-      "score": 151.901686,
-      "views": 1494,
-      "downloads": 444,
+      "score": 151.093205,
+      "views": 1540,
+      "downloads": 457,
       "wallpaperCount": 176,
       "series": [
         "desktop",
@@ -40,15 +40,15 @@
         "2026-03-18_37079.jpg",
         "2026-05-23_42859.jpg",
         "微信图片_20261113171223_3637_71.png",
-        "2026-04-08_34085.jpg",
-        "微信图片_2026-11-16_193714_272.png"
+        "2026-02-26_41700.jpg",
+        "2026-04-08_34085.jpg"
       ]
     },
     {
       "tag": "动漫",
-      "score": 137.094864,
-      "views": 1219,
-      "downloads": 342,
+      "score": 135.202642,
+      "views": 1252,
+      "downloads": 352,
       "wallpaperCount": 159,
       "series": [
         "desktop",
@@ -60,15 +60,15 @@
         "微信图片_20261113171225_3638_71.png",
         "2025-11-23_40285.jpg",
         "微信图片_20261113171220_3636_71.png",
-        "蓝发少女_剑光花瓣.mp4",
-        "黑发少女_赤瞳心光.mp4"
+        "2025-11-23_40290.jpg",
+        "2026-01-27_41096.jpg"
       ]
     },
     {
       "tag": "二次元",
-      "score": 82.569506,
-      "views": 873,
-      "downloads": 254,
+      "score": 81.752805,
+      "views": 893,
+      "downloads": 263,
       "wallpaperCount": 91,
       "series": [
         "desktop",
@@ -79,16 +79,16 @@
       "topWallpapers": [
         "微信图片_20261113171225_3638_71.png",
         "微信图片_20261113171220_3636_71.png",
-        "黑发少女_赤瞳心光.mp4",
-        "DeepSeek拟人-Q版.jpg",
-        "叶瞬光 [3670060903]_3840x2160.png"
+        "2025-11-23_40290.jpg",
+        "2026-01-27_41096.jpg",
+        "DeepSeek拟人-Q版.jpg"
       ]
     },
     {
       "tag": "风景",
-      "score": 63.194581,
-      "views": 1375,
-      "downloads": 542,
+      "score": 62.602934,
+      "views": 1386,
+      "downloads": 547,
       "wallpaperCount": 94,
       "series": [
         "desktop",
@@ -99,13 +99,13 @@
         "微信图片_2026-11-16_193718_310.png",
         "2026-04-17_42426.jpg",
         "2026-05-21_42860.jpg",
-        "2026-10-22_31892.jpg"
+        "2026-02-27_41807.jpg"
       ]
     },
     {
       "tag": "国风",
-      "score": 57.480294,
-      "views": 370,
+      "score": 56.740974,
+      "views": 381,
       "downloads": 82,
       "wallpaperCount": 60,
       "series": [
@@ -114,17 +114,17 @@
       ],
       "topWallpapers": [
         "2026-03-18_37079.jpg",
-        "微信图片_20261113171228_3639_71.png",
         "2026-01-27_41082.jpg",
+        "微信图片_20261113171228_3639_71.png",
         "2026-03-12_42087.jpg",
         "微信图片_20261112203328_3603_71.png"
       ]
     },
     {
       "tag": "氛围感",
-      "score": 54.818556,
-      "views": 286,
-      "downloads": 67,
+      "score": 53.608044,
+      "views": 291,
+      "downloads": 69,
       "wallpaperCount": 64,
       "series": [
         "desktop",
@@ -133,16 +133,16 @@
       ],
       "topWallpapers": [
         "2025-11-18_40140.jpg",
-        "2025-11-19_40070.jpg",
         "2025-12-18_40654.jpg",
+        "2025-11-19_40070.jpg",
         "2026-06-05_42934.jpg",
         "2026-05-09_42675.jpg"
       ]
     },
     {
       "tag": "清新",
-      "score": 53.086256,
-      "views": 685,
+      "score": 51.826224,
+      "views": 692,
       "downloads": 123,
       "wallpaperCount": 83,
       "series": [
@@ -160,9 +160,9 @@
     },
     {
       "tag": "场景",
-      "score": 43.662185,
-      "views": 420,
-      "downloads": 123,
+      "score": 43.57797,
+      "views": 437,
+      "downloads": 130,
       "wallpaperCount": 49,
       "series": [
         "desktop"
@@ -170,16 +170,16 @@
       "topWallpapers": [
         "2026-05-23_42859.jpg",
         "2026-04-08_34085.jpg",
+        "2025-12-24_35648.jpg",
         "2026-04-17_34434.jpg",
-        "2026-05-26_42858.jpg",
-        "2025-12-24_35648.jpg"
+        "2026-03-09_42035.jpg"
       ]
     },
     {
       "tag": "魅力",
-      "score": 38.817156,
-      "views": 726,
-      "downloads": 131,
+      "score": 37.889729,
+      "views": 735,
+      "downloads": 133,
       "wallpaperCount": 55,
       "series": [
         "desktop",
@@ -188,15 +188,15 @@
       "topWallpapers": [
         "微信图片_2026-11-16_193844_377.jpg",
         "丝袜-女性人像.jpg",
-        "微信图片_20261112203314_3598_71.png",
         "2025-11-22_40265.jpg",
-        "2026-03-12_42088.jpg"
+        "微信图片_20261112203314_3598_71.png",
+        "2026-09-20_44041.jpg"
       ]
     },
     {
       "tag": "国风插画",
-      "score": 35.909664,
-      "views": 175,
+      "score": 35.382908,
+      "views": 180,
       "downloads": 32,
       "wallpaperCount": 34,
       "series": [
@@ -212,8 +212,8 @@
     },
     {
       "tag": "长发",
-      "score": 30.934205,
-      "views": 352,
+      "score": 30.112682,
+      "views": 356,
       "downloads": 74,
       "wallpaperCount": 47,
       "series": [
@@ -231,9 +231,9 @@
     },
     {
       "tag": "desktop",
-      "score": 28.39659,
-      "views": 158,
-      "downloads": 26,
+      "score": 27.850209,
+      "views": 168,
+      "downloads": 27,
       "wallpaperCount": 24,
       "series": [
         "video"
@@ -248,8 +248,8 @@
     },
     {
       "tag": "阳光",
-      "score": 24.558197,
-      "views": 379,
+      "score": 23.954531,
+      "views": 382,
       "downloads": 94,
       "wallpaperCount": 53,
       "series": [
@@ -267,9 +267,9 @@
     },
     {
       "tag": "自然",
-      "score": 21.97518,
-      "views": 674,
-      "downloads": 289,
+      "score": 21.808889,
+      "views": 677,
+      "downloads": 292,
       "wallpaperCount": 37,
       "series": [
         "desktop",
@@ -277,17 +277,17 @@
       ],
       "topWallpapers": [
         "2026-04-17_42426.jpg",
+        "2026-05-22_42658.jpg",
         "2026-04-04_42225.jpg",
         "2026-06-11_42953.jpg",
-        "2026-07-10_43349.jpg",
-        "2026-04-01_42199.jpg"
+        "2026-07-10_43349.jpg"
       ]
     },
     {
       "tag": "IP形象",
-      "score": 21.53639,
-      "views": 139,
-      "downloads": 51,
+      "score": 21.375701,
+      "views": 142,
+      "downloads": 52,
       "wallpaperCount": 28,
       "series": [
         "desktop",
@@ -305,16 +305,16 @@
     },
     {
       "tag": "氛围感人像",
-      "score": 20.945273,
-      "views": 56,
-      "downloads": 6,
+      "score": 20.527299,
+      "views": 58,
+      "downloads": 7,
       "wallpaperCount": 19,
       "series": [
         "desktop"
       ],
       "topWallpapers": [
-        "2025-11-19_40070.jpg",
         "2025-12-18_40654.jpg",
+        "2025-11-19_40070.jpg",
         "2026-06-05_42934.jpg",
         "05_image_#wallpaper #美图分享..._4_4K.png",
         "2026-01-17_40987.jpg"
@@ -322,8 +322,8 @@
     },
     {
       "tag": "甜妹",
-      "score": 19.382833,
-      "views": 33,
+      "score": 18.909609,
+      "views": 34,
       "downloads": 12,
       "wallpaperCount": 48,
       "series": [
@@ -339,8 +339,8 @@
     },
     {
       "tag": "清新人像",
-      "score": 18.793957,
-      "views": 106,
+      "score": 18.427215,
+      "views": 109,
       "downloads": 22,
       "wallpaperCount": 17,
       "series": [
@@ -356,9 +356,28 @@
       ]
     },
     {
+      "tag": "自然风光",
+      "score": 18.121861,
+      "views": 429,
+      "downloads": 193,
+      "wallpaperCount": 26,
+      "series": [
+        "desktop",
+        "mobile",
+        "avatar"
+      ],
+      "topWallpapers": [
+        "微信图片_2026-11-16_193935_867.jpg",
+        "2026-04-17_42426.jpg",
+        "2026-05-21_42860.jpg",
+        "2026-05-22_42658.jpg",
+        "2026-04-04_42225.jpg"
+      ]
+    },
+    {
       "tag": "银发少女",
-      "score": 18.579867,
-      "views": 142,
+      "score": 18.090035,
+      "views": 143,
       "downloads": 17,
       "wallpaperCount": 16,
       "series": [
@@ -374,28 +393,9 @@
       ]
     },
     {
-      "tag": "自然风光",
-      "score": 18.173976,
-      "views": 424,
-      "downloads": 190,
-      "wallpaperCount": 26,
-      "series": [
-        "desktop",
-        "mobile",
-        "avatar"
-      ],
-      "topWallpapers": [
-        "微信图片_2026-11-16_193935_867.jpg",
-        "2026-04-17_42426.jpg",
-        "2026-05-21_42860.jpg",
-        "2026-04-04_42225.jpg",
-        "2026-10-07_44166.jpg"
-      ]
-    },
-    {
       "tag": "优雅",
-      "score": 17.991203,
-      "views": 408,
+      "score": 17.503783,
+      "views": 410,
       "downloads": 91,
       "wallpaperCount": 36,
       "series": [
@@ -413,9 +413,9 @@
     },
     {
       "tag": "创意",
-      "score": 17.876613,
-      "views": 420,
-      "downloads": 134,
+      "score": 17.40662,
+      "views": 424,
+      "downloads": 136,
       "wallpaperCount": 34,
       "series": [
         "desktop",
@@ -432,9 +432,9 @@
     },
     {
       "tag": "卡通",
-      "score": 16.881907,
-      "views": 309,
-      "downloads": 105,
+      "score": 17.044824,
+      "views": 313,
+      "downloads": 108,
       "wallpaperCount": 24,
       "series": [
         "desktop",
@@ -444,15 +444,35 @@
       "topWallpapers": [
         "2026-01-23_41007.jpg",
         "2026-10-14_39539.jpg",
-        "2026-10-08_40175.jpg",
-        "雨中卧室_小羊安睡.mp4",
-        "2026-04-03_42272.jpg"
+        "2026-04-03_42272.jpg",
+        "2026-04-18_42419.jpg",
+        "2026-06-02_42965.jpg"
+      ]
+    },
+    {
+      "tag": "蓝天白云",
+      "score": 14.614853,
+      "views": 123,
+      "downloads": 61,
+      "wallpaperCount": 15,
+      "series": [
+        "desktop",
+        "mobile",
+        "avatar",
+        "video"
+      ],
+      "topWallpapers": [
+        "2026-04-29_42585.jpg",
+        "2026-05-26_42858.jpg",
+        "2026-05-22_42658.jpg",
+        "2026-07-08_34635.jpg",
+        "OS娘Q版_草坡集合.mp4"
       ]
     },
     {
       "tag": "白鹿",
-      "score": 14.814839,
-      "views": 34,
+      "score": 14.43799,
+      "views": 35,
       "downloads": 1,
       "wallpaperCount": 14,
       "series": [
@@ -468,8 +488,8 @@
     },
     {
       "tag": "治愈系",
-      "score": 14.740998,
-      "views": 86,
+      "score": 14.349215,
+      "views": 87,
       "downloads": 19,
       "wallpaperCount": 14,
       "series": [
@@ -487,7 +507,7 @@
     },
     {
       "tag": "游戏",
-      "score": 14.412577,
+      "score": 14.020303,
       "views": 54,
       "downloads": 13,
       "wallpaperCount": 14,
@@ -504,8 +524,8 @@
     },
     {
       "tag": "夜晚",
-      "score": 14.325374,
-      "views": 444,
+      "score": 13.937365,
+      "views": 445,
       "downloads": 122,
       "wallpaperCount": 30,
       "series": [
@@ -522,30 +542,10 @@
       ]
     },
     {
-      "tag": "蓝天白云",
-      "score": 14.150155,
-      "views": 117,
-      "downloads": 56,
-      "wallpaperCount": 15,
-      "series": [
-        "desktop",
-        "mobile",
-        "avatar",
-        "video"
-      ],
-      "topWallpapers": [
-        "2026-05-26_42858.jpg",
-        "2026-07-08_34635.jpg",
-        "OS娘Q版_草坡集合.mp4",
-        "2026-07-26_34737.jpg",
-        "2026-11-01_44442.jpg"
-      ]
-    },
-    {
       "tag": "蓝发少女",
-      "score": 13.864475,
-      "views": 82,
-      "downloads": 12,
+      "score": 13.60754,
+      "views": 86,
+      "downloads": 13,
       "wallpaperCount": 13,
       "series": [
         "desktop",
@@ -554,15 +554,15 @@
       "topWallpapers": [
         "蓝发少女_剑光花瓣.mp4",
         "Q版-二次元-出拳.jpg",
+        "蓝发萌系少女的正面脸部特写-7e8c6777.mp4",
         "2026-05-09_42675.jpg",
-        "2026-05-02_34112.jpg",
-        "蓝发萌系少女的正面脸部特写-7e8c6777.mp4"
+        "2026-05-02_34112.jpg"
       ]
     },
     {
       "tag": "影视",
-      "score": 13.705212,
-      "views": 95,
+      "score": 13.350993,
+      "views": 96,
       "downloads": 37,
       "wallpaperCount": 12,
       "series": [
@@ -577,8 +577,43 @@
       ]
     },
     {
+      "tag": "明星",
+      "score": 13.09507,
+      "views": 18,
+      "downloads": 3,
+      "wallpaperCount": 14,
+      "series": [
+        "desktop",
+        "mobile"
+      ],
+      "topWallpapers": [
+        "微信图片_2026-11-16_194732_338.jpg",
+        "微信图片_2026-11-16_194921_919.jpg",
+        "微信图片_2026-11-16_194943_384.jpg",
+        "微信图片_2026-11-16_194721_087.jpg",
+        "微信图片_2026-11-16_194954_964.jpg"
+      ]
+    },
+    {
+      "tag": "场景插画",
+      "score": 12.905642,
+      "views": 63,
+      "downloads": 15,
+      "wallpaperCount": 11,
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        "2026-05-23_42859.jpg",
+        "2025-12-24_35648.jpg",
+        "2026-04-17_34434.jpg",
+        "2026-01-28_41114.jpg",
+        "冬日风光-动漫风景.jpg"
+      ]
+    },
+    {
       "tag": "夏日",
-      "score": 13.157459,
+      "score": 12.799347,
       "views": 96,
       "downloads": 25,
       "wallpaperCount": 28,
@@ -596,45 +631,10 @@
       ]
     },
     {
-      "tag": "明星",
-      "score": 13.046221,
-      "views": 15,
-      "downloads": 2,
-      "wallpaperCount": 14,
-      "series": [
-        "desktop",
-        "mobile"
-      ],
-      "topWallpapers": [
-        "微信图片_2026-11-16_194732_338.jpg",
-        "微信图片_2026-11-16_194921_919.jpg",
-        "微信图片_2026-11-16_194954_964.jpg",
-        "2026-06-25_43021.jpg",
-        "2026-09-23_43995.jpg"
-      ]
-    },
-    {
-      "tag": "场景插画",
-      "score": 12.929828,
-      "views": 58,
-      "downloads": 13,
-      "wallpaperCount": 11,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        "2026-05-23_42859.jpg",
-        "2026-04-17_34434.jpg",
-        "2025-12-24_35648.jpg",
-        "冬日风光-动漫风景.jpg",
-        "2026-10-30_44437.jpg"
-      ]
-    },
-    {
       "tag": "萌宠",
-      "score": 12.631669,
-      "views": 38,
-      "downloads": 13,
+      "score": 12.365541,
+      "views": 42,
+      "downloads": 14,
       "wallpaperCount": 21,
       "series": [
         "desktop",
@@ -652,8 +652,8 @@
     },
     {
       "tag": "海滨",
-      "score": 12.32539,
-      "views": 230,
+      "score": 11.999354,
+      "views": 231,
       "downloads": 100,
       "wallpaperCount": 16,
       "series": [
@@ -670,7 +670,7 @@
     },
     {
       "tag": "海绵宝宝",
-      "score": 11.953425,
+      "score": 11.628083,
       "views": 104,
       "downloads": 33,
       "wallpaperCount": 16,
@@ -688,9 +688,27 @@
       ]
     },
     {
+      "tag": "雪山",
+      "score": 11.426218,
+      "views": 107,
+      "downloads": 42,
+      "wallpaperCount": 13,
+      "series": [
+        "desktop",
+        "avatar"
+      ],
+      "topWallpapers": [
+        "2026-02-27_41807.jpg",
+        "2026-10-07_44166.jpg",
+        "冬日风光-动漫风景.jpg",
+        "2026-07-20_43416.jpg",
+        "2026-01-16_40983.jpg"
+      ]
+    },
+    {
       "tag": "微笑",
-      "score": 11.663082,
-      "views": 98,
+      "score": 11.346751,
+      "views": 99,
       "downloads": 21,
       "wallpaperCount": 25,
       "series": [
@@ -707,8 +725,43 @@
       ]
     },
     {
+      "tag": "二次元插画",
+      "score": 11.138245,
+      "views": 44,
+      "downloads": 11,
+      "wallpaperCount": 10,
+      "series": [
+        "desktop"
+      ],
+      "topWallpapers": [
+        "DeepSeek拟人-Q版.jpg",
+        "2026-06-13_42924.jpg",
+        "2026-09-19_44035.jpg",
+        "2026-06-11_42926.jpg",
+        "2026-03-10_42036.jpg"
+      ]
+    },
+    {
+      "tag": "星空",
+      "score": 11.090869,
+      "views": 350,
+      "downloads": 124,
+      "wallpaperCount": 18,
+      "series": [
+        "desktop",
+        "mobile"
+      ],
+      "topWallpapers": [
+        "2025-11-23_40285.jpg",
+        "2026-01-16_40982.jpg",
+        "2026-07-10_36536.jpg",
+        "2025-12-06_40555.jpg",
+        "2025-12-06_40557.jpg"
+      ]
+    },
+    {
       "tag": "可爱",
-      "score": 11.372878,
+      "score": 11.063338,
       "views": 54,
       "downloads": 15,
       "wallpaperCount": 26,
@@ -727,63 +780,10 @@
       ]
     },
     {
-      "tag": "二次元插画",
-      "score": 11.339885,
-      "views": 42,
-      "downloads": 10,
-      "wallpaperCount": 10,
-      "series": [
-        "desktop"
-      ],
-      "topWallpapers": [
-        "DeepSeek拟人-Q版.jpg",
-        "2026-06-13_42924.jpg",
-        "2026-09-19_44035.jpg",
-        "2026-06-11_42926.jpg",
-        "06_image_#wallpaper #美图分享..._5_4K.png"
-      ]
-    },
-    {
-      "tag": "雪山",
-      "score": 11.311148,
-      "views": 104,
-      "downloads": 39,
-      "wallpaperCount": 13,
-      "series": [
-        "desktop",
-        "avatar"
-      ],
-      "topWallpapers": [
-        "2026-10-07_44166.jpg",
-        "冬日风光-动漫风景.jpg",
-        "2026-07-20_43416.jpg",
-        "2026-01-16_40983.jpg",
-        "2026-03-11_42063.jpg"
-      ]
-    },
-    {
-      "tag": "星空",
-      "score": 11.299563,
-      "views": 348,
-      "downloads": 124,
-      "wallpaperCount": 18,
-      "series": [
-        "desktop",
-        "mobile"
-      ],
-      "topWallpapers": [
-        "2025-11-23_40285.jpg",
-        "2026-07-10_36536.jpg",
-        "2026-01-16_40982.jpg",
-        "2025-12-06_40555.jpg",
-        "2025-12-06_40557.jpg"
-      ]
-    },
-    {
       "tag": "文字",
-      "score": 10.945206,
-      "views": 127,
-      "downloads": 53,
+      "score": 10.786223,
+      "views": 129,
+      "downloads": 54,
       "wallpaperCount": 15,
       "series": [
         "desktop",
@@ -792,16 +792,16 @@
       "topWallpapers": [
         "2026-06-01_42921.jpg",
         "微信图片_2026-11-16_193710_304.png",
+        "2025-12-19_34709.jpg",
         "2026-02-20_34707.jpg",
-        "2026-05-17_33049.jpg",
-        "2026-10-29_35345.jpg"
+        "2026-05-17_33049.jpg"
       ]
     },
     {
       "tag": "少女",
-      "score": 10.925325,
-      "views": 142,
-      "downloads": 40,
+      "score": 10.664719,
+      "views": 145,
+      "downloads": 41,
       "wallpaperCount": 18,
       "series": [
         "desktop",
@@ -813,14 +813,14 @@
         "女孩黑猫 [3092648120]_2560x1440.png",
         "粉紫星眸少女隔刀凝望-7c55aa42.mp4",
         "冬季穿搭-冬日少女.jpg",
-        "人像-夏日-大海.jpg",
-        "2026-09-04_9964.jpg"
+        "微信图片_2026-10-11_090634_004.jpg",
+        "人像-夏日-大海.jpg"
       ]
     },
     {
       "tag": "三维渲染",
-      "score": 10.759443,
-      "views": 62,
+      "score": 10.6035,
+      "views": 63,
       "downloads": 2,
       "wallpaperCount": 10,
       "series": [
@@ -836,9 +836,27 @@
       ]
     },
     {
+      "tag": "卡通插画",
+      "score": 10.5007,
+      "views": 21,
+      "downloads": 8,
+      "wallpaperCount": 10,
+      "series": [
+        "desktop",
+        "mobile"
+      ],
+      "topWallpapers": [
+        "2026-10-14_39539.jpg",
+        "2026-06-26_43124.jpg",
+        "2026-04-03_42272.jpg",
+        "2026-04-18_42419.jpg",
+        "2026-06-02_42965.jpg"
+      ]
+    },
+    {
       "tag": "冷色调",
-      "score": 10.28089,
-      "views": 43,
+      "score": 10.057823,
+      "views": 45,
       "downloads": 6,
       "wallpaperCount": 10,
       "series": [
@@ -855,8 +873,8 @@
     },
     {
       "tag": "柔光",
-      "score": 10.240136,
-      "views": 89,
+      "score": 9.962572,
+      "views": 90,
       "downloads": 18,
       "wallpaperCount": 11,
       "series": [
@@ -873,27 +891,9 @@
       ]
     },
     {
-      "tag": "卡通插画",
-      "score": 10.181765,
-      "views": 18,
-      "downloads": 5,
-      "wallpaperCount": 10,
-      "series": [
-        "desktop",
-        "mobile"
-      ],
-      "topWallpapers": [
-        "2026-10-14_39539.jpg",
-        "2026-06-26_43124.jpg",
-        "微信图片_2026-11-16_193702_076.png",
-        "2026-04-03_42272.jpg",
-        "2026-04-18_42419.jpg"
-      ]
-    },
-    {
       "tag": "自然光",
-      "score": 9.953058,
-      "views": 39,
+      "score": 9.860458,
+      "views": 43,
       "downloads": 4,
       "wallpaperCount": 10,
       "series": [
@@ -904,26 +904,26 @@
       "topWallpapers": [
         "2026-01-22_41014.jpg",
         "2026-06-22_43069.jpg",
-        "吊带-好身材-少女.jpg",
+        "2025-12-20_39387.jpg",
         "微信图片_2026-11-16_193926_692.jpg",
-        "2026-01-22_41013.jpg"
+        "吊带-好身材-少女.jpg"
       ]
     },
     {
       "tag": "风光摄影",
-      "score": 9.399316,
-      "views": 12,
-      "downloads": 4,
+      "score": 9.535594,
+      "views": 14,
+      "downloads": 6,
       "wallpaperCount": 9,
       "series": [
         "desktop"
       ],
       "topWallpapers": [
         "2026-04-17_42426.jpg",
-        "2026-06-11_42953.jpg",
+        "2026-02-27_41807.jpg",
         "2026-07-20_43416.jpg",
-        "2026-04-09_42312.jpg",
-        "2026-05-01_42591.jpg"
+        "2026-06-11_42953.jpg",
+        "2026-04-09_42312.jpg"
       ]
     }
   ]

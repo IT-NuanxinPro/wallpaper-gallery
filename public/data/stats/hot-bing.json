@@ -1,10 +1,10 @@
 {
   "schema": 2,
-  "exportedAt": "2026-11-22T22:49:02.093Z",
+  "exportedAt": "2026-11-24T03:28:53.596Z",
   "periodStartedAt": "2026-11-09T04:45:31.225389+00:00",
   "weekStart": "2026-11-23",
   "monthStart": "2026-11-01",
-  "rowCount": 2737,
+  "rowCount": 2738,
   "items": [
     {
       "asset_key": "bing:2025-12-30.jpg",
@@ -35546,6 +35546,19 @@
       "week_views": 0,
       "week_downloads": 0,
       "month_views": 1,
+      "month_downloads": 0
+    },
+    {
+      "asset_key": "bing:bing-2026-11-23.jpg",
+      "image_id": "bing-2026-11-23.jpg",
+      "legacy_ambiguous": false,
+      "views": 0,
+      "downloads": 0,
+      "likes": 0,
+      "collects": 0,
+      "week_views": 0,
+      "week_downloads": 0,
+      "month_views": 0,
       "month_downloads": 0
     },
     {
