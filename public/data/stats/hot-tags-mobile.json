@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-11-24T03:29:01.596Z",
+  "generatedAt": "2026-11-25T01:32:25.597Z",
   "windowDays": 90,
   "halfLifeDays": 30,
-  "windowStart": "2026-08-26T03:29:01.596Z",
+  "windowStart": "2026-08-27T01:32:25.597Z",
   "series": "mobile",
   "total": 386,
   "tags": [
     {
       "tag": "人像",
-      "score": 74.578506,
-      "views": 770,
-      "downloads": 116,
+      "score": 73.570886,
+      "views": 784,
+      "downloads": 118,
       "wallpaperCount": 109,
       "latestCreatedAt": "2026-11-17 00:45:20",
       "series": [
@@ -30,20 +30,20 @@
           "cdnTag": "v1.5.6"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193020_925.webp",
+          "thumbnail": "/thumbnail/mobile/人像/明星/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194732_338.webp",
           "cdnTag": "v1.5.19"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%90%8A%E5%B8%A6%E8%A3%99-%E5%A5%BD%E7%9C%8B-%E6%89%8B%E6%9C%BA.webp",
-          "cdnTag": "v1.4.96"
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193926_692.webp",
+          "cdnTag": "v1.5.19"
         }
       ]
     },
     {
       "tag": "清新",
-      "score": 30.130781,
-      "views": 347,
-      "downloads": 43,
+      "score": 29.763987,
+      "views": 353,
+      "downloads": 44,
       "wallpaperCount": 51,
       "latestCreatedAt": "2026-11-17T00:41:03.974Z",
       "series": [
@@ -74,9 +74,9 @@
     },
     {
       "tag": "魅力",
-      "score": 22.324766,
-      "views": 376,
-      "downloads": 68,
+      "score": 21.923288,
+      "views": 379,
+      "downloads": 69,
       "wallpaperCount": 34,
       "latestCreatedAt": "2026-11-17T00:41:03.974Z",
       "series": [
@@ -100,16 +100,16 @@
           "cdnTag": "v1.4.96"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/%E4%BC%98%E9%9B%85%E5%9D%90%E5%A7%BF-%E5%8D%A7%E5%AE%A4%E8%83%8C%E6%99%AF.webp",
-          "cdnTag": "v1.5.6"
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193910_244.webp",
+          "cdnTag": "v1.5.19"
         }
       ]
     },
     {
       "tag": "长发",
-      "score": 19.184594,
-      "views": 190,
-      "downloads": 28,
+      "score": 18.883906,
+      "views": 193,
+      "downloads": 29,
       "wallpaperCount": 27,
       "latestCreatedAt": "2026-11-17 00:45:20",
       "series": [
@@ -140,7 +140,7 @@
     },
     {
       "tag": "风景",
-      "score": 13.382508,
+      "score": 13.101339,
       "views": 77,
       "downloads": 18,
       "wallpaperCount": 16,
@@ -173,9 +173,9 @@
     },
     {
       "tag": "阳光",
-      "score": 11.898609,
-      "views": 148,
-      "downloads": 25,
+      "score": 11.756576,
+      "views": 151,
+      "downloads": 26,
       "wallpaperCount": 24,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
       "series": [
@@ -206,7 +206,7 @@
     },
     {
       "tag": "插画",
-      "score": 11.78524,
+      "score": 11.53763,
       "views": 54,
       "downloads": 13,
       "wallpaperCount": 17,
@@ -238,8 +238,41 @@
       ]
     },
     {
+      "tag": "氛围感",
+      "score": 9.723997,
+      "views": 32,
+      "downloads": 6,
+      "wallpaperCount": 11,
+      "latestCreatedAt": "2026-11-17 00:45:20",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193926_692.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._1.webp",
+          "cdnTag": "v1.5.0"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._2.webp",
+          "cdnTag": "v1.5.0"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/0.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194006_601.webp",
+          "cdnTag": "v1.5.19"
+        }
+      ]
+    },
+    {
       "tag": "优雅",
-      "score": 9.809314,
+      "score": 9.603219,
       "views": 105,
       "downloads": 21,
       "wallpaperCount": 19,
@@ -271,41 +304,41 @@
       ]
     },
     {
-      "tag": "氛围感",
-      "score": 9.755273,
-      "views": 29,
-      "downloads": 6,
-      "wallpaperCount": 11,
+      "tag": "明星",
+      "score": 8.347571,
+      "views": 10,
+      "downloads": 3,
+      "wallpaperCount": 9,
       "latestCreatedAt": "2026-11-17 00:45:20",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/氛围感/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193926_692.webp",
+          "thumbnail": "/thumbnail/mobile/人像/明星/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194732_338.webp",
           "cdnTag": "v1.5.19"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._1.webp",
-          "cdnTag": "v1.5.0"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/氛围感/image_%E8%92%82%E6%B3%95%E8%BF%99%E5%BC%A0%E8%84%B8%E9%85%8D%E5%A9%9A%E7%BA%B1%E4%B9%9F%E6%98%AF%E9%99%8D%E7%BB%B4%E6%89%93%E5%87%BB%7C%7C..._2.webp",
-          "cdnTag": "v1.5.0"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/氛围感/0.webp",
+          "thumbnail": "/thumbnail/mobile/人像/明星/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194921_919.webp",
           "cdnTag": "v1.5.19"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/氛围感/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194006_601.webp",
+          "thumbnail": "/thumbnail/mobile/人像/明星/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194943_384.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/明星/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194721_087.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/明星/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194954_964.webp",
           "cdnTag": "v1.5.19"
         }
       ]
     },
     {
       "tag": "动漫",
-      "score": 8.516929,
+      "score": 8.337986,
       "views": 83,
       "downloads": 17,
       "wallpaperCount": 17,
@@ -337,41 +370,8 @@
       ]
     },
     {
-      "tag": "明星",
-      "score": 8.473832,
-      "views": 8,
-      "downloads": 3,
-      "wallpaperCount": 9,
-      "latestCreatedAt": "2026-11-17 00:45:20",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/明星/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194732_338.webp",
-          "cdnTag": "v1.5.19"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/明星/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194921_919.webp",
-          "cdnTag": "v1.5.19"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/明星/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194943_384.webp",
-          "cdnTag": "v1.5.19"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/明星/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194721_087.webp",
-          "cdnTag": "v1.5.19"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/明星/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194954_964.webp",
-          "cdnTag": "v1.5.19"
-        }
-      ]
-    },
-    {
       "tag": "治愈系",
-      "score": 8.137701,
+      "score": 7.966726,
       "views": 23,
       "downloads": 8,
       "wallpaperCount": 7,
@@ -404,8 +404,8 @@
     },
     {
       "tag": "花卉",
-      "score": 7.365349,
-      "views": 15,
+      "score": 7.262378,
+      "views": 17,
       "downloads": 2,
       "wallpaperCount": 8,
       "latestCreatedAt": "2026-11-17 00:45:20",
@@ -437,7 +437,7 @@
     },
     {
       "tag": "夏日",
-      "score": 6.64033,
+      "score": 6.500816,
       "views": 53,
       "downloads": 7,
       "wallpaperCount": 14,
@@ -470,7 +470,7 @@
     },
     {
       "tag": "夜晚",
-      "score": 6.291196,
+      "score": 6.159017,
       "views": 64,
       "downloads": 5,
       "wallpaperCount": 13,
@@ -503,7 +503,7 @@
     },
     {
       "tag": "萌宠",
-      "score": 6.173193,
+      "score": 6.043493,
       "views": 19,
       "downloads": 8,
       "wallpaperCount": 9,
@@ -536,7 +536,7 @@
     },
     {
       "tag": "黑色蕾丝",
-      "score": 5.633518,
+      "score": 5.515157,
       "views": 16,
       "downloads": 3,
       "wallpaperCount": 6,
@@ -569,8 +569,8 @@
     },
     {
       "tag": "清新人像",
-      "score": 5.280344,
-      "views": 37,
+      "score": 5.202961,
+      "views": 39,
       "downloads": 4,
       "wallpaperCount": 5,
       "latestCreatedAt": "2026-11-09T06:12:23.160Z",
@@ -602,7 +602,7 @@
     },
     {
       "tag": "可爱",
-      "score": 4.851419,
+      "score": 4.74949,
       "views": 28,
       "downloads": 9,
       "wallpaperCount": 10,
@@ -635,7 +635,7 @@
     },
     {
       "tag": "樱花",
-      "score": 4.774929,
+      "score": 4.674607,
       "views": 19,
       "downloads": 5,
       "wallpaperCount": 7,
@@ -668,7 +668,7 @@
     },
     {
       "tag": "微笑",
-      "score": 4.75876,
+      "score": 4.658777,
       "views": 62,
       "downloads": 8,
       "wallpaperCount": 8,
@@ -701,8 +701,8 @@
     },
     {
       "tag": "自然光",
-      "score": 4.626814,
-      "views": 28,
+      "score": 4.580528,
+      "views": 30,
       "downloads": 1,
       "wallpaperCount": 5,
       "latestCreatedAt": "2026-11-17 00:45:20",
@@ -734,7 +734,7 @@
     },
     {
       "tag": "IP形象",
-      "score": 4.52002,
+      "score": 4.425053,
       "views": 26,
       "downloads": 5,
       "wallpaperCount": 5,
@@ -767,7 +767,7 @@
     },
     {
       "tag": "创意",
-      "score": 4.125165,
+      "score": 4.038494,
       "views": 15,
       "downloads": 3,
       "wallpaperCount": 8,
@@ -800,7 +800,7 @@
     },
     {
       "tag": "少女",
-      "score": 4.107592,
+      "score": 4.021291,
       "views": 73,
       "downloads": 18,
       "wallpaperCount": 7,
@@ -833,7 +833,7 @@
     },
     {
       "tag": "暖色调",
-      "score": 4.025193,
+      "score": 3.940623,
       "views": 13,
       "downloads": 1,
       "wallpaperCount": 4,
@@ -862,8 +862,8 @@
     },
     {
       "tag": "花朵",
-      "score": 3.369408,
-      "views": 9,
+      "score": 3.351735,
+      "views": 10,
       "downloads": 4,
       "wallpaperCount": 8,
       "latestCreatedAt": "2026-10-11T01:53:44.861Z",
@@ -884,18 +884,43 @@
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_092103_596.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_085728_467.webp",
           "cdnTag": "v1.4.64"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_085728_467.webp",
+          "thumbnail": "/thumbnail/mobile/人像/清新/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_092103_596.webp",
           "cdnTag": "v1.4.64"
         }
       ]
     },
     {
+      "tag": "留白构图",
+      "score": 3.237272,
+      "views": 10,
+      "downloads": 0,
+      "wallpaperCount": 3,
+      "latestCreatedAt": "2026-11-17T00:41:03.974Z",
+      "series": [
+        "mobile"
+      ],
+      "topWallpapers": [
+        {
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193926_692.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/氛围感/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194006_601.webp",
+          "cdnTag": "v1.5.19"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/风景/花卉/1.png.webp",
+          "cdnTag": "v1.5.20"
+        }
+      ]
+    },
+    {
       "tag": "二次元",
-      "score": 3.257714,
+      "score": 3.189269,
       "views": 45,
       "downloads": 11,
       "wallpaperCount": 6,
@@ -927,33 +952,37 @@
       ]
     },
     {
-      "tag": "留白构图",
-      "score": 3.203876,
-      "views": 8,
-      "downloads": 0,
-      "wallpaperCount": 3,
-      "latestCreatedAt": "2026-11-17T00:41:03.974Z",
+      "tag": "夜色",
+      "score": 3.089068,
+      "views": 13,
+      "downloads": 4,
+      "wallpaperCount": 4,
+      "latestCreatedAt": "2026-11-17 00:45:20",
       "series": [
         "mobile"
       ],
       "topWallpapers": [
         {
-          "thumbnail": "/thumbnail/mobile/人像/氛围感/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_193926_692.webp",
+          "thumbnail": "/thumbnail/mobile/人像/明星/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194732_338.webp",
           "cdnTag": "v1.5.19"
         },
         {
-          "thumbnail": "/thumbnail/mobile/风景/花卉/1.png.webp",
+          "thumbnail": "/thumbnail/mobile/风景/花卉/1.jpg.webp",
           "cdnTag": "v1.5.20"
         },
         {
-          "thumbnail": "/thumbnail/mobile/人像/氛围感/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194006_601.webp",
-          "cdnTag": "v1.5.19"
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091331_580.webp",
+          "cdnTag": "v1.4.64"
+        },
+        {
+          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_092905_157.webp",
+          "cdnTag": "v1.4.64"
         }
       ]
     },
     {
       "tag": "海绵宝宝",
-      "score": 3.153834,
+      "score": 3.087572,
       "views": 18,
       "downloads": 2,
       "wallpaperCount": 7,
@@ -985,39 +1014,10 @@
       ]
     },
     {
-      "tag": "夜色",
-      "score": 3.102476,
-      "views": 11,
-      "downloads": 4,
-      "wallpaperCount": 4,
-      "latestCreatedAt": "2026-11-17 00:45:20",
-      "series": [
-        "mobile"
-      ],
-      "topWallpapers": [
-        {
-          "thumbnail": "/thumbnail/mobile/人像/明星/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-11-16_194732_338.webp",
-          "cdnTag": "v1.5.19"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/风景/花卉/1.jpg.webp",
-          "cdnTag": "v1.5.20"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_091331_580.webp",
-          "cdnTag": "v1.4.64"
-        },
-        {
-          "thumbnail": "/thumbnail/mobile/人像/魅力/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-10-11_092905_157.webp",
-          "cdnTag": "v1.4.64"
-        }
-      ]
-    },
-    {
       "tag": "海滩",
-      "score": 3.075433,
-      "views": 36,
-      "downloads": 3,
+      "score": 3.034586,
+      "views": 37,
+      "downloads": 4,
       "wallpaperCount": 6,
       "latestCreatedAt": "2026-10-13T07:21:53.023Z",
       "series": [
@@ -1048,7 +1048,7 @@
     },
     {
       "tag": "长发少女",
-      "score": 3.006546,
+      "score": 2.943378,
       "views": 15,
       "downloads": 1,
       "wallpaperCount": 3,
@@ -1073,9 +1073,9 @@
     },
     {
       "tag": "柔光人像",
-      "score": 2.967408,
-      "views": 27,
-      "downloads": 2,
+      "score": 2.924103,
+      "views": 28,
+      "downloads": 3,
       "wallpaperCount": 3,
       "latestCreatedAt": "2026-11-12T09:14:02.192Z",
       "series": [
@@ -1098,7 +1098,7 @@
     },
     {
       "tag": "哥特风",
-      "score": 2.94199,
+      "score": 2.880178,
       "views": 10,
       "downloads": 2,
       "wallpaperCount": 3,
@@ -1123,7 +1123,7 @@
     },
     {
       "tag": "彩色玻璃",
-      "score": 2.85147,
+      "score": 2.79156,
       "views": 13,
       "downloads": 0,
       "wallpaperCount": 3,
@@ -1148,7 +1148,7 @@
     },
     {
       "tag": "黑丝",
-      "score": 2.675764,
+      "score": 2.619546,
       "views": 61,
       "downloads": 8,
       "wallpaperCount": 5,
@@ -1181,7 +1181,7 @@
     },
     {
       "tag": "宁静",
-      "score": 2.619141,
+      "score": 2.564112,
       "views": 102,
       "downloads": 5,
       "wallpaperCount": 5,
@@ -1214,7 +1214,7 @@
     },
     {
       "tag": "月光",
-      "score": 2.526551,
+      "score": 2.473467,
       "views": 48,
       "downloads": 7,
       "wallpaperCount": 5,
@@ -1247,7 +1247,7 @@
     },
     {
       "tag": "海滨",
-      "score": 2.47889,
+      "score": 2.426808,
       "views": 18,
       "downloads": 7,
       "wallpaperCount": 3,
